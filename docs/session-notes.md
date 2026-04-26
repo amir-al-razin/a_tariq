@@ -71,3 +71,36 @@ Build a Duolingo-style winding learning path for Volume 1: 3 chapters, 20 lesson
 - Winding path centered, nodes render as true 3D interactive push buttons, navigation wired.
 - Dark mode works perfectly using inline conditionals.
 - Animations actively firing with strict responsive bounds.
+
+---
+
+## 2026-04-26 — Real Data Migration (Curriculum Integration)
+
+### Goal
+Replace mocked UI chunking (`numChunks = (darsNumber % 4) + 3`) with actual pedagogical lesson chunks derived from the NotebookLM analysis of the textbook "Let's Learn Arabic".
+
+### Implemented
+- Scaffolded data layer `data/curriculum.ts` containing structurally typed curriculum definitions (`Chunk`, `Lesson`, `Chapter`).
+- Mapped Chapter 1, Lesson 1 correctly into 10 explicit learning chunks (Vocabulary, Grammar Rules, Interrogatives, etc.).
+
+### Current State
+- `VolumeOneScreen` and `LessonScreen` now consume `curriculum.ts` instead of using math-based mock generation.
+- Lesson 1 dynamically generates 10 orbiting nodes correctly.
+- Application logic is ready for further gamification iteration and progression persistence.
+
+---
+
+## Technical Future Plan: Interactive Pedagogical Engine
+
+### The Problem
+Pressing a chunk in `LessonScreen` currently does nothing. Each chunk requires a specific interactive UI format (Flashcards, Image selections, Fill-in-the-blanks).
+
+### Engine Architecture
+Instead of hardcoding a custom screen per lesson, we will deploy a universal `ChunkEngineScreen`. This central component will parse the `chunk.type` and render universal sub-components tailored to the exact pedagogy:
+
+1. **`VocabularyView`**: Renders nouns (e.g., *kitabun*) alongside translated images. Tap to flip/reveal.
+2. **`GrammarRuleView`**: Presents structural rules (e.g., demonstrative pronouns) in highlighted tooltip cards.
+3. **`ApplicationView`**: Combines images and vocabulary to reinforce proximity/gender rules.
+4. **`QAndAView`**: Evaluates interrogative setups (e.g. *What is this?*) prompting active user input or multiple choice.
+
+The payload structure inside `data/curriculum.ts` will drive these templates purely by typed JSON payloads.

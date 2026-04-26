@@ -26,9 +26,12 @@ const C = {
     neutral900: '#3E3A33',
 };
 
+import { CHAPTERS } from '../data/curriculum';
+
 type LessonScreenProps = {
     route: {
         params: {
+            chapterId: number;
             chapterTitleAr: string;
             chapterTitleEn: string;
             darsNumber: number;
@@ -36,27 +39,38 @@ type LessonScreenProps = {
     };
     navigation: {
         goBack: () => void;
+        navigate: (screen: string, params: any) => void;
     };
 };
 
-type ChunkStatus = 'current' | 'completed' | 'locked';
+type ChunkStatus = 'current' | 'completed' | 'locked' | 'open';
 
 // Circular layout constants
 const CHUNK_SIZE = 64;
-const RADIUS = 70;
 
 export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation }) => {
-    const { chapterTitleAr, chapterTitleEn, darsNumber } = route.params;
+    const { chapterId, chapterTitleAr, chapterTitleEn, darsNumber } = route.params;
     const { colorScheme } = useColorScheme();
     const isDark = colorScheme === 'dark';
 
-    // Generate dynamic chunks based on darsNumber (yields between 3 to 6 chunks)
-    const numChunks = (darsNumber % 4) + 3;
+    const chapterData = CHAPTERS.find(c => c.id === chapterId);
+    const lessonData = chapterData?.lessons.find(l => l.darsNumber === darsNumber);
+    const rawChunks = lessonData?.chunks || [];
 
-    const chunks = Array.from({ length: numChunks }, (_, idx) => {
-        // Dummy logic: first is completed, second is current, rest are locked
-        const status: ChunkStatus = idx === 0 ? 'completed' : idx === 1 ? 'current' : 'locked';
-        return { id: idx + 1, status };
+    // Fallback if chunks are empty (e.g. for lessons not yet filled out)
+    const displayChunks = rawChunks.length > 0 ? rawChunks : Array.from({ length: 3 }, (_, i) => ({
+        id: `mock-${i}`,
+        type: 'mixed',
+        titleEn: 'Pending lesson data',
+        titleAr: 'جاري العمل'
+    }));
+
+    const numChunks = displayChunks.length;
+
+    const chunks = displayChunks.map((chunkItem, idx) => {
+        // Unlock all chunks for testing and development (bypassing strict inference)
+        const status = (idx >= 0 ? 'open' : 'current') as ChunkStatus;
+        return { ...chunkItem, status };
     });
 
     return (
@@ -121,9 +135,10 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                     const isInteractive = !isLocked;
 
                     // Maths: Start at top (-90 deg), evenly distribute
+                    const dynamicRadius = Math.max(90, (numChunks * 85) / (2 * Math.PI));
                     const angle = -Math.PI / 2 + (idx * 2 * Math.PI) / numChunks;
-                    const x = RADIUS * Math.cos(angle);
-                    const y = RADIUS * Math.sin(angle);
+                    const x = dynamicRadius * Math.cos(angle);
+                    const y = dynamicRadius * Math.sin(angle);
 
                     const circleBg = (isCurrent || isCompleted) ? C.primary500
                         : isLocked ? (isDark ? C.neutral700 : C.neutral300)
@@ -156,6 +171,7 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                                 style={{ width: '100%', height: '100%' }}>
                                 <Pressable
                                     disabled={isLocked}
+                                    onPress={() => isInteractive && navigation.navigate('ChunkEngine', { chunkId: chunk.id, chapterId, darsNumber })}
                                     style={{ width: '100%', height: '100%', justifyContent: 'flex-end' }}>
                                     {({ pressed }) => {
                                         const pushDepth = pressed && isInteractive ? 0 : -6;
@@ -186,7 +202,9 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                                                     ) : isCompleted ? (
                                                         <Ionicons name="checkmark" size={28} color={iconColor} />
                                                     ) : (
-                                                        <Ionicons name="star" size={26} color={iconColor} />
+                                                        <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 28, color: iconColor, marginTop: 4 }}>
+                                                            {idx + 1}
+                                                        </Text>
                                                     )}
 
                                                     {/* "START" floating tag */}

@@ -11,6 +11,8 @@ import type { HomeStackParamList } from './HomeNavigator';
 // Design-system colours (from tailwind.config.js)
 // ─────────────────────────────────────────────
 
+import { CHAPTERS, ChapterData } from '../data/curriculum';
+
 const C = {
   primary50: '#ECFDF8',
   primary100: '#D1FAEF',
@@ -41,24 +43,10 @@ const C = {
 type LessonStatus = 'completed' | 'current' | 'open' | 'locked';
 type Nav = NativeStackNavigationProp<HomeStackParamList, 'VolumeOne'>;
 
-type ChapterData = {
-  id: number;
-  titleAr: string;
-  titleEn: string;
-  subtitle: string;
-  lessonsCount: number;
-};
-
-const CHAPTERS: ChapterData[] = [
-  { id: 1, titleAr: 'الباب الأول', titleEn: 'Chapter One', subtitle: 'Beginner-friendly foundations', lessonsCount: 9 },
-  { id: 2, titleAr: 'الباب الثاني', titleEn: 'Chapter Two', subtitle: 'Core lesson expansion', lessonsCount: 8 },
-  { id: 3, titleAr: 'الباب الثالث', titleEn: 'Chapter Three', subtitle: 'Completion lessons', lessonsCount: 3 },
-];
-
 // Numbering resets to 1 for every chapter
 const getLessonStatus = (darsNum: number, chapterId: number): LessonStatus => {
   if (chapterId === 1 && darsNum === 1) return 'current';
-  return 'locked';
+  return 'open'; // Unlocked all for testing/development
 };
 
 // ─────────────────────────────────────────────
@@ -101,7 +89,7 @@ const ChapterBanner: React.FC<{ chapter: ChapterData; idx: number; isDark: boole
           {/* Pill */}
           <View style={{ alignSelf: 'flex-start', backgroundColor: accentColor, borderRadius: 100, paddingHorizontal: 12, paddingVertical: 4, marginBottom: 10 }}>
             <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 12, color: '#fff' }}>
-              Chapter {chapter.id}  ·  {chapter.lessonsCount} lessons
+              Chapter {chapter.id}  ·  {chapter.lessons.length} lessons
             </Text>
           </View>
           <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 22, lineHeight: 28, color: isDark ? C.primary100 : C.primary800 }}>
@@ -260,7 +248,7 @@ const LessonRow: React.FC<LessonRowProps> = ({
                     ) : isCompleted ? (
                       <Ionicons name="checkmark" size={30} color={iconColor} />
                     ) : (
-                      <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 24, color: '#fff', lineHeight: 30 }}>
+                      <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 24, color: iconColor, lineHeight: 30 }}>
                         {darsNum}
                       </Text>
                     )}
@@ -299,6 +287,7 @@ export const VolumeOneScreen: React.FC = () => {
 
   const goToLesson = (chapter: ChapterData, darsNum: number) =>
     navigation.navigate('Lesson', {
+      chapterId: chapter.id,
       chapterTitleAr: chapter.titleAr,
       chapterTitleEn: chapter.titleEn,
       darsNumber: darsNum,
@@ -330,9 +319,9 @@ export const VolumeOneScreen: React.FC = () => {
 
       {/* Chapters */}
       {CHAPTERS.map((chapter, chapterIdx) => {
-        const lessons = Array.from({ length: chapter.lessonsCount }, (_, i) => ({
-          num: i + 1,
-          status: getLessonStatus(i + 1, chapter.id),
+        const lessons = chapter.lessons.map((lesson) => ({
+          num: lesson.darsNumber,
+          status: getLessonStatus(lesson.darsNumber, chapter.id),
         }));
 
         return (
