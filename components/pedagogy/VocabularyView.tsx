@@ -22,9 +22,13 @@ export const VocabularyView: React.FC<Props> = ({ isDark, C, payload, onProgress
     const total = words.length;
 
     useEffect(() => {
+        if (done) {
+            onProgress?.(1);
+            return;
+        }
         const steps = total * 2;
         const completed = currentIndex * 2 + (flipped ? 1 : 0);
-        onProgress?.(Math.min(completed / steps, done ? 1 : 0.99));
+        onProgress?.(Math.min(completed / steps, 0.99));
     }, [currentIndex, flipped, total, onProgress, done]);
 
     const handleCardPress = () => {

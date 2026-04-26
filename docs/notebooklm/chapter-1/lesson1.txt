@@ -1,0 +1,74 @@
+Based on the provided sources, Chapter 1, Lesson 1 (الدرس الأول - প্রথম পাঠ) spans from source [1] to source [2]. The lesson is carefully structured to introduce basic Arabic vocabulary alongside fundamental grammar concepts (demonstrative pronouns and simple interrogatives). 
+
+Here is the comprehensive breakdown of the pedagogical structure and content of this lesson:
+
+### 1. Initial Vocabulary Segment (Masculine Nouns)
+The lesson begins by introducing eight basic masculine nouns with their Bengali translations [1]:
+*   **كِتَابٌ** (kitabun) - একটি বই (A book)
+*   **قَلَمٌ** (qalamun) - একটি কলম (A pen)
+*   **كُرْسِيٌّ** (kursiyyun) - একটি চেয়ার (A chair)
+*   **بَيْتٌ** (baytun) - একটি ঘর (A house)
+*   **بَابٌ** (babun) - একটি দরজা (A door)
+*   **مِصْبَاحٌ** (misbahun) - একটি বাতি (A lamp)
+*   **جِدَارٌ** (jidarun) - একটি দেয়াল (A wall)
+*   **سَرِيْرٌ** (sarirun) - একটি খাট (A bed)
+
+### 2. Core Grammar Rule: Masculine Demonstrative Pronouns
+Immediately following the vocabulary, the text introduces the grammatical structure for pointing to near and far objects (masculine) [1]:
+*   **هَذَا** (hadha) - ইহা (এটি) [This]
+*   **ذَلِكَ** (dhalika) - উহা (সেটি) [That]
+*   **Examples:** The text combines the new grammar and vocabulary into basic sentences: **هَذَا كِتَابٌ** (This is a book) and **ذَلِكَ قَلَمٌ** (That is a pen) [1].
+
+### 3. Application via Images and Translations (Part 1)
+To reinforce the first vocabulary and grammar segments, the text provides a series of illustrated examples showing an object alongside its corresponding Arabic phrase indicating whether it is "this" or "that" [1, 3]. 
+*   *Note: Through these images, a new word is implicitly introduced: **مَسْجِدٌ** (masjidun - Mosque)* [1, 3]. 
+*   Examples include images paired with phrases like: **هَذَا بَابٌ** (This is a door), **ذَلِكَ مِصْبَاحٌ** (That is a lamp), **هَذَا جِدَارٌ** (This is a wall), and **ذَلِكَ كُرْسِيٌّ** (That is a chair) [3].
+
+### 4. Secondary Vocabulary Segment (Feminine Nouns)
+The lesson then advances to introduce feminine nouns (words ending in *Ta-Marbuta*) [4]:
+*   **مَدْرَسَةٌ** (madrasatun) - একটি মাদ্রাসা (A madrasa)
+*   **سَبُّوْرَةٌ** (sabburatun) - একটি ব্ল্যাকবোর্ড (A blackboard)
+*   **مِسْطَرَةٌ** (mistaratun) - একটি রুলার (A ruler)
+*   **حَقِيْبَةٌ** (haqibatun) - একটি ব্যাগ (A bag)
+*   **كُرَّاسَةٌ** (kurrasatun) - একটি খাতা (A notebook)
+*   **طَاوِلَةٌ** (tawilatun) - একটি টেবিল (A table)
+*   **حُجْرَةٌ - غُرْفَةٌ** (hujratun/ghurfatun) - একটি কামরা (A room)
+*   **نَافِذَةٌ** (nafidhatun) - একটি জানালা (A window)
+
+### 5. Expanded Grammar Rule: Feminine Demonstrative Pronouns
+Along with the feminine nouns, the corresponding feminine demonstrative pronouns are introduced through visual examples [4]:
+*   **هَذِهِ** (hadhihi) - This (feminine)
+*   **تِلْكَ** (tilka) - That (feminine)
+
+### 6. Application via Images and Translations (Part 2)
+Similar to the first segment, images are used to practice the new feminine rules [4, 5]:
+*   Examples include: **هَذِهِ مَدْرَسَةٌ** (This is a madrasa), **تِلْكَ سَبُّوْرَةٌ** (That is a blackboard), **هَذِهِ حُجْرَةٌ** (This is a room), and **تِلْكَ حَقِيْبَةٌ** (That is a bag) [4].
+
+### 7. Tertiary Vocabulary Segment (Mixed)
+A final block of eight new nouns (a mix of masculine and feminine) is provided [5]:
+*   **قُفْلٌ** (quflun) - একটি তালা (A lock)
+*   **مِفْتَاحٌ** (miftahun) - একটি চাবি (A key)
+*   **صُنْدُوْقٌ** (sunduqun) - একটি বাক্স (A box)
+*   **سَاعَةٌ** (sa'atun) - একটি ঘড়ি (A watch/clock)
+*   **مِظَلَّةٌ** (midhallatun) - একটি ছাতা (An umbrella)
+*   **نَظَّارَةٌ** (nadharatun) - একটি চশমা (Glasses)
+*   **سَيَّارَةٌ** (sayyaratun) - একটি কার (A car)
+*   **دَرَّاجَةٌ** (darrajatun) - একটি সাইকেল (A bicycle)
+
+### 8. Interrogative Grammar Rule (Q&A Framework)
+The lesson teaches the student how to form basic questions using **مَا** (What) [5]:
+*   **مَا هَذَا - مَا هَذِهِ** (ইহা কী ? / এটি কী ?) [What is this?]
+*   **مَا ذَلِكَ - مَا تِلْكَ** (উহা কী ? / সেটি কী ?) [What is that?]
+
+### 9. Explicit Q&A Practice 
+Under the directive "প্রশ্নোত্তরগুলো পড়ো ও অর্থ বলো" (Read the Q&A and say the meaning), the book provides full model Q&A examples with pictures [5]:
+*   *Image of a book* -> **مَا هَذَا ؟** (What is this?) -> **هَذَا كِتَابٌ** (This is a book.)
+*   *Image of a pen* -> **مَا ذَلِكَ ؟** (What is that?) -> **ذَلِكَ قَلَمٌ** (That is a pen.)
+*   *Image of a ruler* -> **مَا هَذِهِ ؟** (What is this?) -> **هَذِهِ مِسْطَرَةٌ** (This is a ruler.)
+*   *Image of a blackboard* -> **مَا تِلْكَ ؟** (What is that?) -> **تِلْكَ سَبُّوْرَةٌ** (That is a blackboard.)
+
+### 10. Interactive Assessment and Practical Directive
+The lesson concludes with an interactive exercise page titled "ছবি দেখে উত্তর দাও" (Answer by looking at the pictures) [2]. 
+*   It provides a column of images next to incomplete Q&A pairs where the student is given the question (e.g., Image of a chair next to **مَا هَذَا ؟**) and an empty box where the student must provide the answer independently [2]. 
+*   **Pedagogical Instruction:** At the very end, there is a practical classroom directive for students: "দু'জন দাঁড়াও এবং দূর ও নিকট থেকে বিভিন্ন বস্তুর দিকে হাতে ইশারা করে প্রশ্ন করো এবং উত্তর দাও।" (**Two people stand up and pointing at different objects from near and far, ask questions and give answers**) [2].
+

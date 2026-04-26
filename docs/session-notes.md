@@ -104,3 +104,49 @@ Instead of hardcoding a custom screen per lesson, we will deploy a universal `Ch
 4. **`QAndAView`**: Evaluates interrogative setups (e.g. *What is this?*) prompting active user input or multiple choice.
 
 The payload structure inside `data/curriculum.ts` will drive these templates purely by typed JSON payloads.
+
+---
+
+## 2026-04-26 (Session 3) — Chapter 1 Data Expansion (Lessons 6–9)
+
+### Goal
+Continue the interrupted NotebookLM ingestion flow and complete Chapter 1 lesson content coverage for MVP.
+
+### Implemented
+- Resumed extraction from NotebookLM (`Let's Learn Arabic`) lesson-by-lesson after previous session stopped during Lesson 6.
+- Confirmed lesson source files exist under `/tmp` for `lesson1.txt` through `lesson9.txt`.
+- Populated `data/curriculum.ts` for Chapter 1 Lessons **6, 7, 8, 9** with structured chunk payloads matching current engine types:
+  - `vocabulary`
+  - `grammar_rule`
+  - `application`
+  - `q_and_a`
+  - `assessment`
+- Preserved Arabic text with diacritics and included transliteration/Bengali where applicable to align with the teaching style.
+
+### Data Modeling Decisions
+- Kept the existing typed schema (`ChunkPayload`) unchanged to avoid engine breakage.
+- Represented long reading blocks as `application.items` to enable scroll-based completion behavior in `ChunkEngineScreen`.
+- Represented comprehension sections as `q_and_a`/`assessment` to reuse interactive question flow.
+- Prioritized faithful pedagogical sequencing over adding new component types (MVP constraint).
+
+### Current Status
+- Chapter 1 now has lesson data for `darsNumber` 1 through 9 (no empty lesson placeholders in Chapter 1).
+- File-level diagnostics for updated curriculum are clean.
+
+### Fidelity Pass Delta (same session)
+- Expanded Lesson 6 with missing long-form sections:
+  - descriptive reading block (village/city comparisons)
+  - Islamic context reading block
+  - additional comprehension assessment chunk
+- Expanded Lesson 9 with additional assessment chunk so comprehension coverage better reflects source text.
+- Result: curriculum is now closer to full-book sequencing for Chapter 1 MVP while still using existing engine components.
+
+### Source Storage Update
+- Moved NotebookLM extraction workflow away from `/tmp` (ephemeral) to tracked project files.
+- Canonical source location for Chapter 1 extracts:
+  - `docs/notebooklm/chapter-1/lesson2.md` ... `lesson9.md`
+  - existing `docs/notebooklm/chapter-1/lesson1.txt`
+- This prevents data loss across sessions and gives future LLM sessions stable source references.
+
+### Next Recommended Step
+- Run in-app pass for Lesson 6–9 chunk-by-chunk to catch text-level fidelity issues (minor transliteration/wording adjustments) before moving to Chapter 2.

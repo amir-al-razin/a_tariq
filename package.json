@@ -11,6 +11,9 @@
     "start:lan": "expo start --go",
     "start:dev": "expo start --dev-client",
     "prebuild": "expo prebuild",
+    "android:prebuild": "CI=1 expo prebuild -p android",
+    "android:apk:local": "CI=1 expo prebuild -p android && cd android && ./gradlew assembleRelease",
+    "android:apk:debug:local": "CI=1 expo prebuild -p android && cd android && ./gradlew assembleDebug",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
     "web": "expo start --web"

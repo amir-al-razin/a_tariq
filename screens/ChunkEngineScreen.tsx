@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { View, Text, Pressable, ScrollView, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { useColorScheme } from 'nativewind';
 import { useNavigation } from '@react-navigation/native';
@@ -37,6 +37,7 @@ export const ChunkEngineScreen: React.FC<ChunkEngineProps> = ({ route }) => {
     const completeFiredRef = useRef(false);
 
     const handleProgress = useCallback((value: number) => {
+        if (completeFiredRef.current) return;
         setProgress(value);
     }, []);
 
