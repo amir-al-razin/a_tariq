@@ -2257,14 +2257,6 @@ export const CHAPTERS: ChapterData[] = [
         id: 3,
         titleAr: 'الباب الثالث',
         titleEn: 'Chapter Three',
-        subtitle: 'Completion lessons',
-        lessons: Array.from({ length: 3 }, (_, i) => ({ darsNumber: i + 1, chunks: [] })),
-    },
-];
-    {
-        id: 3,
-        titleAr: 'الباب الثالث',
-        titleEn: 'Chapter Three',
         subtitle: 'Complex Phrases, Idafah & Paragraph Reading',
         lessons: [
             {
