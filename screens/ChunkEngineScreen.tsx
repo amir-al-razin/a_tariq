@@ -8,6 +8,8 @@ import { VocabularyView } from '../components/pedagogy/VocabularyView';
 import { GrammarRuleView } from '../components/pedagogy/GrammarRuleView';
 import { ApplicationView } from '../components/pedagogy/ApplicationView';
 import { QAndAView } from '../components/pedagogy/QAndAView';
+import { TarkeebView } from '../components/pedagogy/TarkeebView';
+import { VerbTableView } from '../components/pedagogy/VerbTableView';
 
 type ChunkEngineProps = {
     route: {
@@ -19,7 +21,7 @@ type ChunkEngineProps = {
     };
 };
 
-const SCROLL_COMPLETE_TYPES = ['grammar_rule', 'application', 'mixed'];
+const SCROLL_COMPLETE_TYPES = ['grammar_rule', 'application', 'mixed', 'tarkeeb', 'verb_table'];
 
 export const ChunkEngineScreen: React.FC<ChunkEngineProps> = ({ route }) => {
     const { chunkId, chapterId, darsNumber } = route.params;
@@ -123,6 +125,8 @@ export const ChunkEngineScreen: React.FC<ChunkEngineProps> = ({ route }) => {
             case 'q_and_a': return <QAndAView {...sharedProps} />;
             case 'assessment': return <QAndAView {...sharedProps} />;
             case 'mixed': return <VocabularyView {...sharedProps} />;
+            case 'tarkeeb': return <TarkeebView {...sharedProps} />;
+            case 'verb_table': return <VerbTableView {...sharedProps} />;
             default:
                 return <Text style={{ color: isDark ? C.neutral100 : C.neutral800 }}>Coming soon</Text>;
         }
