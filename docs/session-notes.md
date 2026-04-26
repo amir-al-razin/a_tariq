@@ -58,13 +58,14 @@ Build a Duolingo-style winding learning path for Volume 1: 3 chapters, 20 lesson
 7. **Dark Mode lost during inline style refactor** — NativeWind `className` usage was heavily stripped out because it caused issues with `Pressable` on Android. This inherently broke dark mode. Fix: Instead of rewriting DOM structures to accept `className` again alongside `TouchableOpacity/View/MotiView`, we explicitly extracted `const { colorScheme } = useColorScheme()` from `nativewind` and passed `isDark` to dynamically choose inline hex colours. Highly resilient fix.
 8. **SafeAreaView Deprecation Warning** — Started getting `SafeAreaView has been deprecated...` warning. Found that our app is correctly using `react-native-safe-area-context`. The warning is emerging from an older 3rd-party library (like navigation or gesture internals) referencing standard React Native `SafeAreaView`. Safe to ignore.
 
-### Animation Stack
-- Installed `moti` and `lottie-react-native`.
-- Added a continuous `scale` loop on the "Start Here" badge.
-- Pushed staggered entrance animations on the `LessonRow` circular nodes using standard spring physics via Moti. Reanimated worklets are fully functional without any babel config problems since it was already wired up.
+### Animation & Interactive Stack Updates
+- **3D Push Buttons:** Transitioned from flat circles with generic borders to a 2-layer stacked `Pressable` design. The bottom layer sits `6px` lower as a static shadow/wall, and the top face translates down (`translateY: 6`) dynamically using the `pressed` React Native primitive. This mimics Duolingo's tactile 3D rubber buttons flawlessly.
+- **Circular Math Layout (`LessonScreen.tsx`):** Arranged dynamic sub-lessons radically around a central coordinate using standard trig (`Math.sin`/`Math.cos`), generating geometric shapes instantly based on array length.
+- **Tighter Moti Physics:** Bumped underlying spring physics globally (`stiffness: 250`, `damping: 20`) to eradicate loose floppiness. Nodes now pop in with swift snapping.
+- **Removed Radial Explosions:** On `LessonScreen`, the initial Moti wrapper scaled *and* translated outwards radially. Changed this so the nodes sit statically at their computed trig coordinates, and simply scale/fade in exactly like `VolumeOneScreen`.
 
 ### Current Status
 - `VolumeOneScreen`, `LessonScreen`, `HomeNavigator` all TypeScript + ESLint clean.
-- Winding path centered, nodes render as proper circles, navigation wired.
+- Winding path centered, nodes render as true 3D interactive push buttons, navigation wired.
 - Dark mode works perfectly using inline conditionals.
-- Animations actively firing.
+- Animations actively firing with strict responsive bounds.
