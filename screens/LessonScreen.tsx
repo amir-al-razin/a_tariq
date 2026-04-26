@@ -1,5 +1,30 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Pressable, Text, View } from 'react-native';
+import { MotiView } from 'moti';
+import { useColorScheme } from 'nativewind';
+import { Pressable, Text, TouchableOpacity, View } from 'react-native';
+
+const C = {
+    primary50: '#ECFDF8',
+    primary100: '#D1FAEF',
+    primary200: '#A7F3DE',
+    primary300: '#6EE7C8',
+    primary400: '#34D3AA',
+    primary500: '#16B78E',
+    primary600: '#0F9373',
+    primary700: '#0D775F',
+    primary800: '#0F5F4D',
+    primary900: '#0A4134',
+    neutral50: '#F8F7F4',
+    neutral100: '#F0EEE8',
+    neutral200: '#E5E1D8',
+    neutral300: '#D5CEBF',
+    neutral400: '#B9AF9C',
+    neutral500: '#9A8F7B',
+    neutral600: '#7D7463',
+    neutral700: '#645C4E',
+    neutral800: '#4F4A40',
+    neutral900: '#3E3A33',
+};
 
 type LessonScreenProps = {
     route: {
@@ -14,49 +39,232 @@ type LessonScreenProps = {
     };
 };
 
+type ChunkStatus = 'current' | 'completed' | 'locked';
+
+// Circular layout constants
+const CHUNK_SIZE = 64;
+const RADIUS = 120;
+
 export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation }) => {
     const { chapterTitleAr, chapterTitleEn, darsNumber } = route.params;
+    const { colorScheme } = useColorScheme();
+    const isDark = colorScheme === 'dark';
+
+    // Generate dynamic chunks based on darsNumber (yields between 3 to 6 chunks)
+    const numChunks = (darsNumber % 4) + 3;
+
+    const chunks = Array.from({ length: numChunks }, (_, idx) => {
+        // Dummy logic: first is completed, second is current, rest are locked
+        const status: ChunkStatus = idx === 0 ? 'completed' : idx === 1 ? 'current' : 'locked';
+        return { id: idx + 1, status };
+    });
 
     return (
-        <View className="flex-1 bg-neutral-50 dark:bg-neutral-900">
+        <View style={{ flex: 1, backgroundColor: isDark ? C.neutral900 : C.neutral50 }}>
             {/* ── Custom Header ── */}
-            <View className="flex-row items-center gap-3 border-b border-neutral-200 px-4 py-4 dark:border-neutral-700">
+            <View
+                style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 12,
+                    borderBottomWidth: 1,
+                    borderBottomColor: isDark ? C.neutral800 : C.neutral200,
+                    paddingHorizontal: 16,
+                    paddingVertical: 16,
+                }}>
                 <Pressable
                     onPress={() => navigation.goBack()}
                     accessibilityRole="button"
                     accessibilityLabel="Go back"
-                    className="h-10 w-10 items-center justify-center rounded-full border border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800">
-                    <Ionicons name="arrow-back" size={20} color="#0D775F" />
+                    style={{
+                        height: 40, width: 40,
+                        alignItems: 'center', justifyContent: 'center',
+                        borderRadius: 20,
+                        borderWidth: 1,
+                        borderColor: isDark ? C.neutral700 : C.neutral200,
+                        backgroundColor: isDark ? C.neutral800 : C.neutral100,
+                    }}>
+                    <Ionicons name="arrow-back" size={20} color={isDark ? C.primary300 : C.primary700} />
                 </Pressable>
 
-                <View className="flex-1">
-                    <Text className="font-english-semibold text-body text-primary-800 dark:text-primary-100">
+                <View style={{ flex: 1 }}>
+                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 16, color: isDark ? C.primary100 : C.primary800 }}>
                         Dars {darsNumber} · {chapterTitleEn}
                     </Text>
                     <Text
-                        className="font-arabic text-caption text-primary-600 dark:text-primary-400"
-                        style={{ textAlign: 'right' }}>
+                        style={{ fontFamily: 'NotoSansArabic_400Regular', fontSize: 14, color: isDark ? C.primary400 : C.primary600, textAlign: 'right' }}>
                         {chapterTitleAr}
                     </Text>
                 </View>
 
                 {/* Dars number badge */}
-                <View className="h-9 w-9 items-center justify-center rounded-full bg-primary-500 dark:bg-primary-600">
-                    <Text className="font-english-semibold text-caption text-neutral-50">{darsNumber}</Text>
+                <View style={{
+                    height: 36, width: 36,
+                    alignItems: 'center', justifyContent: 'center',
+                    borderRadius: 18,
+                    backgroundColor: isDark ? C.primary600 : C.primary500,
+                }}>
+                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 14, color: C.neutral50 }}>{darsNumber}</Text>
                 </View>
             </View>
 
-            {/* ── Placeholder Body ── */}
-            <View className="flex-1 items-center justify-center gap-4 px-8">
-                <View className="h-16 w-16 items-center justify-center rounded-2xl border border-primary-200 bg-primary-50 dark:border-primary-700 dark:bg-primary-900/40">
-                    <Ionicons name="book-outline" size={32} color="#16B78E" />
-                </View>
-                <Text className="text-center font-english-semibold text-h2 text-primary-800 dark:text-primary-100">
-                    Lesson content coming soon
-                </Text>
-                <Text className="text-center font-english text-body-sm text-neutral-600 dark:text-neutral-400">
-                    Dars {darsNumber} of {chapterTitleEn} will appear here.
-                </Text>
+            {/* ── Circular Chunks Layout ── */}
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+
+                {/* Center Graphic */}
+                <MotiView
+                    from={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', delay: 100, damping: 20, stiffness: 250 }}
+                    style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 10,
+                    }}>
+                    <View style={{
+                        height: 96, width: 96,
+                        borderRadius: 48,
+                        borderWidth: 4,
+                        borderColor: isDark ? C.primary800 : C.primary200,
+                        backgroundColor: isDark ? `${C.primary900}80` : C.primary100,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        elevation: 4,
+                        shadowColor: '#000',
+                        shadowOffset: { width: 0, height: 4 },
+                        shadowOpacity: 0.1,
+                        shadowRadius: 10,
+                    }}>
+                        <Ionicons name="book" size={42} color={C.primary500} />
+                        <View style={{ position: 'absolute', top: -4, right: -4 }}>
+                            <Ionicons name="sparkles" size={24} color={C.primary300} />
+                        </View>
+                    </View>
+                </MotiView>
+
+                {/* Orbiting Chunks */}
+                {chunks.map((chunk, idx) => {
+                    const isCurrent = chunk.status === 'current';
+                    const isCompleted = chunk.status === 'completed';
+                    const isLocked = chunk.status === 'locked';
+                    const isInteractive = !isLocked;
+
+                    // Maths: Start at top (-90 deg), evenly distribute
+                    const angle = -Math.PI / 2 + (idx * 2 * Math.PI) / numChunks;
+                    const x = RADIUS * Math.cos(angle);
+                    const y = RADIUS * Math.sin(angle);
+
+                    // Standard Path Node styling
+                    const circleBg = isCurrent ? C.primary500
+                        : isCompleted ? (isDark ? C.primary500 : C.primary400)
+                            : isLocked ? (isDark ? C.neutral800 : C.neutral300)
+                                : (isDark ? `${C.primary900}80` : C.primary100);
+
+                    const circleBorder = isCurrent ? (isDark ? C.primary400 : C.primary300)
+                        : isCompleted ? (isDark ? C.primary500 : C.primary200)
+                            : isLocked ? (isDark ? C.neutral700 : C.neutral500)
+                                : (isDark ? C.primary700 : C.primary200);
+
+                    const iconColor = isCurrent || isCompleted ? '#fff'
+                        : isLocked ? (isDark ? C.neutral600 : C.neutral700)
+                            : C.primary600;
+
+                    return (
+                        <View
+                            key={chunk.id}
+                            style={{
+                                position: 'absolute',
+                                transform: [{ translateX: x }, { translateY: y }],
+                                width: CHUNK_SIZE,
+                                height: CHUNK_SIZE,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                zIndex: isInteractive ? 5 : 1,
+                            }}>
+                            <MotiView
+                                from={{ opacity: 0, scale: 0.4 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ type: 'spring', delay: 100 + idx * 40, damping: 20, stiffness: 250 }}
+                                style={{ width: '100%', height: '100%' }}>
+                                <Pressable
+                                    disabled={isLocked}
+                                    style={{ width: '100%', height: '100%' }}>
+                                    {({ pressed }) => {
+                                        const pushDepth = pressed && isInteractive ? 6 : 0;
+                                        return (
+                                            <View style={{ width: CHUNK_SIZE, height: CHUNK_SIZE }}>
+                                                {/* Shadow Base Layer (creates 3D wall) */}
+                                                <View style={{
+                                                    position: 'absolute',
+                                                    top: 6,
+                                                    width: CHUNK_SIZE,
+                                                    height: CHUNK_SIZE,
+                                                    borderRadius: CHUNK_SIZE / 2,
+                                                    backgroundColor: circleBorder,
+                                                }} />
+
+                                                {/* Top Face Layer */}
+                                                <View style={{
+                                                    width: CHUNK_SIZE,
+                                                    height: CHUNK_SIZE,
+                                                    borderRadius: CHUNK_SIZE / 2,
+                                                    backgroundColor: circleBg,
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    transform: [{ translateY: pushDepth }],
+                                                }}>
+                                                    {isLocked ? (
+                                                        <Ionicons name="lock-closed" size={24} color={iconColor} />
+                                                    ) : isCompleted ? (
+                                                        <Ionicons name="checkmark" size={28} color={iconColor} />
+                                                    ) : (
+                                                        <Ionicons name="star" size={26} color={iconColor} />
+                                                    )}
+
+                                                    {/* "START" floating tag */}
+                                                    {isCurrent && (
+                                                        <MotiView
+                                                            from={{ scale: 1, translateY: 0 }}
+                                                            animate={{ scale: 1.03, translateY: -3 }}
+                                                            transition={{ type: 'timing', duration: 1000, loop: true, repeatReverse: true }}
+                                                            style={{
+                                                                position: 'absolute',
+                                                                top: -30,
+                                                                alignSelf: 'center',
+                                                                backgroundColor: C.primary100,
+                                                                borderColor: C.primary400,
+                                                                borderWidth: 1.5,
+                                                                borderRadius: 8,
+                                                                paddingHorizontal: 8,
+                                                                paddingVertical: 3,
+                                                            }}>
+                                                            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 10, color: C.primary700 }}>
+                                                                START
+                                                            </Text>
+                                                            {/* Tiny caret indicator */}
+                                                            <View style={{
+                                                                position: 'absolute',
+                                                                bottom: -4,
+                                                                alignSelf: 'center',
+                                                                width: 6,
+                                                                height: 6,
+                                                                backgroundColor: C.primary100,
+                                                                borderRightWidth: 1.5,
+                                                                borderBottomWidth: 1.5,
+                                                                borderColor: C.primary400,
+                                                                transform: [{ rotate: '45deg' }],
+                                                            }} />
+                                                        </MotiView>
+                                                    )}
+                                                </View>
+                                            </View>
+                                        );
+                                    }}
+                                </Pressable>
+                            </MotiView>
+                        </View>
+                    );
+                })}
             </View>
         </View>
     );

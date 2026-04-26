@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MotiView } from 'moti';
 import { useColorScheme } from 'nativewind';
-import { ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
+import { Pressable, ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 
 import type { HomeStackParamList } from './HomeNavigator';
 
@@ -186,8 +186,8 @@ const LessonRow: React.FC<LessonRowProps> = ({
       {isCurrent && isFirstInChapter && (
         <MotiView
           from={{ scale: 1 }}
-          animate={{ scale: 1.06 }}
-          transition={{ type: 'timing', duration: 700, loop: true, repeatReverse: true }}
+          animate={{ scale: 1.04 }}
+          transition={{ type: 'timing', duration: 1000, loop: true, repeatReverse: true }}
           style={{
             flexDirection: 'row',
             paddingLeft: labelOnRight ? nodeLeft : 0,
@@ -223,37 +223,55 @@ const LessonRow: React.FC<LessonRowProps> = ({
           This is the reliable pattern for Android — visual styles never go
           on the touch handler itself.
         */}
-        <TouchableOpacity
-          onPress={isInteractive ? onPress : undefined}
-          disabled={isLocked}
-          activeOpacity={0.7}
-          style={{ flexShrink: 0 }}>
-          {/* MotiView handles entrance — inner element so TouchableOpacity stays unstyled */}
-          <MotiView
-            from={{ opacity: 0, scale: 0.4 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: 'spring', delay: entryDelay, damping: 16, stiffness: 180 }}
-            style={{
-              width: NODE_SIZE,
-              height: NODE_SIZE,
-              borderRadius: NODE_SIZE / 2,
-              borderWidth: 3,
-              borderColor: circleBorder,
-              backgroundColor: circleBg,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            {isLocked ? (
-              <Ionicons name="lock-closed" size={24} color={iconColor} />
-            ) : isCompleted ? (
-              <Ionicons name="checkmark" size={30} color={iconColor} />
-            ) : (
-              <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 24, color: '#fff', lineHeight: 30 }}>
-                {darsNum}
-              </Text>
-            )}
-          </MotiView>
-        </TouchableOpacity>
+        <MotiView
+          from={{ opacity: 0, scale: 0.4 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: 'spring', delay: entryDelay, damping: 20, stiffness: 250 }}
+          style={{ flexShrink: 0 }}
+        >
+          <Pressable
+            onPress={isInteractive ? onPress : undefined}
+            disabled={isLocked}
+            style={{ width: NODE_SIZE, height: NODE_SIZE }}>
+            {({ pressed }) => {
+              const pushDepth = pressed && isInteractive ? 6 : 0;
+              return (
+                <View style={{ width: NODE_SIZE, height: NODE_SIZE }}>
+                  {/* Shadow Base Layer (3D wall) */}
+                  <View style={{
+                    position: 'absolute',
+                    top: 6,
+                    width: NODE_SIZE,
+                    height: NODE_SIZE,
+                    borderRadius: NODE_SIZE / 2,
+                    backgroundColor: circleBorder,
+                  }} />
+
+                  {/* Top Face Layer */}
+                  <View style={{
+                    width: NODE_SIZE,
+                    height: NODE_SIZE,
+                    borderRadius: NODE_SIZE / 2,
+                    backgroundColor: circleBg,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transform: [{ translateY: pushDepth }],
+                  }}>
+                    {isLocked ? (
+                      <Ionicons name="lock-closed" size={24} color={iconColor} />
+                    ) : isCompleted ? (
+                      <Ionicons name="checkmark" size={30} color={iconColor} />
+                    ) : (
+                      <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 24, color: '#fff', lineHeight: 30 }}>
+                        {darsNum}
+                      </Text>
+                    )}
+                  </View>
+                </View>
+              );
+            }}
+          </Pressable>
+        </MotiView>
 
         {/* Label sits next to the circle */}
         <View style={{ paddingHorizontal: 12 }}>
@@ -333,7 +351,7 @@ export const VolumeOneScreen: React.FC = () => {
                   waveX={WAVE[idx % WAVE.length]}
                   trackWidth={width}
                   isFirstInChapter={idx === 0}
-                  entryDelay={idx * 80}
+                  entryDelay={idx * 40}
                   isDark={isDark}
                   onPress={() => goToLesson(chapter, num)}
                 />
