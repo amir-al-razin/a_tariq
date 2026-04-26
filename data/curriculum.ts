@@ -6,7 +6,9 @@ export type ChunkType =
     | 'assessment'
     | 'mixed'
     | 'tarkeeb'
-    | 'verb_table';
+    | 'verb_table'
+    | 'idafah_drill'
+    | 'paragraph';
 
 // ─────────────────────────────────────────────
 // Payload types (typed for engine templates)
@@ -76,6 +78,22 @@ export interface VerbTableRow {
     i: string;          // أَنَا
 }
 
+/** A phrase-pair for Idafah drill: base phrase → expanded possession phrase */
+export interface IdafahPair {
+    baseBn: string;       // Bengali base (e.g. "এই কামরা")
+    baseAr: string;       // Arabic base (e.g. "هَذِهِ الغُرْفَةُ")
+    expandedBn: string;   // Bengali expanded (e.g. "এই কামরার দরজা")
+    expandedAr: string;   // Arabic answer (e.g. "بَابُ هَذِهِ الغُرْفَةِ")
+}
+
+/** A paragraph block for reading comprehension */
+export interface ParagraphBlock {
+    title?: string;       // e.g. "فِي غُرْفَةِ فَاطِمَةَ"
+    titleEn?: string;
+    lines: string[];      // Arabic sentences in order
+    translationEn?: string; // optional full English translation
+}
+
 export interface ChunkPayload {
     words?: VocabWord[];
     rules?: GrammarRule[];
@@ -85,6 +103,8 @@ export interface ChunkPayload {
     verbTable?: VerbTableRow[];
     /** tense label shown above verb table: 'past' | 'present' | 'imperative' */
     verbTense?: 'past' | 'present' | 'imperative';
+    idafahPairs?: IdafahPair[];
+    paragraphs?: ParagraphBlock[];
     instruction?: string;
 }
 
@@ -2239,5 +2259,375 @@ export const CHAPTERS: ChapterData[] = [
         titleEn: 'Chapter Three',
         subtitle: 'Completion lessons',
         lessons: Array.from({ length: 3 }, (_, i) => ({ darsNumber: i + 1, chunks: [] })),
+    },
+];
+    {
+        id: 3,
+        titleAr: 'الباب الثالث',
+        titleEn: 'Chapter Three',
+        subtitle: 'Complex Phrases, Idafah & Paragraph Reading',
+        lessons: [
+            {
+                darsNumber: 1,
+                chunks: [
+                    {
+                        id: '3-1-1',
+                        type: 'vocabulary',
+                        titleEn: 'Vocabulary: People & Attributes',
+                        titleAr: 'مُفْرَدَات',
+                        payload: {
+                            words: [
+                                { id: 1, ar: 'غِلَافٌ', romanized: 'ghilāfun', en: 'Cover', bn: 'গিলাফ, কভার', emoji: '📦' },
+                                { id: 2, ar: 'ظِلٌّ', romanized: 'ẓillun', en: 'Shade/Shadow', bn: 'ছায়া', emoji: '🌤️' },
+                                { id: 3, ar: 'خَادِمٌ', romanized: 'khādimun', en: 'Servant', bn: 'সেবক', emoji: '🙇' },
+                                { id: 4, ar: 'صَالِحٌ', romanized: 'ṣāliḥun', en: 'Pious/Good', bn: 'সৎ', emoji: '✅' },
+                                { id: 5, ar: 'مَلِكٌ', romanized: 'malikun', en: 'King', bn: 'বাদশাহ', emoji: '👑' },
+                                { id: 6, ar: 'صُوْرَةٌ', romanized: 'ṣūratun', en: 'Picture', bn: 'ছবি', emoji: '🖼️' },
+                                { id: 7, ar: 'مُرِيحٌ', romanized: 'murīḥun', en: 'Comfortable', bn: 'আরামদায়ক', emoji: '😌' },
+                                { id: 8, ar: 'رَاحَةٌ', romanized: 'rāḥatun', en: 'Comfort/Peace', bn: 'আরাম, শান্তি', emoji: '☮️' },
+                                { id: 9, ar: 'مُدِيرٌ', romanized: 'mudīrun', en: 'Director/Manager', bn: 'পরিচালক', emoji: '👔' },
+                            ],
+                        },
+                    },
+                    {
+                        id: '3-1-2',
+                        type: 'grammar_rule',
+                        titleEn: 'Idafah: Possession with Demonstratives',
+                        titleAr: 'الإِضَافَة مَعَ أَسْمَاء الإِشَارَة',
+                        payload: {
+                            rules: [
+                                {
+                                    label: 'Pattern: Noun + Demonstrative Phrase (genitive)',
+                                    arabic: 'مُضَاف + مُضَاف إِلَيْه',
+                                    romanized: 'muḍāf + muḍāf ilayhi',
+                                    meaning: 'To show possession with a pointed noun: the possessed noun comes first, then the demonstrative phrase in genitive.',
+                                    examples: [
+                                        { ar: 'هَذَا المَسْجِدُ ← إِمَامُ هَذَا المَسْجِدِ', en: 'This mosque → The imam of this mosque' },
+                                        { ar: 'هَذَا البَيْتُ ← بَابُ هَذَا البَيْتِ', en: 'This house → The door of this house' },
+                                        { ar: 'تِلْكَ القَرْيَةُ ← فَلَّاحُ تِلْكَ القَرْيَةِ', en: 'That village → The farmer of that village' },
+                                        { ar: 'هَذِهِ المَدْرَسَةُ ← مُعَلِّمُ هَذِهِ المَدْرَسَةِ', en: 'This madrasa → The teacher of this madrasa' },
+                                        { ar: 'ذَلِكَ القُفْلُ ← مِفْتَاحُ ذَلِكَ القُفْلِ', en: 'That lock → The key to that lock' },
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        id: '3-1-3',
+                        type: 'idafah_drill',
+                        titleEn: 'Drill: Build the Possession Phrase',
+                        titleAr: 'تَمْرِين: الإِضَافَة',
+                        payload: {
+                            instruction: 'Tap the right card to reveal the Arabic possession phrase.',
+                            idafahPairs: [
+                                { baseBn: 'এই কামরা', baseAr: 'هَذِهِ الغُرْفَةُ', expandedBn: 'এই কামরার দরজা', expandedAr: 'بَابُ هَذِهِ الغُرْفَةِ' },
+                                { baseBn: 'ঐ গ্রাম', baseAr: 'تِلْكَ القَرْيَةُ', expandedBn: 'ঐ গ্রামের দৃশ্য', expandedAr: 'مَنْظَرُ تِلْكَ القَرْيَةِ' },
+                                { baseBn: 'এই বাগান', baseAr: 'هَذِهِ الحَدِيقَةُ', expandedBn: 'এই বাগানের সামনে', expandedAr: 'أَمَامَ هَذِهِ الحَدِيقَةِ' },
+                                { baseBn: 'ঐ ফল', baseAr: 'ذَلِكَ الفَاكِهَةُ', expandedBn: 'ঐ ফলের রঙ', expandedAr: 'لَوْنُ ذَلِكَ الفَاكِهَةِ' },
+                                { baseBn: 'ঐ লোক', baseAr: 'ذَلِكَ الرَّجُلُ', expandedBn: 'ঐ লোকের গাড়ী', expandedAr: 'سَيَّارَةُ ذَلِكَ الرَّجُلِ' },
+                                { baseBn: 'ঐ তালা', baseAr: 'ذَلِكَ القُفْلُ', expandedBn: 'ঐ তালার চাবি', expandedAr: 'مِفْتَاحُ ذَلِكَ القُفْلِ' },
+                                { baseBn: 'এই পথ', baseAr: 'هَذَا الطَّرِيقُ', expandedBn: 'এই পথের পাশে', expandedAr: 'بِجَانِبِ هَذَا الطَّرِيقِ' },
+                                { baseBn: 'ঐ মহিলা', baseAr: 'تِلْكَ المَرْأَةُ', expandedBn: 'ঐ মহিলার হার', expandedAr: 'عِقْدُ تِلْكَ المَرْأَةِ' },
+                            ],
+                        },
+                    },
+                    {
+                        id: '3-1-4',
+                        type: 'paragraph',
+                        titleEn: 'Reading: The House of Allah (Al-Kaaba)',
+                        titleAr: 'قِرَاءَة: بَيْتُ اللهِ',
+                        payload: {
+                            instruction: 'Read the paragraph carefully. Each sentence builds on the previous.',
+                            paragraphs: [
+                                {
+                                    title: 'بَيْتُ اللهِ',
+                                    titleEn: 'The House of Allah',
+                                    lines: [
+                                        'رَبُّ هَذَا البَيْتِ - اللهُ رَبُّ هَذَا البَيْتِ .',
+                                        'هَذَا البَيْتُ - اِسْمُ هَذَا البَيْتِ الكَعْبَةُ .',
+                                        'غِلَافُ هَذَا البَيْتِ - غِلَافُ هَذَا البَيْتِ جَمِيْلٌ .',
+                                        'خَادِمُ هَذَا البَيْتِ - المَلِكُ خَادِمُ هَذَا البَيْتِ .',
+                                        'مِفْتَاحُ هَذَا البَيْتِ عِنْدَ رَجُلٍ صَالِحٍ .',
+                                        'ظِلُّ هَذَا البَيْتِ مُرِيحٌ - فِي ظِلِّ هَذَا البَيْتِ رَاحَةٌ .',
+                                        'سَقْفُ هَذَا البَيْتِ مَفْتُوحٌ - بَابُ هَذَا البَيْتِ جَمِيْلٌ .',
+                                        'صُوْرَةُ هَذَا البَيْتِ جَمِيْلَةٌ - هَذَا بَيْتُ اللهِ .',
+                                    ],
+                                    translationEn: 'The Lord of this house — Allah is the Lord of this house. This house — the name of this house is Al-Kaaba. The cover of this house is beautiful. The king is the servant of this house. The key to this house is with a pious man. The shade of this house is comfortable — in its shade is peace. The roof is open, the door is beautiful. The picture of this house is beautiful — this is the house of Allah.',
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        id: '3-1-5',
+                        type: 'q_and_a',
+                        titleEn: 'Q&A: Comprehension — Al-Kaaba',
+                        titleAr: 'أَسْئِلَة الفَهْم',
+                        payload: {
+                            questions: [
+                                { emoji: '🕋', question_ar: 'مَنْ رَبُّ هَذَا البَيْتِ ؟', question_en: 'Who is the Lord of this house?', correct_ar: 'اللهُ رَبُّ هَذَا البَيْتِ', correct_en: 'Allah is the Lord of this house.', options_ar: ['اللهُ رَبُّ هَذَا البَيْتِ', 'المَلِكُ رَبُّ هَذَا البَيْتِ', 'الإِمَامُ رَبُّ هَذَا البَيْتِ'], questionType: 'general' },
+                                { emoji: '🕋', question_ar: 'مَا اِسْمُ هَذَا البَيْتِ ؟', question_en: 'What is the name of this house?', correct_ar: 'اِسْمُهُ الكَعْبَةُ', correct_en: 'Its name is Al-Kaaba.', options_ar: ['اِسْمُهُ الكَعْبَةُ', 'اِسْمُهُ المَسْجِدُ', 'اِسْمُهُ البَيْتُ'], questionType: 'general' },
+                                { emoji: '👑', question_ar: 'مَنْ خَادِمُ هَذَا البَيْتِ ؟', question_en: 'Who is the servant of this house?', correct_ar: 'المَلِكُ خَادِمُ هَذَا البَيْتِ', correct_en: 'The king is the servant of this house.', options_ar: ['المَلِكُ خَادِمُ هَذَا البَيْتِ', 'الإِمَامُ خَادِمُ هَذَا البَيْتِ', 'الفَلَّاحُ خَادِمُ هَذَا البَيْتِ'], questionType: 'general' },
+                                { emoji: '🕋', question_ar: 'هَلْ سَقْفُ هَذَا البَيْتِ مَفْتُوحٌ ؟', question_en: 'Is the roof of this house open?', correct_ar: 'نَعَمْ .. سَقْفُهُ مَفْتُوحٌ', correct_en: 'Yes, its roof is open.', options_ar: ['نَعَمْ .. سَقْفُهُ مَفْتُوحٌ', 'لَا .. سَقْفُهُ مُغْلَقٌ', 'لَا .. لَيْسَ لَهُ سَقْفٌ'], questionType: 'hal' },
+                                { emoji: '🌤️', question_ar: 'هَلْ فِي ظِلِّ هَذَا البَيْتِ رَاحَةٌ ؟', question_en: 'Is there peace in the shade of this house?', correct_ar: 'نَعَمْ .. فِي ظِلِّهِ رَاحَةٌ', correct_en: 'Yes, in its shade there is peace.', options_ar: ['نَعَمْ .. فِي ظِلِّهِ رَاحَةٌ', 'لَا .. فِي ظِلِّهِ حَرٌّ', 'لَا .. ظِلُّهُ قَبِيحٌ'], questionType: 'hal' },
+                            ],
+                        },
+                    },
+                    {
+                        id: '3-1-6',
+                        type: 'application',
+                        titleEn: 'Complex Sentences: Idafah in Context',
+                        titleAr: 'جُمَل مُرَكَّبَة',
+                        payload: {
+                            items: [
+                                { emoji: '🕌', ar: 'إِمَامُ هَذَا المَسْجِدِ عَالِمٌ كَبِيرٌ', en: 'The imam of this mosque is a great scholar.' },
+                                { emoji: '🏫', ar: 'أَبُو رَاشِدٍ مُعَلِّمُ تِلْكَ المَدْرَسَةِ', en: "Rashid's father is the teacher of that madrasa." },
+                                { emoji: '🚪', ar: 'بَابُ هَذَا البَيْتِ مَفْتُوحٌ', en: 'The door of this house is open.' },
+                                { emoji: '🏪', ar: 'دُكَّانُ هَذَا التَّاجِرِ فِي سُوقِ المَدِينَةِ', en: "This merchant's shop is in the city market." },
+                                { emoji: '🌸', ar: 'رَائِحَةُ تِلْكَ الزَّهْرَةِ طَيِّبَةٌ', en: 'The fragrance of that flower is good.' },
+                                { emoji: '👦', ar: 'قَلَمُ هَذَا الوَلَدِ عِنْدَ ذَلِكَ الوَلَدِ', en: "This boy's pen is with that boy." },
+                            ],
+                        },
+                    },
+                ],
+            },
+            {
+                darsNumber: 2,
+                chunks: [
+                    {
+                        id: '3-2-1',
+                        type: 'grammar_rule',
+                        titleEn: 'Definite Descriptive Phrases (Al + Sifah-Mawsuf)',
+                        titleAr: 'الصِّفَة المَوْصُوف مَعَ الـ',
+                        payload: {
+                            rules: [
+                                {
+                                    label: 'The 4-step progression',
+                                    arabic: 'وَرْدَةٌ ← وَرْدَةٌ كَبِيرَةٌ ← الوَرْدَةُ كَبِيرَةٌ ← الوَرْدَةُ الكَبِيرَةُ جَمِيلَةٌ',
+                                    romanized: 'wardatun → wardatun kabīratun → al-wardatu kabīratun → al-wardatu al-kabīratu jamīlatun',
+                                    meaning: 'Adding Al to BOTH noun and adjective creates a definite phrase (incomplete). Adding a predicate makes it a complete sentence.',
+                                    examples: [
+                                        { ar: 'وَرْدَةٌ كَبِيرَةٌ', en: 'A big rose (indefinite phrase — incomplete)' },
+                                        { ar: 'الوَرْدَةُ كَبِيرَةٌ', en: 'The rose is big (complete sentence: Mubtada + Khabar)' },
+                                        { ar: 'الوَرْدَةُ الكَبِيرَةُ', en: 'The big rose (definite phrase — still incomplete)' },
+                                        { ar: 'الوَرْدَةُ الكَبِيرَةُ جَمِيلَةٌ', en: 'The big rose is beautiful (complete: definite Mawsuf-Sifah as Mubtada + Khabar)' },
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        id: '3-2-2',
+                        type: 'tarkeeb',
+                        titleEn: 'Tarkeeb: Complete vs Incomplete with Al',
+                        titleAr: 'تَرْكِيب: الجُمْلَة التَّامَّة وَالنَّاقِصَة',
+                        payload: {
+                            tarkeeb: [
+                                {
+                                    sentence: 'الوَرْدَةُ الكَبِيرَةُ',
+                                    sentenceEn: 'The big rose',
+                                    sentenceBn: 'বড় গোলাপটি (অপূর্ণ)',
+                                    type: 'incomplete',
+                                    tree: [
+                                        { label: 'مَوْصُوف', labelEn: 'Qualified Noun', text: 'الوَرْدَةُ', children: [] },
+                                        { label: 'صِفَة', labelEn: 'Adjective', text: 'الكَبِيرَةُ', children: [] },
+                                    ],
+                                },
+                                {
+                                    sentence: 'الوَرْدَةُ كَبِيرَةٌ',
+                                    sentenceEn: 'The rose is big.',
+                                    sentenceBn: 'গোলাপটি বড়। (পূর্ণ)',
+                                    type: 'complete',
+                                    tree: [
+                                        { label: 'مُبْتَدَأ', labelEn: 'Subject', text: 'الوَرْدَةُ', children: [] },
+                                        { label: 'خَبَر', labelEn: 'Predicate', text: 'كَبِيرَةٌ', children: [] },
+                                    ],
+                                },
+                                {
+                                    sentence: 'الوَرْدَةُ الكَبِيرَةُ جَمِيلَةٌ',
+                                    sentenceEn: 'The big rose is beautiful.',
+                                    sentenceBn: 'বড় গোলাপটি সুন্দর। (পূর্ণ)',
+                                    type: 'complete',
+                                    tree: [
+                                        {
+                                            label: 'مُبْتَدَأ', labelEn: 'Subject', text: 'الوَرْدَةُ الكَبِيرَةُ',
+                                            children: [
+                                                { label: 'مَوْصُوف', labelEn: 'Qualified Noun', text: 'الوَرْدَةُ', children: [] },
+                                                { label: 'صِفَة', labelEn: 'Adjective', text: 'الكَبِيرَةُ', children: [] },
+                                            ],
+                                        },
+                                        { label: 'خَبَر', labelEn: 'Predicate', text: 'جَمِيلَةٌ', children: [] },
+                                    ],
+                                },
+                                {
+                                    sentence: 'مَحْمُودٌ التَّاجِرُ غَنِيٌّ',
+                                    sentenceEn: 'The merchant Mahmud is rich.',
+                                    sentenceBn: 'ব্যবসায়ী মাহমুদ ধনী। (পূর্ণ)',
+                                    type: 'complete',
+                                    tree: [
+                                        {
+                                            label: 'مُبْتَدَأ', labelEn: 'Subject', text: 'مَحْمُودٌ التَّاجِرُ',
+                                            children: [
+                                                { label: 'مَوْصُوف', labelEn: 'Qualified Noun', text: 'مَحْمُودٌ', children: [] },
+                                                { label: 'صِفَة', labelEn: 'Adjective/Title', text: 'التَّاجِرُ', children: [] },
+                                            ],
+                                        },
+                                        { label: 'خَبَر', labelEn: 'Predicate', text: 'غَنِيٌّ', children: [] },
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        id: '3-2-3',
+                        type: 'paragraph',
+                        titleEn: 'Reading: Definite Phrases in Context',
+                        titleAr: 'قِرَاءَة: الصِّفَة المَعْرِفَة',
+                        payload: {
+                            paragraphs: [
+                                {
+                                    title: 'الكِتَاب',
+                                    titleEn: 'The Book',
+                                    lines: [
+                                        'هَذَا كِتَابٌ - كِتَابٌ جَدِيدٌ - هَذَا كِتَابٌ جَدِيدٌ',
+                                        'الكِتَابُ جَدِيدٌ - الكِتَابُ الجَدِيدُ',
+                                        'الكِتَابُ الجَدِيدُ جَمِيلٌ - الكِتَابُ الجَدِيدُ عِنْدَ مَحْمُودٍ',
+                                        'الكِتَابُ الجَدِيدُ قِصَّةٌ عَجِيبَةٌ',
+                                        'فِي هَذَا الكِتَابِ الجَدِيدِ صُورَةٌ جَمِيلَةٌ .',
+                                    ],
+                                },
+                                {
+                                    title: 'المَسْجِد',
+                                    titleEn: 'The Mosque',
+                                    lines: [
+                                        'هَذَا مَسْجِدٌ قَدِيمٌ - المَسْجِدُ القَدِيمُ مَشْهُورٌ',
+                                        'أَمَامَ المَسْجِدِ القَدِيمِ حَدِيقَةٌ',
+                                        'إِمَامُ المَسْجِدِ القَدِيمِ عَالِمٌ كَبِيرٌ',
+                                        'عَمُّ مَاجِدٍ إِمَامُ المَسْجِدِ القَدِيمِ .',
+                                    ],
+                                },
+                                {
+                                    title: 'السَّمَكَة',
+                                    titleEn: 'The Fish',
+                                    lines: [
+                                        'سَمَكَةٌ كَبِيرَةٌ - هَذِهِ سَمَكَةٌ كَبِيرَةٌ',
+                                        'السَّمَكَةُ كَبِيرَةٌ - السَّمَكَةُ الكَبِيرَةُ',
+                                        'السَّمَكَةُ الكَبِيرَةُ لَذِيذَةٌ',
+                                        'السَّمَكَةُ الكَبِيرَةُ فِي حَوْضٍ كَبِيرٍ .',
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        id: '3-2-4',
+                        type: 'q_and_a',
+                        titleEn: 'Q&A: Definite Phrases',
+                        titleAr: 'سُؤَال وَجَوَاب',
+                        payload: {
+                            questions: [
+                                { emoji: '📖', question_ar: 'هَلِ الكِتَابُ الجَدِيدُ عِنْدَ مَحْمُودٍ ؟', question_en: 'Is the new book with Mahmud?', correct_ar: 'نَعَمْ .. الكِتَابُ الجَدِيدُ عِنْدَهُ', correct_en: 'Yes, the new book is with him.', options_ar: ['نَعَمْ .. الكِتَابُ الجَدِيدُ عِنْدَهُ', 'لَا .. الكِتَابُ عِنْدَ خَالِدٍ', 'لَا .. الكِتَابُ فِي المَكْتَبَةِ'], questionType: 'hal' },
+                                { emoji: '🕌', question_ar: 'كَيْفَ إِمَامُ المَسْجِدِ القَدِيمِ ؟', question_en: 'How is the imam of the old mosque?', correct_ar: 'إِمَامُهُ عَالِمٌ كَبِيرٌ', correct_en: 'Its imam is a great scholar.', options_ar: ['إِمَامُهُ عَالِمٌ كَبِيرٌ', 'إِمَامُهُ رَجُلٌ فَقِيرٌ', 'إِمَامُهُ تِلْمِيذٌ صَغِيرٌ'], questionType: 'general' },
+                                { emoji: '🐟', question_ar: 'أَ السَّمَكَةُ الكَبِيرَةُ لَذِيذَةٌ أَمْ غَيْرُ لَذِيذَةٍ ؟', question_en: 'Is the big fish tasty or not tasty?', correct_ar: 'لَذِيذَةٌ', correct_en: 'Tasty.', options_ar: ['لَذِيذَةٌ', 'غَيْرُ لَذِيذَةٍ', 'بَايِتَةٌ'], questionType: 'a_am' },
+                                { emoji: '🕌', question_ar: 'مَنْ إِمَامُ المَسْجِدِ القَدِيمِ ؟', question_en: 'Who is the imam of the old mosque?', correct_ar: 'عَمُّ مَاجِدٍ إِمَامُهُ', correct_en: "Majid's uncle is its imam.", options_ar: ['عَمُّ مَاجِدٍ إِمَامُهُ', 'أَبُو رَاشِدٍ إِمَامُهُ', 'خَالِدٌ إِمَامُهُ'], questionType: 'general' },
+                            ],
+                        },
+                    },
+                ],
+            },
+            {
+                darsNumber: 3,
+                chunks: [
+                    {
+                        id: '3-3-1',
+                        type: 'vocabulary',
+                        titleEn: 'Vocabulary: Final Lesson',
+                        titleAr: 'مُفْرَدَات: الدَّرْس الأَخِير',
+                        payload: {
+                            words: [
+                                { id: 1, ar: 'صَافٍ', romanized: 'ṣāfin', en: 'Clean/Clear', bn: 'পরিচ্ছন্ন', emoji: '✨' },
+                                { id: 2, ar: 'قَذِرٌ', romanized: 'qadhirun', en: 'Dirty', bn: 'ময়লা', emoji: '🗑️' },
+                                { id: 3, ar: 'مَعْبَدٌ', romanized: "ma'badun", en: 'Place of worship', bn: 'উপাসনালয়', emoji: '🛕' },
+                                { id: 4, ar: 'سِكَّةٌ', romanized: 'sikkatun', en: 'Road/Path', bn: 'রাস্তা', emoji: '🛤️' },
+                                { id: 5, ar: 'سَجَّادَةٌ', romanized: 'sajjādatun', en: 'Prayer mat', bn: 'জায়নামায', emoji: '🧎' },
+                            ],
+                        },
+                    },
+                    {
+                        id: '3-3-2',
+                        type: 'paragraph',
+                        titleEn: "Reading: Fatima's Room",
+                        titleAr: 'قِرَاءَة: غُرْفَةُ فَاطِمَةَ',
+                        payload: {
+                            instruction: 'Read the full paragraph. Notice how Idafah, Sifah-Mawsuf, and spatial adverbs all combine.',
+                            paragraphs: [
+                                {
+                                    title: 'فِي غُرْفَةِ فَاطِمَةَ',
+                                    titleEn: "In Fatima's Room",
+                                    lines: [
+                                        'هَذِهِ غُرْفَةٌ . هَذِهِ غُرْفَةٌ صَغِيرَةٌ .',
+                                        'الغُرْفَةُ الصَّغِيرَةُ نَظِيفَةٌ .',
+                                        'هَذِهِ الغُرْفَةُ صَغِيرَةٌ وَنَظِيفَةٌ .',
+                                        'هَذِهِ غُرْفَةُ فَاطِمَةَ . فَاطِمَةُ بِنْتٌ طَيِّبَةٌ .',
+                                        'غُرْفَتُهَا نَظِيفَةٌ وَ فِرَاشُهَا نَظِيفٌ . فَاطِمَةُ فِي غُرْفَتِهَا .',
+                                        'فِي غُرْفَةِ فَاطِمَةَ سَرِيرٌ وَ مِنْضَدَةٌ .',
+                                        'فِي غُرْفَتِهَا مِصْبَاحٌ وَ مِرْوَحَةٌ .',
+                                        'المِصْبَاحُ جَدِيدٌ وَ المِرْوَحَةُ جَيِّدَةٌ .',
+                                        'المِرْوَحَةُ تَحْتَ السَّقْفِ .',
+                                        'فَوْقَ المِنْضَدَةِ سَاعَةٌ جَمِيلَةٌ . السَّاعَةُ الجَمِيلَةُ فَوْقَ المِنْضَدَةِ .',
+                                        'بِجَانِبِ السَّاعَةِ الجَمِيلَةِ قَلَمٌ .',
+                                        'بَابُ هَذِهِ الغُرْفَةِ مَفْتُوحٌ . بَابُ هَذِهِ الغُرْفَةِ الصَّغِيرَةِ وَاسِعٌ .',
+                                    ],
+                                    translationEn: "This is a room. This is a small room. The small room is clean. This room is small and clean. This is Fatima's room. Fatima is a good girl. Her room is clean and her bed is clean. Fatima is in her room. In Fatima's room there is a bed and a table. In her room there is a lamp and a fan. The lamp is new and the fan is good. The fan is under the ceiling. On the table there is a beautiful clock. The beautiful clock is on the table. Beside the beautiful clock there is a pen. The door of this room is open. The door of this small room is wide.",
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        id: '3-3-3',
+                        type: 'paragraph',
+                        titleEn: 'Reading: The Old Village',
+                        titleAr: 'قِرَاءَة: القَرْيَةُ القَدِيمَةُ',
+                        payload: {
+                            paragraphs: [
+                                {
+                                    title: 'القَرْيَةُ القَدِيمَةُ',
+                                    titleEn: 'The Old Village',
+                                    lines: [
+                                        'هَذِهِ قَرْيَةٌ قَدِيمَةٌ .',
+                                        'القَرْيَةُ بِجَانِبِ النَّهْرِ .',
+                                        'القَرْيَةُ القَدِيمَةُ بِجَانِبِ النَّهْرِ الوَاسِعِ .',
+                                        'مَاءُ هَذَا النَّهْرِ صَافٍ .',
+                                        'فِي هَذِهِ القَرْيَةِ مَسْجِدٌ كَبِيرٌ وَ مَعْبَدٌ صَغِيرٌ .',
+                                        'المَسْجِدُ الكَبِيرُ جَمِيلٌ .',
+                                        'اِسْمُ هَذَا المَسْجِدِ مَسْجِدُ النُّورِ .',
+                                        'فِي مَسْجِدِ النُّورِ سَجَّادَةٌ غَالِيَةٌ .',
+                                        'فِي هَذِهِ القَرْيَةِ شَجَرَةٌ عَالِيَةٌ .',
+                                        'الشَّجَرَةُ العَالِيَةُ بِجَانِبِ البَيْتِ الصَّغِيرِ .',
+                                        'هَذَا البَيْتُ الصَّغِيرُ بِجَانِبِ الشَّجَرَةِ العَالِيَةِ .',
+                                    ],
+                                    translationEn: 'This is an old village. The village is beside the river. The old village is beside the wide river. The water of this river is clean. In this village there is a big mosque and a small temple. The big mosque is beautiful. The name of this mosque is Masjid al-Nur. In Masjid al-Nur there is an expensive prayer mat. In this village there is a tall tree. The tall tree is beside the small house. This small house is beside the tall tree.',
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        id: '3-3-4',
+                        type: 'q_and_a',
+                        titleEn: "Q&A: Fatima's Room & The Village",
+                        titleAr: 'أَسْئِلَة الفَهْم: الغُرْفَة وَالقَرْيَة',
+                        payload: {
+                            questions: [
+                                { emoji: '🛏️', question_ar: 'أَنَظِيفَةٌ غُرْفَةُ فَاطِمَةَ أَمْ قَذِرَةٌ ؟', question_en: "Is Fatima's room clean or dirty?", correct_ar: 'نَظِيفَةٌ', correct_en: 'Clean.', options_ar: ['نَظِيفَةٌ', 'قَذِرَةٌ', 'وَاسِعَةٌ'], questionType: 'a_am' },
+                                { emoji: '💡', question_ar: 'أَيْنَ المِرْوَحَةُ ؟', question_en: 'Where is the fan?', correct_ar: 'المِرْوَحَةُ تَحْتَ السَّقْفِ', correct_en: 'The fan is under the ceiling.', options_ar: ['المِرْوَحَةُ تَحْتَ السَّقْفِ', 'المِرْوَحَةُ فَوْقَ المِنْضَدَةِ', 'المِرْوَحَةُ بِجَانِبِ البَابِ'], questionType: 'general' },
+                                { emoji: '🚪', question_ar: 'هَلْ بَابُ هَذِهِ الغُرْفَةِ مَفْتُوحٌ ؟', question_en: 'Is the door of this room open?', correct_ar: 'نَعَمْ .. بَابُهَا مَفْتُوحٌ', correct_en: 'Yes, its door is open.', options_ar: ['نَعَمْ .. بَابُهَا مَفْتُوحٌ', 'لَا .. بَابُهَا مُغْلَقٌ', 'لَا .. لَيْسَ لَهَا بَابٌ'], questionType: 'hal' },
+                                { emoji: '🌊', question_ar: 'هَلْ مَاءُ هَذَا النَّهْرِ صَافٍ ؟', question_en: 'Is the water of this river clean?', correct_ar: 'نَعَمْ .. مَاؤُهُ صَافٍ', correct_en: 'Yes, its water is clean.', options_ar: ['نَعَمْ .. مَاؤُهُ صَافٍ', 'لَا .. مَاؤُهُ قَذِرٌ', 'لَا .. لَيْسَ فِيهِ مَاءٌ'], questionType: 'hal' },
+                                { emoji: '🌳', question_ar: 'أَيْنَ الشَّجَرَةُ العَالِيَةُ ؟', question_en: 'Where is the tall tree?', correct_ar: 'بِجَانِبِ البَيْتِ الصَّغِيرِ', correct_en: 'Beside the small house.', options_ar: ['بِجَانِبِ البَيْتِ الصَّغِيرِ', 'أَمَامَ المَسْجِدِ', 'فِي وَسَطِ القَرْيَةِ'], questionType: 'general' },
+                                { emoji: '🕌', question_ar: 'مَا اِسْمُ المَسْجِدِ الكَبِيرِ ؟', question_en: 'What is the name of the big mosque?', correct_ar: 'اِسْمُهُ مَسْجِدُ النُّورِ', correct_en: 'Its name is Masjid al-Nur.', options_ar: ['اِسْمُهُ مَسْجِدُ النُّورِ', 'اِسْمُهُ مَسْجِدُ الكَعْبَةِ', 'اِسْمُهُ مَسْجِدُ القَرْيَةِ'], questionType: 'general' },
+                            ],
+                        },
+                    },
+                ],
+            },
+        ],
     },
 ];
