@@ -1741,7 +1741,7 @@ export const CHAPTERS: ChapterData[] = [
                                 { id: 7, ar: 'كَسْلَانُ', romanized: 'kaslānu', en: 'Lazy', bn: 'অলস', emoji: '😴' },
                                 { id: 8, ar: 'صَادِقٌ', romanized: 'ṣādiqun', en: 'Truthful', bn: 'সত্যবাদী', emoji: '✅' },
                                 { id: 9, ar: 'كَاذِبٌ', romanized: 'kādhibun', en: 'Liar', bn: 'মিথ্যাবাদী', emoji: '❌' },
-                                { id: 10, ar: 'مُتَوَاضِعٌ', romanized: 'mutawāḍi'un', en: 'Humble', bn: 'বিনীত', emoji: '🙏' },
+                                { id: 10, ar: 'مُتَوَاضِعٌ', romanized: 'mutawādi-un', en: 'Humble', bn: 'বিনীত', emoji: '🙏' },
                                 { id: 11, ar: 'مُتَكَبِّرٌ', romanized: 'mutakabbirun', en: 'Arrogant', bn: 'অহংকারী', emoji: '😤' },
                             ],
                         },
