@@ -43,7 +43,7 @@ type ChunkStatus = 'current' | 'completed' | 'locked';
 
 // Circular layout constants
 const CHUNK_SIZE = 64;
-const RADIUS = 120;
+const RADIUS = 70;
 
 export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation }) => {
     const { chapterTitleAr, chapterTitleEn, darsNumber } = route.params;
@@ -111,36 +111,7 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
             {/* ── Circular Chunks Layout ── */}
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
-                {/* Center Graphic */}
-                <MotiView
-                    from={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: 'spring', delay: 100, damping: 20, stiffness: 250 }}
-                    style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        zIndex: 10,
-                    }}>
-                    <View style={{
-                        height: 96, width: 96,
-                        borderRadius: 48,
-                        borderWidth: 4,
-                        borderColor: isDark ? C.primary800 : C.primary200,
-                        backgroundColor: isDark ? `${C.primary900}80` : C.primary100,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        elevation: 4,
-                        shadowColor: '#000',
-                        shadowOffset: { width: 0, height: 4 },
-                        shadowOpacity: 0.1,
-                        shadowRadius: 10,
-                    }}>
-                        <Ionicons name="book" size={42} color={C.primary500} />
-                        <View style={{ position: 'absolute', top: -4, right: -4 }}>
-                            <Ionicons name="sparkles" size={24} color={C.primary300} />
-                        </View>
-                    </View>
-                </MotiView>
+
 
                 {/* Orbiting Chunks */}
                 {chunks.map((chunk, idx) => {
@@ -154,16 +125,13 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                     const x = RADIUS * Math.cos(angle);
                     const y = RADIUS * Math.sin(angle);
 
-                    // Standard Path Node styling
-                    const circleBg = isCurrent ? C.primary500
-                        : isCompleted ? (isDark ? C.primary500 : C.primary400)
-                            : isLocked ? (isDark ? C.neutral800 : C.neutral300)
-                                : (isDark ? `${C.primary900}80` : C.primary100);
+                    const circleBg = (isCurrent || isCompleted) ? C.primary500
+                        : isLocked ? (isDark ? C.neutral700 : C.neutral300)
+                            : (isDark ? `${C.primary900}80` : C.primary100);
 
-                    const circleBorder = isCurrent ? (isDark ? C.primary400 : C.primary300)
-                        : isCompleted ? (isDark ? C.primary500 : C.primary200)
-                            : isLocked ? (isDark ? C.neutral700 : C.neutral500)
-                                : (isDark ? C.primary700 : C.primary200);
+                    const circleBorder = (isCurrent || isCompleted) ? (isDark ? C.primary700 : C.primary600)
+                        : isLocked ? (isDark ? C.neutral900 : C.neutral500)
+                            : (isDark ? C.primary800 : C.primary200);
 
                     const iconColor = isCurrent || isCompleted ? '#fff'
                         : isLocked ? (isDark ? C.neutral600 : C.neutral700)
@@ -176,9 +144,9 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                                 position: 'absolute',
                                 transform: [{ translateX: x }, { translateY: y }],
                                 width: CHUNK_SIZE,
-                                height: CHUNK_SIZE,
+                                height: CHUNK_SIZE + 6,
                                 alignItems: 'center',
-                                justifyContent: 'center',
+                                justifyContent: 'flex-end',
                                 zIndex: isInteractive ? 5 : 1,
                             }}>
                             <MotiView
@@ -188,17 +156,17 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                                 style={{ width: '100%', height: '100%' }}>
                                 <Pressable
                                     disabled={isLocked}
-                                    style={{ width: '100%', height: '100%' }}>
+                                    style={{ width: '100%', height: '100%', justifyContent: 'flex-end' }}>
                                     {({ pressed }) => {
-                                        const pushDepth = pressed && isInteractive ? 6 : 0;
+                                        const pushDepth = pressed && isInteractive ? 0 : -6;
                                         return (
-                                            <View style={{ width: CHUNK_SIZE, height: CHUNK_SIZE }}>
-                                                {/* Shadow Base Layer (creates 3D wall) */}
+                                            <View style={{ width: CHUNK_SIZE, height: CHUNK_SIZE + 6, justifyContent: 'flex-end' }}>
+                                                {/* Shadow Base Layer (True Cylinder Wall) */}
                                                 <View style={{
                                                     position: 'absolute',
-                                                    top: 6,
+                                                    bottom: 0,
                                                     width: CHUNK_SIZE,
-                                                    height: CHUNK_SIZE,
+                                                    height: CHUNK_SIZE + (pressed && isInteractive ? 0 : 6),
                                                     borderRadius: CHUNK_SIZE / 2,
                                                     backgroundColor: circleBorder,
                                                 }} />

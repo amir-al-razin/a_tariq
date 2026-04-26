@@ -161,15 +161,13 @@ const LessonRow: React.FC<LessonRowProps> = ({
   const labelOnRight = waveX <= 0.5;
 
   // Node visual styles (Dark mode compatible)
-  const circleBg = isCurrent ? C.primary500
-    : isCompleted ? (isDark ? C.primary500 : C.primary400)
-      : isLocked ? (isDark ? C.neutral800 : C.neutral300)
-        : (isDark ? `${C.primary900}80` : C.primary100);
+  const circleBg = (isCurrent || isCompleted) ? C.primary500
+    : isLocked ? (isDark ? C.neutral700 : C.neutral300)
+      : (isDark ? `${C.primary900}80` : C.primary100);
 
-  const circleBorder = isCurrent ? (isDark ? C.primary400 : C.primary300)
-    : isCompleted ? (isDark ? C.primary500 : C.primary200)
-      : isLocked ? (isDark ? C.neutral700 : C.neutral500)
-        : (isDark ? C.primary700 : C.primary200);
+  const circleBorder = (isCurrent || isCompleted) ? (isDark ? C.primary700 : C.primary600)
+    : isLocked ? (isDark ? C.neutral900 : C.neutral500)
+      : (isDark ? C.primary800 : C.primary200);
 
   const iconColor = isCurrent || isCompleted ? '#fff'
     : isLocked ? (isDark ? C.neutral600 : C.neutral700)
@@ -232,17 +230,17 @@ const LessonRow: React.FC<LessonRowProps> = ({
           <Pressable
             onPress={isInteractive ? onPress : undefined}
             disabled={isLocked}
-            style={{ width: NODE_SIZE, height: NODE_SIZE }}>
+            style={{ width: NODE_SIZE, height: NODE_SIZE + 6, justifyContent: 'flex-end' }}>
             {({ pressed }) => {
-              const pushDepth = pressed && isInteractive ? 6 : 0;
+              const pushDepth = pressed && isInteractive ? 0 : -6;
               return (
-                <View style={{ width: NODE_SIZE, height: NODE_SIZE }}>
-                  {/* Shadow Base Layer (3D wall) */}
+                <View style={{ width: NODE_SIZE, height: NODE_SIZE + 6, justifyContent: 'flex-end' }}>
+                  {/* Shadow Base Layer (True Cylinder Wall) */}
                   <View style={{
                     position: 'absolute',
-                    top: 6,
+                    bottom: 0,
                     width: NODE_SIZE,
-                    height: NODE_SIZE,
+                    height: NODE_SIZE + (pressed && isInteractive ? 0 : 6),
                     borderRadius: NODE_SIZE / 2,
                     backgroundColor: circleBorder,
                   }} />
