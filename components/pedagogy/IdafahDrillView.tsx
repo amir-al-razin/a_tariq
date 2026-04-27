@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { IdafahPair } from '../../data/curriculum';
 
@@ -13,6 +13,9 @@ interface Props {
 export const IdafahDrillView: React.FC<Props> = ({ isDark, C, payload, onProgress, onComplete }) => {
     const pairs = payload?.idafahPairs ?? [];
     const [revealed, setRevealed] = useState<boolean[]>(Array(pairs.length).fill(false));
+
+    // Report initial progress on mount — never call setState during render
+    useEffect(() => { onProgress(0); }, []);
 
     const revealAll = useCallback(() => {
         setRevealed(Array(pairs.length).fill(true));
