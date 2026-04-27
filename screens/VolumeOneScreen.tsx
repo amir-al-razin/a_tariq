@@ -64,44 +64,31 @@ const WAVE = [0.27, 0.40, 0.56, 0.73, 0.56, 0.40] as const;
 // Chapter banner
 // ─────────────────────────────────────────────
 
-const BANNER_COLORS = [C.primary500, C.primary600, C.primary700];
-
 const ChapterBanner: React.FC<{ chapter: ChapterData; idx: number; isDark: boolean }> = ({ chapter, idx, isDark }) => {
-  const accentColor = BANNER_COLORS[idx] ?? C.primary500;
-
   return (
     <View style={{
       marginHorizontal: 16,
       marginTop: 20,
       marginBottom: 12,
       borderRadius: 16,
-      borderWidth: 1,
-      borderColor: isDark ? C.primary800 : C.primary200,
-      backgroundColor: isDark ? `${C.primary900}80` : C.primary50, // 80 is 50% opacity in hex
-      overflow: 'hidden',
+      backgroundColor: isDark ? C.neutral800 : C.neutral100,
     }}>
-      {/* Accent strip */}
-      <View style={{ height: 3, backgroundColor: accentColor }} />
-
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 16 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 20 }}>
         {/* Left side */}
         <View style={{ flex: 1, paddingRight: 12 }}>
-          {/* Pill */}
-          <View style={{ alignSelf: 'flex-start', backgroundColor: accentColor, borderRadius: 100, paddingHorizontal: 12, paddingVertical: 4, marginBottom: 10 }}>
-            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 12, color: '#fff' }}>
-              Chapter {chapter.id}  ·  {chapter.lessons.length} lessons
-            </Text>
-          </View>
-          <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 22, lineHeight: 28, color: isDark ? C.primary100 : C.primary800 }}>
+          <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: isDark ? C.primary400 : C.primary600, marginBottom: 6 }}>
+            Chapter {chapter.id}  ·  {chapter.lessons.length} lessons
+          </Text>
+          <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 20, lineHeight: 28, color: isDark ? C.neutral100 : C.neutral900 }}>
             {chapter.titleEn}
           </Text>
-          <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.primary300 : C.primary600, marginTop: 3 }}>
+          <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral600, marginTop: 2 }}>
             {chapter.subtitle}
           </Text>
         </View>
 
         {/* Arabic title */}
-        <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.primary300 : C.primary700, textAlign: 'right' }}>
+        <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.neutral300 : C.neutral700, textAlign: 'right' }}>
           {chapter.titleAr}
         </Text>
       </View>
@@ -168,33 +155,7 @@ const LessonRow: React.FC<LessonRowProps> = ({
   return (
     <View style={{ marginBottom: V_SPACING }}>
 
-      {/* "Start Here" pulsing badge */}
-      {isCurrent && isFirstInChapter && (
-        <MotiView
-          from={{ scale: 1 }}
-          animate={{ scale: 1.04 }}
-          transition={{ type: 'timing', duration: 1000, loop: true, repeatReverse: true }}
-          style={{
-            flexDirection: 'row',
-            paddingLeft: labelOnRight ? nodeLeft : 0,
-            paddingRight: !labelOnRight ? nodeRight : 0,
-            justifyContent: labelOnRight ? 'flex-start' : 'flex-end',
-            marginBottom: 8,
-          }}>
-          <View style={{
-            borderRadius: 10,
-            borderWidth: 1.5,
-            borderColor: isDark ? C.primary600 : C.primary400,
-            backgroundColor: isDark ? `${C.primary900}E6` : C.primary100, // E6 is 90% opacity
-            paddingHorizontal: 12,
-            paddingVertical: 5,
-          }}>
-            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 12, color: isDark ? C.primary200 : C.primary700 }}>
-              ▶  Start Here
-            </Text>
-          </View>
-        </MotiView>
-      )}
+      {/* "Start Here" badge removed for minimalism */}
 
       {/* Row: padding shifts the (circle + label) group horizontally */}
       <View style={{
@@ -357,26 +318,21 @@ export const VolumeOneScreen: React.FC = () => {
         marginHorizontal: 20,
         marginTop: 24,
         borderRadius: 16,
-        borderWidth: 1,
-        borderColor: isDark ? C.primary800 : C.primary200,
-        backgroundColor: isDark ? `${C.primary900}80` : C.primary50,
-        overflow: 'hidden',
+        backgroundColor: isDark ? C.neutral800 : C.neutral100,
       }}>
-        <View style={{ height: 3, backgroundColor: isDark ? C.primary600 : C.primary500 }} />
-        <View style={{ alignItems: 'center', paddingHorizontal: 24, paddingVertical: 28 }}>
+        <View style={{ alignItems: 'center', paddingHorizontal: 24, paddingVertical: 32 }}>
           <View style={{
-            width: 60, height: 60, borderRadius: 30,
-            borderWidth: 2, borderColor: isDark ? C.primary700 : C.primary300,
-            backgroundColor: isDark ? `${C.primary900}99` : C.primary100,
+            width: 48, height: 48, borderRadius: 24,
+            backgroundColor: isDark ? `${C.primary600}20` : `${C.primary500}20`,
             alignItems: 'center', justifyContent: 'center',
             marginBottom: 16,
           }}>
-            <Ionicons name="trophy" size={30} color={C.primary500} />
+            <Ionicons name="trophy-outline" size={24} color={isDark ? C.primary400 : C.primary600} />
           </View>
-          <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.primary100 : C.primary700 }}>
+          <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral900 }}>
             تم الجزء الأول بفضل الله
           </Text>
-          <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.primary300 : C.primary600, marginTop: 8, textAlign: 'center' }}>
+          <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral400 : C.neutral600, marginTop: 8, textAlign: 'center' }}>
             End of Part One · by the grace of Allah
           </Text>
         </View>
