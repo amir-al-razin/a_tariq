@@ -215,7 +215,7 @@ export const CHAPTERS: ChapterData[] = [
                         payload: {
                             words: [
                                 { id: 1, ar: 'مَدْرَسَةٌ', romanized: 'madrasatun', en: 'A madrasa', bn: 'একটি মাদ্রাসা', emoji: '🏫' },
-                                { id: 2, ar: 'سَبُّوْرَةٌ', romanized: 'sabbūratun', en: 'A blackboard', bn: 'একটি ব্ল্যাকবোর্ড', emoji: '🖊️' },
+                                { id: 2, ar: 'سَبُّوْرَةٌ', romanized: 'sabbūratun', en: 'A blackboard', bn: 'একটি ব্ল্যাকবোর্ড', emoji: '🖥️' },
                                 { id: 3, ar: 'مِسْطَرَةٌ', romanized: 'misṭaratun', en: 'A ruler', bn: 'একটি রুলার', emoji: '📏' },
                                 { id: 4, ar: 'حَقِيْبَةٌ', romanized: 'ḥaqībatun', en: 'A bag', bn: 'একটি ব্যাগ', emoji: '🎒' },
                                 { id: 5, ar: 'كُرَّاسَةٌ', romanized: 'kurrāsatun', en: 'A notebook', bn: 'একটি খাতা', emoji: '📓' },
@@ -263,7 +263,7 @@ export const CHAPTERS: ChapterData[] = [
                         payload: {
                             items: [
                                 { emoji: '🏫', ar: 'هَذِهِ مَدْرَسَةٌ', en: 'This is a madrasa.' },
-                                { emoji: '🖊️', ar: 'تِلْكَ سَبُّوْرَةٌ', en: 'That is a blackboard.' },
+                                { emoji: '🖥️', ar: 'تِلْكَ سَبُّوْرَةٌ', en: 'That is a blackboard.' },
                                 { emoji: '🚪', ar: 'هَذِهِ حُجْرَةٌ', en: 'This is a room.' },
                                 { emoji: '🎒', ar: 'تِلْكَ حَقِيْبَةٌ', en: 'That is a bag.' },
                             ],
@@ -2159,7 +2159,7 @@ export const CHAPTERS: ChapterData[] = [
                             items: [
                                 { emoji: '📚', ar: 'فَوْقَ الطَّاوِلَةِ كِتَابٌ وَ قَلَمٌ — اَلْكِتَابُ وَ الْقَلَمُ فَوْقَ الطَّاوِلَةِ', en: 'On the table (there is) a book and a pen — the book and pen are on the table.' },
                                 { emoji: '👜', ar: 'تَحْتَ الطَّاوِلَةِ حَقِيبَةٌ وَ مِظَلَّةٌ', en: 'Under the table (there is) a bag and an umbrella.' },
-                                { emoji: '🖊️', ar: 'أَمَامَ الْمُعَلِّمِ سَبُّورَةٌ — اَلسَّبُّورَةُ أَمَامَ الْمُعَلِّمِ', en: 'In front of the teacher (there is) a blackboard — the blackboard is in front of the teacher.' },
+                                { emoji: '🖥️', ar: 'أَمَامَ الْمُعَلِّمِ سَبُّورَةٌ — اَلسَّبُّورَةُ أَمَامَ الْمُعَلِّمِ', en: 'In front of the teacher (there is) a blackboard — the blackboard is in front of the teacher.' },
                                 { emoji: '🌉', ar: 'فَوْقَ النَّهْرِ جِسْرٌ — هَذَا الْجِسْرُ طَوِيلٌ جِدًّا', en: 'Above the river (there is) a bridge — this bridge is very long.' },
                                 { emoji: '🚣', ar: 'تَحْتَ الْجِسْرِ زَوْرَقٌ — هَذَا الزَّوْرَقُ صَغِيرٌ', en: 'Under the bridge (there is) a boat — this boat is small.' },
                             ],

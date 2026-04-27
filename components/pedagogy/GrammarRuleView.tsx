@@ -20,12 +20,10 @@ export const GrammarRuleView: React.FC<Props> = ({ isDark, C, payload }) => {
                     <Text style={{ fontFamily: 'Lexend_500Medium', fontSize: 11, color: i === 0 ? C.primary700 : (isDark ? C.neutral400 : C.neutral500), marginBottom: 8, letterSpacing: 0.5 }}>
                         {rule.label.toUpperCase()}
                     </Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                        <View>
-                            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral800 }}>{rule.romanized}</Text>
-                            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral500, marginTop: 2 }}>{rule.meaning}</Text>
-                        </View>
-                        <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 32, color: i === 0 ? C.primary700 : (isDark ? C.neutral300 : C.neutral700) }}>{rule.arabic}</Text>
+                    <View style={{ alignItems: 'center', marginBottom: 12 }}>
+                        <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 32, color: i === 0 ? C.primary700 : (isDark ? C.neutral300 : C.neutral700), marginBottom: 6 }}>{rule.arabic}</Text>
+                        <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 16, color: isDark ? C.neutral100 : C.neutral800 }}>{rule.romanized}</Text>
+                        <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral500, marginTop: 2, textAlign: 'center' }}>{rule.meaning}</Text>
                     </View>
 
                     {rule.examples?.map((ex, j) => (
