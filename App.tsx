@@ -67,11 +67,11 @@ export default function App() {
     ...(isDark ? NavigationDarkTheme : NavigationDefaultTheme),
     colors: {
       ...(isDark ? NavigationDarkTheme.colors : NavigationDefaultTheme.colors),
-      primary: isDark ? '#A7F3DE' : '#0D775F',
-      background: isDark ? '#3E3A33' : '#F8F7F4',
-      card: isDark ? '#3E3A33' : '#F8F7F4',
-      text: isDark ? '#F0EEE8' : '#3E3A33',
-      border: isDark ? '#645C4E' : '#E5E1D8',
+      primary: isDark ? '#16B78E' : '#0D775F',
+      background: isDark ? '#1A1815' : '#F8F7F4',
+      card: isDark ? '#1A1815' : '#F8F7F4',
+      text: isDark ? '#F0EEE8' : '#1A1815',
+      border: isDark ? '#22201B' : '#E5E1D8',
     },
   };
 
@@ -85,12 +85,12 @@ export default function App() {
             screenOptions={{
               headerShown: false,
               sceneStyle: {
-                backgroundColor: isDark ? '#3E3A33' : '#F8F7F4',
+                backgroundColor: isDark ? '#1A1815' : '#F8F7F4',
               },
               tabBarStyle: {
                 borderTopWidth: 1,
-                borderTopColor: isDark ? '#645C4E' : '#E5E1D8',
-                backgroundColor: isDark ? '#3E3A33' : '#F8F7F4',
+                borderTopColor: isDark ? '#22201B' : '#E5E1D8',
+                backgroundColor: isDark ? '#1A1815' : '#F8F7F4',
                 elevation: 0,
                 shadowOpacity: 0,
               },
@@ -98,7 +98,7 @@ export default function App() {
                 fontFamily: 'Lexend_500Medium',
                 fontSize: 12,
               },
-              tabBarActiveTintColor: isDark ? '#A7F3DE' : '#0D775F',
+              tabBarActiveTintColor: isDark ? '#16B78E' : '#0D775F',
               tabBarInactiveTintColor: isDark ? '#B9AF9C' : '#7D7463',
             }}>
             <Tab.Screen

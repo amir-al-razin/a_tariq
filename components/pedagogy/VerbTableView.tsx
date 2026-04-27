@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { VerbTableRow } from '../../data/curriculum';
 
 interface Props {
@@ -64,36 +64,41 @@ export const VerbTableView: React.FC<Props> = ({ isDark, C, payload, onProgress,
                 </Text>
             </View>
 
-            {/* Column headers */}
-            <View style={{ flexDirection: 'row', borderRadius: 8, overflow: 'hidden', borderWidth: 1, borderColor: border }}>
-                {/* Root column header */}
-                <View style={{ width: 80, backgroundColor: headerBg, padding: 6, alignItems: 'center', justifyContent: 'center', borderRightWidth: 1, borderRightColor: border }}>
-                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 10, color: textSub }}>Root</Text>
-                    <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 9, color: textSub }}>Meaning</Text>
-                </View>
-                {COL_HEADERS.map((h, i) => (
-                    <View key={i} style={{ flex: 1, backgroundColor: headerBg, padding: 4, alignItems: 'center', borderRightWidth: i < COL_HEADERS.length - 1 ? 1 : 0, borderRightColor: border }}>
-                        <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 14, color: textMain }}>{h.ar}</Text>
-                        <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 8, color: textSub }}>{h.bn}</Text>
+            {/* Verb Table Scrollable Container */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -24 }} contentContainerStyle={{ paddingHorizontal: 24 }}>
+                <View style={{ gap: 16, paddingBottom: 8 }}>
+                    {/* Column headers */}
+                    <View style={{ flexDirection: 'row', borderRadius: 8, overflow: 'hidden', borderWidth: 1, borderColor: border }}>
+                        {/* Root column header */}
+                        <View style={{ width: 80, backgroundColor: headerBg, padding: 6, alignItems: 'center', justifyContent: 'center', borderRightWidth: 1, borderRightColor: border }}>
+                            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 10, color: textSub }}>Root</Text>
+                            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 9, color: textSub }}>Meaning</Text>
+                        </View>
+                        {COL_HEADERS.map((h, i) => (
+                            <View key={i} style={{ width: 85, backgroundColor: headerBg, padding: 4, alignItems: 'center', borderRightWidth: i < COL_HEADERS.length - 1 ? 1 : 0, borderRightColor: border }}>
+                                <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 14, color: textMain }}>{h.ar}</Text>
+                                <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 8, color: textSub }}>{h.en}</Text>
+                            </View>
+                        ))}
                     </View>
-                ))}
-            </View>
 
-            {/* Rows */}
-            {rows.map((row, idx) => (
-                <View key={idx} style={{ flexDirection: 'row', borderRadius: 8, overflow: 'hidden', borderWidth: 1, borderColor: border }}>
-                    {/* Root + meaning */}
-                    <View style={{ width: 80, backgroundColor: cellBg, padding: 6, alignItems: 'center', justifyContent: 'center', borderRightWidth: 1, borderRightColor: border }}>
-                        <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 15, color: isDark ? C.primary400 : C.primary700 }}>{row.root}</Text>
-                        <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 9, color: textSub, textAlign: 'center' }}>{row.meaning}</Text>
-                    </View>
-                    {[row.he, row.she, row.youM, row.youF, row.i].map((form, i) => (
-                        <View key={i} style={{ flex: 1, backgroundColor: cellBg, padding: 6, alignItems: 'center', justifyContent: 'center', borderRightWidth: i < 4 ? 1 : 0, borderRightColor: border }}>
-                            <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 14, color: textMain, textAlign: 'center' }}>{form}</Text>
+                    {/* Rows */}
+                    {rows.map((row, idx) => (
+                        <View key={idx} style={{ flexDirection: 'row', borderRadius: 8, overflow: 'hidden', borderWidth: 1, borderColor: border }}>
+                            {/* Root + meaning */}
+                            <View style={{ width: 80, backgroundColor: cellBg, padding: 6, alignItems: 'center', justifyContent: 'center', borderRightWidth: 1, borderRightColor: border }}>
+                                <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 15, color: isDark ? C.primary400 : C.primary700 }}>{row.root}</Text>
+                                <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 9, color: textSub, textAlign: 'center' }}>{row.meaning}</Text>
+                            </View>
+                            {[row.he, row.she, row.youM, row.youF, row.i].map((form, i) => (
+                                <View key={i} style={{ width: 85, backgroundColor: cellBg, padding: 6, alignItems: 'center', justifyContent: 'center', borderRightWidth: i < 4 ? 1 : 0, borderRightColor: border }}>
+                                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 14, color: textMain, textAlign: 'center' }}>{form}</Text>
+                                </View>
+                            ))}
                         </View>
                     ))}
                 </View>
-            ))}
+            </ScrollView>
         </View>
     );
 };

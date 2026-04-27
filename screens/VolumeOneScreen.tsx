@@ -31,9 +31,9 @@ const C = {
   neutral400: '#B9AF9C',
   neutral500: '#9A8F7B',
   neutral600: '#7D7463',
-  neutral700: '#645C4E',
-  neutral800: '#4F4A40',
-  neutral900: '#3E3A33',
+  neutral700: '#4F4A40',
+  neutral800: '#22201B',
+  neutral900: '#1A1815',
 };
 
 // ─────────────────────────────────────────────

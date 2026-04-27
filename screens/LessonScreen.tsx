@@ -23,9 +23,9 @@ const C = {
     neutral400: '#B9AF9C',
     neutral500: '#9A8F7B',
     neutral600: '#7D7463',
-    neutral700: '#645C4E',
-    neutral800: '#4F4A40',
-    neutral900: '#3E3A33',
+    neutral700: '#4F4A40',
+    neutral800: '#22201B',
+    neutral900: '#1A1815',
 };
 
 import { CHAPTERS } from '../data/curriculum';
@@ -100,7 +100,7 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                 style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    gap: 12,
+                    gap: 8,
                     borderBottomWidth: 1,
                     borderBottomColor: isDark ? C.neutral800 : C.neutral200,
                     paddingHorizontal: 16,
@@ -110,49 +110,20 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                     onPress={() => navigation.goBack()}
                     accessibilityRole="button"
                     accessibilityLabel="Go back"
-                    style={{
-                        height: 40, width: 40,
-                        alignItems: 'center', justifyContent: 'center',
-                        borderRadius: 20,
-                        borderWidth: 1,
-                        borderColor: isDark ? C.neutral700 : C.neutral200,
-                        backgroundColor: isDark ? C.neutral800 : C.neutral100,
-                    }}>
-                    <Ionicons name="arrow-back" size={20} color={isDark ? C.primary300 : C.primary700} />
+                    style={{ padding: 8, marginLeft: -8, marginRight: 4 }}>
+                    <Ionicons name="arrow-back" size={24} color={isDark ? C.neutral200 : C.neutral800} />
                 </Pressable>
 
-                <View style={{ flex: 1 }}>
-                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 16, color: isDark ? C.primary100 : C.primary800 }}>
-                        Dars {darsNumber} · {chapterTitleEn}
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 17, color: isDark ? C.neutral100 : C.neutral900 }}>
+                        Lesson {darsNumber} · {chapterTitleEn}
                     </Text>
-                    <Text
-                        style={{ fontFamily: 'NotoSansArabic_400Regular', fontSize: 14, color: isDark ? C.primary400 : C.primary600, textAlign: 'right' }}>
-                        {chapterTitleAr}
-                    </Text>
-                </View>
-
-                {/* Dars number badge */}
-                <View style={{
-                    height: 36, width: 36,
-                    alignItems: 'center', justifyContent: 'center',
-                    borderRadius: 18,
-                    backgroundColor: isDark ? C.primary600 : C.primary500,
-                }}>
-                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 14, color: C.neutral50 }}>{darsNumber}</Text>
                 </View>
             </View>
 
             {/* ── Circular Chunks Layout ── */}
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                {/* Legend */}
-                {lastVisited !== null && (
-                    <View style={{ position: 'absolute', bottom: 24, flexDirection: 'row', alignItems: 'center', gap: 6, opacity: 0.7 }}>
-                        <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: isDark ? C.primary400 : C.primary600 }} />
-                        <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 11, color: isDark ? C.neutral400 : C.neutral500 }}>
-                            Last visited segment
-                        </Text>
-                    </View>
-                )}
+                {/* Removed redundant dot legend */}
 
 
 
@@ -172,18 +143,18 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                     const circleBg = isLastVisited
                         ? (isDark ? C.primary700 : C.primary500)
                         : (isCurrent || isCompleted) ? C.primary500
-                        : isLocked ? (isDark ? C.neutral700 : C.neutral300)
-                        : (isDark ? `${C.primary900}80` : C.primary100);
+                            : isLocked ? (isDark ? C.neutral700 : C.neutral300)
+                                : (isDark ? `${C.primary900}80` : C.primary100);
 
                     const circleBorder = isLastVisited
                         ? (isDark ? C.primary400 : C.primary700)
                         : (isCurrent || isCompleted) ? (isDark ? C.primary700 : C.primary600)
-                        : isLocked ? (isDark ? C.neutral900 : C.neutral500)
-                        : (isDark ? C.primary800 : C.primary200);
+                            : isLocked ? (isDark ? C.neutral900 : C.neutral500)
+                                : (isDark ? C.primary800 : C.primary200);
 
                     const iconColor = isLastVisited || isCurrent || isCompleted ? '#fff'
                         : isLocked ? (isDark ? C.neutral600 : C.neutral700)
-                        : C.primary600;
+                            : C.primary600;
 
                     return (
                         <View
@@ -195,7 +166,7 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                                 height: CHUNK_SIZE + 6,
                                 alignItems: 'center',
                                 justifyContent: 'flex-end',
-                                zIndex: isInteractive ? 5 : 1,
+                                zIndex: (isLastVisited || (isCurrent && lastVisited === null && idx === 0)) ? 100 : (isInteractive ? 5 : 1),
                             }}>
                             <MotiView
                                 from={{ opacity: 0, scale: 0.4 }}
@@ -240,17 +211,7 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                                                         </Text>
                                                     )}
 
-                                                    {/* "Last visited" dot indicator */}
-                                                    {isLastVisited && (
-                                                        <View style={{
-                                                            position: 'absolute',
-                                                            bottom: 8,
-                                                            width: 6, height: 6,
-                                                            borderRadius: 3,
-                                                            backgroundColor: '#fff',
-                                                            opacity: 0.85,
-                                                        }} />
-                                                    )}
+                                                    {/* Dot indicator removed for clarity */}
 
                                                     {/* "RESUME" badge for last-visited, "START" for first chunk with no history */}
                                                     {(isLastVisited || (isCurrent && lastVisited === null && idx === 0)) && (
