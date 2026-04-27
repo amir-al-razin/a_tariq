@@ -1,7 +1,9 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { MotiView } from 'moti';
 import { useColorScheme } from 'nativewind';
-import { Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
 
 const C = {
     primary50: '#ECFDF8',
@@ -48,10 +50,22 @@ type ChunkStatus = 'current' | 'completed' | 'locked' | 'open';
 // Circular layout constants
 const CHUNK_SIZE = 64;
 
+const progressKey = (chapterId: number, darsNumber: number) =>
+    `lesson_progress_${chapterId}_${darsNumber}`;
+
 export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation }) => {
     const { chapterId, chapterTitleAr, chapterTitleEn, darsNumber } = route.params;
     const { colorScheme } = useColorScheme();
     const isDark = colorScheme === 'dark';
+
+    // Last-visited chunk index (persisted)
+    const [lastVisited, setLastVisited] = useState<number | null>(null);
+
+    useEffect(() => {
+        AsyncStorage.getItem(progressKey(chapterId, darsNumber)).then(val => {
+            if (val !== null) setLastVisited(parseInt(val, 10));
+        });
+    }, [chapterId, darsNumber]);
 
     const chapterData = CHAPTERS.find(c => c.id === chapterId);
     const lessonData = chapterData?.lessons.find(l => l.darsNumber === darsNumber);
@@ -68,10 +82,16 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
     const numChunks = displayChunks.length;
 
     const chunks = displayChunks.map((chunkItem, idx) => {
-        // Unlock all chunks for testing and development (bypassing strict inference)
-        const status = (idx >= 0 ? 'open' : 'current') as ChunkStatus;
+        const status = 'open' as ChunkStatus;
         return { ...chunkItem, status };
     });
+
+    const handleChunkPress = (chunkId: string, idx: number) => {
+        // Persist last-visited index
+        setLastVisited(idx);
+        AsyncStorage.setItem(progressKey(chapterId, darsNumber), String(idx));
+        navigation.navigate('ChunkEngine', { chunkId, chapterId, darsNumber });
+    };
 
     return (
         <View style={{ flex: 1, backgroundColor: isDark ? C.neutral900 : C.neutral50 }}>
@@ -124,6 +144,15 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
 
             {/* ── Circular Chunks Layout ── */}
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                {/* Legend */}
+                {lastVisited !== null && (
+                    <View style={{ position: 'absolute', bottom: 24, flexDirection: 'row', alignItems: 'center', gap: 6, opacity: 0.7 }}>
+                        <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: isDark ? C.primary400 : C.primary600 }} />
+                        <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 11, color: isDark ? C.neutral400 : C.neutral500 }}>
+                            Last visited segment
+                        </Text>
+                    </View>
+                )}
 
 
 
@@ -132,25 +161,29 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                     const isCurrent = chunk.status === 'current';
                     const isCompleted = chunk.status === 'completed';
                     const isLocked = chunk.status === 'locked';
+                    const isLastVisited = lastVisited === idx;
                     const isInteractive = !isLocked;
 
-                    // Maths: Start at top (-90 deg), evenly distribute
                     const dynamicRadius = Math.max(90, (numChunks * 85) / (2 * Math.PI));
                     const angle = -Math.PI / 2 + (idx * 2 * Math.PI) / numChunks;
                     const x = dynamicRadius * Math.cos(angle);
                     const y = dynamicRadius * Math.sin(angle);
 
-                    const circleBg = (isCurrent || isCompleted) ? C.primary500
+                    const circleBg = isLastVisited
+                        ? (isDark ? C.primary700 : C.primary500)
+                        : (isCurrent || isCompleted) ? C.primary500
                         : isLocked ? (isDark ? C.neutral700 : C.neutral300)
-                            : (isDark ? `${C.primary900}80` : C.primary100);
+                        : (isDark ? `${C.primary900}80` : C.primary100);
 
-                    const circleBorder = (isCurrent || isCompleted) ? (isDark ? C.primary700 : C.primary600)
+                    const circleBorder = isLastVisited
+                        ? (isDark ? C.primary400 : C.primary700)
+                        : (isCurrent || isCompleted) ? (isDark ? C.primary700 : C.primary600)
                         : isLocked ? (isDark ? C.neutral900 : C.neutral500)
-                            : (isDark ? C.primary800 : C.primary200);
+                        : (isDark ? C.primary800 : C.primary200);
 
-                    const iconColor = isCurrent || isCompleted ? '#fff'
+                    const iconColor = isLastVisited || isCurrent || isCompleted ? '#fff'
                         : isLocked ? (isDark ? C.neutral600 : C.neutral700)
-                            : C.primary600;
+                        : C.primary600;
 
                     return (
                         <View
@@ -171,7 +204,7 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                                 style={{ width: '100%', height: '100%' }}>
                                 <Pressable
                                     disabled={isLocked}
-                                    onPress={() => isInteractive && navigation.navigate('ChunkEngine', { chunkId: chunk.id, chapterId, darsNumber })}
+                                    onPress={() => handleChunkPress(chunk.id, idx)}
                                     style={{ width: '100%', height: '100%', justifyContent: 'flex-end' }}>
                                     {({ pressed }) => {
                                         const pushDepth = pressed && isInteractive ? 0 : -6;
@@ -207,8 +240,20 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                                                         </Text>
                                                     )}
 
-                                                    {/* "START" floating tag */}
-                                                    {isCurrent && (
+                                                    {/* "Last visited" dot indicator */}
+                                                    {isLastVisited && (
+                                                        <View style={{
+                                                            position: 'absolute',
+                                                            bottom: 8,
+                                                            width: 6, height: 6,
+                                                            borderRadius: 3,
+                                                            backgroundColor: '#fff',
+                                                            opacity: 0.85,
+                                                        }} />
+                                                    )}
+
+                                                    {/* "RESUME" badge for last-visited, "START" for first chunk with no history */}
+                                                    {(isLastVisited || (isCurrent && lastVisited === null && idx === 0)) && (
                                                         <MotiView
                                                             from={{ scale: 1, translateY: 0 }}
                                                             animate={{ scale: 1.03, translateY: -3 }}
@@ -217,24 +262,22 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                                                                 position: 'absolute',
                                                                 top: -30,
                                                                 alignSelf: 'center',
-                                                                backgroundColor: C.primary100,
-                                                                borderColor: C.primary400,
+                                                                backgroundColor: isLastVisited ? C.primary700 : C.primary100,
+                                                                borderColor: isLastVisited ? C.primary400 : C.primary400,
                                                                 borderWidth: 1.5,
                                                                 borderRadius: 8,
                                                                 paddingHorizontal: 8,
                                                                 paddingVertical: 3,
                                                             }}>
-                                                            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 10, color: C.primary700 }}>
-                                                                START
+                                                            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 10, color: isLastVisited ? '#fff' : C.primary700 }}>
+                                                                {isLastVisited ? 'RESUME' : 'START'}
                                                             </Text>
-                                                            {/* Tiny caret indicator */}
                                                             <View style={{
                                                                 position: 'absolute',
                                                                 bottom: -4,
                                                                 alignSelf: 'center',
-                                                                width: 6,
-                                                                height: 6,
-                                                                backgroundColor: C.primary100,
+                                                                width: 6, height: 6,
+                                                                backgroundColor: isLastVisited ? C.primary700 : C.primary100,
                                                                 borderRightWidth: 1.5,
                                                                 borderBottomWidth: 1.5,
                                                                 borderColor: C.primary400,

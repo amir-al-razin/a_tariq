@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useColorScheme } from 'nativewind';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { Appearance, Pressable, ScrollView, Text, View } from 'react-native';
 
 const THEME_STORAGE_KEY = 'app.theme.preference';
 
@@ -8,6 +8,8 @@ export const SettingsScreen: React.FC = () => {
   const { colorScheme, setColorScheme } = useColorScheme();
 
   const selectTheme = async (theme: 'light' | 'dark') => {
+    // Force both NativeWind and the RN Appearance API so OS dark mode is overridden
+    Appearance.setColorScheme(theme);
     setColorScheme(theme);
     await AsyncStorage.setItem(THEME_STORAGE_KEY, theme);
   };

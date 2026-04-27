@@ -22,6 +22,7 @@ import { useEffect, useState } from 'react';
 
 import './global.css';
 import { useColorScheme } from 'nativewind';
+import { Appearance } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator();
@@ -45,8 +46,10 @@ export default function App() {
       const savedTheme = await AsyncStorage.getItem(THEME_STORAGE_KEY);
 
       if (savedTheme === 'light' || savedTheme === 'dark') {
+        Appearance.setColorScheme(savedTheme);
         setColorScheme(savedTheme);
       } else {
+        Appearance.setColorScheme('light');
         setColorScheme('light');
       }
 
