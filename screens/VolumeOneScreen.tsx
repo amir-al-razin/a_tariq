@@ -138,15 +138,15 @@ const LessonRow: React.FC<LessonRowProps> = ({
   // Node visual styles (Dark mode compatible)
   const circleBg = (isCurrent || isCompleted) ? C.primary500
     : isLocked ? (isDark ? C.neutral700 : C.neutral300)
-      : (isDark ? `${C.primary900}80` : C.primary100);
+      : (isDark ? C.primary800 : C.primary100);
 
   const circleBorder = (isCurrent || isCompleted) ? (isDark ? C.primary700 : C.primary600)
     : isLocked ? (isDark ? C.neutral900 : C.neutral500)
-      : (isDark ? C.primary800 : C.primary200);
+      : (isDark ? C.primary900 : C.primary200);
 
   const iconColor = isCurrent || isCompleted ? '#fff'
     : isLocked ? (isDark ? C.neutral600 : C.neutral700)
-      : C.primary600;
+      : (isDark ? C.primary300 : C.primary600);
 
   const labelColor = isCurrent ? (isDark ? C.primary300 : C.primary700)
     : isLocked ? (isDark ? C.neutral600 : C.neutral500)
