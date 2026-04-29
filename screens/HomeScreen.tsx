@@ -1,61 +1,69 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Pressable, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 type HomeScreenProps = {
   navigation: {
-    navigate: (screen: 'VolumeOne') => void;
+    navigate: (screen: 'VolumeOne' | 'VolumeTwo' | 'VolumeThree') => void;
   };
 };
 
+type VolumeKey = 'VolumeOne' | 'VolumeTwo' | 'VolumeThree';
+
 export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+  const { t } = useTranslation();
+
+  const VOLUMES: { key: VolumeKey; titleKey: string; subtitleKey: string; locked: boolean }[] = [
+    { key: 'VolumeOne',   titleKey: 'home.volume1', subtitleKey: 'home.volume1Subtitle', locked: false },
+    { key: 'VolumeTwo',   titleKey: 'home.volume2', subtitleKey: 'home.volume2Subtitle', locked: false },
+    { key: 'VolumeThree', titleKey: 'home.volume3', subtitleKey: 'home.volume3Subtitle', locked: false },
+  ];
+
   return (
     <View className="flex-1 gap-5 bg-neutral-50 px-6 py-8 dark:bg-neutral-900">
       <View className="gap-2">
-        <Text className="font-english-semibold text-display text-primary-800 dark:text-primary-200">
-          Quranic Arabic
+        <Text className="font-english-semibold text-display text-neutral-900 dark:text-neutral-100">
+          {t('home.title')}
         </Text>
-        <Text className="font-english text-body text-neutral-700 dark:text-neutral-200">
-          Select a volume to continue learning.
+        <Text className="font-english text-body text-neutral-500 dark:text-neutral-400">
+          {t('home.subtitle')}
         </Text>
       </View>
 
       <View className="gap-3">
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Open Volume 1"
-          onPress={() => navigation.navigate('VolumeOne')}
-          className="w-full rounded-2xl border border-primary-200 bg-primary-50 p-5 dark:border-primary-700 dark:bg-primary-900/30">
-          <Text className="font-english-semibold text-h2 text-primary-800 dark:text-primary-100">
-            Volume 1
-          </Text>
-          <Text className="mt-2 font-english text-body-sm text-primary-700 dark:text-primary-200">
-            Available now
-          </Text>
-        </Pressable>
-
-        <View className="w-full flex-row items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-100 p-5 dark:border-neutral-700 dark:bg-neutral-800">
-          <View>
-            <Text className="font-english-semibold text-h2 text-neutral-700 dark:text-neutral-200">
-              Volume 2
-            </Text>
-            <Text className="mt-2 font-english text-body-sm text-neutral-600 dark:text-neutral-300">
-              Locked
-            </Text>
-          </View>
-          <Ionicons name="lock-closed" size={20} color="#7D7463" />
-        </View>
-
-        <View className="w-full flex-row items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-100 p-5 dark:border-neutral-700 dark:bg-neutral-800">
-          <View>
-            <Text className="font-english-semibold text-h2 text-neutral-700 dark:text-neutral-200">
-              Volume 3
-            </Text>
-            <Text className="mt-2 font-english text-body-sm text-neutral-600 dark:text-neutral-300">
-              Locked
-            </Text>
-          </View>
-          <Ionicons name="lock-closed" size={20} color="#7D7463" />
-        </View>
+        {VOLUMES.map((vol) => {
+          if (vol.locked) {
+            return (
+              <View
+                key={vol.key}
+                className="w-full flex-row items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-100 p-5 dark:border-neutral-700 dark:bg-neutral-800">
+                <View className="gap-1">
+                  <Text className="font-english-semibold text-h2 text-neutral-400 dark:text-neutral-500">
+                    {t(vol.titleKey)}
+                  </Text>
+                  <Text className="font-english text-body-sm text-neutral-400 dark:text-neutral-600">
+                    {t('home.locked')}
+                  </Text>
+                </View>
+                <Ionicons name="lock-closed" size={18} color="#9A8F7B" />
+              </View>
+            );
+          }
+          return (
+            <Pressable
+              key={vol.key}
+              accessibilityRole="button"
+              onPress={() => navigation.navigate(vol.key)}
+              className="w-full rounded-2xl border border-neutral-200 bg-neutral-100 p-5 active:opacity-70 dark:border-neutral-700 dark:bg-neutral-800">
+              <Text className="font-english-semibold text-h2 text-neutral-900 dark:text-neutral-100">
+                {t(vol.titleKey)}
+              </Text>
+              <Text className="mt-1 font-english text-body-sm text-neutral-500 dark:text-neutral-400">
+                {t(vol.subtitleKey)}
+              </Text>
+            </Pressable>
+          );
+        })}
       </View>
     </View>
   );
