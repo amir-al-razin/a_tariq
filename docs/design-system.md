@@ -1,145 +1,296 @@
-# Quranic Arabic App Design System (Current Implementation)
+# Quranic Arabic App — Design System
 
-This document reflects the app as currently implemented in code.
+Last updated: 2026-04-29
+Reflects the current state of the codebase.
 
-## 1) Scope + Architecture
+---
 
-- Styling is a **hybrid system**:
-  - **NativeWind className** in primary app shell and core screens (`Home`, `Settings`, `ScreenContent`, parts of pedagogy like `ParagraphView`).
-  - **Inline style objects with token map `C`** in interaction-heavy learning screens (`VolumeOne`, `Lesson`, `ChunkEngine`, several pedagogy views).
-- Source of truth files:
-  - Token/typography definitions: `tailwind.config.js`
-  - App-level theme + nav colors: `App.tsx`
-  - Core screen patterns: `screens/HomeScreen.tsx`, `screens/SettingsScreen.tsx`
-  - Learning flow patterns: `screens/VolumeOneScreen.tsx`, `screens/LessonScreen.tsx`, `screens/ChunkEngineScreen.tsx`
+## 1. Architecture Overview
 
-## 2) Color System (Authoritative Tokens)
+Styling is a **hybrid system** — both approaches are intentional and should not be consolidated:
 
-Use only these palette families for UI surfaces and text.
+| Layer | Approach | Where |
+|---|---|---|
+| App shell, settings, home | NativeWind `className` | `HomeScreen`, `SettingsScreen`, `ParagraphView` |
+| Learning path, chunk engine, pedagogy | Inline styles with `C` token map | `VolumeOneScreen`, `VolumeTwoScreen`, `VolumeThreeScreen`, `LessonScreen`, `ChunkEngineScreen`, most pedagogy views |
 
-### Primary (emerald-teal)
+The reason for the split: NativeWind `className` on `Pressable` with function-style style props is unreliable on Android. Any component with press-depth animation or complex conditional styling uses inline styles with the `C` map instead.
 
-- `primary-50`  `#ECFDF8`
-- `primary-100` `#D1FAEF`
-- `primary-200` `#A7F3DE`
-- `primary-300` `#6EE7C8`
-- `primary-400` `#34D3AA`
-- `primary-500` `#16B78E`
-- `primary-600` `#0F9373`
-- `primary-700` `#0D775F`
-- `primary-800` `#0F5F4D`
-- `primary-900` `#124E41`
+Source of truth files:
+- Token definitions: `tailwind.config.js`
+- App-level theme + nav + tab bar: `App.tsx`
+- Volume screen patterns: `screens/VolumeOneScreen.tsx` (reference implementation)
 
-> Note: some inline `C` maps in learning screens still define `primary900` as `#0A4134` for depth effects in circular controls. This is a known local divergence from Tailwind token `primary-900`.
+---
 
-### Neutral (warm manuscript gray)
+## 2. Color System
 
-- `neutral-50`  `#F8F7F4`
-- `neutral-100` `#F0EEE8`
-- `neutral-200` `#E5E1D8`
-- `neutral-300` `#D5CEBF`
-- `neutral-400` `#B9AF9C`
-- `neutral-500` `#9A8F7B`
-- `neutral-600` `#7D7463`
-- `neutral-700` `#4F4A40`
-- `neutral-800` `#22201B`
-- `neutral-900` `#1A1815`
-- `neutral-950` `#0D0C0A`
+### 2.1 Global Tokens (tailwind.config.js)
 
-### Status (reserved)
+#### Neutral — warm manuscript gray (used everywhere)
 
-- `status.success` `#2E7D32`
-- `status.warning` `#C77D00`
-- `status.danger`  `#C62828`
-- `status.info`    `#1565C0`
+| Token | Hex |
+|---|---|
+| `neutral-50` | `#F8F7F4` |
+| `neutral-100` | `#F0EEE8` |
+| `neutral-200` | `#E5E1D8` |
+| `neutral-300` | `#D5CEBF` |
+| `neutral-400` | `#B9AF9C` |
+| `neutral-500` | `#9A8F7B` |
+| `neutral-600` | `#7D7463` |
+| `neutral-700` | `#4F4A40` |
+| `neutral-800` | `#22201B` |
+| `neutral-900` | `#1A1815` |
+| `neutral-950` | `#0D0C0A` |
 
-## 3) Theme Behavior
+#### Primary — emerald teal (Volume 1 accent only)
 
-- Two themes: `light` and `dark`.
-- Default on cold start: **light**.
-- Theme preference is persisted in AsyncStorage under `app.theme.preference`.
-- Theme is applied through both:
-  - NativeWind `useColorScheme()` / `dark:` variants.
-  - React Native `Appearance.setColorScheme()` override.
-- Navigation theme is explicitly synchronized in `App.tsx`:
-  - Light background/card: `#F8F7F4`
-  - Dark background/card: `#1A1815`
+| Token | Hex |
+|---|---|
+| `primary-50` | `#ECFDF8` |
+| `primary-100` | `#D1FAEF` |
+| `primary-200` | `#A7F3DE` |
+| `primary-300` | `#6EE7C8` |
+| `primary-400` | `#34D3AA` |
+| `primary-500` | `#16B78E` |
+| `primary-600` | `#0F9373` |
+| `primary-700` | `#0D775F` |
+| `primary-800` | `#0F5F4D` |
+| `primary-900` | `#124E41` |
 
-## 4) Typography Scale (from Tailwind)
+#### Status (reserved, not yet used in UI)
 
-### Font families
+| Name | Hex |
+|---|---|
+| `status.success` | `#2E7D32` |
+| `status.warning` | `#C77D00` |
+| `status.danger` | `#C62828` |
+| `status.info` | `#1565C0` |
 
-- English regular: `Lexend_400Regular` (`font-english`)
-- English medium: `Lexend_500Medium` (`font-english-medium`)
-- English semibold: `Lexend_600SemiBold` (`font-english-semibold`)
-- Arabic regular: `NotoSansArabic_400Regular` (`font-arabic`)
-- Arabic medium: `NotoSansArabic_500Medium` (`font-arabic-medium`)
-- Arabic semibold: `NotoSansArabic_600SemiBold` (`font-arabic-semibold`)
+---
 
-### Type tokens
+### 2.2 Volume Accent Colors (inline only, not in Tailwind)
 
-- `text-display`: `34 / 40`, tracking `-0.4`
-- `text-h1`: `28 / 34`, tracking `-0.2`
-- `text-h2`: `22 / 28`, tracking `-0.1`
-- `text-body`: `16 / 26`
-- `text-body-sm`: `14 / 22`
-- `text-caption`: `12 / 18`
-- `text-arabic-display`: `44 / 60`
-- `text-arabic-body`: `18 / 34`
+Each volume has its own accent palette. These are defined locally inside each volume screen file and are **not** global tokens. They are intentionally scoped — the home screen and tab bar use neutral only.
 
-## 5) Surface, Radius, and Layout Patterns
+#### Volume 1 — Emerald Teal
+Same as the global `primary` palette above. Used in `VolumeOneScreen`, `LessonScreen`, `ChunkEngineScreen`, and all pedagogy views.
 
-- Preferred radius values in use:
-  - `rounded-xl` (12)
-  - `rounded-2xl` (16)
-  - Circular controls for lesson/chunk nodes
-- Common card shell (used broadly):
-  - Light: `border-neutral-200 bg-neutral-100`
-  - Dark:  `dark:border-neutral-700 dark:bg-neutral-800`
-- Primary emphasis card/button shell:
-  - Light: `border-primary-200 bg-primary-50`
-  - Dark:  `dark:border-primary-700 dark:bg-primary-900/30`
-- Spacing rhythm most used in screens:
-  - page horizontal padding: `24` (`px-6`)
-  - vertical section gap: `12-20`
-  - card padding: `16-20`
+#### Volume 2 — Amber Gold
+Signals action, verbs, time. Defined in `VolumeTwoScreen.tsx`.
 
-## 6) Interaction + Component Rules
+| Local name | Hex |
+|---|---|
+| `accent50` | `#FFFBEB` |
+| `accent100` | `#FEF3C7` |
+| `accent200` | `#FDE68A` |
+| `accent300` | `#FCD34D` |
+| `accent400` | `#FBBF24` |
+| `accent500` | `#F59E0B` |
+| `accent600` | `#D97706` |
+| `accent700` | `#B45309` |
+| `accent800` | `#92400E` |
+| `accent900` | `#78350F` |
 
-### Buttons / Press Targets
+#### Volume 3 — Violet Indigo
+Signals mastery, advanced grammar, Quranic immersion. Defined in `VolumeThreeScreen.tsx`.
 
-- Minimum practical touch height in current app patterns: `48+`.
-- Prominent action buttons are **full width** with rounded corners and border/fill contrast.
-- Avoid tiny chip-style actions for primary study flow actions.
+| Local name | Hex |
+|---|---|
+| `accent50` | `#F5F3FF` |
+| `accent100` | `#EDE9FE` |
+| `accent200` | `#DDD6FE` |
+| `accent300` | `#C4B5FD` |
+| `accent400` | `#A78BFA` |
+| `accent500` | `#8B5CF6` |
+| `accent600` | `#7C3AED` |
+| `accent700` | `#6D28D9` |
+| `accent800` | `#5B21B6` |
+| `accent900` | `#4C1D95` |
 
-### Reading/Learning Cards
+**Rule:** Volume accent colors must never appear on the home screen or tab bar. The home screen is intentionally neutral — all three volume cards use identical neutral styling. Color differentiation happens only after the user enters a volume.
 
-- Arabic content prioritizes right alignment and generous line height.
-- English supporting text uses body/body-sm sizes with breathable leading.
-- Translation reveal pattern (current `ParagraphView`):
-  - Hidden by default.
-  - Full-width reveal/hide button.
-  - Translation appears in neutral bordered panel (no vertical accent rule).
+---
 
-### Depth + Shadows
+### 2.3 Semantic Color Usage
 
-- Global rule remains: no soft drop-shadows/glow-driven UI.
-- Existing exception: lesson/chunk circular nodes implement **structural press depth** using layered shapes (not blurred shadow effects).
-- For new components, prefer border + tone contrast first.
+#### Surfaces
 
-## 7) Android Reliability Notes (Current Constraint)
+| Context | Light | Dark |
+|---|---|---|
+| Page background | `neutral-50` `#F8F7F4` | `neutral-900` `#1A1815` |
+| Card / panel | `neutral-100` `#F0EEE8` | `neutral-800` `#22201B` |
+| Subtle inset | `neutral-200` `#E5E1D8` | `neutral-700` `#4F4A40` |
+| Border | `neutral-200` | `neutral-700` |
 
-- In interactive circular controls, `Pressable` function-style visual rendering has been inconsistent on Android for some style properties.
-- Stable pattern used in current implementation:
-  - Keep touch handling on `Pressable` / `TouchableOpacity`.
-  - Render critical circle visuals on nested plain `View` layers.
-- If a control must animate press-depth, validate on Android before merging.
+#### 3D Push Button Nodes (lesson/chunk circles)
 
-## 8) Usage Guidance for Future Work
+The circular nodes use a two-layer structural depth system — no blur or shadow:
 
-- For standard screens/components:
-  - Prefer NativeWind tokens/classes (`bg-neutral-50 dark:bg-neutral-900`, etc.).
-- For complex animated/geometry-heavy layouts:
-  - Inline styles with the shared token map are acceptable.
-- Keep all new visuals within the existing token families and typography scale.
-- Do not introduce new brand colors, shadow systems, or decorative effects.
+| State | Face color | Base (shadow) color |
+|---|---|---|
+| Current / completed | `accent500` | `accent700` (dark) / `accent600` (light) |
+| Open / available | `accent800` (dark) / `accent100` (light) | `accent900` (dark) / `accent200` (light) |
+| Locked | `neutral-700` (dark) / `neutral-300` (light) | `neutral-600` (dark) / `neutral-500` (light) |
+
+Critical rule: the base layer must always be **visibly darker** than the face layer. Using `neutral-900` as the base in dark mode was a known bug (base matched background, making depth invisible) — fixed to `neutral-600`.
+
+#### Interactive feedback (Q&A)
+
+| State | Border | Background |
+|---|---|---|
+| Correct | `#22c55e` | `#f0fdf4` (light) / `#052e16` (dark) |
+| Incorrect | `#ef4444` | `#fef2f2` (light) / `#3f0c0c` (dark) |
+
+---
+
+## 3. Theme System
+
+- Two themes: `light` (default) and `dark`.
+- Cold start default: **light**.
+- Persisted in `AsyncStorage` under key `app.theme.preference`.
+- Applied via both `nativewind` `useColorScheme()` and `Appearance.setColorScheme()` to keep React Navigation and NativeWind in sync.
+- Navigation theme colors are explicitly set in `App.tsx`:
+  - Background/card light: `#F8F7F4` — dark: `#1A1815`
+  - Text light: `#1A1815` — dark: `#F0EEE8`
+  - Border light: `#E5E1D8` — dark: `#22201B`
+
+---
+
+## 4. Tab Bar
+
+- Background matches page background (no elevation, no shadow).
+- Border: 1px top, `neutral-200` light / `neutral-800` dark.
+- Active icon + label: `neutral-100` dark / `neutral-900` light — **neutral only, no accent color**.
+- Inactive icon + label: `neutral-700` dark / `neutral-400` light.
+- Label font: `Lexend_500Medium`, 12px.
+- Icons: Ionicons, filled when active, outline when inactive.
+
+The tab bar is intentionally neutral. Volume accent colors do not bleed into the global chrome.
+
+---
+
+## 5. Typography
+
+### Font Families
+
+| Token | Font | NativeWind class |
+|---|---|---|
+| English regular | `Lexend_400Regular` | `font-english` |
+| English medium | `Lexend_500Medium` | `font-english-medium` |
+| English semibold | `Lexend_600SemiBold` | `font-english-semibold` |
+| Arabic regular | `NotoSansArabic_400Regular` | `font-arabic` |
+| Arabic medium | `NotoSansArabic_500Medium` | `font-arabic-medium` |
+| Arabic semibold | `NotoSansArabic_600SemiBold` | `font-arabic-semibold` |
+
+### Type Scale
+
+| Token | Size / Line height | Tracking | Use |
+|---|---|---|---|
+| `text-display` | 34 / 40 | -0.4 | Screen titles |
+| `text-h1` | 28 / 34 | -0.2 | Section headers |
+| `text-h2` | 22 / 28 | -0.1 | Card titles, volume names |
+| `text-body` | 16 / 26 | — | Primary body copy |
+| `text-body-sm` | 14 / 22 | — | Supporting text, subtitles |
+| `text-caption` | 12 / 18 | — | Labels, badges, metadata |
+| `text-arabic-display` | 44 / 60 | — | Large Arabic (vocabulary cards) |
+| `text-arabic-body` | 18 / 34 | — | Arabic sentences, examples |
+
+Arabic text always uses `textAlign: 'right'` and `writingDirection: 'rtl'`.
+
+---
+
+## 6. Language Policy
+
+The app is **English-first**. All UI strings, instruction text, labels, and component copy must be in English only.
+
+- The `VocabWord` schema has an optional `bn` field for future multilingual support — it is stored in data but **never rendered**.
+- `TarkeebItem.sentenceBn`, `IdafahPair.baseBn/expandedBn` are optional and not rendered.
+- When adding new content or components, use English only. Other languages will be added as a separate feature pass.
+- `IdafahPair` uses `baseEn` / `expandedEn` as the primary English label fields.
+
+---
+
+## 7. Spacing & Layout
+
+- Page horizontal padding: `24px` (`px-6`)
+- Card padding: `16–20px`
+- Section vertical gap: `12–20px`
+- Preferred border radius: `rounded-xl` (12) and `rounded-2xl` (16)
+- Circular node diameter: `72px` (lesson path), `64px` (chunk orbit)
+- Vertical spacing between path nodes: `28px`
+
+---
+
+## 8. Component Patterns
+
+### Volume Screen (learning path)
+
+All three volume screens (`VolumeOneScreen`, `VolumeTwoScreen`, `VolumeThreeScreen`) share the same layout pattern:
+
+- Winding snake path using a `WAVE` array `[0.27, 0.40, 0.56, 0.73, 0.56, 0.40]` for horizontal positions.
+- Each node is a 3D push button (two-layer circle, no absolute positioning in the row flow).
+- Chapter banners between lesson groups.
+- Completion footer at the bottom.
+- No back button — navigation handled by OS gesture / React Navigation stack.
+- Volume title uses the volume's accent color. Everything else uses neutral.
+
+### Home Screen
+
+- All volume cards use identical neutral styling (`neutral-100` bg, `neutral-200` border).
+- Available volumes: tappable `Pressable`, full neutral text.
+- Locked volumes: non-interactive `View`, muted text + lock icon.
+- No accent colors on the home screen.
+
+### Chunk Engine (ChunkEngineScreen)
+
+- Progress bar at top: fills 0–100% driven by child `onProgress` callbacks.
+- Scroll-aware completion for read-only views (grammar, application, paragraph): fires `onComplete` when user scrolls within 80px of bottom.
+- Interactive views (vocabulary, Q&A) fire `onComplete` when the user finishes the last item.
+- CONTINUE button hidden until `onComplete` fires.
+- No heart icon. Percentage label beside progress bar.
+
+### Pedagogy Views
+
+| View | Completion trigger |
+|---|---|
+| `VocabularyView` | User reaches last card and taps Finish |
+| `GrammarRuleView` | Scroll to bottom |
+| `ApplicationView` | Scroll to bottom |
+| `QAndAView` | Last question answered |
+| `TarkeebView` | Scroll to bottom |
+| `VerbTableView` | Scroll to bottom |
+| `IdafahDrillView` | All pairs revealed |
+| `ParagraphView` | Scroll to bottom |
+
+Translation reveal in `ParagraphView`: hidden by default, full-width button to reveal/hide, shown in a neutral bordered panel.
+
+### Cards (general)
+
+Standard card shell:
+- Light: `border border-neutral-200 bg-neutral-100 rounded-2xl`
+- Dark: `dark:border-neutral-700 dark:bg-neutral-800`
+
+Primary emphasis card:
+- Light: `border border-primary-200 bg-primary-50`
+- Dark: `dark:border-primary-700 dark:bg-primary-900/30`
+
+---
+
+## 9. Android Reliability Rules
+
+- Never put visual styles (backgroundColor, borderRadius) directly on a `Pressable` with a function-style `style` prop — they don't reliably apply on Android.
+- Pattern: `Pressable` handles touch, inner `View` carries all visual styles.
+- For press-depth animation: outer `MotiView` for entrance animation, inner `View` layers for the two-layer cylinder effect.
+- Validate any new interactive component on Android before merging.
+
+---
+
+## 10. What Not To Do
+
+- No soft drop shadows or glow effects anywhere.
+- No accent colors on the home screen or tab bar.
+- No Bengali or mixed-language strings in UI copy, instructions, or component labels.
+- No new brand color families — use the existing neutral + per-volume accent system.
+- Do not add `bn` rendering to any component — the field exists in data only for future use.
+- Do not use `position: absolute` for lesson path node layout — use padding + row-reverse instead.
