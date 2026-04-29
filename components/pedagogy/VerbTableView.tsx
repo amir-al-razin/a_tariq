@@ -11,9 +11,9 @@ interface Props {
 }
 
 const TENSE_LABELS = {
-    past: { en: 'Past Tense', ar: 'الْمَاضِي', bn: 'অতীত কাল' },
-    present: { en: 'Present / Future Tense', ar: 'الْمُضَارِع', bn: 'বর্তমান / ভবিষ্যৎ কাল' },
-    imperative: { en: 'Command & Prohibition', ar: 'الْأَمْرُ وَالنَّهْيُ', bn: 'আদেশ ও নিষেধ' },
+    past: { en: 'Past Tense', ar: 'الْمَاضِي' },
+    present: { en: 'Present / Future Tense', ar: 'الْمُضَارِع' },
+    imperative: { en: 'Command & Prohibition', ar: 'الْأَمْرُ وَالنَّهْيُ' },
 };
 
 const COL_HEADERS = [
@@ -60,7 +60,7 @@ export const VerbTableView: React.FC<Props> = ({ isDark, C, payload, onProgress,
                     {tenseLabel.ar}
                 </Text>
                 <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: isDark ? C.neutral300 : C.neutral600 }}>
-                    {tenseLabel.en} — {tenseLabel.bn}
+                    {tenseLabel.en}
                 </Text>
             </View>
 

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import type { QAItem } from '../../data/curriculum';
 
 type Props = { isDark: boolean; C: any; payload?: any; onProgress?: (v: number) => void; onComplete?: () => void };
 
 export const QAndAView: React.FC<Props> = ({ isDark, C, payload, onProgress, onComplete }) => {
+    const { t } = useTranslation();
     const questions: QAItem[] = payload?.questions || [];
     const instruction: string = payload?.instruction || '';
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -83,7 +85,7 @@ export const QAndAView: React.FC<Props> = ({ isDark, C, payload, onProgress, onC
             {revealed && (
                 <View style={{ marginTop: 16, padding: 14, borderRadius: 12, backgroundColor: isCorrect ? (isDark ? '#052e16' : '#f0fdf4') : (isDark ? '#3f0c0c' : '#fef2f2'), width: '100%', borderWidth: 1, borderColor: isCorrect ? '#22c55e' : '#ef4444' }}>
                     <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: isCorrect ? '#22c55e' : '#ef4444', marginBottom: 4 }}>
-                        {isCorrect ? '✓ Correct!' : '✗ Not quite'}
+                        {isCorrect ? t('qanda.correct') : t('qanda.notQuite')}
                     </Text>
                     <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral800 }}>{q.correct_ar}</Text>
                     <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral600 }}>{q.correct_en}</Text>
@@ -93,7 +95,7 @@ export const QAndAView: React.FC<Props> = ({ isDark, C, payload, onProgress, onC
             {/* Next button if not last question */}
             {revealed && !isLastQ && (
                 <Pressable onPress={handleNext} style={{ marginTop: 20, paddingHorizontal: 32, paddingVertical: 14, borderRadius: 12, backgroundColor: C.primary400, alignItems: 'center', width: '100%' }}>
-                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 15, color: '#fff' }}>Next →</Text>
+                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 15, color: '#fff' }}>{t('qanda.nextQuestion')}</Text>
                 </Pressable>
             )}
         </View>

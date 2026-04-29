@@ -1,18 +1,20 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 import type { GrammarRule } from '../../data/curriculum';
 
 type Props = { isDark: boolean; C: any; payload?: any; onProgress?: (v: number) => void; onComplete?: () => void };
 
 export const GrammarRuleView: React.FC<Props> = ({ isDark, C, payload }) => {
+    const { t } = useTranslation();
     const rules: GrammarRule[] = payload?.rules || [];
 
     return (
         <View style={{ width: '100%' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16, gap: 12 }}>
                 <Ionicons name="information-circle" size={24} color={C.primary400} />
-                <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 16, color: isDark ? C.neutral100 : C.neutral800 }}>Grammar Focus</Text>
+                <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 16, color: isDark ? C.neutral100 : C.neutral800 }}>{t('chunk.grammarFocus')}</Text>
             </View>
 
             {rules.map((rule, i) => (

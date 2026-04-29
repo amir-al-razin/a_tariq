@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, Pressable } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { IdafahPair } from '../../data/curriculum';
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export const IdafahDrillView: React.FC<Props> = ({ isDark, C, payload, onProgress, onComplete }) => {
+    const { t } = useTranslation();
     const pairs = payload?.idafahPairs ?? [];
     const [revealed, setRevealed] = useState<boolean[]>(Array(pairs.length).fill(false));
 
@@ -36,7 +38,6 @@ export const IdafahDrillView: React.FC<Props> = ({ isDark, C, payload, onProgres
 
     if (pairs.length === 0) return null;
 
-    const textMain = isDark ? C.neutral100 : C.neutral900;
     const textSub = isDark ? C.neutral400 : C.neutral500;
     const cardBg = isDark ? C.neutral800 : '#fff';
     const border = isDark ? C.neutral700 : C.neutral200;
@@ -54,10 +55,10 @@ export const IdafahDrillView: React.FC<Props> = ({ isDark, C, payload, onProgres
             {/* Header row */}
             <View style={{ flexDirection: 'row', gap: 8 }}>
                 <View style={{ flex: 1, backgroundColor: isDark ? C.neutral700 : C.neutral200, borderRadius: 8, padding: 8, alignItems: 'center' }}>
-                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 11, color: textSub }}>Base Phrase</Text>
+                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 11, color: textSub }}>{t('idafah.basePhrase')}</Text>
                 </View>
                 <View style={{ flex: 1, backgroundColor: isDark ? C.neutral700 : C.neutral200, borderRadius: 8, padding: 8, alignItems: 'center' }}>
-                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 11, color: textSub }}>Possession Phrase →</Text>
+                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 11, color: textSub }}>{t('idafah.possessionPhrase')}</Text>
                 </View>
             </View>
 
@@ -70,7 +71,7 @@ export const IdafahDrillView: React.FC<Props> = ({ isDark, C, payload, onProgres
                                 {pair.baseAr}
                             </Text>
                             <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 11, color: textSub, textAlign: 'center' }}>
-                                {pair.baseBn}
+                                {pair.baseEn}
                             </Text>
                         </View>
                         {/* Expanded — tap to reveal */}
@@ -86,12 +87,12 @@ export const IdafahDrillView: React.FC<Props> = ({ isDark, C, payload, onProgres
                                         {pair.expandedAr}
                                     </Text>
                                     <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 11, color: textSub, textAlign: 'center' }}>
-                                        {pair.expandedBn}
+                                        {pair.expandedEn}
                                     </Text>
                                 </>
                             ) : (
                                 <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 12, color: textSub }}>
-                                    Tap to reveal →
+                                    {t('idafah.tapToReveal')}
                                 </Text>
                             )}
                         </View>
@@ -102,7 +103,7 @@ export const IdafahDrillView: React.FC<Props> = ({ isDark, C, payload, onProgres
             {/* Reveal all shortcut */}
             {revealed.some(r => !r) && (
                 <Pressable onPress={revealAll} style={{ alignSelf: 'center', marginTop: 4, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, borderWidth: 1, borderColor: isDark ? C.neutral600 : C.neutral300 }}>
-                    <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 12, color: textSub }}>Reveal all</Text>
+                    <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 12, color: textSub }}>{t('idafah.revealAll')}</Text>
                 </Pressable>
             )}
         </View>

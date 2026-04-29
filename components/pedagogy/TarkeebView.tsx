@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { TarkeebItem, TarkeebNode } from '../../data/curriculum';
 
 interface Props {
@@ -60,6 +61,7 @@ const TreeNode: React.FC<{ node: TarkeebNode; isDark: boolean; C: Record<string,
 };
 
 export const TarkeebView: React.FC<Props> = ({ isDark, C, payload, onProgress, onComplete }) => {
+    const { t } = useTranslation();
     const items = payload?.tarkeeb ?? [];
 
     useEffect(() => {
@@ -93,7 +95,7 @@ export const TarkeebView: React.FC<Props> = ({ isDark, C, payload, onProgress, o
                         marginBottom: 10,
                     }}>
                         <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 10, color: isDark ? C.primary400 : C.primary700 }}>
-                            {item.type === 'complete' ? 'পূর্ণ কথা — Complete Sentence' : 'অপূর্ণ কথা — Incomplete Phrase'}
+                            {item.type === 'complete' ? t('tarkeeb.completeSentence') : t('tarkeeb.incompletePhrase')}
                         </Text>
                     </View>
 
@@ -104,9 +106,7 @@ export const TarkeebView: React.FC<Props> = ({ isDark, C, payload, onProgress, o
                     <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral300 : C.neutral600, textAlign: 'center', marginBottom: 2 }}>
                         {item.sentenceEn}
                     </Text>
-                    <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 12, color: isDark ? C.neutral400 : C.neutral500, textAlign: 'center', marginBottom: 16 }}>
-                        {item.sentenceBn}
-                    </Text>
+
 
                     {/* Tree diagram */}
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', paddingVertical: 8 }}>

@@ -1,16 +1,18 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import type { ApplicationItem } from '../../data/curriculum';
 
 type Props = { isDark: boolean; C: any; payload?: any; onProgress?: (v: number) => void; onComplete?: () => void };
 
 export const ApplicationView: React.FC<Props> = ({ isDark, C, payload }) => {
+    const { t } = useTranslation();
     const items: ApplicationItem[] = payload?.items || [];
 
     return (
         <View style={{ width: '100%', alignItems: 'center' }}>
             <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral300 : C.neutral600, marginBottom: 20, textAlign: 'center' }}>
-                Observe how the pronoun matches the noun based on proximity.
+                {payload?.instruction ?? t('chunk.reviewThenContinue')}
             </Text>
 
             {items.map((item, i) => (
@@ -26,7 +28,7 @@ export const ApplicationView: React.FC<Props> = ({ isDark, C, payload }) => {
             ))}
 
             <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral500, textAlign: 'center', marginTop: 8, fontStyle: 'italic' }}>
-                Review the examples above, then tap Continue ↓
+                {t('chunk.reviewThenContinue')}
             </Text>
         </View>
     );

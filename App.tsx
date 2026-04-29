@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler';
+import './i18n'; // must be imported before any component that uses useTranslation
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Lexend_400Regular, Lexend_500Medium, Lexend_600SemiBold } from '@expo-google-fonts/lexend';
@@ -16,6 +17,7 @@ import {
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeNavigator } from 'screens/HomeNavigator';
 import { SettingsScreen } from 'screens/SettingsScreen';
+import { LanguageProvider } from './i18n/LanguageContext';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import { useEffect, useState } from 'react';
@@ -80,51 +82,53 @@ export default function App() {
       <SafeAreaView
         className="flex-1 bg-neutral-50 dark:bg-neutral-900"
         edges={['top', 'left', 'right']}>
-        <NavigationContainer theme={navigationTheme}>
-          <Tab.Navigator
-            screenOptions={{
-              headerShown: false,
-              sceneStyle: {
-                backgroundColor: isDark ? '#1A1815' : '#F8F7F4',
-              },
-              tabBarStyle: {
-                borderTopWidth: 1,
-                borderTopColor: isDark ? '#22201B' : '#E5E1D8',
-                backgroundColor: isDark ? '#1A1815' : '#F8F7F4',
-                elevation: 0,
-                shadowOpacity: 0,
-              },
-              tabBarLabelStyle: {
-                fontFamily: 'Lexend_500Medium',
-                fontSize: 12,
-              },
-              tabBarActiveTintColor: isDark ? '#16B78E' : '#0D775F',
-              tabBarInactiveTintColor: isDark ? '#B9AF9C' : '#7D7463',
-            }}>
-            <Tab.Screen
-              name="Home"
-              component={HomeNavigator}
-              options={{
-                tabBarIcon: ({ color, focused, size }) => (
-                  <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Settings"
-              component={SettingsScreen}
-              options={{
-                tabBarIcon: ({ color, focused, size }) => (
-                  <Ionicons
-                    name={focused ? 'settings' : 'settings-outline'}
-                    size={size}
-                    color={color}
-                  />
-                ),
-              }}
-            />
-          </Tab.Navigator>
-        </NavigationContainer>
+        <LanguageProvider>
+          <NavigationContainer theme={navigationTheme}>
+            <Tab.Navigator
+              screenOptions={{
+                headerShown: false,
+                sceneStyle: {
+                  backgroundColor: isDark ? '#1A1815' : '#F8F7F4',
+                },
+                tabBarStyle: {
+                  borderTopWidth: 1,
+                  borderTopColor: isDark ? '#22201B' : '#E5E1D8',
+                  backgroundColor: isDark ? '#1A1815' : '#F8F7F4',
+                  elevation: 0,
+                  shadowOpacity: 0,
+                },
+                tabBarLabelStyle: {
+                  fontFamily: 'Lexend_500Medium',
+                  fontSize: 12,
+                },
+                tabBarActiveTintColor: isDark ? '#F0EEE8' : '#22201B',
+                tabBarInactiveTintColor: isDark ? '#4F4A40' : '#B9AF9C',
+              }}>
+              <Tab.Screen
+                name="Home"
+                component={HomeNavigator}
+                options={{
+                  tabBarIcon: ({ color, focused, size }) => (
+                    <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="Settings"
+                component={SettingsScreen}
+                options={{
+                  tabBarIcon: ({ color, focused, size }) => (
+                    <Ionicons
+                      name={focused ? 'settings' : 'settings-outline'}
+                      size={size}
+                      color={color}
+                    />
+                  ),
+                }}
+              />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </LanguageProvider>
         <StatusBar style={isDark ? 'light' : 'dark'} />
       </SafeAreaView>
     </SafeAreaProvider>
