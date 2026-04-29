@@ -22,8 +22,8 @@ export interface VocabWord {
     romanized: string;
     /** English meaning */
     en: string;
-    /** Bengali meaning */
-    bn: string;
+    /** Secondary language translation — stored but not rendered (multilingual future use) */
+    bn?: string;
     emoji?: string;
 }
 
@@ -54,36 +54,38 @@ export interface QAItem {
 
 /** A single node in a Tarkeeb (sentence-diagram) tree */
 export interface TarkeebNode {
-    label: string;       // grammatical role in Arabic (مُبْتَدَأ, خَبَر, مَوْصُوف, صِفَة…)
-    labelEn: string;     // English label (Subject, Predicate, Qualified Noun, Adjective…)
-    text: string;        // the Arabic word(s)
+    label: string;    // grammatical role in Arabic (مُبْتَدَأ, خَبَر, مَوْصُوف, صِفَة…)
+    labelEn: string;  // English label (Subject, Predicate, Qualified Noun, Adjective…)
+    text: string;     // the Arabic word(s)
     children?: TarkeebNode[];
 }
 
 export interface TarkeebItem {
-    sentence: string;           // full Arabic sentence
-    sentenceEn: string;         // English translation
-    sentenceBn: string;         // Bengali translation
-    type: 'complete' | 'incomplete';  // পূর্ণ কথা / অপূর্ণ কথা
-    tree: TarkeebNode[];        // top-level nodes of the diagram
+    sentence: string;            // full Arabic sentence
+    sentenceEn: string;          // English translation
+    sentenceBn?: string;         // secondary translation (not rendered — future use)
+    type: 'complete' | 'incomplete';
+    tree: TarkeebNode[];
 }
 
 export interface VerbTableRow {
-    root: string;       // verb root (فَعَلَ)
-    meaning: string;    // Bengali meaning
-    he: string;         // هُوَ
-    she: string;        // هِيَ
-    youM: string;       // أَنْتَ
-    youF: string;       // أَنْتِ
-    i: string;          // أَنَا
+    root: string;    // verb root (فَعَلَ)
+    meaning: string; // English meaning (e.g. "to do")
+    he: string;      // هُوَ
+    she: string;     // هِيَ
+    youM: string;    // أَنْتَ
+    youF: string;    // أَنْتِ
+    i: string;       // أَنَا
 }
 
 /** A phrase-pair for Idafah drill: base phrase → expanded possession phrase */
 export interface IdafahPair {
-    baseBn: string;       // Bengali base (e.g. "এই কামরা")
-    baseAr: string;       // Arabic base (e.g. "هَذِهِ الغُرْفَةُ")
-    expandedBn: string;   // Bengali expanded (e.g. "এই কামরার দরজা")
-    expandedAr: string;   // Arabic answer (e.g. "بَابُ هَذِهِ الغُرْفَةِ")
+    baseAr: string;      // Arabic base (e.g. "هَذِهِ الغُرْفَةُ")
+    baseEn: string;      // English base (e.g. "This room")
+    expandedAr: string;  // Arabic answer (e.g. "بَابُ هَذِهِ الغُرْفَةِ")
+    expandedEn: string;  // English expanded (e.g. "The door of this room")
+    baseBn?: string;     // secondary translation (not rendered — future use)
+    expandedBn?: string; // secondary translation (not rendered — future use)
 }
 
 /** A paragraph block for reading comprehension */
@@ -2312,14 +2314,14 @@ export const CHAPTERS: ChapterData[] = [
                         payload: {
                             instruction: 'Tap the right card to reveal the Arabic possession phrase.',
                             idafahPairs: [
-                                { baseBn: 'এই কামরা', baseAr: 'هَذِهِ الغُرْفَةُ', expandedBn: 'এই কামরার দরজা', expandedAr: 'بَابُ هَذِهِ الغُرْفَةِ' },
-                                { baseBn: 'ঐ গ্রাম', baseAr: 'تِلْكَ القَرْيَةُ', expandedBn: 'ঐ গ্রামের দৃশ্য', expandedAr: 'مَنْظَرُ تِلْكَ القَرْيَةِ' },
-                                { baseBn: 'এই বাগান', baseAr: 'هَذِهِ الحَدِيقَةُ', expandedBn: 'এই বাগানের সামনে', expandedAr: 'أَمَامَ هَذِهِ الحَدِيقَةِ' },
-                                { baseBn: 'ঐ ফল', baseAr: 'ذَلِكَ الفَاكِهَةُ', expandedBn: 'ঐ ফলের রঙ', expandedAr: 'لَوْنُ ذَلِكَ الفَاكِهَةِ' },
-                                { baseBn: 'ঐ লোক', baseAr: 'ذَلِكَ الرَّجُلُ', expandedBn: 'ঐ লোকের গাড়ী', expandedAr: 'سَيَّارَةُ ذَلِكَ الرَّجُلِ' },
-                                { baseBn: 'ঐ তালা', baseAr: 'ذَلِكَ القُفْلُ', expandedBn: 'ঐ তালার চাবি', expandedAr: 'مِفْتَاحُ ذَلِكَ القُفْلِ' },
-                                { baseBn: 'এই পথ', baseAr: 'هَذَا الطَّرِيقُ', expandedBn: 'এই পথের পাশে', expandedAr: 'بِجَانِبِ هَذَا الطَّرِيقِ' },
-                                { baseBn: 'ঐ মহিলা', baseAr: 'تِلْكَ المَرْأَةُ', expandedBn: 'ঐ মহিলার হার', expandedAr: 'عِقْدُ تِلْكَ المَرْأَةِ' },
+                                { baseAr: 'هَذِهِ الغُرْفَةُ', baseEn: 'This room', expandedAr: 'بَابُ هَذِهِ الغُرْفَةِ', expandedEn: 'The door of this room' },
+                                { baseAr: 'تِلْكَ القَرْيَةُ', baseEn: 'That village', expandedAr: 'مَنْظَرُ تِلْكَ القَرْيَةِ', expandedEn: 'The view of that village' },
+                                { baseAr: 'هَذِهِ الحَدِيقَةُ', baseEn: 'This garden', expandedAr: 'أَمَامَ هَذِهِ الحَدِيقَةِ', expandedEn: 'In front of this garden' },
+                                { baseAr: 'ذَلِكَ الفَاكِهَةُ', baseEn: 'That fruit', expandedAr: 'لَوْنُ ذَلِكَ الفَاكِهَةِ', expandedEn: 'The color of that fruit' },
+                                { baseAr: 'ذَلِكَ الرَّجُلُ', baseEn: 'That man', expandedAr: 'سَيَّارَةُ ذَلِكَ الرَّجُلِ', expandedEn: "That man's car" },
+                                { baseAr: 'ذَلِكَ القُفْلُ', baseEn: 'That lock', expandedAr: 'مِفْتَاحُ ذَلِكَ القُفْلِ', expandedEn: 'The key of that lock' },
+                                { baseAr: 'هَذَا الطَّرِيقُ', baseEn: 'This road', expandedAr: 'بِجَانِبِ هَذَا الطَّرِيقِ', expandedEn: 'Beside this road' },
+                                { baseAr: 'تِلْكَ المَرْأَةُ', baseEn: 'That woman', expandedAr: 'عِقْدُ تِلْكَ المَرْأَةِ', expandedEn: "That woman's necklace" },
                             ],
                         },
                     },
