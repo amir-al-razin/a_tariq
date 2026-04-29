@@ -1,0 +1,105 @@
+{
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Appearance and language preferences.",
+    "appearance": "Appearance",
+    "language": "Language",
+    "lightTheme": "Light Theme",
+    "lightThemeDesc": "Bright background, ideal for daylight study.",
+    "darkTheme": "Dark Theme",
+    "darkThemeDesc": "Low-glare mode, best for evening reading.",
+    "active": "Currently active",
+    "tapToActivate": "Tap to activate",
+    "english": "English",
+    "bangla": "বাংলা (Bangla)",
+    "languageNote": "Changes all labels, instructions, and lesson content."
+  },
+  "home": {
+    "title": "Quranic Arabic",
+    "subtitle": "Select a volume to continue.",
+    "volume1": "Volume 1",
+    "volume1Subtitle": "Nouns, descriptions & nominal sentences",
+    "volume2": "Volume 2",
+    "volume2Subtitle": "Verbs, tenses & verbal sentences",
+    "volume3": "Volume 3",
+    "volume3Subtitle": "Plurals, irregular verbs & Quranic readings",
+    "locked": "Locked"
+  },
+  "volume": {
+    "chapterMeta": "Chapter {{id}}  ·  {{count}} lessons",
+    "endOfPart": "End of Part {{number}} · by the grace of Allah",
+    "vol1Title": "Volume One",
+    "vol1Meta": "3 chapters · 20 lessons",
+    "vol2Title": "Volume Two",
+    "vol2Meta": "3 chapters · 34 lessons",
+    "vol3Title": "Volume Three",
+    "vol3Meta": "4 chapters · 26 lessons",
+    "vol1End": "تم الجزء الأول بفضل الله",
+    "vol2End": "تم الجزء الثاني بفضل الله",
+    "vol3End": "تم الجزء الثالث بفضل الله"
+  },
+  "vol1chapters": {
+    "1subtitle": "Beginner-friendly foundations",
+    "2subtitle": "Expanding vocabulary and grammar",
+    "3subtitle": "Consolidating the nominal sentence"
+  },
+  "vol2chapters": {
+    "1subtitle": "Applying verbs to build real Arabic sentences",
+    "2subtitle": "Transitioning into conversational Arabic",
+    "3subtitle": "Spiritual guidance for the sincere student"
+  },
+  "vol3chapters": {
+    "1subtitle": "Plural verb forms for groups — masculine & feminine",
+    "2subtitle": "Irregular verbs & verbal nouns (Masdars)",
+    "3subtitle": "Numerals, comparatives & advanced verb families",
+    "4subtitle": "Quranic & Hadith readings — direct Arabic immersion"
+  },
+  "lesson": {
+    "title": "Lesson {{number}} · {{chapter}}",
+    "dars": "Dars {{number}}",
+    "inProgress": "In progress",
+    "comingSoon": "Coming soon",
+    "resume": "RESUME",
+    "start": "START"
+  },
+  "chunk": {
+    "scrollToContinue": "Scroll to the bottom to continue",
+    "continue": "CONTINUE ✓",
+    "grammarFocus": "Grammar Focus",
+    "reviewThenContinue": "Review the examples above, then scroll to continue."
+  },
+  "vocabulary": {
+    "tapCard": "Tap card or use arrows",
+    "tapToFinish": "Tap to finish",
+    "tapForNext": "Tap again for next word",
+    "allReviewed": "🎉 All words reviewed!",
+    "flipBack": "Flip back",
+    "previous": "Previous",
+    "reveal": "Reveal",
+    "next": "Next",
+    "finish": "Finish"
+  },
+  "qanda": {
+    "correct": "✓ Correct!",
+    "notQuite": "✗ Not quite",
+    "nextQuestion": "Next →"
+  },
+  "idafah": {
+    "basePhrase": "Base Phrase",
+    "possessionPhrase": "Possession Phrase →",
+    "tapToReveal": "Tap to reveal →",
+    "revealAll": "Reveal all"
+  },
+  "tarkeeb": {
+    "completeSentence": "Complete Sentence",
+    "incompletePhrase": "Incomplete Phrase"
+  },
+  "paragraph": {
+    "revealTranslation": "Reveal translation",
+    "hideTranslation": "Hide translation"
+  },
+  "nav": {
+    "home": "Home",
+    "settings": "Settings"
+  }
+}

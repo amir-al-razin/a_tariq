@@ -1,0 +1,105 @@
+{
+  "settings": {
+    "title": "সেটিংস",
+    "subtitle": "অ্যাপের ভাষা ও থিম পরিবর্তন করুন।",
+    "appearance": "থিম",
+    "language": "ভাষা",
+    "lightTheme": "লাইট থিম",
+    "lightThemeDesc": "উজ্জ্বল পটভূমি, দিনের পড়াশোনার জন্য আদর্শ।",
+    "darkTheme": "ডার্ক থিম",
+    "darkThemeDesc": "কম আলো, রাতের পড়াশোনার জন্য উপযুক্ত।",
+    "active": "বর্তমানে সক্রিয়",
+    "tapToActivate": "সক্রিয় করতে ট্যাপ করুন",
+    "english": "English",
+    "bangla": "বাংলা (Bangla)",
+    "languageNote": "সমস্ত লেবেল, নির্দেশনা ও পাঠের বিষয়বস্তু পরিবর্তন হবে।"
+  },
+  "home": {
+    "title": "কুরআনিক আরবি",
+    "subtitle": "পড়া চালিয়ে যেতে একটি খণ্ড বেছে নিন।",
+    "volume1": "প্রথম খণ্ড",
+    "volume1Subtitle": "বিশেষ্য, বর্ণনা ও নামবাচক বাক্য",
+    "volume2": "দ্বিতীয় খণ্ড",
+    "volume2Subtitle": "ক্রিয়া, কাল ও ক্রিয়াবাচক বাক্য",
+    "volume3": "তৃতীয় খণ্ড",
+    "volume3Subtitle": "বহুবচন, অনিয়মিত ক্রিয়া ও কুরআনিক পাঠ",
+    "locked": "লক করা"
+  },
+  "volume": {
+    "chapterMeta": "অধ্যায় {{id}}  ·  {{count}} পাঠ",
+    "endOfPart": "{{number}} নং খণ্ড সমাপ্ত · আল্লাহর রহমতে",
+    "vol1Title": "প্রথম খণ্ড",
+    "vol1Meta": "৩ অধ্যায় · ২০ পাঠ",
+    "vol2Title": "দ্বিতীয় খণ্ড",
+    "vol2Meta": "৩ অধ্যায় · ৩৪ পাঠ",
+    "vol3Title": "তৃতীয় খণ্ড",
+    "vol3Meta": "৪ অধ্যায় · ২৬ পাঠ",
+    "vol1End": "তম الجزء الأول بفضل الله",
+    "vol2End": "تم الجزء الثاني بفضل الله",
+    "vol3End": "تم الجزء الثالث بفضل الله"
+  },
+  "vol1chapters": {
+    "1subtitle": "শিক্ষার্থীবান্ধব ভিত্তি",
+    "2subtitle": "শব্দভাণ্ডার ও ব্যাকরণ বিস্তার",
+    "3subtitle": "নামবাচক বাক্যের সুদৃঢ়করণ"
+  },
+  "vol2chapters": {
+    "1subtitle": "ক্রিয়া প্রয়োগ করে আরবি বাক্য গঠন",
+    "2subtitle": "কথ্য আরবিতে রূপান্তর",
+    "3subtitle": "আন্তরিক শিক্ষার্থীর জন্য আধ্যাত্মিক দিকনির্দেশনা"
+  },
+  "vol3chapters": {
+    "1subtitle": "দলগত ক্রিয়ার বহুবচন রূপ — পুরুষ ও স্ত্রীলিঙ্গ",
+    "2subtitle": "অনিয়মিত ক্রিয়া ও মাসদার",
+    "3subtitle": "সংখ্যাবাচক, তুলনামূলক ও উন্নত ক্রিয়া পরিবার",
+    "4subtitle": "কুরআন ও হাদিস পাঠ — সরাসরি আরবি নিমজ্জন"
+  },
+  "lesson": {
+    "title": "পাঠ {{number}} · {{chapter}}",
+    "dars": "দরস {{number}}",
+    "inProgress": "চলমান",
+    "comingSoon": "শীঘ্রই আসছে",
+    "resume": "চালিয়ে যান",
+    "start": "শুরু করুন"
+  },
+  "chunk": {
+    "scrollToContinue": "চালিয়ে যেতে নিচে স্ক্রোল করুন",
+    "continue": "পরবর্তী ✓",
+    "grammarFocus": "ব্যাকরণ",
+    "reviewThenContinue": "উদাহরণগুলো দেখুন, তারপর স্ক্রোল করুন।"
+  },
+  "vocabulary": {
+    "tapCard": "কার্ডে ট্যাপ করুন বা তীর ব্যবহার করুন",
+    "tapToFinish": "শেষ করতে ট্যাপ করুন",
+    "tapForNext": "পরের শব্দের জন্য আবার ট্যাপ করুন",
+    "allReviewed": "🎉 সব শব্দ দেখা হয়েছে!",
+    "flipBack": "উল্টে দেখুন",
+    "previous": "আগের",
+    "reveal": "দেখুন",
+    "next": "পরের",
+    "finish": "শেষ"
+  },
+  "qanda": {
+    "correct": "✓ সঠিক!",
+    "notQuite": "✗ ঠিক হয়নি",
+    "nextQuestion": "পরের →"
+  },
+  "idafah": {
+    "basePhrase": "মূল বাক্যাংশ",
+    "possessionPhrase": "সম্বন্ধ বাক্যাংশ →",
+    "tapToReveal": "দেখতে ট্যাপ করুন →",
+    "revealAll": "সব দেখুন"
+  },
+  "tarkeeb": {
+    "completeSentence": "পূর্ণ বাক্য",
+    "incompletePhrase": "অপূর্ণ বাক্যাংশ"
+  },
+  "paragraph": {
+    "revealTranslation": "অনুবাদ দেখুন",
+    "hideTranslation": "অনুবাদ লুকান"
+  },
+  "nav": {
+    "home": "হোম",
+    "settings": "সেটিংস"
+  }
+}
