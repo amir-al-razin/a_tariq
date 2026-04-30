@@ -8,7 +8,8 @@ export type ChunkType =
     | 'tarkeeb'
     | 'verb_table'
     | 'idafah_drill'
-    | 'paragraph';
+    | 'paragraph'
+    | 'masdar_factory';
 
 // ─────────────────────────────────────────────
 // Payload types (typed for engine templates)
@@ -111,6 +112,17 @@ export interface ParagraphBlock {
     translationBn?: string;  // Bangla translation (rendered when app language = bn)
 }
 
+/** A single row in a Masdar Factory table: verbal noun → 4 derived forms */
+export interface MasdarRow {
+    masdar: string;       // الْخُرُوجُ
+    masdarEn: string;     // "to exit"
+    baab?: string;        // بَابُ نَصَرَ يَنْصُرُ (optional — shown as group header)
+    past: string;         // خَرَجَ
+    present: string;      // يَخْرُجُ
+    imperative: string;   // اُخْرُجْ
+    prohibitive: string;  // لَا تَخْرُجْ
+}
+
 export interface ChunkPayload {
     words?: VocabWord[];
     rules?: GrammarRule[];
@@ -122,6 +134,9 @@ export interface ChunkPayload {
     verbTense?: 'past' | 'present' | 'imperative';
     idafahPairs?: IdafahPair[];
     paragraphs?: ParagraphBlock[];
+    masdarRows?: MasdarRow[];
+    /** optional Baab label shown above the masdar table */
+    baabLabel?: string;
     instruction?: string;
 }
 

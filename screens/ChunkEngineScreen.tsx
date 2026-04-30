@@ -12,6 +12,7 @@ import { TarkeebView } from '../components/pedagogy/TarkeebView';
 import { VerbTableView } from '../components/pedagogy/VerbTableView';
 import { IdafahDrillView } from '../components/pedagogy/IdafahDrillView';
 import { ParagraphView } from '../components/pedagogy/ParagraphView';
+import { MasdarFactoryView } from '../components/pedagogy/MasdarFactoryView';
 
 type ChunkEngineProps = {
     route: {
@@ -23,7 +24,7 @@ type ChunkEngineProps = {
     };
 };
 
-const SCROLL_COMPLETE_TYPES = ['grammar_rule', 'application', 'mixed', 'tarkeeb', 'verb_table', 'paragraph'];
+const SCROLL_COMPLETE_TYPES = ['grammar_rule', 'application', 'mixed', 'tarkeeb', 'verb_table', 'paragraph', 'masdar_factory'];
 
 export const ChunkEngineScreen: React.FC<ChunkEngineProps> = ({ route }) => {
     const { chunkId, chapterId, darsNumber } = route.params;
@@ -133,6 +134,7 @@ export const ChunkEngineScreen: React.FC<ChunkEngineProps> = ({ route }) => {
             case 'verb_table': return <VerbTableView {...sharedProps} />;
             case 'idafah_drill': return <IdafahDrillView {...sharedProps} />;
             case 'paragraph': return <ParagraphView {...sharedProps} />;
+            case 'masdar_factory': return <MasdarFactoryView {...sharedProps} />;
             default:
                 return <Text style={{ color: isDark ? C.neutral100 : C.neutral800 }}>Coming soon</Text>;
         }
