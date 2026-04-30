@@ -7,8 +7,16 @@ const LANGUAGE_KEY = 'app.language.preference';
 interface LanguageContextValue {
   language: AppLanguage;
   setLanguage: (lang: AppLanguage) => Promise<void>;
-  /** Pick the right content field based on active language.
-   *  Usage: t_content(word.en, word.bn) → returns bn string if active, else en */
+  /**
+   * Pick the right content field based on active language.
+   *
+   * Usage:
+   *   t_content(word.en, word.bn)         → shows bn when Bangla active
+   *   t_content(item.en, item.bn)         → same pattern for any content field
+   *   t_content(sentence.sentenceEn, sentence.sentenceBn)
+   *
+   * Always falls back to `en` if the localized string is missing.
+   */
   t_content: (en: string, localized?: string) => string;
 }
 

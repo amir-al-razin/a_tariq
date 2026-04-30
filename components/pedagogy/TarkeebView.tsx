@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../i18n/LanguageContext';
 import { TarkeebItem, TarkeebNode } from '../../data/curriculum';
 
 interface Props {
@@ -62,6 +63,7 @@ const TreeNode: React.FC<{ node: TarkeebNode; isDark: boolean; C: Record<string,
 
 export const TarkeebView: React.FC<Props> = ({ isDark, C, payload, onProgress, onComplete }) => {
     const { t } = useTranslation();
+    const { t_content } = useLanguage();
     const items = payload?.tarkeeb ?? [];
 
     useEffect(() => {
@@ -104,7 +106,7 @@ export const TarkeebView: React.FC<Props> = ({ isDark, C, payload, onProgress, o
                         {item.sentence}
                     </Text>
                     <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral300 : C.neutral600, textAlign: 'center', marginBottom: 2 }}>
-                        {item.sentenceEn}
+                        {t_content(item.sentenceEn, item.sentenceBn)}
                     </Text>
 
 

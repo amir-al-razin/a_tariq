@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MotiView } from 'moti';
 import { useColorScheme } from 'nativewind';
+import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 
 import type { HomeStackParamList } from './HomeNavigator';
@@ -65,6 +66,7 @@ const WAVE = [0.27, 0.40, 0.56, 0.73, 0.56, 0.40] as const;
 // ─────────────────────────────────────────────
 
 const ChapterBanner: React.FC<{ chapter: ChapterData; idx: number; isDark: boolean }> = ({ chapter, idx, isDark }) => {
+  const { t } = useTranslation();
   return (
     <View style={{
       marginHorizontal: 16,
@@ -74,20 +76,17 @@ const ChapterBanner: React.FC<{ chapter: ChapterData; idx: number; isDark: boole
       backgroundColor: isDark ? C.neutral800 : C.neutral100,
     }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 20 }}>
-        {/* Left side */}
         <View style={{ flex: 1, paddingRight: 12 }}>
           <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: isDark ? C.primary400 : C.primary600, marginBottom: 6 }}>
-            Chapter {chapter.id}  ·  {chapter.lessons.length} lessons
+            {t('volume.chapterMeta', { id: chapter.id, count: chapter.lessons.length })}
           </Text>
           <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 20, lineHeight: 28, color: isDark ? C.neutral100 : C.neutral900 }}>
             {chapter.titleEn}
           </Text>
           <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral600, marginTop: 2 }}>
-            {chapter.subtitle}
+            {t(`vol1chapters.${chapter.id}subtitle`)}
           </Text>
         </View>
-
-        {/* Arabic title */}
         <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.neutral300 : C.neutral700, textAlign: 'right' }}>
           {chapter.titleAr}
         </Text>

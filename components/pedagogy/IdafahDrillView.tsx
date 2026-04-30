@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../i18n/LanguageContext';
 import { IdafahPair } from '../../data/curriculum';
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 
 export const IdafahDrillView: React.FC<Props> = ({ isDark, C, payload, onProgress, onComplete }) => {
     const { t } = useTranslation();
+    const { t_content } = useLanguage();
     const pairs = payload?.idafahPairs ?? [];
     const [revealed, setRevealed] = useState<boolean[]>(Array(pairs.length).fill(false));
 
@@ -71,7 +73,7 @@ export const IdafahDrillView: React.FC<Props> = ({ isDark, C, payload, onProgres
                                 {pair.baseAr}
                             </Text>
                             <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 11, color: textSub, textAlign: 'center' }}>
-                                {pair.baseEn}
+                                {t_content(pair.baseEn, pair.baseBn)}
                             </Text>
                         </View>
                         {/* Expanded — tap to reveal */}
@@ -87,7 +89,7 @@ export const IdafahDrillView: React.FC<Props> = ({ isDark, C, payload, onProgres
                                         {pair.expandedAr}
                                     </Text>
                                     <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 11, color: textSub, textAlign: 'center' }}>
-                                        {pair.expandedEn}
+                                        {t_content(pair.expandedEn, pair.expandedBn)}
                                     </Text>
                                 </>
                             ) : (

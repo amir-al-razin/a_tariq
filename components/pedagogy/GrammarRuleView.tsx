@@ -2,12 +2,14 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../i18n/LanguageContext';
 import type { GrammarRule } from '../../data/curriculum';
 
 type Props = { isDark: boolean; C: any; payload?: any; onProgress?: (v: number) => void; onComplete?: () => void };
 
 export const GrammarRuleView: React.FC<Props> = ({ isDark, C, payload }) => {
     const { t } = useTranslation();
+    const { t_content } = useLanguage();
     const rules: GrammarRule[] = payload?.rules || [];
 
     return (
@@ -31,14 +33,14 @@ export const GrammarRuleView: React.FC<Props> = ({ isDark, C, payload }) => {
                     {rule.examples?.map((ex, j) => (
                         <View key={j} style={{ borderTopWidth: 1, borderTopColor: isDark ? C.neutral700 : C.neutral200, paddingTop: 10, marginTop: j === 0 ? 0 : 8 }}>
                             <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: i === 0 ? C.primary700 : (isDark ? C.neutral300 : C.neutral700), textAlign: 'right' }}>{ex.ar}</Text>
-                            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral500, marginTop: 2 }}>{ex.en}</Text>
+                            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral500, marginTop: 2 }}>{t_content(ex.en, ex.bn)}</Text>
                         </View>
                     ))}
                 </View>
             ))}
 
             <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral500, textAlign: 'center', marginTop: 8, fontStyle: 'italic' }}>
-                Study the rules above, then tap Continue ↓
+                {t('chunk.studyThenContinue')}
             </Text>
         </View>
     );

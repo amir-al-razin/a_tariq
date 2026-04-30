@@ -14,38 +14,52 @@ export type ChunkType =
 // Payload types (typed for engine templates)
 // ─────────────────────────────────────────────
 
+// ─────────────────────────────────────────────
+// Content translation helper type
+// Add new language codes here when expanding.
+// Components use t_content(word.en, word.bn) via LanguageContext.
+// ─────────────────────────────────────────────
+export type SupportedContentLang = 'en' | 'bn';
+
 export interface VocabWord {
     id: number;
     /** Arabic with full diacritics (harakat) — exactly as in the book */
     ar: string;
     /** Transliteration */
     romanized: string;
-    /** English meaning */
+    /** English meaning — primary content language */
     en: string;
-    /** Secondary language translation — stored but not rendered (multilingual future use) */
+    /** Bangla meaning — secondary content language (rendered when app language = bn) */
     bn?: string;
     emoji?: string;
 }
 
 export interface GrammarRule {
+    /** Display label — English */
     label: string;
     arabic: string;
     romanized: string;
+    /** English meaning */
     meaning: string;
-    examples?: { ar: string; en: string }[];
+    examples?: { ar: string; en: string; bn?: string }[];
 }
 
 export interface ApplicationItem {
     emoji: string;
     ar: string;
+    /** English translation */
     en: string;
+    /** Bangla translation */
+    bn?: string;
 }
 
 export interface QAItem {
     emoji: string;
     question_ar: string;
+    /** English question */
     question_en: string;
     correct_ar: string;
+    /** English answer */
     correct_en: string;
     options_ar: string[];
     /** 'hal' = yes/no (هَلْ), 'a_am' = either/or (أَ...أَمْ), 'general' = open */
@@ -61,9 +75,9 @@ export interface TarkeebNode {
 }
 
 export interface TarkeebItem {
-    sentence: string;            // full Arabic sentence
-    sentenceEn: string;          // English translation
-    sentenceBn?: string;         // secondary translation (not rendered — future use)
+    sentence: string;       // full Arabic sentence
+    sentenceEn: string;     // English translation
+    sentenceBn?: string;    // Bangla translation (rendered when app language = bn)
     type: 'complete' | 'incomplete';
     tree: TarkeebNode[];
 }
@@ -80,20 +94,21 @@ export interface VerbTableRow {
 
 /** A phrase-pair for Idafah drill: base phrase → expanded possession phrase */
 export interface IdafahPair {
-    baseAr: string;      // Arabic base (e.g. "هَذِهِ الغُرْفَةُ")
-    baseEn: string;      // English base (e.g. "This room")
-    expandedAr: string;  // Arabic answer (e.g. "بَابُ هَذِهِ الغُرْفَةِ")
-    expandedEn: string;  // English expanded (e.g. "The door of this room")
-    baseBn?: string;     // secondary translation (not rendered — future use)
-    expandedBn?: string; // secondary translation (not rendered — future use)
+    baseAr: string;      // Arabic base
+    baseEn: string;      // English base
+    expandedAr: string;  // Arabic answer
+    expandedEn: string;  // English expanded
+    baseBn?: string;     // Bangla base (rendered when app language = bn)
+    expandedBn?: string; // Bangla expanded (rendered when app language = bn)
 }
 
 /** A paragraph block for reading comprehension */
 export interface ParagraphBlock {
-    title?: string;       // e.g. "فِي غُرْفَةِ فَاطِمَةَ"
-    titleEn?: string;
-    lines: string[];      // Arabic sentences in order
-    translationEn?: string; // optional full English translation
+    title?: string;          // Arabic title
+    titleEn?: string;        // English title
+    lines: string[];         // Arabic sentences in order
+    translationEn?: string;  // English translation (revealed on demand)
+    translationBn?: string;  // Bangla translation (rendered when app language = bn)
 }
 
 export interface ChunkPayload {

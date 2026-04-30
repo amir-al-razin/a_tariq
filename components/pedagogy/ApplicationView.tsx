@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../i18n/LanguageContext';
 import type { ApplicationItem } from '../../data/curriculum';
 
 type Props = { isDark: boolean; C: any; payload?: any; onProgress?: (v: number) => void; onComplete?: () => void };
 
 export const ApplicationView: React.FC<Props> = ({ isDark, C, payload }) => {
     const { t } = useTranslation();
+    const { t_content } = useLanguage();
     const items: ApplicationItem[] = payload?.items || [];
 
     return (
@@ -22,7 +24,7 @@ export const ApplicationView: React.FC<Props> = ({ isDark, C, payload }) => {
                     </View>
                     <View style={{ flex: 1 }}>
                         <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: C.primary700, textAlign: 'right' }}>{item.ar}</Text>
-                        <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral500, marginTop: 2 }}>{item.en}</Text>
+                        <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral500, marginTop: 2 }}>{t_content(item.en, item.bn)}</Text>
                     </View>
                 </View>
             ))}

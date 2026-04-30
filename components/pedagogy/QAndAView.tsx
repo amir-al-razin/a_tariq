@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../i18n/LanguageContext';
 import type { QAItem } from '../../data/curriculum';
 
 type Props = { isDark: boolean; C: any; payload?: any; onProgress?: (v: number) => void; onComplete?: () => void };
 
 export const QAndAView: React.FC<Props> = ({ isDark, C, payload, onProgress, onComplete }) => {
     const { t } = useTranslation();
+    const { t_content } = useLanguage();
     const questions: QAItem[] = payload?.questions || [];
     const instruction: string = payload?.instruction || '';
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -57,7 +59,7 @@ export const QAndAView: React.FC<Props> = ({ isDark, C, payload, onProgress, onC
             </View>
 
             <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 30, color: isDark ? C.neutral100 : C.neutral800, marginBottom: 4 }}>{q.question_ar}</Text>
-            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral400 : C.neutral600, marginBottom: 24 }}>{q.question_en}</Text>
+            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral400 : C.neutral600, marginBottom: 24 }}>{t_content(q.question_en)}</Text>
 
             {/* Options */}
             <View style={{ width: '100%', gap: 10 }}>
@@ -88,7 +90,7 @@ export const QAndAView: React.FC<Props> = ({ isDark, C, payload, onProgress, onC
                         {isCorrect ? t('qanda.correct') : t('qanda.notQuite')}
                     </Text>
                     <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral800 }}>{q.correct_ar}</Text>
-                    <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral600 }}>{q.correct_en}</Text>
+                    <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral600 }}>{t_content(q.correct_en)}</Text>
                 </View>
             )}
 
