@@ -13,6 +13,7 @@ export type HomeStackParamList = {
   VolumeTwo: undefined;
   VolumeThree: undefined;
   Lesson: {
+    volumeNumber: number;
     chapterId: number;
     chapterTitleAr: string;
     chapterTitleEn: string;
@@ -20,6 +21,7 @@ export type HomeStackParamList = {
   };
   ChunkEngine: {
     chunkId: string;
+    volumeNumber: number;
     chapterId: number;
     darsNumber: number;
   };

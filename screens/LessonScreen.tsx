@@ -29,10 +29,12 @@ const C = {
 };
 
 import { CHAPTERS } from '../data/curriculum';
+import { CHAPTERS_VOL2 } from '../data/curriculum_vol2';
 
 type LessonScreenProps = {
     route: {
         params: {
+            volumeNumber: number;
             chapterId: number;
             chapterTitleAr: string;
             chapterTitleEn: string;
@@ -54,9 +56,10 @@ const progressKey = (chapterId: number, darsNumber: number) =>
     `lesson_progress_${chapterId}_${darsNumber}`;
 
 export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation }) => {
-    const { chapterId, chapterTitleAr, chapterTitleEn, darsNumber } = route.params;
+    const { chapterId, chapterTitleAr, chapterTitleEn, darsNumber, volumeNumber } = route.params;
     const { colorScheme } = useColorScheme();
     const isDark = colorScheme === 'dark';
+    const { t } = useTranslation();
 
     // Last-visited chunk index (persisted)
     const [lastVisited, setLastVisited] = useState<number | null>(null);
@@ -67,7 +70,8 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
         });
     }, [chapterId, darsNumber]);
 
-    const chapterData = CHAPTERS.find(c => c.id === chapterId);
+    const allChapters = volumeNumber === 2 ? CHAPTERS_VOL2 : CHAPTERS;
+    const chapterData = allChapters.find(c => c.id === chapterId);
     const lessonData = chapterData?.lessons.find(l => l.darsNumber === darsNumber);
     const rawChunks = lessonData?.chunks || [];
 
@@ -90,7 +94,7 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
         // Persist last-visited index
         setLastVisited(idx);
         AsyncStorage.setItem(progressKey(chapterId, darsNumber), String(idx));
-        navigation.navigate('ChunkEngine', { chunkId, chapterId, darsNumber });
+        navigation.navigate('ChunkEngine', { chunkId, volumeNumber, chapterId, darsNumber });
     };
 
     return (

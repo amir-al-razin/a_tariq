@@ -286,7 +286,13 @@ export const VolumeTwoScreen: React.FC = () => {
                   entryDelay={idx * 30}
                   isDark={isDark}
                   onPress={() => {
-                    // TODO: navigate to Vol2 lesson when content is ready
+                    navigation.navigate('Lesson', {
+                      volumeNumber: 2,
+                      chapterId: chapter.id,
+                      chapterTitleAr: chapter.titleAr,
+                      chapterTitleEn: chapter.titleEn,
+                      darsNumber: num,
+                    });
                   }}
                 />
               ))}

@@ -4,6 +4,7 @@ import { useColorScheme } from 'nativewind';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { CHAPTERS } from '../data/curriculum';
+import { CHAPTERS_VOL2 } from '../data/curriculum_vol2';
 import { VocabularyView } from '../components/pedagogy/VocabularyView';
 import { GrammarRuleView } from '../components/pedagogy/GrammarRuleView';
 import { ApplicationView } from '../components/pedagogy/ApplicationView';
@@ -18,6 +19,7 @@ type ChunkEngineProps = {
     route: {
         params: {
             chunkId: string;
+            volumeNumber: number;
             chapterId: number;
             darsNumber: number;
         };
@@ -27,7 +29,7 @@ type ChunkEngineProps = {
 const SCROLL_COMPLETE_TYPES = ['grammar_rule', 'application', 'mixed', 'tarkeeb', 'verb_table', 'paragraph', 'masdar_factory'];
 
 export const ChunkEngineScreen: React.FC<ChunkEngineProps> = ({ route }) => {
-    const { chunkId, chapterId, darsNumber } = route.params;
+    const { chunkId, chapterId, darsNumber, volumeNumber } = route.params;
     const navigation = useNavigation();
     const { colorScheme } = useColorScheme();
     const isDark = colorScheme === 'dark';
@@ -71,7 +73,8 @@ export const ChunkEngineScreen: React.FC<ChunkEngineProps> = ({ route }) => {
         primary800: '#0F5F4D',
     };
 
-    const chapter = CHAPTERS.find(c => c.id === chapterId);
+    const allChapters = volumeNumber === 2 ? CHAPTERS_VOL2 : CHAPTERS;
+    const chapter = allChapters.find(c => c.id === chapterId);
     const lesson = chapter?.lessons.find(l => l.darsNumber === darsNumber);
     const chunk = lesson?.chunks.find(c => c.id === chunkId);
 

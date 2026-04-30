@@ -247,6 +247,7 @@ export const VolumeOneScreen: React.FC = () => {
 
   const goToLesson = (chapter: ChapterData, darsNum: number) =>
     navigation.navigate('Lesson', {
+      volumeNumber: 1,
       chapterId: chapter.id,
       chapterTitleAr: chapter.titleAr,
       chapterTitleEn: chapter.titleEn,
