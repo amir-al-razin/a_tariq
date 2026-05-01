@@ -16,6 +16,7 @@ interface Props {
 const TreeNode: React.FC<{ node: TarkeebNode; isDark: boolean; C: Record<string, string>; depth?: number }> = ({
     node, isDark, C, depth = 0,
 }) => {
+    const { t_content } = useLanguage();
     const isLeaf = !node.children || node.children.length === 0;
     return (
         <View style={{ alignItems: 'center', marginHorizontal: 6 }}>
@@ -39,7 +40,7 @@ const TreeNode: React.FC<{ node: TarkeebNode; isDark: boolean; C: Record<string,
                 {node.label}
             </Text>
             <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 9, color: isDark ? C.neutral500 : C.neutral400, textAlign: 'center' }}>
-                {node.labelEn}
+                {t_content(node.labelEn, node.labelBn)}
             </Text>
             {/* Branch line + children */}
             {!isLeaf && (
@@ -72,7 +73,7 @@ export const TarkeebView: React.FC<Props> = ({ isDark, C, payload, onProgress, o
     }, []);
 
     if (items.length === 0) {
-        return <Text style={{ color: isDark ? C.neutral400 : C.neutral500 }}>No Tarkeeb data.</Text>;
+        return <Text style={{ color: isDark ? C.neutral400 : C.neutral500 }}>{t('tarkeeb.noData')}</Text>;
     }
 
     return (

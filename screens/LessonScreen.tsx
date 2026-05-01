@@ -31,6 +31,25 @@ const C = {
 import { CHAPTERS } from '../data/curriculum';
 import { CHAPTERS_VOL2 } from '../data/curriculum_vol2';
 
+// Volume accent palettes — matches VolumeOneScreen / VolumeTwoScreen / VolumeThreeScreen
+const VOLUME_ACCENT = {
+    1: { // teal
+        accent100: '#D1FAEF', accent300: '#6EE7C8', accent400: '#34D3AA',
+        accent500: '#16B78E', accent600: '#0F9373', accent700: '#0D775F',
+        accent800: '#0F5F4D', accent900: '#0A4134',
+    },
+    2: { // amber
+        accent100: '#FEF3C7', accent300: '#FCD34D', accent400: '#FBBF24',
+        accent500: '#F59E0B', accent600: '#D97706', accent700: '#B45309',
+        accent800: '#92400E', accent900: '#78350F',
+    },
+    3: { // violet
+        accent100: '#EDE9FE', accent300: '#C4B5FD', accent400: '#A78BFA',
+        accent500: '#8B5CF6', accent600: '#7C3AED', accent700: '#6D28D9',
+        accent800: '#5B21B6', accent900: '#4C1D95',
+    },
+} as const;
+
 type LessonScreenProps = {
     route: {
         params: {
@@ -56,10 +75,13 @@ const progressKey = (chapterId: number, darsNumber: number) =>
     `lesson_progress_${chapterId}_${darsNumber}`;
 
 export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation }) => {
-    const { chapterId, chapterTitleAr, chapterTitleEn, darsNumber, volumeNumber } = route.params;
+    const { chapterId, chapterTitleAr, chapterTitleEn, darsNumber, volumeNumber = 1 } = route.params;
     const { colorScheme } = useColorScheme();
     const isDark = colorScheme === 'dark';
     const { t } = useTranslation();
+
+    const accent = VOLUME_ACCENT[(volumeNumber as 1 | 2 | 3)] ?? VOLUME_ACCENT[1];
+    const allChapters = volumeNumber === 2 ? CHAPTERS_VOL2 : CHAPTERS;
 
     // Last-visited chunk index (persisted)
     const [lastVisited, setLastVisited] = useState<number | null>(null);
@@ -70,7 +92,6 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
         });
     }, [chapterId, darsNumber]);
 
-    const allChapters = volumeNumber === 2 ? CHAPTERS_VOL2 : CHAPTERS;
     const chapterData = allChapters.find(c => c.id === chapterId);
     const lessonData = chapterData?.lessons.find(l => l.darsNumber === darsNumber);
     const rawChunks = lessonData?.chunks || [];
@@ -145,20 +166,20 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                     const y = dynamicRadius * Math.sin(angle);
 
                     const circleBg = isLastVisited
-                        ? C.primary500
-                        : (isCurrent || isCompleted) ? C.primary500
+                        ? accent.accent500
+                        : (isCurrent || isCompleted) ? accent.accent500
                             : isLocked ? (isDark ? C.neutral700 : C.neutral300)
-                                : (isDark ? C.primary800 : C.primary100);
+                                : (isDark ? accent.accent800 : accent.accent100);
 
                     const circleBorder = isLastVisited
-                        ? C.primary700
-                        : (isCurrent || isCompleted) ? (isDark ? C.primary700 : C.primary600)
-                            : isLocked ? (isDark ? C.neutral900 : C.neutral500)
-                                : (isDark ? C.primary900 : C.primary200);
+                        ? accent.accent700
+                        : (isCurrent || isCompleted) ? (isDark ? accent.accent700 : accent.accent600)
+                            : isLocked ? (isDark ? C.neutral600 : C.neutral500)
+                                : (isDark ? accent.accent900 : accent.accent200);
 
                     const iconColor = isLastVisited || isCurrent || isCompleted ? '#fff'
                         : isLocked ? (isDark ? C.neutral600 : C.neutral700)
-                            : (isDark ? C.primary300 : C.primary600);
+                            : (isDark ? accent.accent300 : accent.accent600);
 
                     return (
                         <View
@@ -227,14 +248,14 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                                                                 position: 'absolute',
                                                                 top: -30,
                                                                 alignSelf: 'center',
-                                                                backgroundColor: isLastVisited ? C.primary700 : C.primary100,
-                                                                borderColor: isLastVisited ? C.primary400 : C.primary400,
+                                                                backgroundColor: isLastVisited ? accent.accent700 : accent.accent100,
+                                                                borderColor: isLastVisited ? accent.accent400 : accent.accent400,
                                                                 borderWidth: 1.5,
                                                                 borderRadius: 8,
                                                                 paddingHorizontal: 8,
                                                                 paddingVertical: 3,
                                                             }}>
-                                                            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 10, color: isLastVisited ? '#fff' : C.primary700 }}>
+                                                            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 10, color: isLastVisited ? '#fff' : accent.accent700 }}>
                                                                 {isLastVisited ? 'RESUME' : 'START'}
                                                             </Text>
                                                             <View style={{
@@ -242,10 +263,10 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                                                                 bottom: -4,
                                                                 alignSelf: 'center',
                                                                 width: 6, height: 6,
-                                                                backgroundColor: isLastVisited ? C.primary700 : C.primary100,
+                                                                backgroundColor: isLastVisited ? accent.accent700 : accent.accent100,
                                                                 borderRightWidth: 1.5,
                                                                 borderBottomWidth: 1.5,
-                                                                borderColor: C.primary400,
+                                                                borderColor: accent.accent400,
                                                                 transform: [{ rotate: '45deg' }],
                                                             }} />
                                                         </MotiView>

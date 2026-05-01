@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useColorScheme } from 'nativewind';
-import { Appearance, Pressable, ScrollView, Text, View } from 'react-native';
+import { useColorScheme, colorScheme as nwColorScheme } from 'nativewind';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../i18n/LanguageContext';
 import { LANGUAGES } from '../i18n';
@@ -14,9 +14,17 @@ export const SettingsScreen: React.FC = () => {
   const { language, setLanguage } = useLanguage();
 
   const selectTheme = async (theme: 'light' | 'dark') => {
-    Appearance.setColorScheme(theme);
-    setColorScheme(theme);
-    await AsyncStorage.setItem(THEME_STORAGE_KEY, theme);
+    try {
+      // Save to persistent storage
+      await AsyncStorage.setItem(THEME_STORAGE_KEY, theme);
+      
+      // Apply color scheme - this will automatically update useColorScheme hook
+      nwColorScheme.set(theme);
+      
+      console.log('[THEME] Set to:', theme);
+    } catch (error) {
+      console.warn('[THEME] Failed to set theme:', error);
+    }
   };
 
   return (

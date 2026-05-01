@@ -15,7 +15,7 @@ export const QAndAView: React.FC<Props> = ({ isDark, C, payload, onProgress, onC
     const [selected, setSelected] = useState<string | null>(null);
     const [revealed, setRevealed] = useState(false);
 
-    if (questions.length === 0) return <Text style={{ color: isDark ? C.neutral100 : C.neutral800 }}>No questions yet.</Text>;
+    if (questions.length === 0) return <Text style={{ color: isDark ? C.neutral100 : C.neutral800 }}>{t('qanda.noQuestions')}</Text>;
 
     const q = questions[currentIndex];
     const isCorrect = selected === q.correct_ar;
@@ -42,7 +42,7 @@ export const QAndAView: React.FC<Props> = ({ isDark, C, payload, onProgress, onC
         <View style={{ width: '100%', alignItems: 'center' }}>
             {instruction ? (
                 <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral600, marginBottom: 20, textAlign: 'center', fontStyle: 'italic' }}>
-                    {instruction}
+                    {t_content(instruction, payload?.instructionBn)}
                 </Text>
             ) : null}
 
@@ -59,7 +59,7 @@ export const QAndAView: React.FC<Props> = ({ isDark, C, payload, onProgress, onC
             </View>
 
             <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 30, color: isDark ? C.neutral100 : C.neutral800, marginBottom: 4 }}>{q.question_ar}</Text>
-            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral400 : C.neutral600, marginBottom: 24 }}>{t_content(q.question_en)}</Text>
+            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral400 : C.neutral600, marginBottom: 24 }}>{t_content(q.question_en, q.question_bn)}</Text>
 
             {/* Options */}
             <View style={{ width: '100%', gap: 10 }}>
@@ -90,7 +90,7 @@ export const QAndAView: React.FC<Props> = ({ isDark, C, payload, onProgress, onC
                         {isCorrect ? t('qanda.correct') : t('qanda.notQuite')}
                     </Text>
                     <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral800 }}>{q.correct_ar}</Text>
-                    <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral600 }}>{t_content(q.correct_en)}</Text>
+                    <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral600 }}>{t_content(q.correct_en, q.correct_bn)}</Text>
                 </View>
             )}
 

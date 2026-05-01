@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../i18n/LanguageContext';
 import type { VocabWord } from '../../data/curriculum';
 
 const FALLBACK_WORDS: VocabWord[] = [
@@ -11,6 +13,8 @@ const FALLBACK_WORDS: VocabWord[] = [
 type Props = { isDark: boolean; C: any; payload?: any; onProgress?: (v: number) => void; onComplete?: () => void };
 
 export const VocabularyView: React.FC<Props> = ({ isDark, C, payload, onProgress, onComplete }) => {
+    const { t } = useTranslation();
+    const { t_content } = useLanguage();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [flipped, setFlipped] = useState(false);
     const [done, setDone] = useState(false);
@@ -20,6 +24,7 @@ export const VocabularyView: React.FC<Props> = ({ isDark, C, payload, onProgress
     const isLast = currentIndex === words.length - 1;
     const isFirst = currentIndex === 0;
     const total = words.length;
+    const meaning = t_content(word.en, word.bn);
 
     useEffect(() => {
         if (done) {
@@ -74,7 +79,13 @@ export const VocabularyView: React.FC<Props> = ({ isDark, C, payload, onProgress
     return (
         <View style={{ width: '100%', alignItems: 'center' }}>
             <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral400 : C.neutral600, marginBottom: 20 }}>
-                {done ? '🎉 All words reviewed!' : !flipped ? 'Tap card or use arrows' : isLast ? 'Tap to finish' : 'Tap again for next word'}
+                {done
+                    ? t('vocabulary.allReviewed')
+                    : !flipped
+                        ? t('vocabulary.tapCard')
+                        : isLast
+                            ? t('vocabulary.tapToFinish')
+                            : t('vocabulary.tapForNext')}
             </Text>
 
             {/* Card */}
@@ -87,8 +98,7 @@ export const VocabularyView: React.FC<Props> = ({ isDark, C, payload, onProgress
                     </View>
                 ) : (
                     <View style={{ flex: 1, minHeight: 200, backgroundColor: isDark ? C.neutral800 : C.neutral50, alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-                        <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 28, color: isDark ? C.neutral100 : C.neutral800, textAlign: 'center' }}>{word.en}</Text>
-                        <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 18, color: isDark ? C.neutral400 : C.neutral600, marginTop: 8, textAlign: 'center' }}>{word.bn}</Text>
+                        <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 28, color: isDark ? C.neutral100 : C.neutral800, textAlign: 'center' }}>{meaning}</Text>
                     </View>
                 )}
             </Pressable>
@@ -116,7 +126,7 @@ export const VocabularyView: React.FC<Props> = ({ isDark, C, payload, onProgress
                     }}>
                     <Ionicons name="arrow-back" size={18} color={isDark ? C.neutral300 : C.neutral600} />
                     <Text style={{ fontFamily: 'Lexend_500Medium', fontSize: 14, color: isDark ? C.neutral300 : C.neutral600 }}>
-                        {flipped ? 'Flip back' : 'Previous'}
+                        {flipped ? t('vocabulary.flipBack') : t('vocabulary.previous')}
                     </Text>
                 </Pressable>
 
@@ -130,7 +140,7 @@ export const VocabularyView: React.FC<Props> = ({ isDark, C, payload, onProgress
                         opacity: done ? 0.4 : 1,
                     }}>
                     <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 14, color: done ? (isDark ? C.neutral500 : C.neutral500) : '#fff' }}>
-                        {!flipped ? 'Reveal' : isLast ? 'Finish' : 'Next'}
+                        {!flipped ? t('vocabulary.reveal') : isLast ? t('vocabulary.finish') : t('vocabulary.next')}
                     </Text>
                     <Ionicons name={!flipped ? 'eye-outline' : isLast ? 'checkmark' : 'arrow-forward'} size={18} color={done ? (isDark ? C.neutral500 : C.neutral500) : '#fff'} />
                 </Pressable>

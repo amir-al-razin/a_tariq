@@ -10,13 +10,13 @@ export const lesson03: LessonData = {
             titleAr: 'المَصَادِر الأَسَاسِيَّة',
             payload: {
                 words: [
-                    { id: 1, ar: 'الْفِعْلُ', romanized: 'al-fi'l', en: 'To do (the act)', emoji: '✅' },
+                    { id: 1, ar: 'الْفِعْلُ', romanized: "al-fi'l", en: 'To do (the act)', emoji: '✅' },
                     { id: 2, ar: 'الْخُرُوجُ', romanized: 'al-khurūj', en: 'To exit / go out', emoji: '🚪' },
                     { id: 3, ar: 'الذَّهَابُ', romanized: 'adh-dhahāb', en: 'To go', emoji: '🚶' },
                     { id: 4, ar: 'الْجُلُوسُ', romanized: 'al-julūs', en: 'To sit', emoji: '🪑' },
                     { id: 5, ar: 'الْقِرَاءَةُ', romanized: "al-qirā'ah", en: 'To read', emoji: '📖' },
                     { id: 6, ar: 'الْكِتَابَةُ', romanized: 'al-kitābah', en: 'To write', emoji: '✍️' },
-                    { id: 7, ar: 'الرُّجُوعُ', romanized: 'ar-rujū'', en: 'To return', emoji: '↩️' },
+                    { id: 7, ar: 'الرُّجُوعُ', romanized: "ar-rujū'", en: 'To return', emoji: '↩️' },
                     { id: 8, ar: 'اللَّعِبُ', romanized: "al-la'ib", en: 'To play', emoji: '⚽' },
                 ],
             },
@@ -105,7 +105,7 @@ export const lesson03: LessonData = {
         {
             id: '2-1-3-7',
             type: 'masdar_factory',
-            titleEn: 'Verb Patterns — Bāb Sami\'a (بَابُ سَمِعَ)',
+            titleEn: "Verb Patterns — Bāb Sami\'a (بَابُ سَمِعَ)",
             titleAr: 'بَابُ سَمِعَ يَسْمَعُ',
             payload: {
                 baabLabel: 'بَابُ سَمِعَ يَسْمَعُ',

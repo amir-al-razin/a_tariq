@@ -76,6 +76,7 @@ const ChapterBanner: React.FC<{ chapter: ChapterData; idx: number; isDark: boole
       backgroundColor: isDark ? C.neutral800 : C.neutral100,
     }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 20 }}>
+        {/* Left side */}
         <View style={{ flex: 1, paddingRight: 12 }}>
           <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: isDark ? C.primary400 : C.primary600, marginBottom: 6 }}>
             {t('volume.chapterMeta', { id: chapter.id, count: chapter.lessons.length })}
@@ -87,6 +88,8 @@ const ChapterBanner: React.FC<{ chapter: ChapterData; idx: number; isDark: boole
             {t(`vol1chapters.${chapter.id}subtitle`)}
           </Text>
         </View>
+
+        {/* Arabic title */}
         <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.neutral300 : C.neutral700, textAlign: 'right' }}>
           {chapter.titleAr}
         </Text>
@@ -122,6 +125,7 @@ type LessonRowProps = {
 const LessonRow: React.FC<LessonRowProps> = ({
   darsNum, status, waveX, trackWidth, isFirstInChapter, entryDelay, isDark, onPress,
 }) => {
+  const { t } = useTranslation();
   const usable = trackWidth - 2 * H_PAD;
   const nodeLeft = Math.round(H_PAD + waveX * usable - NODE_SIZE / 2);
   const nodeRight = trackWidth - nodeLeft - NODE_SIZE;
@@ -222,11 +226,11 @@ const LessonRow: React.FC<LessonRowProps> = ({
         {/* Label sits next to the circle */}
         <View style={{ paddingHorizontal: 12 }}>
           <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: labelColor }}>
-            Dars {darsNum}
+            {t('lesson.dars', { number: darsNum })}
           </Text>
           {isCurrent && (
             <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 12, color: isDark ? C.primary400 : C.primary500, marginTop: 2 }}>
-              In progress
+              {t('lesson.inProgress')}
             </Text>
           )}
         </View>
@@ -244,10 +248,10 @@ export const VolumeOneScreen: React.FC = () => {
   const navigation = useNavigation<Nav>();
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
+  const { t } = useTranslation();
 
   const goToLesson = (chapter: ChapterData, darsNum: number) =>
     navigation.navigate('Lesson', {
-      volumeNumber: 1,
       chapterId: chapter.id,
       chapterTitleAr: chapter.titleAr,
       chapterTitleEn: chapter.titleEn,
@@ -265,10 +269,10 @@ export const VolumeOneScreen: React.FC = () => {
         <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
           <View>
             <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 28, lineHeight: 34, color: isDark ? C.primary100 : C.primary700 }}>
-              Volume One
+              {t('volume.vol1Title')}
             </Text>
             <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral400 : C.neutral600, marginTop: 4 }}>
-              3 chapters · 20 lessons
+              {t('volume.vol1Meta')}
             </Text>
           </View>
           <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 22, color: isDark ? C.primary300 : C.primary700, textAlign: 'right' }}>
@@ -330,10 +334,10 @@ export const VolumeOneScreen: React.FC = () => {
             <Ionicons name="trophy-outline" size={24} color={isDark ? C.primary400 : C.primary600} />
           </View>
           <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral900 }}>
-            تم الجزء الأول بفضل الله
+            {t('volume.vol1End')}
           </Text>
           <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral400 : C.neutral600, marginTop: 8, textAlign: 'center' }}>
-            End of Part One · by the grace of Allah
+            {t('volume.endOfPart', { number: 1 })}
           </Text>
         </View>
       </View>

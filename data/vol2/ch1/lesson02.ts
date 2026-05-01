@@ -29,7 +29,7 @@ export const lesson02: LessonData = {
                     {
                         label: 'Negative Past — مَا + past verb',
                         arabic: 'مَا فَعَلَ',
-                        romanized: 'mā fa'ala',
+                        romanized: "mā fa'ala",
                         meaning: 'He did not do',
                         examples: [
                             { ar: 'مَا ذَهَبَ', en: 'He did not go.' },
@@ -40,7 +40,7 @@ export const lesson02: LessonData = {
                     {
                         label: 'Negative Present/Future — لَا + present verb',
                         arabic: 'لَا يَفْعَلُ',
-                        romanized: 'lā yaf'alu',
+                        romanized: "lā yaf'alu",
                         meaning: 'He does not do / will not do',
                         examples: [
                             { ar: 'لَا يَذْهَبُ', en: 'He does not go.' },
@@ -128,7 +128,7 @@ export const lesson02: LessonData = {
                 instruction: 'Choose the correct answer based on the reading passage.',
                 questions: [
                     { emoji: '🏫', question_ar: 'هَلْ ذَهَبَ أَخُو شَاهِدٍ إِلَى الْمَدْرَسَةِ ؟', question_en: "Did Shahid's brother go to the madrasa?", correct_ar: 'لَا .. مَا ذَهَبَ', correct_en: 'No, he did not go.', options_ar: ['لَا .. مَا ذَهَبَ', 'نَعَمْ .. ذَهَبَ', 'بَلَى .. ذَهَبَ'], questionType: 'hal' },
-                    { emoji: '📖', question_ar: 'مَاذَا فَعَلَتْ سُعَادُ ؟', question_en: 'What did Su\'ad do?', correct_ar: 'قَرَأَتْ وَكَتَبَتْ', correct_en: 'She read and wrote.', options_ar: ['قَرَأَتْ وَكَتَبَتْ', 'لَعِبَتْ فِي الْحَدِيقَةِ', 'ذَهَبَتْ إِلَى الْمَدْرَسَةِ'], questionType: 'general' },
+                    { emoji: '📖', question_ar: 'مَاذَا فَعَلَتْ سُعَادُ ؟', question_en: "What did Su\'ad do?", correct_ar: 'قَرَأَتْ وَكَتَبَتْ', correct_en: 'She read and wrote.', options_ar: ['قَرَأَتْ وَكَتَبَتْ', 'لَعِبَتْ فِي الْحَدِيقَةِ', 'ذَهَبَتْ إِلَى الْمَدْرَسَةِ'], questionType: 'general' },
                     { emoji: '🌙', question_ar: 'مَتَى ذَهَبَتْ سُعَادُ إِلَى فِرَاشِهَا ؟', question_en: "When did Su'ad go to her bed?", correct_ar: 'ذَهَبَتْ بَعْدَ الْعِشَاءِ', correct_en: 'She went after Isha.', options_ar: ['ذَهَبَتْ بَعْدَ الْعِشَاءِ', 'ذَهَبَتْ قَبْلَ الْعِشَاءِ', 'ذَهَبَتْ صَبَاحًا'], questionType: 'general' },
                     { emoji: '✍️', question_ar: 'أَبِشِمَالِهِ يَكْتُبُ الْإِنْسَانُ أَمْ بِيَمِينِهِ ؟', question_en: 'Does a person write with his left or right hand?', correct_ar: 'يَكْتُبُ بِيَمِينِهِ', correct_en: 'He writes with his right hand.', options_ar: ['يَكْتُبُ بِيَمِينِهِ', 'يَكْتُبُ بِشِمَالِهِ', 'يَكْتُبُ بِكِلَيْهِمَا'], questionType: 'a_am' },
                 ],

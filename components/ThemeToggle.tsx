@@ -1,12 +1,26 @@
-import { useColorScheme } from 'nativewind';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useColorScheme, colorScheme as nwColorScheme } from 'nativewind';
 import { Pressable, Text } from 'react-native';
+
+const THEME_STORAGE_KEY = 'app.theme.preference';
 
 export const ThemeToggle: React.FC = () => {
   const { colorScheme, setColorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
 
-  const toggleTheme = () => {
-    setColorScheme(isDark ? 'light' : 'dark');
+  const toggleTheme = async () => {
+    const newTheme = isDark ? 'light' : 'dark';
+    try {
+      // Save to persistent storage
+      await AsyncStorage.setItem(THEME_STORAGE_KEY, newTheme);
+      
+      // Apply color scheme - this will automatically update useColorScheme hook
+      nwColorScheme.set(newTheme);
+      
+      console.log('[THEME] Toggled to:', newTheme);
+    } catch (error) {
+      console.warn('[THEME] Failed to toggle theme:', error);
+    }
   };
 
   return (

@@ -83,7 +83,8 @@
   "qanda": {
     "correct": "✓ Correct!",
     "notQuite": "✗ Not quite",
-    "nextQuestion": "Next →"
+    "nextQuestion": "Next →",
+    "noQuestions": "No questions yet."
   },
   "idafah": {
     "basePhrase": "Base Phrase",
@@ -93,7 +94,32 @@
   },
   "tarkeeb": {
     "completeSentence": "Complete Sentence",
-    "incompletePhrase": "Incomplete Phrase"
+    "incompletePhrase": "Incomplete Phrase",
+    "noData": "No Tarkeeb data."
+  },
+  "verbTable": {
+    "noData": "No verb data.",
+    "root": "Root",
+    "meaning": "Meaning",
+    "tense": {
+      "past": "Past Tense",
+      "present": "Present / Future Tense",
+      "imperative": "Command & Prohibition"
+    },
+    "pronoun": {
+      "he": "He",
+      "she": "She",
+      "youM": "You (m)",
+      "youF": "You (f)",
+      "i": "I"
+    }
+  },
+  "masdar": {
+    "verbalNoun": "Verbal Noun",
+    "past": "Past",
+    "present": "Present",
+    "command": "Command",
+    "prohibit": "Prohibit"
   },
   "paragraph": {
     "revealTranslation": "Reveal translation",

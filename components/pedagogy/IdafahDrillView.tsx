@@ -49,7 +49,7 @@ export const IdafahDrillView: React.FC<Props> = ({ isDark, C, payload, onProgres
             {payload?.instruction && (
                 <View style={{ backgroundColor: isDark ? '#0D775F22' : '#D1FAF0', borderRadius: 8, padding: 10, marginBottom: 4 }}>
                     <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 12, color: isDark ? C.primary400 : C.primary700, textAlign: 'center' }}>
-                        {payload.instruction}
+                        {t_content(payload.instruction, payload.instructionBn)}
                     </Text>
                 </View>
             )}

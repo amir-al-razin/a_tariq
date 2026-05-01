@@ -23,8 +23,7 @@ import { useFonts } from 'expo-font';
 import { useEffect, useState } from 'react';
 
 import './global.css';
-import { useColorScheme } from 'nativewind';
-import { Appearance } from 'react-native';
+import { colorScheme as nwColorScheme, useColorScheme } from 'nativewind';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator();
@@ -43,23 +42,30 @@ export default function App() {
     NotoSansArabic_600SemiBold,
   });
 
+  // Load saved theme preference on app start
   useEffect(() => {
-    const loadTheme = async () => {
-      const savedTheme = await AsyncStorage.getItem(THEME_STORAGE_KEY);
-
-      if (savedTheme === 'light' || savedTheme === 'dark') {
-        Appearance.setColorScheme(savedTheme);
-        setColorScheme(savedTheme);
-      } else {
-        Appearance.setColorScheme('light');
-        setColorScheme('light');
+    const initTheme = async () => {
+      try {
+        const savedTheme = await AsyncStorage.getItem(THEME_STORAGE_KEY);
+        // Only apply if it's a valid value
+        if (savedTheme === 'light' || savedTheme === 'dark') {
+          nwColorScheme.set(savedTheme);
+          setColorScheme(savedTheme);
+          console.log('[THEME] Restored saved theme:', savedTheme);
+        } else {
+          // Clear invalid values
+          await AsyncStorage.removeItem(THEME_STORAGE_KEY);
+          console.log('[THEME] Using system preference');
+        }
+      } catch (error) {
+        console.warn('[THEME] Error loading theme:', error);
+      } finally {
+        setThemeReady(true);
       }
-
-      setThemeReady(true);
     };
 
-    void loadTheme();
-  }, [setColorScheme]);
+    initTheme();
+  }, []);
 
   if (!fontsLoaded || !themeReady) {
     return null;
@@ -80,7 +86,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <SafeAreaView
-        className="flex-1 bg-neutral-50 dark:bg-neutral-900"
+        className={`flex-1 bg-neutral-50 dark:bg-neutral-900 ${isDark ? 'dark' : ''}`}
         edges={['top', 'left', 'right']}>
         <LanguageProvider>
           <NavigationContainer theme={navigationTheme}>

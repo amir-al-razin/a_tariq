@@ -68,8 +68,9 @@ type LessonStatus = 'completed' | 'current' | 'open' | 'locked';
 type Nav = NativeStackNavigationProp<HomeStackParamList, 'VolumeTwo'>;
 
 const getLessonStatus = (darsNum: number, chapterId: number): LessonStatus => {
-  // Chapter 1, Lesson 1 is the entry point — everything else locked until content is ready
-  if (chapterId === 1 && darsNum === 1) return 'current';
+  if (chapterId === 1 && darsNum <= 22) return 'open'; // Ch1: all 22 lessons populated
+  if (chapterId === 2 && darsNum <= 9) return 'open';  // Ch2: all 9 lessons populated
+  if (chapterId === 3 && darsNum <= 3) return 'open';  // Ch3: all 3 lessons populated
   return 'locked';
 };
 

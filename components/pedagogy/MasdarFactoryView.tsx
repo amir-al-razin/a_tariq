@@ -18,10 +18,10 @@ interface Props {
 
 // Column header config
 const COLS = [
-    { key: 'past',        arLabel: 'مَاضٍ',   enLabel: 'Past' },
-    { key: 'present',     arLabel: 'مُضَارِع', enLabel: 'Present' },
-    { key: 'imperative',  arLabel: 'أَمْر',    enLabel: 'Command' },
-    { key: 'prohibitive', arLabel: 'نَهْي',    enLabel: 'Prohibit' },
+    { key: 'past',        arLabel: 'مَاضٍ',   labelKey: 'masdar.past' },
+    { key: 'present',     arLabel: 'مُضَارِع', labelKey: 'masdar.present' },
+    { key: 'imperative',  arLabel: 'أَمْر',    labelKey: 'masdar.command' },
+    { key: 'prohibitive', arLabel: 'نَهْي',    labelKey: 'masdar.prohibit' },
 ] as const;
 
 export const MasdarFactoryView: React.FC<Props> = ({
@@ -76,7 +76,7 @@ export const MasdarFactoryView: React.FC<Props> = ({
                     textAlign: 'center',
                     fontStyle: 'italic',
                 }}>
-                    {payload.instruction}
+                    {t_content(payload.instruction, payload.instructionBn)}
                 </Text>
             )}
 
@@ -110,7 +110,7 @@ export const MasdarFactoryView: React.FC<Props> = ({
                                 مَصْدَر
                             </Text>
                             <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 10, color: textSub }}>
-                                Verbal Noun
+                                {t('masdar.verbalNoun')}
                             </Text>
                         </View>
 
@@ -129,7 +129,7 @@ export const MasdarFactoryView: React.FC<Props> = ({
                                     {col.arLabel}
                                 </Text>
                                 <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 10, color: textSub }}>
-                                    {col.enLabel}
+                                    {t(col.labelKey)}
                                 </Text>
                             </View>
                         ))}
@@ -173,7 +173,7 @@ export const MasdarFactoryView: React.FC<Props> = ({
                                     color: textSub,
                                     textAlign: 'center',
                                 }}>
-                                    {row.masdarEn}
+                                    {t_content(row.masdarEn, row.masdarBn)}
                                 </Text>
                             </View>
 
@@ -221,7 +221,7 @@ export const MasdarFactoryView: React.FC<Props> = ({
                             {col.arLabel}
                         </Text>
                         <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 11, color: textSub }}>
-                            = {col.enLabel}
+                            = {t(col.labelKey)}
                         </Text>
                     </View>
                 ))}

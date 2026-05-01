@@ -10,11 +10,14 @@ export const ApplicationView: React.FC<Props> = ({ isDark, C, payload }) => {
     const { t } = useTranslation();
     const { t_content } = useLanguage();
     const items: ApplicationItem[] = payload?.items || [];
+    const instruction = payload?.instruction
+        ? t_content(payload.instruction, payload.instructionBn)
+        : t('chunk.reviewThenContinue');
 
     return (
         <View style={{ width: '100%', alignItems: 'center' }}>
             <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral300 : C.neutral600, marginBottom: 20, textAlign: 'center' }}>
-                {payload?.instruction ?? t('chunk.reviewThenContinue')}
+                {instruction}
             </Text>
 
             {items.map((item, i) => (

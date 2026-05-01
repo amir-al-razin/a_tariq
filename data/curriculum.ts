@@ -8,19 +8,11 @@ export type ChunkType =
     | 'tarkeeb'
     | 'verb_table'
     | 'idafah_drill'
-    | 'paragraph'
-    | 'masdar_factory';
+    | 'paragraph';
 
 // ─────────────────────────────────────────────
 // Payload types (typed for engine templates)
 // ─────────────────────────────────────────────
-
-// ─────────────────────────────────────────────
-// Content translation helper type
-// Add new language codes here when expanding.
-// Components use t_content(word.en, word.bn) via LanguageContext.
-// ─────────────────────────────────────────────
-export type SupportedContentLang = 'en' | 'bn';
 
 export interface VocabWord {
     id: number;
@@ -28,40 +20,38 @@ export interface VocabWord {
     ar: string;
     /** Transliteration */
     romanized: string;
-    /** English meaning — primary content language */
+    /** English meaning */
     en: string;
-    /** Bangla meaning — secondary content language (rendered when app language = bn) */
+    /** Secondary language translation — stored but not rendered (multilingual future use) */
     bn?: string;
     emoji?: string;
 }
 
 export interface GrammarRule {
-    /** Display label — English */
     label: string;
+    labelBn?: string;
     arabic: string;
     romanized: string;
-    /** English meaning */
     meaning: string;
+    meaningBn?: string;
     examples?: { ar: string; en: string; bn?: string }[];
 }
 
 export interface ApplicationItem {
     emoji: string;
     ar: string;
-    /** English translation */
     en: string;
-    /** Bangla translation */
     bn?: string;
 }
 
 export interface QAItem {
     emoji: string;
     question_ar: string;
-    /** English question */
     question_en: string;
+    question_bn?: string;
     correct_ar: string;
-    /** English answer */
     correct_en: string;
+    correct_bn?: string;
     options_ar: string[];
     /** 'hal' = yes/no (هَلْ), 'a_am' = either/or (أَ...أَمْ), 'general' = open */
     questionType?: 'hal' | 'a_am' | 'general';
@@ -71,14 +61,15 @@ export interface QAItem {
 export interface TarkeebNode {
     label: string;    // grammatical role in Arabic (مُبْتَدَأ, خَبَر, مَوْصُوف, صِفَة…)
     labelEn: string;  // English label (Subject, Predicate, Qualified Noun, Adjective…)
+    labelBn?: string; // Bangla label
     text: string;     // the Arabic word(s)
     children?: TarkeebNode[];
 }
 
 export interface TarkeebItem {
-    sentence: string;       // full Arabic sentence
-    sentenceEn: string;     // English translation
-    sentenceBn?: string;    // Bangla translation (rendered when app language = bn)
+    sentence: string;            // full Arabic sentence
+    sentenceEn: string;          // English translation
+    sentenceBn?: string;         // secondary translation (not rendered — future use)
     type: 'complete' | 'incomplete';
     tree: TarkeebNode[];
 }
@@ -86,6 +77,7 @@ export interface TarkeebItem {
 export interface VerbTableRow {
     root: string;    // verb root (فَعَلَ)
     meaning: string; // English meaning (e.g. "to do")
+    meaningBn?: string;
     he: string;      // هُوَ
     she: string;     // هِيَ
     youM: string;    // أَنْتَ
@@ -93,34 +85,34 @@ export interface VerbTableRow {
     i: string;       // أَنَا
 }
 
+export interface MasdarRow {
+    masdar: string;
+    masdarEn: string;
+    masdarBn?: string;
+    past: string;
+    present: string;
+    imperative: string;
+    prohibitive: string;
+}
+
 /** A phrase-pair for Idafah drill: base phrase → expanded possession phrase */
 export interface IdafahPair {
-    baseAr: string;      // Arabic base
-    baseEn: string;      // English base
-    expandedAr: string;  // Arabic answer
-    expandedEn: string;  // English expanded
-    baseBn?: string;     // Bangla base (rendered when app language = bn)
-    expandedBn?: string; // Bangla expanded (rendered when app language = bn)
+    baseAr: string;      // Arabic base (e.g. "هَذِهِ الغُرْفَةُ")
+    baseEn: string;      // English base (e.g. "This room")
+    expandedAr: string;  // Arabic answer (e.g. "بَابُ هَذِهِ الغُرْفَةِ")
+    expandedEn: string;  // English expanded (e.g. "The door of this room")
+    baseBn?: string;     // secondary translation (not rendered — future use)
+    expandedBn?: string; // secondary translation (not rendered — future use)
 }
 
 /** A paragraph block for reading comprehension */
 export interface ParagraphBlock {
-    title?: string;          // Arabic title
-    titleEn?: string;        // English title
-    lines: string[];         // Arabic sentences in order
-    translationEn?: string;  // English translation (revealed on demand)
-    translationBn?: string;  // Bangla translation (rendered when app language = bn)
-}
-
-/** A single row in a Masdar Factory table: verbal noun → 4 derived forms */
-export interface MasdarRow {
-    masdar: string;       // الْخُرُوجُ
-    masdarEn: string;     // "to exit"
-    baab?: string;        // بَابُ نَصَرَ يَنْصُرُ (optional — shown as group header)
-    past: string;         // خَرَجَ
-    present: string;      // يَخْرُجُ
-    imperative: string;   // اُخْرُجْ
-    prohibitive: string;  // لَا تَخْرُجْ
+    title?: string;       // e.g. "فِي غُرْفَةِ فَاطِمَةَ"
+    titleEn?: string;
+    titleBn?: string;
+    lines: string[];      // Arabic sentences in order
+    translationEn?: string; // optional full English translation
+    translationBn?: string;
 }
 
 export interface ChunkPayload {
@@ -132,18 +124,19 @@ export interface ChunkPayload {
     verbTable?: VerbTableRow[];
     /** tense label shown above verb table: 'past' | 'present' | 'imperative' */
     verbTense?: 'past' | 'present' | 'imperative';
+    masdarRows?: MasdarRow[];
+    baabLabel?: string;
     idafahPairs?: IdafahPair[];
     paragraphs?: ParagraphBlock[];
-    masdarRows?: MasdarRow[];
-    /** optional Baab label shown above the masdar table */
-    baabLabel?: string;
     instruction?: string;
+    instructionBn?: string;
 }
 
 export interface CurriculumChunk {
     id: string;
     type: ChunkType;
     titleEn: string;
+    titleBn?: string;
     titleAr: string;
     payload?: ChunkPayload;
 }
@@ -157,7 +150,9 @@ export interface ChapterData {
     id: number;
     titleAr: string;
     titleEn: string;
+    titleBn?: string;
     subtitle: string;
+    subtitleBn?: string;
     lessons: LessonData[];
 }
 
