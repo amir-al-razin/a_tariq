@@ -25,6 +25,7 @@ import { useEffect, useState } from 'react';
 import './global.css';
 import { colorScheme as nwColorScheme, useColorScheme } from 'nativewind';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { Appearance } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 const THEME_STORAGE_KEY = 'app.theme.preference';
@@ -50,7 +51,8 @@ export default function App() {
         // Only apply if it's a valid value
         if (savedTheme === 'light' || savedTheme === 'dark') {
           nwColorScheme.set(savedTheme);
-          setColorScheme(savedTheme);
+          if (setColorScheme) setColorScheme(savedTheme);
+          Appearance.setColorScheme(savedTheme);
           console.log('[THEME] Restored saved theme:', savedTheme);
         } else {
           // Clear invalid values
@@ -86,7 +88,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <SafeAreaView
-        className={`flex-1 bg-neutral-50 dark:bg-neutral-900 ${isDark ? 'dark' : ''}`}
+        className="flex-1 bg-neutral-50 dark:bg-neutral-900"
         edges={['top', 'left', 'right']}>
         <LanguageProvider>
           <NavigationContainer theme={navigationTheme}>

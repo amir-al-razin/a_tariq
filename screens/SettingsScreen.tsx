@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useColorScheme, colorScheme as nwColorScheme } from 'nativewind';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, Text, View, Appearance } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../i18n/LanguageContext';
 import { LANGUAGES } from '../i18n';
@@ -20,6 +20,8 @@ export const SettingsScreen: React.FC = () => {
       
       // Apply color scheme - this will automatically update useColorScheme hook
       nwColorScheme.set(theme);
+      if (setColorScheme) setColorScheme(theme);
+      Appearance.setColorScheme(theme);
       
       console.log('[THEME] Set to:', theme);
     } catch (error) {
