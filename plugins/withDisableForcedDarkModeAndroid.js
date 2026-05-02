@@ -3,7 +3,7 @@ const { createRunOncePlugin, withAndroidStyles, AndroidConfig } = require('@expo
 function setForceDarkModeToFalse(styles) {
     styles = AndroidConfig.Styles.assignStylesValue(styles, {
         add: true,
-        parent: AndroidConfig.Styles.getAppThemeLightNoActionBarGroup(),
+        parent: "Theme.AppCompat.DayNight.NoActionBar",
         name: `android:forceDarkAllowed`,
         value: "false",
     });
