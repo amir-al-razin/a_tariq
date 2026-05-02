@@ -11,6 +11,7 @@ interface Props {
         masdarRows?: MasdarRow[];
         baabLabel?: string;
         instruction?: string;
+        instructionBn?: string;
     };
     onProgress: (v: number) => void;
     onComplete: () => void;

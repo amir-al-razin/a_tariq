@@ -8,7 +8,8 @@ export type ChunkType =
     | 'tarkeeb'
     | 'verb_table'
     | 'idafah_drill'
-    | 'paragraph';
+    | 'paragraph'
+    | 'masdar_factory';
 
 // ─────────────────────────────────────────────
 // Payload types (typed for engine templates)
@@ -93,6 +94,7 @@ export interface MasdarRow {
     present: string;
     imperative: string;
     prohibitive: string;
+    baab?: string;
 }
 
 /** A phrase-pair for Idafah drill: base phrase → expanded possession phrase */

@@ -7,7 +7,7 @@ import { ParagraphBlock } from '../../data/curriculum';
 interface Props {
     isDark: boolean;
     C: Record<string, string>;
-    payload?: { paragraphs?: ParagraphBlock[]; instruction?: string };
+    payload?: { paragraphs?: ParagraphBlock[]; instruction?: string; instructionBn?: string };
     onProgress: (v: number) => void;
     onComplete: () => void;
 }

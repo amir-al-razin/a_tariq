@@ -7,7 +7,7 @@ import { IdafahPair } from '../../data/curriculum';
 interface Props {
     isDark: boolean;
     C: Record<string, string>;
-    payload?: { idafahPairs?: IdafahPair[]; instruction?: string };
+    payload?: { idafahPairs?: IdafahPair[]; instruction?: string; instructionBn?: string };
     onProgress: (v: number) => void;
     onComplete: () => void;
 }
