@@ -252,6 +252,7 @@ export const VolumeOneScreen: React.FC = () => {
 
   const goToLesson = (chapter: ChapterData, darsNum: number) =>
     navigation.navigate('Lesson', {
+      volumeNumber: 1,
       chapterId: chapter.id,
       chapterTitleAr: chapter.titleAr,
       chapterTitleEn: chapter.titleEn,
@@ -334,7 +335,7 @@ export const VolumeOneScreen: React.FC = () => {
             <Ionicons name="trophy-outline" size={24} color={isDark ? C.primary400 : C.primary600} />
           </View>
           <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral900 }}>
-            {t('volume.vol1End')}
+            تم الجزء الثاني بفضل الله
           </Text>
           <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral400 : C.neutral600, marginTop: 8, textAlign: 'center' }}>
             {t('volume.endOfPart', { number: 1 })}

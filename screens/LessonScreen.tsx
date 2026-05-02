@@ -4,6 +4,7 @@ import { useColorScheme } from 'nativewind';
 import { Pressable, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const C = {
     primary50: '#ECFDF8',
@@ -175,7 +176,7 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                         ? accent.accent700
                         : (isCurrent || isCompleted) ? (isDark ? accent.accent700 : accent.accent600)
                             : isLocked ? (isDark ? C.neutral600 : C.neutral500)
-                                : (isDark ? accent.accent900 : accent.accent200);
+                                : (isDark ? accent.accent900 : accent.accent100);
 
                     const iconColor = isLastVisited || isCurrent || isCompleted ? '#fff'
                         : isLocked ? (isDark ? C.neutral600 : C.neutral700)
