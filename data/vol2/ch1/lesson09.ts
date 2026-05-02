@@ -14,7 +14,7 @@ export const lesson09: LessonData = {
                     { id: 2, ar: 'الْأَخْذُ', romanized: 'al-akhdh', en: 'Taking / to take', emoji: '✋' },
                     { id: 3, ar: 'الطَّبْخُ', romanized: 'aṭ-ṭabkh', en: 'Cooking / to cook', emoji: '🍳' },
                     { id: 4, ar: 'الْأُسْرَةُ', romanized: 'al-usrah', en: 'Family', emoji: '👨‍👩‍👧‍👦' },
-                    { id: 5, ar: 'غَدَاءٌ', romanized: "ghadā\'", en: 'Lunch', emoji: '🍱' },
+                    { id: 5, ar: 'غَدَاءٌ', romanized: "ghadā'", en: 'Lunch', emoji: '🍱' },
                     { id: 6, ar: 'عَشَاءٌ', romanized: "'ashā'", en: 'Dinner', emoji: '🍽️' },
                     { id: 7, ar: 'حَمَّامٌ', romanized: 'ḥammām', en: 'Bathroom', emoji: '🚿' },
                     { id: 8, ar: 'مُذْنِبٌ', romanized: 'mudhnib', en: 'Sinner', emoji: '😔' },
@@ -33,8 +33,8 @@ export const lesson09: LessonData = {
                     {
                         label: 'لِـ + مُضَارِع مَنْصُوب',
                         arabic: 'لِيَقْرَأَ / لِتَقْرَأَ / لِأَقْرَأَ',
-                        romanized: "li-yaqra\'a / li-taqra\"a / li-aqra\'a',
-                        meaning: "لِـ attached to the present tense verb (with fatha ending) = "in order to / so that'. Expresses purpose.',
+                        romanized: "li-yaqra'a / li-taqra'a / li-aqra'a",
+                        meaning: "لِـ attached to the present tense verb (with fatha ending) = 'in order to / so that'. Expresses purpose.",
                         examples: [
                             { ar: 'جَلَسَ شَاهِدٌ لِيَقْرَأَ', en: 'Shahid sat in order to read' },
                             { ar: 'جَلَسَتْ فَاطِمَةُ لِتَقْرَأَ', en: 'Fatima sat in order to read' },
@@ -109,10 +109,10 @@ export const lesson09: LessonData = {
             payload: {
                 instruction: 'Choose the correct لِـ + verb form for each masdar.',
                 questions: [
-                    { emoji: '✍️', question_ar: 'الْكِتَابَةُ → لِـ + هُوَ', question_en: "Writing → "in order for him to write'', correct_ar: 'لِيَكْتُبَ', correct_en: 'in order for him to write', options_ar: ['لِيَكْتُبَ', 'لِيَكْتُبُ', 'لِكَتَبَ'] },
-                    { emoji: '🥤', question_ar: 'الشُّرْبُ → لِـ + أَنَا', question_en: "Drinking → "in order for me to drink'', correct_ar: 'لِأَشْرَبَ', correct_en: 'in order for me to drink', options_ar: ['لِأَشْرَبَ', 'لِأَشْرَبُ', 'لِشَرِبَ'] },
-                    { emoji: '🌙', question_ar: 'الصَّوْمُ → لِـ + هِيَ', question_en: "Fasting → "in order for her to fast'', correct_ar: 'لِتَصُومَ', correct_en: 'in order for her to fast', options_ar: ['لِتَصُومَ', 'لِتَصُومُ', 'لِصَامَتْ'] },
-                    { emoji: '📨', question_ar: 'الإِرْسَالُ → لِـ + أَنْتَ', question_en: "Sending → "in order for you (m) to send'', correct_ar: 'لِتُرْسِلَ', correct_en: 'in order for you to send', options_ar: ['لِتُرْسِلَ', 'لِتُرْسِلُ', 'لِأَرْسَلَ'] },
+                    { emoji: '✍️', question_ar: 'الْكِتَابَةُ → لِـ + هُوَ', question_en: "Writing → in order for him to write", correct_ar: 'لِيَكْتُبَ', correct_en: 'in order for him to write', options_ar: ['لِيَكْتُبَ', 'لِيَكْتُبُ', 'لِكَتَبَ'] },
+                    { emoji: '🥤', question_ar: 'الشُّرْبُ → لِـ + أَنَا', question_en: "Drinking → in order for me to drink", correct_ar: 'لِأَشْرَبَ', correct_en: 'in order for me to drink', options_ar: ['لِأَشْرَبَ', 'لِأَشْرَبُ', 'لِشَرِبَ'] },
+                    { emoji: '🌙', question_ar: 'الصَّوْمُ → لِـ + هِيَ', question_en: "Fasting → in order for her to fast", correct_ar: 'لِتَصُومَ', correct_en: 'in order for her to fast', options_ar: ['لِتَصُومَ', 'لِتَصُومُ', 'لِصَامَتْ'] },
+                    { emoji: '📨', question_ar: 'الإِرْسَالُ → لِـ + أَنْتَ', question_en: "Sending → in order for you (m) to send", correct_ar: 'لِتُرْسِلَ', correct_en: 'in order for you to send', options_ar: ['لِتُرْسِلَ', 'لِتُرْسِلُ', 'لِأَرْسَلَ'] },
                 ],
             },
         },

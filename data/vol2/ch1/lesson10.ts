@@ -31,7 +31,7 @@ export const lesson10: LessonData = {
                         label: 'يُرِيدُ / تُرِيدُ / أُرِيدُ + أَنْ + مُضَارِع مَنْصُوب',
                         arabic: 'يُرِيدُ أَنْ يَفْعَلَ',
                         romanized: "yurīdu an yaf\'ala",
-                        meaning: ""Wants to do' — أَنْ puts the following verb in the subjunctive (fatha ending)',
+                        meaning: "'Wants to do' — أَنْ puts the following verb in the subjunctive (fatha ending)",
                         examples: [
                             { ar: 'يُرِيدُ أَنْ يَفْعَلَ', en: 'He wants to do' },
                             { ar: 'تُرِيدُ أَنْ تَفْعَلَ', en: 'She wants to do' },
@@ -54,7 +54,7 @@ export const lesson10: LessonData = {
                         label: 'أَرَادَ / أَرَادَتْ / أَرَدْتَ + أَنْ + مُضَارِع مَنْصُوب',
                         arabic: 'أَرَادَ أَنْ يَفْعَلَ',
                         romanized: "arāda an yaf\'ala",
-                        meaning: ""Wanted to do' — past tense of يُرِيدُ, still followed by أَنْ + subjunctive',
+                        meaning: "'Wanted to do' — past tense of يُرِيدُ, still followed by أَنْ + subjunctive",
                         examples: [
                             { ar: 'أَرَادَ أَنْ يَفْعَلَ', en: 'He wanted to do' },
                             { ar: 'أَرَادَتْ أَنْ تَفْعَلَ', en: 'She wanted to do' },

@@ -83,7 +83,7 @@ export const lesson07: LessonData = {
                         label: 'بَابُ التَّفْعِيل (transitive) vs بَابُ التَّفَعُّل (reflexive)',
                         arabic: 'زَيَّنَ الْمَلِكُ الْمَدِينَةَ — تَزَيَّنَتِ الْمَدِينَةُ',
                         romanized: 'zayyana l-maliku l-madīnata — tazayyanati l-madīnatu',
-                        meaning: "Bab At-Taf\'il verbs are transitive/causative (acting on something else). Bab At-Tafa\'ul verbs are reflexive/intransitive (the subject acts on itself).',
+                        meaning: "Bab At-Taf\'il verbs are transitive/causative (acting on something else). Bab At-Tafa\'ul verbs are reflexive/intransitive (the subject acts on itself).",
                         examples: [
                             { ar: 'زَيَّنَ الْمَلِكُ الْمَدِينَةَ بِالْأَنْوَارِ', en: 'The king decorated the city with lights.' },
                             { ar: 'تَزَيَّنَتِ الْمَدِينَةُ بِالْأَنْوَارِ', en: 'The city decorated itself with lights.' },
@@ -109,7 +109,7 @@ export const lesson07: LessonData = {
                         lines: [
                             'قَالَ الْمُعَلِّمُ لِتِلْمِيذِهِ : زَيِّنْ نَفْسَكَ بِالْعِلْمِ قَبْلَ أَنْ تُزَيِّنَهَا بِاللِّبَاسِ، فَزِينَةُ الْعِلْمِ خَيْرٌ مِنْ زِينَةِ اللِّبَاسِ.',
                         ],
-                        translationEn: 'The teacher said to his student: "Adorn yourself with knowledge before you adorn yourself with clothing, for the adornment of knowledge is better than the adornment of clothing.'',
+                        translationEn: 'The teacher said to his student: "Adorn yourself with knowledge before you adorn yourself with clothing, for the adornment of knowledge is better than the adornment of clothing."',
                     },
                     {
                         title: 'الصَّلَاةُ وَالْجَمَاعَة',
@@ -119,7 +119,7 @@ export const lesson07: LessonData = {
                             'قَالَ مَحْمُودٌ : أُرِيدُ أَنْ أَذْهَبَ الْآنَ إِلَى مَسْجِدِ الْحَيِّ لِأُصَلِّيَ الْعَصْرَ مَعَ الْجَمَاعَةِ.',
                             'أُحِبُّ أَنْ أُصَلِّيَ دَائِمًا فِي الْمَسْجِدِ مَعَ الْجَمَاعَةِ، لِأَنِّي أَعْلَمُ أَنَّ صَلَاةَ الْجَمَاعَةِ خَيْرٌ مِنْ صَلَاةِ الْبَيْتِ.',
                         ],
-                        translationEn: 'Rashid prayed Dhuhr in the school mosque. Mahmud said: "I want to go now to the neighborhood mosque to pray Asr with the congregation. I love to always pray in the mosque with the congregation, because I know that congregational prayer is better than praying at home.'',
+                        translationEn: 'Rashid prayed Dhuhr in the school mosque. Mahmud said: "I want to go now to the neighborhood mosque to pray Asr with the congregation. I love to always pray in the mosque with the congregation, because I know that congregational prayer is better than praying at home."',
                     },
                     {
                         title: 'الْإِمَامُ وَالْخُطْبَة',

@@ -21,8 +21,8 @@ export const lesson04: LessonData = {
                     { id: 9, ar: 'أَقُولُ', romanized: 'aqūlu', en: 'I say', emoji: '🗣️' },
                     { id: 10, ar: 'قُلْ', romanized: 'qul', en: 'Say! (m)', emoji: '📢' },
                     { id: 11, ar: 'قُولِي', romanized: 'qūlī', en: 'Say! (f)', emoji: '📢' },
-                    { id: 12, ar: 'لَا تَقُلْ', romanized: 'lā taqul', en: "Don"t say! (m)", emoji: '🚫' },
-                    { id: 13, ar: 'لَا تَقُولِي', romanized: 'lā taqūlī', en: "Don"t say! (f)", emoji: '🚫' },
+                    { id: 12, ar: 'لَا تَقُلْ', romanized: 'lā taqul', en: "Don't say! (m)", emoji: '🚫' },
+                    { id: 13, ar: 'لَا تَقُولِي', romanized: 'lā taqūlī', en: "Don't say! (f)", emoji: '🚫' },
                     { id: 14, ar: 'بِمَ', romanized: 'bima', en: 'With what? (short for بِمَاذَا)', emoji: '❓' },
                     { id: 15, ar: 'لِمَ', romanized: 'lima', en: 'Why? (short for لِمَاذَا)', emoji: '❓' },
                     { id: 16, ar: 'قَدْ', romanized: 'qad', en: 'Certainly / Indeed', emoji: '✅' },
@@ -106,7 +106,7 @@ export const lesson04: LessonData = {
                             'قَالَ الْمُعَلِّمُ : اِفْتَحْ كِتَابَكَ وَاقْرَأْ دَرْسَكَ.',
                             'فَتَحَ رَاشِدٌ كِتَابَهُ وَقَرَأَ الدَّرْسَ، سَمِعَ الْمُعَلِّمُ دَرْسَ رَاشِدٍ وَقَالَ : قَدْ حَفِظْتَ دَرْسَكَ جَيِّدًا.',
                         ],
-                        translationEn: 'Rashid took off his home clothes and put on his school clothes, and went to the school and attended the classroom and sat in front of the teacher. The teacher asked Rashid: "Have you memorized your lesson, O Rashid?" Rashid said: "Yes, I have memorized my lesson." The teacher said: "Open your book and read your lesson." Rashid opened his book and read the lesson. The teacher heard Rashid\'s lesson and said: "You have memorized your lesson well.'',
+                        translationEn: 'Rashid took off his home clothes and put on his school clothes, and went to the school and attended the classroom and sat in front of the teacher. The teacher asked Rashid: "Have you memorized your lesson, O Rashid?" Rashid said: "Yes, I have memorized my lesson." The teacher said: "Open your book and read your lesson." Rashid opened his book and read the lesson. The teacher heard Rashid\'s lesson and said: "You have memorized your lesson well."',
                     },
                     {
                         title: 'فَاطِمَةُ وَاللُّغَةُ الْعَرَبِيَّة',
@@ -116,7 +116,7 @@ export const lesson04: LessonData = {
                             'قَالَتْ فَاطِمَةُ : نَعَمْ .. أَعْرِفُ اللُّغَةَ الْعَرَبِيَّةَ وَأَفْهَمُ كِتَابَ اللهِ.',
                             'قَالَ رَاشِدٌ : أَنَا أَفْهَمُ كَلَامَ اللهِ لِأَنِّي أَعْرِفُ اللُّغَةَ الْعَرَبِيَّةَ.',
                         ],
-                        translationEn: 'Rashid asked Fatima: "O Fatima, do you know the Arabic language and understand the Book of Allah?" Fatima said: "Yes, I know the Arabic language and I understand the Book of Allah." Rashid said: "I understand the words of Allah because I know the Arabic language.'',
+                        translationEn: 'Rashid asked Fatima: "O Fatima, do you know the Arabic language and understand the Book of Allah?" Fatima said: "Yes, I know the Arabic language and I understand the Book of Allah." Rashid said: "I understand the words of Allah because I know the Arabic language."',
                     },
                     {
                         title: 'الْإِيمَانُ وَالشِّرْك',

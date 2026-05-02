@@ -89,7 +89,7 @@ export const lesson02: LessonData = {
                             'قَالَ الْغَنِيُّ : أَطْعَمْتُكَ لِوَجْهِ اللهِ، فَلَا أُرِيدُ مِنْكَ جَزَاءً وَلَا شُكُورًا.',
                             'لَا يَجُوعُ الْإِنْسَانُ وَلَا يَعْطَشُ فِي الْجَنَّةِ أَبَدًا.',
                         ],
-                        translationEn: 'A poor man became hungry, so he went to the door of a rich man and asked him for food. The rich man was a righteous man, so he honored the hungry one and fed him. The hungry poor man ate and became full, so he thanked the rich man. The rich man said: "I fed you for the sake of Allah, so I do not want any reward or thanks from you.' A person will never get hungry or thirsty in Paradise.',
+                        translationEn: 'A poor man became hungry, so he went to the door of a rich man and asked him for food. The rich man was a righteous man, so he honored the hungry one and fed him. The hungry poor man ate and became full, so he thanked the rich man. The rich man said: "I fed you for the sake of Allah, so I do not want any reward or thanks from you." A person will never get hungry or thirsty in Paradise.',
                     },
                     {
                         title: 'الْحِرْصُ وَالصَّبْر',

@@ -57,7 +57,7 @@ export const lesson02: LessonData = {
                     {
                         label: 'سَالَ مِنْ — Flowing from different sources',
                         arabic: 'سَالَ مِنْ عَيْنِهِ الدَّمْعُ',
-                        romanized: "sāla min 'aynihi d-dam'u',
+                        romanized: "sāla min 'aynihi d-dam'u",
                         meaning: 'The verb سَالَ (to flow) is used with مِنْ to indicate the source of the flow.',
                         examples: [
                             { ar: 'سَالَ مِنْ عَيْنِهِ الدَّمْعُ', en: 'Tears flowed from his eye.' },
@@ -99,7 +99,7 @@ export const lesson02: LessonData = {
                             'قَالَ الْغَنِيُّ : أَطْعَمْتُكَ لِوَجْهِ اللهِ، فَلَا أُرِيدُ مِنْكَ جَزَاءً وَلَا شُكُورًا.',
                             'لَا يَجُوعُ الْإِنْسَانُ وَلَا يَعْطَشُ فِي الْجَنَّةِ أَبَدًا.',
                         ],
-                        translationEn: 'A poor man became hungry, so he went to the door of a rich man and asked him for food. The rich man was a righteous man, so he honored the hungry one and fed him. The hungry poor man ate and became full, so he thanked the rich man. The rich man said: "I fed you for the sake of Allah, so I do not want any reward or thanks from you.' A person will never get hungry or thirsty in Paradise.',
+                        translationEn: 'A poor man became hungry, so he went to the door of a rich man and asked him for food. The rich man was a righteous man, so he honored the hungry one and fed him. The hungry poor man ate and became full, so he thanked the rich man. The rich man said: "I fed you for the sake of Allah, so I do not want any reward or thanks from you." A person will never get hungry or thirsty in Paradise.',
                     },
                     {
                         title: 'الْمَرْأَةُ الصَّابِرَة',
@@ -119,7 +119,7 @@ export const lesson02: LessonData = {
                             'فَجَلَسَ تَحْتَ ظِلِّ شَجَرَةٍ لِيَسْتَرِيحَ قَلِيلًا.',
                             'قَالَ الْمُجَاهِدُ الشُّجَاعُ : لَنْ أَذُوبَ أَمَامَ الْبَاطِلِ.',
                         ],
-                        translationEn: 'Sweat flows from the body of this farmer, because he worked under the sun and got tired from the work. So he sat under the shade of a tree to rest a little. The brave warrior said: "I will never melt (surrender) in front of falsehood.'',
+                        translationEn: 'Sweat flows from the body of this farmer, because he worked under the sun and got tired from the work. So he sat under the shade of a tree to rest a little. The brave warrior said: "I will never melt (surrender) in front of falsehood."',
                     },
                 ],
             },
@@ -163,7 +163,7 @@ export const lesson02: LessonData = {
                         question_ar: 'مَاذَا قَالَ الْمُجَاهِدُ الشُّجَاعُ ؟',
                         question_en: 'What did the brave warrior say?',
                         correct_ar: 'قَالَ : لَنْ أَذُوبَ أَمَامَ الْبَاطِلِ',
-                        correct_en: "He said: "I will never surrender in front of falsehood.'',
+                        correct_en: "He said: 'I will never surrender in front of falsehood.'",
                         options_ar: [
                             'قَالَ : لَنْ أَذُوبَ أَمَامَ الْبَاطِلِ',
                             'قَالَ : سَأَذْهَبُ إِلَى الْبَيْتِ',

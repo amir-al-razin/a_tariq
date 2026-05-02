@@ -76,7 +76,7 @@ export const lesson18: LessonData = {
                         label: 'لَعَلَّ + اسم مَنْصُوب',
                         arabic: 'لَعَلَّ أَمَامَكِ عَمَلًا كَثِيرًا',
                         romanized: "la'alla amāmaki 'amalan kathīran",
-                        meaning: "لَعَلَّ = "perhaps / maybe'. Like إِنَّ, it puts the following noun into the accusative (fatha/fathatayn).',
+                        meaning: "لَعَلَّ = 'perhaps / maybe'. Like إِنَّ, it puts the following noun into the accusative (fatha/fathatayn).",
                         examples: [
                             { ar: 'لَعَلَّ أَمَامَكِ عَمَلًا كَثِيرًا', en: 'Perhaps you have a lot of work ahead of you' },
                             { ar: 'كَانَ أَمَامَكِ عَمَلٌ كَثِيرٌ', en: 'You had a lot of work ahead of you (كَانَ — past)' },

@@ -91,7 +91,7 @@ export const lesson01: LessonData = {
                         lines: [
                             'قَالَ الْعَالِمُ فِي وَعْظِهِ : أَيُّهَا الْعَامِلُ، اِعْمَلْ لِآخِرَتِكَ وَلَا تَعْمَلْ لِدُنْيَاكَ - اُعْبُدْ رَبَّكَ وَاشْكُرْهُ، فَإِنَّهُ خَلَقَكَ وَهُوَ يَرْزُقُكَ.',
                         ],
-                        translationEn: 'The scholar said in his sermon: "O worker, work for your Hereafter and do not work for your worldly life — worship your Lord and thank Him, for indeed He created you and He provides for you.'',
+                        translationEn: 'The scholar said in his sermon: "O worker, work for your Hereafter and do not work for your worldly life — worship your Lord and thank Him, for indeed He created you and He provides for you."',
                     },
                     {
                         title: 'أُمُّ فَاطِمَةَ',
@@ -101,7 +101,7 @@ export const lesson01: LessonData = {
                             'يَخْرُجُ عَمُّ مَاجِدٍ التَّاجِرُ إِلَى سُوقِ الْقَرْيَةِ صَبَاحًا وَيَرْجِعُ إِلَى أَهْلِهِ مَسَاءً.',
                             'قَتَلَ هَذَا الْمُجَاهِدُ عَدُوَّ اللهِ بِسَيْفِهِ وَأَخَذَ فَرَسَهُ وَسِلَاحَهُ.',
                         ],
-                        translationEn: "Fatima's good mother fed a hungry poor woman and said: \"I did this deed for the sake of Allah.\" Majid's uncle, the merchant, goes out to the village market in the morning and returns to his family in the evening. This Mujahid killed the enemy of Allah with his sword and took his horse and weapon.",
+                        translationEn: "Fatima's good mother fed a hungry poor woman and said: \'I did this deed for the sake of Allah.\' Majid's uncle, the merchant, goes out to the village market in the morning and returns to his family in the evening. This Mujahid killed the enemy of Allah with his sword and took his horse and weapon.",
                     },
                     {
                         title: 'دُعَاءُ الْعَبْدِ الصَّالِح',
@@ -109,7 +109,7 @@ export const lesson01: LessonData = {
                         lines: [
                             'قَالَ الْعَبْدُ الصَّالِحُ : اللَّهُمَّ إِنِّي أَسْأَلُكَ حَاجَتِي وَلَا أَسْأَلُ غَيْرَكَ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَأَعُوذُ بِكَ مِنَ النَّارِ.',
                         ],
-                        translationEn: 'The righteous servant said: "O Allah, indeed I ask You for my need and I do not ask anyone other than You. O Allah, indeed I ask You for Paradise and I seek refuge in You from the Fire.'',
+                        translationEn: 'The righteous servant said: "O Allah, indeed I ask You for my need and I do not ask anyone other than You. O Allah, indeed I ask You for Paradise and I seek refuge in You from the Fire."',
                     },
                     {
                         title: 'طَالِبُ الْعِلْم',
@@ -130,7 +130,7 @@ export const lesson01: LessonData = {
                             'مَا أَرَادَ اللهُ أَنْ يَذْبَحَ إِبْرَاهِيمُ وَلَدَهُ، بَلْ أَرَادَ أَنْ يَمْتَحِنَهُ، وَنَجَحَ إِبْرَاهِيمُ فِي هَذَا الِامْتِحَانِ.',
                             'فَأَرْسَلَ اللهُ كَبْشًا مِنَ الْجَنَّةِ وَقَالَ لِإِبْرَاهِيمَ : اِذْبَحْ هَذَا وَلَا تَذْبَحْ إِسْمَاعِيلَ.',
                         ],
-                        translationEn: 'Allah commanded His intimate friend Ibrahim to slaughter his son Ismail. Allah did not want Ibrahim to slaughter his son, but He wanted to test him, and Ibrahim succeeded in this test. So Allah sent a ram from Paradise and said to Ibrahim: "Slaughter this and do not slaughter Ismail.'',
+                        translationEn: 'Allah commanded His intimate friend Ibrahim to slaughter his son Ismail. Allah did not want Ibrahim to slaughter his son, but He wanted to test him, and Ibrahim succeeded in this test. So Allah sent a ram from Paradise and said to Ibrahim: "Slaughter this and do not slaughter Ismail."',
                     },
                     {
                         title: 'الذِّكْرُ وَالْغَفْلَة',

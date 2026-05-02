@@ -15,7 +15,7 @@ export const lesson16: LessonData = {
                     { id: 3, ar: 'الاِقْتِرَابُ', romanized: 'al-iqtirāb', en: 'Approaching / getting closer', emoji: '👣' },
                     { id: 4, ar: 'الاِبْتِعَادُ', romanized: "al-ibtī\'ād", en: 'Distancing / moving away', emoji: '↔️' },
                     { id: 5, ar: 'حِضْنٌ', romanized: 'ḥiḍn', en: 'Lap / embrace', emoji: '🤗' },
-                    { id: 6, ar: 'شَاطِئٌ', romanized: "shāṭi\'", en: 'Shore / beach', emoji: '🏖️' },
+                    { id: 6, ar: 'شَاطِئٌ', romanized: "shāṭi'", en: 'Shore / beach', emoji: '🏖️' },
                     { id: 7, ar: 'الْغَرَقُ', romanized: 'al-gharaq', en: 'Drowning', emoji: '🌊' },
                     { id: 8, ar: 'سَاخِنٌ', romanized: 'sākhin', en: 'Hot', emoji: '🔥' },
                     { id: 9, ar: 'سَاعَةٌ', romanized: "sā\'ah", en: 'Hour / a while', emoji: '⏰' },
@@ -93,7 +93,7 @@ export const lesson16: LessonData = {
                         romanized: "kāna mā\'u l-ḥawḍi ṣāfiyan / inna fī kalāmi llāhi nūran",
                         meaning: 'Review of كَانَ (predicate takes fathatayn) and إِنَّ (subject takes fatha) in context',
                         examples: [
-                            { ar: 'مَاءُ الْحَوْضِ صَافٍ → كَانَ مَاءُ الْحَوْضِ صَافِيًا', en: "The pool\'s water is clear → The pool\'s water was clear' },
+                            { ar: 'مَاءُ الْحَوْضِ صَافٍ → كَانَ مَاءُ الْحَوْضِ صَافِيًا', en: "The pool's water is clear → The pool's water was clear" },
                             { ar: 'السَّمَاءُ صَافِيَةٌ → كَانَتِ السَّمَاءُ صَافِيَةً', en: 'The sky is clear → The sky was clear' },
                             { ar: 'فِي كَلَامِ اللهِ نُورٌ → إِنَّ فِي كَلَامِ اللهِ نُورًا', en: 'In the words of Allah is light → Indeed, in the words of Allah is light' },
                             { ar: 'يَتَكَلَّمُ أَخُو رَاشِدٍ بِالْعَرَبِيَّةِ → إِنَّ أَخَا رَاشِدٍ يَتَكَلَّمُ بِالْعَرَبِيَّةِ', en: "Rashid's brother speaks Arabic → Indeed, Rashid's brother speaks Arabic" },

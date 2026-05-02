@@ -42,7 +42,7 @@ export const lesson06: LessonData = {
                     {
                         label: 'أَنْ + مُضَارِع = مَصْدَر',
                         arabic: 'أَنْ تَعْمَلُوا خَيْرٌ لَكُمْ = عَمَلُكُمْ خَيْرٌ لَكُمْ',
-                        romanized: "an ta'malū khayrun lakum = 'amalukum khayrun lakum',
+                        romanized: "an ta'malū khayrun lakum = 'amalukum khayrun lakum",
                         meaning: 'The particle أَنْ followed by a present tense verb creates the meaning of a verbal noun (masdar). This is called the interpreted masdar (الْمَصْدَرُ الْمُؤَوَّل).',
                         examples: [
                             { ar: 'أَنْ تَعْمَلُوا خَيْرٌ لَكُمْ', en: 'That you work is better for you.' },
@@ -62,7 +62,7 @@ export const lesson06: LessonData = {
                     {
                         label: 'لَمَّا vs عِنْدَمَا',
                         arabic: 'لَمَّا سَمِعَ / عِنْدَمَا سَمِعَ / عِنْدَمَا يَسْمَعُ',
-                        romanized: "lammā sami'a / "indamā sami'a / 'indamā yasma'u',
+                        romanized: "lammā sami'a / 'indamā sami'a / 'indamā yasma'u",
                         meaning: 'لَمَّا is used only with the past tense. عِنْدَمَا can be used with both past and present tense.',
                         examples: [
                             { ar: 'لَمَّا سَمِعَ الشُّبَّانُ نِدَاءَ الْجِهَادِ طَارُوا إِلَى سَاحَةِ الْقِتَالِ', en: 'When the young men heard the call to Jihad, they flew to the battlefield.' },

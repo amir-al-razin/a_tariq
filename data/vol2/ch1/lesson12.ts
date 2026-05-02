@@ -28,7 +28,7 @@ export const lesson12: LessonData = {
                     { id: 16, ar: 'صَادِقٌ', romanized: 'ṣādiq', en: 'Truthful', emoji: '💯' },
                     { id: 17, ar: 'مُنَافِقٌ', romanized: 'munāfiq', en: 'Hypocrite', emoji: '🎭' },
                     { id: 18, ar: 'حُجْرَةٌ', romanized: 'ḥujrah', en: 'Room', emoji: '🚪' },
-                    { id: 19, ar: 'وَاسِعٌ / وَاسِعَةٌ', romanized: "wāsi\' / wāsi\'ah', en: 'Spacious / Wide (m/f)', emoji: '🏟️' },
+                    { id: 19, ar: 'وَاسِعٌ / وَاسِعَةٌ', romanized: "wāsi\' / wāsi\'ah", en: 'Spacious / Wide (m/f)', emoji: '🏟️' },
                 ],
             },
         },

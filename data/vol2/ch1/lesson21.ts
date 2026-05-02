@@ -50,7 +50,7 @@ export const lesson21: LessonData = {
                     {
                         label: 'قَبْلَ أَنْ + مُضَارِع / بَعْدَ أَنْ + مَاضٍ',
                         arabic: 'قَبْلَ أَنْ يَأْكُلَ / بَعْدَ أَنْ أَكَلَ',
-                        romanized: "qabla an ya\'kula / ba\'da an akala',
+                        romanized: "qabla an ya\'kula / ba\'da an akala",
                         meaning: 'قَبْلَ أَنْ (before) takes the present subjunctive. بَعْدَ أَنْ (after) takes the past tense.',
                         examples: [
                             { ar: 'غَسَلَ الْوَلَدُ يَدَهُ قَبْلَ أَنْ يَأْكُلَ', en: 'The boy washed his hands before he ate' },

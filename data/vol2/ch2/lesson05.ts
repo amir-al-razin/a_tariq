@@ -78,7 +78,7 @@ export const lesson05: LessonData = {
                             'فَقَالَ اللهُ لَهُ : خُذْهَا وَلَا تَخَفْ، فَأَخَذَهَا مُوسَى، فَعَادَتْ عَصَاهُ إِلَى صُورَتِهَا.',
                             'أَمَرَ اللهُ أُمَّ مُوسَى أَنْ تُلْقِيَ وَلَدَهَا فِي النِّيلِ، فَأَلْقَتْ أُمُّ مُوسَى وَلَدَهَا فِي النِّيلِ.',
                         ],
-                        translationEn: 'Allah commanded Musa to throw his staff on the ground, and said: "Throw it, O Musa!" So Musa threw his staff on the ground, and a snake appeared moving, and Musa feared the snake. Allah said to him: "Take it and do not fear,' so Musa took it, and it returned to its form as a staff. Allah commanded the mother of Musa to throw her child into the Nile, so the mother of Musa threw her child into the Nile.',
+                        translationEn: 'Allah commanded Musa to throw his staff on the ground, and said: "Throw it, O Musa!" So Musa threw his staff on the ground, and a snake appeared moving, and Musa feared the snake. Allah said to him: "Take it and do not fear," so Musa took it, and it returned to its form as a staff. Allah commanded the mother of Musa to throw her child into the Nile, so the mother of Musa threw her child into the Nile.',
                     },
                     {
                         title: 'إِبْرَاهِيمُ وَالْمَلِك',
@@ -88,7 +88,7 @@ export const lesson05: LessonData = {
                             'فَقَالَ الْمَلِكُ الْمُتَكَبِّرُ : أَنَا أُحْيِي وَأُمِيتُ.',
                             'وَكَانَ الْمَلِكُ غَبِيًّا لَا يَعْرِفُ مَعْنَى الْحَيَاةِ وَالْمَوْتِ.',
                         ],
-                        translationEn: 'Ibrahim said: "My Lord gives life and causes death." The arrogant king said: "I give life and cause death.' The king was foolish and did not know the meaning of life and death.',
+                        translationEn: 'Ibrahim said: "My Lord gives life and causes death." The arrogant king said: "I give life and cause death." The king was foolish and did not know the meaning of life and death.',
                     },
                     {
                         title: 'الصِّدْقُ وَالْكَذِب',
@@ -97,7 +97,7 @@ export const lesson05: LessonData = {
                             'قَالَ الْمُعَلِّمُ لِتِلْمِيذِهِ : اُصْدُقْ دَائِمًا وَلَا تَكْذِبْ أَبَدًا.',
                             'فَإِنَّ الصِّدْقَ يُنْجِي الْإِنْسَانَ وَالْكَذِبَ يُهْلِكُهُ.',
                         ],
-                        translationEn: 'The teacher said to his student: "Always be truthful and never lie, for indeed truth saves a person and lying destroys him.'',
+                        translationEn: 'The teacher said to his student: "Always be truthful and never lie, for indeed truth saves a person and lying destroys him."',
                     },
                 ],
             },

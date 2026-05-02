@@ -61,7 +61,7 @@ export const lesson03: LessonData = {
                         label: 'اسْمُ التَّفْضِيل — Comparative Adjective',
                         arabic: 'أَكْبَرُ مِنْ — pattern أَفْعَلُ',
                         romanized: 'akbaru min',
-                        meaning: "The comparative adjective is formed on the pattern أَفْعَلُ (Af\'alu), often followed by مِنْ (than).',
+                        meaning: "The comparative adjective is formed on the pattern أَفْعَلُ (Af'alu), often followed by مِنْ (than).",
                         examples: [
                             { ar: 'خَالِدٌ أَكْبَرُ مِنْ رَاشِدٍ', en: 'Khalid is older than Rashid.' },
                             { ar: 'اللهُ أَكْبَرُ', en: 'Allah is the Greatest.' },
@@ -72,7 +72,7 @@ export const lesson03: LessonData = {
                         label: 'لَا النَّافِيَةُ لِلْجِنْس — Absolute Negation',
                         arabic: 'لَا شَكَّ / لَا رَيْبَ / لَا نُورَ',
                         romanized: 'lā shakka / lā rayba / lā nūra',
-                        meaning: "Using لَا followed by a noun ending in a single fathah means "Absolutely no...' (negation of the entire category).',
+                        meaning: "Using لَا followed by a noun ending in a single fathah means 'Absolutely no...' (negation of the entire category).",
                         examples: [
                             { ar: 'لَا شَكَّ فِي كَلَامِكَ', en: 'There is no doubt in your speech.' },
                             { ar: 'لَا نُورَ فِي قَلْبِ الْمُنَافِقِ', en: "There is no light in the hypocrite\'s heart." },
@@ -144,7 +144,7 @@ export const lesson03: LessonData = {
                             'لَا نُورَ فِي قَلْبِ الْمُنَافِقِ - لَا بَرَكَةَ فِي مَالِ الْبَخِيلِ.',
                             'قَالَ رَسُولُ اللهِ (صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ) : لَا نَبِيَّ بَعْدِي.',
                         ],
-                        translationEn: 'There is no doubt in your speech — that book, there is no doubt in it. There is no light in the hypocrite\'s heart — there is no blessing in the miser\'s wealth. The Messenger of Allah (peace be upon him) said: "There is no prophet after me.'',
+                        translationEn: "There is no doubt in your speech — that book, there is no doubt in it. There is no light in the hypocrite's heart — there is no blessing in the miser's wealth. The Messenger of Allah (peace be upon him) said: 'There is no prophet after me.'",
                     },
                     {
                         title: 'أَنْ بِمَعْنَى الْمَصْدَر',

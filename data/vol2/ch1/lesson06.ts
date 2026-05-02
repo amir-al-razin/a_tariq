@@ -14,7 +14,7 @@ export const lesson06: LessonData = {
                     { id: 2, ar: 'الصَّوْمُ', romanized: 'aṣ-ṣawm', en: 'To fast / fasting', emoji: '🌙' },
                     { id: 3, ar: 'التَّوْبَةُ', romanized: 'at-tawbah', en: 'To repent / repentance', emoji: '🤲' },
                     { id: 4, ar: 'الْقِيَامُ', romanized: 'al-qiyām', en: 'To stand / standing', emoji: '🧍' },
-                    { id: 5, ar: 'الْبَيْعُ', romanized: "al-bay\'", en: 'To sell / selling', emoji: '🛒' },
+                    { id: 5, ar: 'الْبَيْعُ', romanized: "al-bay'", en: 'To sell / selling', emoji: '🛒' },
                     { id: 6, ar: 'الصَّيْدُ', romanized: 'aṣ-ṣayd', en: 'To hunt / hunting', emoji: '🏹' },
                     { id: 7, ar: 'الْخِيَاطَةُ', romanized: 'al-khiyāṭah', en: 'To sew / sewing', emoji: '🧵' },
                     { id: 8, ar: 'الطَّيَرَانُ', romanized: 'aṭ-ṭayarān', en: 'To fly / flying', emoji: '🦅' },
@@ -95,7 +95,7 @@ export const lesson06: LessonData = {
                         label: 'قَالَ + لَـ + ضَمِير',
                         arabic: 'قَالَ لَهُ / قَالَ لَهَا / قَالَ لِي',
                         romanized: 'qāla lahu / lahā / lī',
-                        meaning: "When reporting speech, attach لَـ to the pronoun to indicate "said to him/her/me'',
+                        meaning: "When reporting speech, attach لَـ to the pronoun to indicate 'said to him/her/me'",
                         examples: [
                             { ar: 'قُلْتُ لَهُ', en: 'I said to him' },
                             { ar: 'قُلْتُ لَهَا', en: 'I said to her' },

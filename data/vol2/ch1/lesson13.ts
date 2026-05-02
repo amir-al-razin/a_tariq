@@ -11,7 +11,7 @@ export const lesson13: LessonData = {
             payload: {
                 rules: [
                     {
-                        label: "كَانَ + يَفْعَلُ = "used to do / was doing'',
+                        label: "كَانَ + يَفْعَلُ = used to do / was doing",
                         arabic: 'كَانَ يَقْرَأُ',
                         romanized: "kāna yaqra\'u",
                         meaning: 'Combining كَانَ (past) with a present tense verb expresses habitual past or past continuous action.',
@@ -36,7 +36,7 @@ export const lesson13: LessonData = {
                     {
                         label: 'كَانَ يَفْعَلُ — verb list',
                         arabic: 'كَانَ يَلْعَبُ / كَانَ يَعْرِفُ / كَانَ يَكْتُبُ',
-                        romanized: "kāna yal\'abu / ya\'rifu / yaktub',
+                        romanized: "kāna yal\'abu / ya\'rifu / yaktub",
                         meaning: 'This pattern works with any present tense verb to express past habitual or continuous action',
                         examples: [
                             { ar: 'كَانَ يَلْعَبُ', en: 'He used to play' },
@@ -69,7 +69,7 @@ export const lesson13: LessonData = {
                         label: 'All three orderings are correct',
                         arabic: 'كَانَ يَكْتُبُ رَاشِدٌ / كَانَ رَاشِدٌ يَكْتُبُ / رَاشِدٌ كَانَ يَكْتُبُ',
                         romanized: 'kāna yaktub Rāshid / kāna Rāshidun yaktub / Rāshidun kāna yaktub',
-                        meaning: "The subject can appear in three positions — all are grammatically correct and mean "Rashid used to write'',
+                        meaning: "The subject can appear in three positions — all are grammatically correct and mean Rashid used to write",
                         examples: [
                             { ar: 'كَانَ يَكْتُبُ رَاشِدٌ', en: 'Rashid used to write (verb-first)' },
                             { ar: 'كَانَ رَاشِدٌ يَكْتُبُ', en: 'Rashid used to write (subject-middle)' },

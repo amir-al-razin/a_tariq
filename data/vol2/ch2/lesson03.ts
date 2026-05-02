@@ -63,7 +63,7 @@ export const lesson03: LessonData = {
                         label: 'أَيُّ (m) / أَيَّةُ (f)',
                         arabic: 'أَيُّ رَجُلٍ / أَيَّةُ امْرَأَةٍ',
                         romanized: "ayyu rajulin / ayyatu mra'atin",
-                        meaning: "أَيُّ is used with masculine nouns and أَيَّةُ with feminine nouns to mean "which'.',
+                        meaning: "أَيُّ is used with masculine nouns and أَيَّةُ with feminine nouns to mean 'which'.",
                         examples: [
                             { ar: 'أَيُّ رَجُلٍ', en: 'Which man?' },
                             { ar: 'أَيَّةُ امْرَأَةٍ', en: 'Which woman?' },
@@ -113,7 +113,7 @@ export const lesson03: LessonData = {
                             'لَا يَبْقَى شَيْءٌ وَيَبْقَى وَجْهُ رَبِّكَ.',
                             'ثُمَّ يَجْمَعُ اللهُ عِبَادَهُ فِي الْمَحْشَرِ وَيُحَاسِبُهُمْ وَيَجْزِيهِمْ.',
                         ],
-                        translationEn: 'The scholar said in his sermon: "The Resurrection will come and the world will perish. Everything will perish — the earth will perish and the sky will perish. Nothing will remain except the Face of your Lord. Then Allah will gather His servants in the assembly and hold them accountable and recompense them.'',
+                        translationEn: 'The scholar said in his sermon: "The Resurrection will come and the world will perish. Everything will perish — the earth will perish and the sky will perish. Nothing will remain except the Face of your Lord. Then Allah will gather His servants in the assembly and hold them accountable and recompense them."',
                     },
                     {
                         title: 'الصَّلَاةُ وَالنَّهْيُ عَنِ الْفَحْشَاء',
@@ -123,7 +123,7 @@ export const lesson03: LessonData = {
                             'إِنَّ الصَّلَاةَ تَنْهَى عَنِ الْفَحْشَاءِ وَالْمُنْكَرِ.',
                             'رَضِيَ اللهُ عَنِ الصَّحَابَةِ لِعَمَلِهِمْ.',
                         ],
-                        translationEn: 'Allah forbade us from wine and gambling and said: "In them is great sin.' Indeed, prayer forbids indecency and evil. Allah was pleased with the Companions for their deeds.',
+                        translationEn: 'Allah forbade us from wine and gambling and said: "In them is great sin." Indeed, prayer forbids indecency and evil. Allah was pleased with the Companions for their deeds.',
                     },
                 ],
             },

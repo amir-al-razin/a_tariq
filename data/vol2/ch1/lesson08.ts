@@ -37,7 +37,7 @@ export const lesson08: LessonData = {
                         label: 'لَنْ + مُضَارِع مَنْصُوب',
                         arabic: 'لَنْ يَفْعَلَ',
                         romanized: "lan yaf\'ala",
-                        meaning: "لَنْ + present tense verb (with fatha ending) = "will definitely not do'. Stronger than لَا.',
+                        meaning: "لَنْ + present tense verb (with fatha ending) = 'will definitely not do'. Stronger than لَا.",
                         examples: [
                             { ar: 'لَنْ يَفْعَلَ', en: 'He will definitely not do' },
                             { ar: 'لَنْ تَفْعَلَ', en: 'She will definitely not do' },

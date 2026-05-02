@@ -40,9 +40,9 @@ export const lesson20: LessonData = {
             titleAr: 'أَفْعَال وَأَسْمَاء جَدِيدَة',
             payload: {
                 words: [
-                    { id: 1, ar: 'النَّفْعُ', romanized: "an-naf\'", en: 'To benefit / be useful', emoji: '💎' },
+                    { id: 1, ar: 'النَّفْعُ', romanized: "an-naf'", en: 'To benefit / be useful', emoji: '💎' },
                     { id: 2, ar: 'الرِّزْقُ', romanized: 'ar-rizq', en: 'Provision / sustenance', emoji: '🌾' },
-                    { id: 3, ar: 'الشِّبَعُ', romanized: "ash-shiba\'", en: 'Being satiated / full', emoji: '🍽️' },
+                    { id: 3, ar: 'الشِّبَعُ', romanized: "ash-shiba'", en: 'Being satiated / full', emoji: '🍽️' },
                     { id: 4, ar: 'الْأَمْرُ', romanized: 'al-amr', en: 'Commanding / ordering', emoji: '📢' },
                     { id: 5, ar: 'الْخِدْمَةُ', romanized: 'al-khidmah', en: 'Serving', emoji: '🙏' },
                     { id: 6, ar: 'الشُّكْرُ', romanized: 'ash-shukr', en: 'Thanking', emoji: '🙏' },
@@ -133,8 +133,8 @@ export const lesson20: LessonData = {
                     {
                         label: 'أَمَرَ أَنْ يَفْعَلَ ↔ أَمَرَ بِفِعْلِ',
                         arabic: 'أَمَرَ اللهُ الْإِنْسَانَ أَنْ يَعْبُدَهُ ↔ أَمَرَ اللهُ الْإِنْسَانَ بِعِبَادَةِ اللهِ',
-                        romanized: "amara llāhu l-insāna an ya\'budahu ↔ amara llāhu l-insāna bi-\'ibādati llāh',
-                        meaning: "أَنْ + verb and بِـ + masdar are equivalent constructions. Both mean "commanded to do'.',
+                        romanized: "amara llāhu l-insāna an ya\'budahu ↔ amara llāhu l-insāna bi-\'ibādati llāh",
+                        meaning: "أَنْ + verb and بِـ + masdar are equivalent constructions. Both mean 'commanded to do'.",
                         examples: [
                             { ar: 'أَمَرَ اللهُ الْإِنْسَانَ أَنْ يَعْبُدَهُ', en: 'Allah commanded man to worship Him (أَنْ + verb)' },
                             { ar: 'أَمَرَ اللهُ الْإِنْسَانَ بِعِبَادَةِ اللهِ', en: 'Allah commanded man to worship Allah (بِـ + masdar)' },

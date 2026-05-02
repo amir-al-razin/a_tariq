@@ -48,8 +48,8 @@ export const lesson05: LessonData = {
                     {
                         label: 'سَـ + مُضَارِع',
                         arabic: 'سَـ + الْفِعْل الْمُضَارِع',
-                        romanized: "sa + muḍāri\'",
-                        meaning: "Adding سَـ to the present tense verb indicates definite future: "will do'',
+                        romanized: "sa + muḍāri'",
+                        meaning: "Adding سَـ to the present tense verb indicates definite future: will do",
                         examples: [
                             { ar: 'سَيَقْرَأُ', en: 'He will read' },
                             { ar: 'سَيَكْتُبُ', en: 'He will write' },

@@ -45,7 +45,7 @@ export const lesson01: LessonData = {
                     {
                         label: 'الْأَعْدَادُ 13-19 — Numbers 13 to 19',
                         arabic: 'ثَلَاثَةَ عَشَرَ رَجُلًا / ثَلَاثَ عَشْرَةَ امْرَأَةً',
-                        romanized: "thalāthata 'ashara rajulan / thalātha "ashrata mra'atan',
+                        romanized: "thalāthata 'ashara rajulan / thalātha 'ashrata mra'atan",
                         meaning: 'For 13-19, the first part opposes the gender of the counted noun, while the second part (عَشَرَ/عَشْرَةَ) matches it. The noun is singular accusative.',
                         examples: [
                             { ar: 'ثَلَاثَةَ عَشَرَ رَجُلًا', en: '13 men' },
@@ -57,7 +57,7 @@ export const lesson01: LessonData = {
                     {
                         label: 'الْأَعْدَادُ الْمُرَكَّبَة (21-29) — Mixed Numbers',
                         arabic: 'أَحَدٌ وَعِشْرُونَ كِتَابًا / إِحْدَى وَعِشْرُونَ كُرَّاسَةً',
-                        romanized: "aḥadun wa'ishrūna kitāban / iḥdā wa'ishrūna kurrāsatan',
+                        romanized: "aḥadun wa'ishrūna kitāban / iḥdā wa'ishrūna kurrāsatan",
                         meaning: 'For mixed numbers (21-29, etc.): numbers ending in 1 and 2 match the gender; numbers ending in 3-9 oppose the gender. The noun is singular accusative.',
                         examples: [
                             { ar: 'أَحَدٌ وَعِشْرُونَ كِتَابًا', en: '21 books' },

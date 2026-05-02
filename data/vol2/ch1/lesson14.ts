@@ -17,7 +17,7 @@ export const lesson14: LessonData = {
                     { id: 5, ar: 'الْكَلَامُ', romanized: 'al-kalām', en: 'Speaking', emoji: '🗣️' },
                     { id: 6, ar: 'التَّصْدِيقُ', romanized: 'at-taṣdīq', en: 'Believing / Affirming', emoji: '✅' },
                     { id: 7, ar: 'التَّكْذِيبُ', romanized: 'at-takdhīb', en: 'Denying / Considering false', emoji: '❌' },
-                    { id: 8, ar: 'شَيْءٌ', romanized: "shay\'", en: 'Thing', emoji: '📦' },
+                    { id: 8, ar: 'شَيْءٌ', romanized: "shay'", en: 'Thing', emoji: '📦' },
                 ],
             },
         },
