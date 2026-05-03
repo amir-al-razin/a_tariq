@@ -38,6 +38,16 @@ export const VerbTableView: React.FC<Props> = ({ isDark, C, payload, onProgress,
     }, []);
 
     if (rows.length === 0) {
+        const fallbackText = payload?.sourceText || payload?.text || payload?.instruction;
+        if (fallbackText) {
+            return (
+                <View style={{ width: '100%', paddingVertical: 8 }}>
+                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral800, textAlign: 'right', lineHeight: 30 }}>
+                        {fallbackText}
+                    </Text>
+                </View>
+            );
+        }
         return <Text style={{ color: isDark ? C.neutral400 : C.neutral500 }}>{t('verbTable.noData')}</Text>;
     }
 

@@ -38,7 +38,19 @@ export const IdafahDrillView: React.FC<Props> = ({ isDark, C, payload, onProgres
         });
     }, [pairs.length, onProgress, onComplete]);
 
-    if (pairs.length === 0) return null;
+    if (pairs.length === 0) {
+        const fallbackText = payload?.text || payload?.instruction;
+        if (fallbackText) {
+            return (
+                <View style={{ width: '100%', paddingVertical: 8 }}>
+                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.neutral100 : C.neutral800, textAlign: 'right', lineHeight: 32 }}>
+                        {fallbackText}
+                    </Text>
+                </View>
+            );
+        }
+        return null;
+    }
 
     const textSub = isDark ? C.neutral400 : C.neutral500;
     const cardBg = isDark ? C.neutral800 : '#fff';

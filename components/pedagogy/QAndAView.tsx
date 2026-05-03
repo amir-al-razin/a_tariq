@@ -15,7 +15,19 @@ export const QAndAView: React.FC<Props> = ({ isDark, C, payload, onProgress, onC
     const [selected, setSelected] = useState<string | null>(null);
     const [revealed, setRevealed] = useState(false);
 
-    if (questions.length === 0) return <Text style={{ color: isDark ? C.neutral100 : C.neutral800 }}>{t('qanda.noQuestions')}</Text>;
+    if (questions.length === 0) {
+        const fallbackText = payload?.text || payload?.instruction;
+        if (fallbackText) {
+            return (
+                <View style={{ width: '100%', paddingVertical: 8 }}>
+                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.neutral100 : C.neutral800, textAlign: 'right', lineHeight: 32 }}>
+                        {fallbackText}
+                    </Text>
+                </View>
+            );
+        }
+        return <Text style={{ color: isDark ? C.neutral100 : C.neutral800 }}>{t('qanda.noQuestions')}</Text>;
+    }
 
     const q = questions[currentIndex];
     const isCorrect = selected === q.correct_ar;

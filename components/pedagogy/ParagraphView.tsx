@@ -7,7 +7,7 @@ import { ParagraphBlock } from '../../data/curriculum';
 interface Props {
     isDark: boolean;
     C: Record<string, string>;
-    payload?: { paragraphs?: ParagraphBlock[]; instruction?: string; instructionBn?: string };
+    payload?: { paragraphs?: ParagraphBlock[]; instruction?: string; instructionBn?: string; text?: string };
     onProgress: (v: number) => void;
     onComplete: () => void;
 }
@@ -21,7 +21,19 @@ export const ParagraphView: React.FC<Props> = ({ payload, onProgress }) => {
     // Scroll-based completion handled by ChunkEngineScreen
     useEffect(() => { onProgress(0); }, []);
 
-    if (blocks.length === 0) return null;
+    if (blocks.length === 0) {
+        const fallbackText = payload?.text || payload?.instruction;
+        if (!fallbackText) return null;
+        return (
+            <View className="w-full gap-4">
+                <View className="rounded-2xl border border-neutral-200 bg-neutral-100 p-4 dark:border-neutral-700 dark:bg-neutral-800">
+                    <Text className="font-arabic-semibold text-arabic-body text-neutral-800 dark:text-neutral-100 text-right leading-8" style={{ writingDirection: 'rtl' }}>
+                        {fallbackText}
+                    </Text>
+                </View>
+            </View>
+        );
+    }
 
     return (
         <View className="w-full gap-6">

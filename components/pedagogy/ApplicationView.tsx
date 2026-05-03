@@ -14,6 +14,16 @@ export const ApplicationView: React.FC<Props> = ({ isDark, C, payload }) => {
         ? t_content(payload.instruction, payload.instructionBn)
         : t('chunk.reviewThenContinue');
 
+    if (items.length === 0 && (payload?.text || payload?.instruction)) {
+        return (
+            <View style={{ width: '100%', alignItems: 'center' }}>
+                <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: C.primary700, textAlign: 'right', lineHeight: 32 }}>
+                    {payload?.text || payload?.instruction}
+                </Text>
+            </View>
+        );
+    }
+
     return (
         <View style={{ width: '100%', alignItems: 'center' }}>
             <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral300 : C.neutral600, marginBottom: 20, textAlign: 'center' }}>

@@ -35,7 +35,19 @@ export const MasdarFactoryView: React.FC<Props> = ({
     // Scroll-based completion handled by ChunkEngineScreen
     useEffect(() => { onProgress(0); }, []);
 
-    if (rows.length === 0) return null;
+    if (rows.length === 0) {
+        const fallbackText = payload?.text || payload?.instruction;
+        if (fallbackText) {
+            return (
+                <View style={{ width: '100%', paddingVertical: 8 }}>
+                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.neutral100 : C.neutral800, textAlign: 'right', lineHeight: 32 }}>
+                        {fallbackText}
+                    </Text>
+                </View>
+            );
+        }
+        return null;
+    }
 
     const border   = isDark ? C.neutral700 : C.neutral200;
     const headerBg = isDark ? C.neutral700 : C.neutral200;

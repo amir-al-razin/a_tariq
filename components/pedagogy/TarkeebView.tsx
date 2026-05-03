@@ -73,6 +73,16 @@ export const TarkeebView: React.FC<Props> = ({ isDark, C, payload, onProgress, o
     }, []);
 
     if (items.length === 0) {
+        const fallbackText = payload?.text || payload?.instruction;
+        if (fallbackText) {
+            return (
+                <View style={{ width: '100%', paddingVertical: 8 }}>
+                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.neutral100 : C.neutral800, textAlign: 'right', lineHeight: 32 }}>
+                        {fallbackText}
+                    </Text>
+                </View>
+            );
+        }
         return <Text style={{ color: isDark ? C.neutral400 : C.neutral500 }}>{t('tarkeeb.noData')}</Text>;
     }
 
