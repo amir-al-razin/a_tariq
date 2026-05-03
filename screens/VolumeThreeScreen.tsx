@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native';
 
 import type { HomeStackParamList } from './HomeNavigator';
+import { CHAPTERS_VOL3 } from '../data/vol3/curriculum_vol3';
 
 // ─────────────────────────────────────────────
 // Volume 3 colour palette — Violet / Indigo
@@ -35,48 +36,20 @@ const C = {
   neutral900: '#1A1815',
 };
 
-const VOL3_CHAPTERS = [
-  {
-    id: 1,
-    titleAr: 'الباب الأول',
-    titleEn: 'Chapter One',
-    subtitle: 'Plural verb forms for groups — masculine & feminine',
-    lessonCount: 9,
-  },
-  {
-    id: 2,
-    titleAr: 'الباب الثاني',
-    titleEn: 'Chapter Two',
-    subtitle: 'Irregular verbs & verbal nouns (Masdars)',
-    lessonCount: 8,
-  },
-  {
-    id: 3,
-    titleAr: 'الباب الثالث',
-    titleEn: 'Chapter Three',
-    subtitle: 'Numerals, comparatives & advanced verb families',
-    lessonCount: 7,
-  },
-  {
-    id: 4,
-    titleAr: 'الباب الرابع',
-    titleEn: 'Chapter Four',
-    subtitle: 'Quranic & Hadith readings — direct Arabic immersion',
-    lessonCount: 2,
-  },
-] as const;
-
 type LessonStatus = 'completed' | 'current' | 'open' | 'locked';
 type Nav = NativeStackNavigationProp<HomeStackParamList, 'VolumeThree'>;
 
-const getLessonStatus = (_darsNum: number, _chapterId: number): LessonStatus => 'locked';
+const getLessonStatus = (darsNum: number, chapterId: number): LessonStatus => {
+  if (chapterId === 1 && darsNum === 1) return 'current';
+  return 'open';
+};
 
 const NODE_SIZE = 72;
 const V_SPACING = 28;
 const H_PAD = 16;
 const WAVE = [0.27, 0.40, 0.56, 0.73, 0.56, 0.40] as const;
 
-type ChapterInfo = typeof VOL3_CHAPTERS[number];
+type ChapterInfo = typeof CHAPTERS_VOL3[number];
 
 const ChapterBanner: React.FC<{ chapter: ChapterInfo; isDark: boolean }> = ({ chapter, isDark }) => {
   const { t } = useTranslation();
@@ -213,9 +186,19 @@ const LessonRow: React.FC<LessonRowProps> = ({
 
 export const VolumeThreeScreen: React.FC = () => {
   const { width } = useWindowDimensions();
+  const navigation = useNavigation<Nav>();
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
   const { t } = useTranslation();
+
+  const goToLesson = (chapter: ChapterInfo, darsNum: number) =>
+    navigation.navigate('Lesson', {
+      volumeNumber: 3,
+      chapterId: chapter.id,
+      chapterTitleAr: chapter.titleAr,
+      chapterTitleEn: chapter.titleEn,
+      darsNumber: darsNum,
+    });
 
   return (
     <ScrollView
@@ -242,10 +225,10 @@ export const VolumeThreeScreen: React.FC = () => {
       </View>
 
       {/* Chapters */}
-      {VOL3_CHAPTERS.map((chapter, chapterIdx) => {
-        const lessons = Array.from({ length: chapter.lessonCount }, (_, i) => ({
-          num: i + 1,
-          status: getLessonStatus(i + 1, chapter.id),
+      {CHAPTERS_VOL3.map((chapter, chapterIdx) => {
+        const lessons = chapter.lessons.map((lesson) => ({
+          num: lesson.darsNumber,
+          status: getLessonStatus(lesson.darsNumber, chapter.id),
         }));
 
         return (
@@ -261,11 +244,11 @@ export const VolumeThreeScreen: React.FC = () => {
                   trackWidth={width}
                   entryDelay={idx * 30}
                   isDark={isDark}
-                  onPress={() => {}}
+                  onPress={() => goToLesson(chapter, num)}
                 />
               ))}
             </View>
-            {chapterIdx < VOL3_CHAPTERS.length - 1 && (
+            {chapterIdx < CHAPTERS_VOL3.length - 1 && (
               <View style={{ height: 1, backgroundColor: isDark ? C.neutral700 : C.neutral200, marginHorizontal: 32, marginBottom: 8 }} />
             )}
           </View>

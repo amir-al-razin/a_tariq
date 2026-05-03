@@ -31,6 +31,7 @@ const C = {
 
 import { CHAPTERS } from '../data/curriculum';
 import { CHAPTERS_VOL2 } from '../data/curriculum_vol2';
+import { CHAPTERS_VOL3 } from '../data/vol3/curriculum_vol3';
 
 // Volume accent palettes — matches VolumeOneScreen / VolumeTwoScreen / VolumeThreeScreen
 const VOLUME_ACCENT = {
@@ -82,7 +83,7 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
     const { t } = useTranslation();
 
     const accent = VOLUME_ACCENT[(volumeNumber as 1 | 2 | 3)] ?? VOLUME_ACCENT[1];
-    const allChapters = volumeNumber === 2 ? CHAPTERS_VOL2 : CHAPTERS;
+    const allChapters = volumeNumber === 2 ? CHAPTERS_VOL2 : volumeNumber === 3 ? CHAPTERS_VOL3 : CHAPTERS;
 
     // Last-visited chunk index (persisted)
     const [lastVisited, setLastVisited] = useState<number | null>(null);
@@ -176,10 +177,10 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                         ? accent.accent700
                         : (isCurrent || isCompleted) ? (isDark ? accent.accent700 : accent.accent600)
                             : isLocked ? (isDark ? C.neutral600 : C.neutral500)
-                                : (isDark ? accent.accent900 : accent.accent100);
+                                : (isDark ? accent.accent900 : accent.accent300);
 
                     const iconColor = isLastVisited || isCurrent || isCompleted ? '#fff'
-                        : isLocked ? (isDark ? C.neutral600 : C.neutral700)
+                        : isLocked ? (isDark ? C.neutral800 : C.neutral700)
                             : (isDark ? accent.accent300 : accent.accent600);
 
                     return (
