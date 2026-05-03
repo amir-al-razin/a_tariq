@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import { CHAPTERS } from '../data/curriculum';
 import { CHAPTERS_VOL2 } from '../data/curriculum_vol2';
+import { CHAPTERS_VOL3 } from '../data/vol3/curriculum_vol3';
 
 import { VocabularyView } from '../components/pedagogy/VocabularyView';
 import { GrammarRuleView } from '../components/pedagogy/GrammarRuleView';
@@ -91,7 +92,7 @@ export const ChunkEngineScreen: React.FC<ChunkEngineProps> = ({ route }) => {
     };
 
     // Pick the right data source
-    const allChapters = volumeNumber === 2 ? CHAPTERS_VOL2 : CHAPTERS;
+    const allChapters = volumeNumber === 2 ? CHAPTERS_VOL2 : volumeNumber === 3 ? CHAPTERS_VOL3 : CHAPTERS;
     const chapter = allChapters.find(c => c.id === chapterId);
     const lesson  = chapter?.lessons.find(l => l.darsNumber === darsNumber);
     const chunk   = lesson?.chunks.find(c => c.id === chunkId);
