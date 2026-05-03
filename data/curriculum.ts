@@ -132,6 +132,9 @@ export interface ChunkPayload {
     paragraphs?: ParagraphBlock[];
     instruction?: string;
     instructionBn?: string;
+    text?: string;
+    sourceText?: string;
+    exercises?: Record<string, unknown>;
 }
 
 export interface CurriculumChunk {
