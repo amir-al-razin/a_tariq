@@ -17,9 +17,6 @@ import { lesson06 as ch2lesson06 } from './ch2/lesson06';
 import { lesson07 as ch2lesson07 } from './ch2/lesson07';
 import { lesson08 as ch2lesson08 } from './ch2/lesson08';
 
-import { lesson01 as ch4lesson01 } from './ch4/lesson01';
-import { lesson02 as ch4lesson02 } from './ch4/lesson02';
-
 // ─────────────────────────────────────────────
 // Volume 3 — Pedagogical Data
 // Source: "Esho Arbi Shikhi" Vol 3
@@ -58,17 +55,6 @@ export const CHAPTERS_VOL3: ChapterData[] = [
             ch2lesson06,
             ch2lesson07,
             ch2lesson08,
-        ],
-    },
-
-    {
-        id: 4,
-        titleAr: 'الباب الرابع',
-        titleEn: 'Chapter Four',
-        subtitle: 'From the Shades of the Quran and Prophetic Hadith',
-        lessons: [
-            ch4lesson01,
-            ch4lesson02,
         ],
     },
 ];
