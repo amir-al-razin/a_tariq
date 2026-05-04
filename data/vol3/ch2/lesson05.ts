@@ -10,14 +10,9 @@ export const lesson05: LessonData = {
       titleAr: 'مَصْنَع المَصْدَر الدرس ٠٥',
       titleBn: 'টেম্পলেট: পাঠ ০৫ মাসদার ফ্যাক্টরি',
       payload: {
-        description: 'Example masdar_factory description',
-        descriptionBn: 'উদাহরণ বর্ণনা',
-        example: {
-          verb: 'كَبُرَ',
-          verbBn: 'বড় হওয়া',
-          masculine: [{ form: 'كَابِرٌ', meaning: 'One who is big', meaningBn: 'যে বড়' }],
-          feminine: [{ form: 'كَابِرَةٌ', meaning: 'One who is big (f)', meaningBn: 'যে বড় (মহিলা)' }],
-        },
+        instruction: 'Example masdar_factory description',
+        instructionBn: 'উদাহরণ বর্ণনা',
+        masdarRows: [], // Replaced example structure with correct masdarRows based on curriculum types
       },
     },
   ],

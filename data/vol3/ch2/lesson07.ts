@@ -12,8 +12,8 @@ export const lesson07: LessonData = {
       payload: {
         instruction: 'Complete the assessment items',
         instructionBn: 'মূল্যায়ন আইটেমগুলি পূরণ করুন',
-        items: [
-          { itemNumber: 1, content: 'Example item', contentBn: 'উদাহরণ আইটেম', englishTranslation: 'Example', explanationBn: 'ব্যাখ্যা' },
+        questions: [
+          { emoji: '📝', question_ar: 'سؤال', question_en: 'Question', question_bn: 'প্রশ্ন', correct_ar: 'جواب', correct_en: 'Answer', correct_bn: 'উত্তর', options_ar: ['جواب'], questionType: 'general' },
         ],
       },
     },
