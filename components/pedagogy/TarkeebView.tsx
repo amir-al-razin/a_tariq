@@ -7,7 +7,7 @@ import { TarkeebItem, TarkeebNode } from '../../data/curriculum';
 interface Props {
     isDark: boolean;
     C: Record<string, string>;
-    payload?: { tarkeeb?: TarkeebItem[] };
+    payload?: { tarkeeb?: TarkeebItem[], text?: string, instruction?: string };
     onProgress: (v: number) => void;
     onComplete: () => void;
 }

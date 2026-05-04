@@ -39,7 +39,7 @@ export const IdafahDrillView: React.FC<Props> = ({ isDark, C, payload, onProgres
     }, [pairs.length, onProgress, onComplete]);
 
     if (pairs.length === 0) {
-        const fallbackText = payload?.text || payload?.instruction;
+        const fallbackText = payload?.instruction;
         if (fallbackText) {
             return (
                 <View style={{ width: '100%', paddingVertical: 8 }}>

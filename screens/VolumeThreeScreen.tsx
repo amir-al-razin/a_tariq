@@ -58,7 +58,7 @@ const ChapterBanner: React.FC<{ chapter: ChapterInfo; isDark: boolean }> = ({ ch
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 20 }}>
         <View style={{ flex: 1, paddingRight: 12 }}>
           <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: isDark ? C.accent400 : C.accent600, marginBottom: 6 }}>
-            {t('volume.chapterMeta', { id: chapter.id, count: chapter.lessonCount })}
+            {t('volume.chapterMeta', { id: chapter.id, count: chapter.lessons.length })}
           </Text>
           <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 20, lineHeight: 28, color: isDark ? C.neutral100 : C.neutral900 }}>
             {chapter.titleEn}

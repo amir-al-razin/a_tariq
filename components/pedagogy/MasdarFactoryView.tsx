@@ -36,7 +36,7 @@ export const MasdarFactoryView: React.FC<Props> = ({
     useEffect(() => { onProgress(0); }, []);
 
     if (rows.length === 0) {
-        const fallbackText = payload?.text || payload?.instruction;
+        const fallbackText = payload?.instruction;
         if (fallbackText) {
             return (
                 <View style={{ width: '100%', paddingVertical: 8 }}>

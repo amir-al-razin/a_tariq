@@ -7,7 +7,7 @@ import { VerbTableRow } from '../../data/curriculum';
 interface Props {
     isDark: boolean;
     C: Record<string, string>;
-    payload?: { verbTable?: VerbTableRow[]; verbTense?: 'past' | 'present' | 'imperative'; instruction?: string };
+    payload?: { verbTable?: VerbTableRow[]; verbTense?: 'past' | 'present' | 'imperative'; instruction?: string; sourceText?: string; text?: string; };
     onProgress: (v: number) => void;
     onComplete: () => void;
 }
