@@ -18,9 +18,10 @@ export const vol2 = {  // amber gold
   900: '#78350F',
 } as const;
 export const vol3 = {  // violet indigo
-  100: '#EDE9FE', 300: '#C4B5FD', 400: '#A78BFA',
-  500: '#8B5CF6', 600: '#7C3AED', 700: '#6D28D9',
-  800: '#5B21B6', 900: '#4C1D95',
+  50: '#F5F3FF', 100: '#EDE9FE', 200: '#DDD6FE',
+  300: '#C4B5FD', 400: '#A78BFA', 500: '#8B5CF6',
+  600: '#7C3AED', 700: '#6D28D9', 800: '#5B21B6',
+  900: '#4C1D95',
 } as const;
 export const feedback = {
   correct: '#22c55e', correctBg: '#f0fdf4', correctBgDark: '#052e16',
