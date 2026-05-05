@@ -1,13 +1,13 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { MotiView } from 'moti';
 import { useColorScheme } from 'nativewind';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native';
+import { ScrollView, Text, View, useWindowDimensions } from 'react-native';
 
 import type { HomeStackParamList } from './HomeNavigator';
 import { CHAPTERS_VOL3 } from '../data/vol3/curriculum_vol3';
+import { LessonNode, NodeStatus } from '../components/LearningPath/LessonNode';
 
 // ─────────────────────────────────────────────
 // Volume 3 colour palette — Violet / Indigo
@@ -36,7 +36,7 @@ const C = {
   neutral900: '#1A1815',
 };
 
-type LessonStatus = 'completed' | 'current' | 'open' | 'locked';
+type LessonStatus = NodeStatus;
 type Nav = NativeStackNavigationProp<HomeStackParamList, 'VolumeThree'>;
 
 const getLessonStatus = (darsNum: number, chapterId: number): LessonStatus => {
@@ -96,7 +96,6 @@ const LessonRow: React.FC<LessonRowProps> = ({
   const isCurrent   = status === 'current';
   const isCompleted = status === 'completed';
   const isLocked    = status === 'locked';
-  const isInteractive = !isLocked;
   const labelOnRight  = waveX <= 0.5;
 
   const circleBg = (isCurrent || isCompleted)
@@ -131,48 +130,15 @@ const LessonRow: React.FC<LessonRowProps> = ({
         paddingLeft:  labelOnRight ? nodeLeft : 0,
         paddingRight: !labelOnRight ? nodeRight : 0,
       }}>
-        <MotiView
-          from={{ opacity: 0, scale: 0.4 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: 'spring', delay: entryDelay, damping: 20, stiffness: 250 }}
-          style={{ flexShrink: 0 }}>
-          <Pressable
-            onPress={isInteractive ? onPress : undefined}
-            disabled={isLocked}
-            style={{ width: NODE_SIZE, height: NODE_SIZE + 6, justifyContent: 'flex-end' }}>
-            {({ pressed }) => {
-              const pushDepth = pressed && isInteractive ? 0 : -6;
-              return (
-                <View style={{ width: NODE_SIZE, height: NODE_SIZE + 6, justifyContent: 'flex-end' }}>
-                  <View style={{
-                    position: 'absolute', bottom: 0,
-                    width: NODE_SIZE,
-                    height: NODE_SIZE + (pressed && isInteractive ? 0 : 6),
-                    borderRadius: NODE_SIZE / 2,
-                    backgroundColor: circleBorder,
-                  }} />
-                  <View style={{
-                    width: NODE_SIZE, height: NODE_SIZE,
-                    borderRadius: NODE_SIZE / 2,
-                    backgroundColor: circleBg,
-                    alignItems: 'center', justifyContent: 'center',
-                    transform: [{ translateY: pushDepth }],
-                  }}>
-                    {isLocked ? (
-                      <Ionicons name="lock-closed" size={24} color={iconColor} />
-                    ) : isCompleted ? (
-                      <Ionicons name="checkmark" size={30} color={iconColor} />
-                    ) : (
-                      <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 24, color: iconColor, lineHeight: 30 }}>
-                        {darsNum}
-                      </Text>
-                    )}
-                  </View>
-                </View>
-              );
-            }}
-          </Pressable>
-        </MotiView>
+        <LessonNode
+          number={darsNum}
+          status={status}
+          faceColor={circleBg}
+          shadowColor={circleBorder}
+          textColor={iconColor}
+          entryDelay={entryDelay}
+          onPress={isLocked ? undefined : onPress}
+        />
 
         <View style={{ paddingHorizontal: 12 }}>
           <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: labelColor }}>

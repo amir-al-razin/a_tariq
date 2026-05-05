@@ -1,12 +1,12 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { MotiView } from 'moti';
 import { useColorScheme } from 'nativewind';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
+import { ScrollView, Text, View, useWindowDimensions } from 'react-native';
 
 import type { HomeStackParamList } from './HomeNavigator';
+import { LessonNode, NodeStatus } from '../components/LearningPath/LessonNode';
 
 // ─────────────────────────────────────────────
 // Design-system colours (from tailwind.config.js)
@@ -41,7 +41,7 @@ const C = {
 // Types & data
 // ─────────────────────────────────────────────
 
-type LessonStatus = 'completed' | 'current' | 'open' | 'locked';
+type LessonStatus = NodeStatus;
 type Nav = NativeStackNavigationProp<HomeStackParamList, 'VolumeOne'>;
 
 // Numbering resets to 1 for every chapter
@@ -100,15 +100,6 @@ const ChapterBanner: React.FC<{ chapter: ChapterData; idx: number; isDark: boole
 
 // ─────────────────────────────────────────────
 // Lesson node row
-//
-// FIX: Use TouchableOpacity (not Pressable with function style).
-//      The visual circle lives in an INNER View — separate from the
-//      touch handler — so styles always render on Android.
-//
-// LAYOUT: Each row uses paddingLeft/paddingRight to push the
-//         (circle + label) group to the correct horizontal position.
-//         row-reverse flips the label to the left when node is on
-//         the right half so nothing clips off-screen.
 // ─────────────────────────────────────────────
 
 type LessonRowProps = {
@@ -123,7 +114,7 @@ type LessonRowProps = {
 };
 
 const LessonRow: React.FC<LessonRowProps> = ({
-  darsNum, status, waveX, trackWidth, isFirstInChapter, entryDelay, isDark, onPress,
+  darsNum, status, waveX, trackWidth, entryDelay, isDark, onPress,
 }) => {
   const { t } = useTranslation();
   const usable = trackWidth - 2 * H_PAD;
@@ -133,7 +124,6 @@ const LessonRow: React.FC<LessonRowProps> = ({
   const isCurrent = status === 'current';
   const isCompleted = status === 'completed';
   const isLocked = status === 'locked';
-  const isInteractive = !isLocked;
 
   // Label to right when node is in left half, label to left otherwise
   const labelOnRight = waveX <= 0.5;
@@ -157,71 +147,21 @@ const LessonRow: React.FC<LessonRowProps> = ({
 
   return (
     <View style={{ marginBottom: V_SPACING }}>
-
-      {/* "Start Here" badge removed for minimalism */}
-
-      {/* Row: padding shifts the (circle + label) group horizontally */}
       <View style={{
         flexDirection: labelOnRight ? 'row' : 'row-reverse',
         alignItems: 'center',
         paddingLeft: labelOnRight ? nodeLeft : 0,
         paddingRight: !labelOnRight ? nodeRight : 0,
       }}>
-
-        {/*
-          TouchableOpacity wraps an inner View that carries ALL visual styles.
-          This is the reliable pattern for Android — visual styles never go
-          on the touch handler itself.
-        */}
-        <MotiView
-          from={{ opacity: 0, scale: 0.4 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: 'spring', delay: entryDelay, damping: 20, stiffness: 250 }}
-          style={{ flexShrink: 0 }}
-        >
-          <Pressable
-            onPress={isInteractive ? onPress : undefined}
-            disabled={isLocked}
-            style={{ width: NODE_SIZE, height: NODE_SIZE + 6, justifyContent: 'flex-end' }}>
-            {({ pressed }) => {
-              const pushDepth = pressed && isInteractive ? 0 : -6;
-              return (
-                <View style={{ width: NODE_SIZE, height: NODE_SIZE + 6, justifyContent: 'flex-end' }}>
-                  {/* Shadow Base Layer (True Cylinder Wall) */}
-                  <View style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    width: NODE_SIZE,
-                    height: NODE_SIZE + (pressed && isInteractive ? 0 : 6),
-                    borderRadius: NODE_SIZE / 2,
-                    backgroundColor: circleBorder,
-                  }} />
-
-                  {/* Top Face Layer */}
-                  <View style={{
-                    width: NODE_SIZE,
-                    height: NODE_SIZE,
-                    borderRadius: NODE_SIZE / 2,
-                    backgroundColor: circleBg,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transform: [{ translateY: pushDepth }],
-                  }}>
-                    {isLocked ? (
-                      <Ionicons name="lock-closed" size={24} color={iconColor} />
-                    ) : isCompleted ? (
-                      <Ionicons name="checkmark" size={30} color={iconColor} />
-                    ) : (
-                      <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 24, color: iconColor, lineHeight: 30 }}>
-                        {darsNum}
-                      </Text>
-                    )}
-                  </View>
-                </View>
-              );
-            }}
-          </Pressable>
-        </MotiView>
+        <LessonNode
+          number={darsNum}
+          status={status}
+          faceColor={circleBg}
+          shadowColor={circleBorder}
+          textColor={iconColor}
+          entryDelay={entryDelay}
+          onPress={isLocked ? undefined : onPress}
+        />
 
         {/* Label sits next to the circle */}
         <View style={{ paddingHorizontal: 12 }}>
