@@ -23,6 +23,7 @@ import { useFonts } from 'expo-font';
 import { useEffect, useState } from 'react';
 
 import './global.css';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { colorScheme as nwColorScheme, useColorScheme } from 'nativewind';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Appearance } from 'react-native';
@@ -91,8 +92,9 @@ export default function App() {
         className="flex-1 bg-neutral-50 dark:bg-neutral-900"
         edges={['top', 'left', 'right']}>
         <LanguageProvider>
-          <NavigationContainer theme={navigationTheme}>
-            <Tab.Navigator
+          <ErrorBoundary>
+            <NavigationContainer theme={navigationTheme}>
+              <Tab.Navigator
               screenOptions={{
                 headerShown: false,
                 sceneStyle: {
@@ -133,9 +135,10 @@ export default function App() {
                     />
                   ),
                 }}
-              />
-            </Tab.Navigator>
-          </NavigationContainer>
+                />
+              </Tab.Navigator>
+            </NavigationContainer>
+          </ErrorBoundary>
         </LanguageProvider>
         <StatusBar style={isDark ? 'light' : 'dark'} />
       </SafeAreaView>

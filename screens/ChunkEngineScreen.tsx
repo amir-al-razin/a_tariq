@@ -18,6 +18,7 @@ import { VerbTableView } from '../components/pedagogy/VerbTableView';
 import { IdafahDrillView } from '../components/pedagogy/IdafahDrillView';
 import { ParagraphView } from '../components/pedagogy/ParagraphView';
 import { MasdarFactoryView } from '../components/pedagogy/MasdarFactoryView';
+import { ErrorBoundary } from '../components/ErrorBoundary';
 
 // Volume accent colours — teal / amber / violet
 const VOLUME_ACCENT = {
@@ -207,7 +208,7 @@ export const ChunkEngineScreen: React.FC<ChunkEngineProps> = ({ route }) => {
                 )}
 
                 <View style={{ padding: 24, borderRadius: 16, borderWidth: 1, borderColor: isDark ? C.neutral800 : C.neutral200, backgroundColor: isDark ? C.neutral800 : C.neutral100, width: '100%', alignItems: 'center' }}>
-                    {renderContent()}
+                    <ErrorBoundary onReset={() => navigation.goBack()}>{renderContent()}</ErrorBoundary>
                 </View>
             </ScrollView>
 
