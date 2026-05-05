@@ -17,12 +17,12 @@ export const SettingsScreen: React.FC = () => {
     try {
       // Save to persistent storage
       await AsyncStorage.setItem(THEME_STORAGE_KEY, theme);
-      
+
       // Apply color scheme - this will automatically update useColorScheme hook
       nwColorScheme.set(theme);
       if (setColorScheme) setColorScheme(theme);
       Appearance.setColorScheme(theme);
-      
+
       console.log('[THEME] Set to:', theme);
     } catch (error) {
       console.warn('[THEME] Failed to set theme:', error);
@@ -34,19 +34,18 @@ export const SettingsScreen: React.FC = () => {
       className="flex-1 bg-neutral-50 dark:bg-neutral-900"
       contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 32, paddingBottom: 48 }}
       showsVerticalScrollIndicator={false}>
-
-      <Text className="font-english-semibold text-display text-neutral-900 dark:text-neutral-100 mb-1">
+      <Text className="mb-1 font-english-semibold text-display text-neutral-900 dark:text-neutral-100">
         {t('settings.title')}
       </Text>
-      <Text className="font-english text-body text-neutral-500 dark:text-neutral-400 mb-8">
+      <Text className="mb-8 font-english text-body text-neutral-500 dark:text-neutral-400">
         {t('settings.subtitle')}
       </Text>
 
       {/* ── Language ── */}
-      <Text className="font-english-semibold text-caption text-neutral-500 dark:text-neutral-400 uppercase tracking-widest mb-3">
+      <Text className="mb-3 font-english-semibold text-caption uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
         {t('settings.language')}
       </Text>
-      <View className="gap-3 mb-8">
+      <View className="mb-8 gap-3">
         {LANGUAGES.map((lang) => {
           const isActive = language === lang.code;
           return (
@@ -65,27 +64,26 @@ export const SettingsScreen: React.FC = () => {
                     {isActive ? t('settings.active') : t('settings.tapToActivate')}
                   </Text>
                 </View>
-                {isActive && (
-                  <Ionicons name="checkmark-circle" size={22} color="#34D3AA" />
-                )}
+                {isActive && <Ionicons name="checkmark-circle" size={22} color="#34D3AA" />}
               </View>
             </Pressable>
           );
         })}
-        <Text className="font-english text-caption text-neutral-400 dark:text-neutral-600 px-1">
+        <Text className="px-1 font-english text-caption text-neutral-400 dark:text-neutral-600">
           {t('settings.languageNote')}
         </Text>
       </View>
 
       {/* ── Appearance ── */}
-      <Text className="font-english-semibold text-caption text-neutral-500 dark:text-neutral-400 uppercase tracking-widest mb-3">
+      <Text className="mb-3 font-english-semibold text-caption uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
         {t('settings.appearance')}
       </Text>
       <View className="gap-3">
         {(['light', 'dark'] as const).map((theme) => {
           const isActive = colorScheme === theme;
           const label = theme === 'light' ? t('settings.lightTheme') : t('settings.darkTheme');
-          const desc = theme === 'light' ? t('settings.lightThemeDesc') : t('settings.darkThemeDesc');
+          const desc =
+            theme === 'light' ? t('settings.lightThemeDesc') : t('settings.darkThemeDesc');
           return (
             <Pressable
               key={theme}
@@ -105,9 +103,7 @@ export const SettingsScreen: React.FC = () => {
                     {isActive ? t('settings.active') : t('settings.tapToActivate')}
                   </Text>
                 </View>
-                {isActive && (
-                  <Ionicons name="checkmark-circle" size={22} color="#34D3AA" />
-                )}
+                {isActive && <Ionicons name="checkmark-circle" size={22} color="#34D3AA" />}
               </View>
             </Pressable>
           );

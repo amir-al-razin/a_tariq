@@ -11,10 +11,31 @@ export const lesson05: LessonData = {
       titleBn: 'মূল শব্দভান্ডার: শর্ত ও ফল',
       payload: {
         words: [
-          { id: 1, ar: 'تَثْبِيتٌ', romanized: 'tathbīt', en: 'Firmness', bn: 'দৃঢ়তা', emoji: '💪' },
+          {
+            id: 1,
+            ar: 'تَثْبِيتٌ',
+            romanized: 'tathbīt',
+            en: 'Firmness',
+            bn: 'দৃঢ়তা',
+            emoji: '💪',
+          },
           { id: 2, ar: 'قَدَمٌ', romanized: 'qadam', en: 'Foot', bn: 'পা', emoji: '🦶' },
-          { id: 3, ar: 'أَنْبَتَ', romanized: 'anbata', en: 'To grow / to sprout', bn: 'অঙ্কুরিত করা', emoji: '🌱' },
-          { id: 4, ar: 'سُنْبُلَةٌ', romanized: 'sunbula', en: 'Ear of corn / spike', bn: 'ধান/কর্ণেল', emoji: '🌾' },
+          {
+            id: 3,
+            ar: 'أَنْبَتَ',
+            romanized: 'anbata',
+            en: 'To grow / to sprout',
+            bn: 'অঙ্কুরিত করা',
+            emoji: '🌱',
+          },
+          {
+            id: 4,
+            ar: 'سُنْبُلَةٌ',
+            romanized: 'sunbula',
+            en: 'Ear of corn / spike',
+            bn: 'ধান/কর্ণেল',
+            emoji: '🌾',
+          },
           { id: 5, ar: 'حَبَّةٌ', romanized: 'ḥabba', en: 'Grain / seed', bn: 'দানা', emoji: '🌰' },
           { id: 6, ar: 'عِبَادَةٌ', romanized: 'ʿibāda', en: 'Worship', bn: 'উপাসনা', emoji: '🛐' },
         ],
@@ -32,26 +53,38 @@ export const lesson05: LessonData = {
             label: 'إِنْ with Two Presents (Jussive)',
             labelBn: 'إِنْ দুইটি مضارعকে জাসিম করে',
             arabic: 'إِنْ حَـرْفُ شَرْطٍ يَدْخُلُ عَلَى مُضَارِعَيْنِ وَ يَجْزِمُهُمَا',
-            romanized: "in ḥarf sharṭ yadkhul ʿalā muḍāriʿayn wa yajzimuhumā",
+            romanized: 'in ḥarf sharṭ yadkhul ʿalā muḍāriʿayn wa yajzimuhumā',
             meaning:
               'The particle إِنْ enters two present-tense verbs and makes both jussive (majzum), establishing a conditional structure.',
             meaningBn:
               'কণিকা إِنْ দুটি বর্তমান কাল ক্রিয়ার উপর প্রবেশ করে এবং উভয়কে জাসিম (majzum) করে, শর্তসাপেক্ষ গঠন তৈরি করে।',
             examples: [
-              { ar: 'إِنْ تَنْصُرُوا اللَّهَ يَنْصُرْكُمْ', en: 'If you help Allah, He will help you', bn: 'যদি তোমরা আল্লাহকে সাহায্য কর, তিনি তোমাদের সাহায্য করবেন' },
-              { ar: 'إِنْ تُطِيعُوا اللَّهَ يُدْخِلْكُمْ الْجَنَّةَ', en: 'If you obey Allah, He will admit you to Paradise', bn: 'যদি তোমরা আল্লাহকে মানো, তিনি তোমাদের জান্নাতে প্রবেশ করাবেন' },
+              {
+                ar: 'إِنْ تَنْصُرُوا اللَّهَ يَنْصُرْكُمْ',
+                en: 'If you help Allah, He will help you',
+                bn: 'যদি তোমরা আল্লাহকে সাহায্য কর, তিনি তোমাদের সাহায্য করবেন',
+              },
+              {
+                ar: 'إِنْ تُطِيعُوا اللَّهَ يُدْخِلْكُمْ الْجَنَّةَ',
+                en: 'If you obey Allah, He will admit you to Paradise',
+                bn: 'যদি তোমরা আল্লাহকে মানো, তিনি তোমাদের জান্নাতে প্রবেশ করাবেন',
+              },
             ],
           },
           {
             label: 'إِنْ with Past (Future Meaning)',
             labelBn: 'অতীতের সাথে إِنْ — ভবিষ্যত অর্থ',
             arabic: 'إِنْ تَدْخُلُ عَلَى الْمَاضِي فَتَجْعَلُهُ مُسْتَقْبَلًا',
-            romanized: "in tadkhul ʿalā al-māḍī fa tajʿaluhu mustaqbalan",
+            romanized: 'in tadkhul ʿalā al-māḍī fa tajʿaluhu mustaqbalan',
             meaning:
               'When إِنْ attaches to a past-formed verb, it can yield a future/hypothetical sense (commonly in classical examples).',
             meaningBn: 'যখন إِنْ অতীত কালের verb-এ প্রবেশ করে, এটি ভবিষ্যত/কল্পিত অর্থ দিতে পারে।',
             examples: [
-              { ar: 'إِنْ نَصَرْتَنِي الْيَوْمَ نَصَرْتُكَ غَدًا', en: 'If you help me today, I will help you tomorrow', bn: 'যদি তুমি আজ আমাকে সাহায্য কর, আমি তোমাকে কাল সাহায্য করব' },
+              {
+                ar: 'إِنْ نَصَرْتَنِي الْيَوْمَ نَصَرْتُكَ غَدًا',
+                en: 'If you help me today, I will help you tomorrow',
+                bn: 'যদি তুমি আজ আমাকে সাহায্য কর, আমি তোমাকে কাল সাহায্য করব',
+              },
             ],
           },
         ],
@@ -66,7 +99,7 @@ export const lesson05: LessonData = {
       payload: {
         paragraphs: [
           {
-            titleEn: "Divine Promise & Reward",
+            titleEn: 'Divine Promise & Reward',
             titleBn: 'দৈবিক প্রতিশ্রুতি ও পুরস্কার',
             lines: [
               'إِنْ تَنْصُرُوا اللَّهَ يَنْصُرْكُمْ وَ يُثْبِتْ أَقْدَامَكُمْ .',
@@ -104,14 +137,24 @@ export const lesson05: LessonData = {
           {
             label: 'When to attach ف',
             labelBn: 'কখন ফা লাগবে',
-            arabic: 'تدخل الفاء على جواب الشرط في الحالات التالية: الأمر، النهي، الدعاء، والجملة الاسمية',
-            romanized: 'tadkhul al-fāʾ ʿalā jawāb al-sharṭ fī al-ḥālāt al-tāliyah: al-amr, al-nahy, al-duʿāʾ, wa al-jumla al-ismiyyah',
+            arabic:
+              'تدخل الفاء على جواب الشرط في الحالات التالية: الأمر، النهي، الدعاء، والجملة الاسمية',
+            romanized:
+              'tadkhul al-fāʾ ʿalā jawāb al-sharṭ fī al-ḥālāt al-tāliyah: al-amr, al-nahy, al-duʿāʾ, wa al-jumla al-ismiyyah',
             meaning:
               'The particle ف attaches to the answer of the conditional when the answer is an imperative (command), prohibition, supplication, or a nominal sentence.',
             meaningBn: 'উত্তরে ফা যোগ করা হয় যখন উত্তরটি আদেশ, নিষেধ, দোয়া বা নামবাচক বাক্য হয়।',
             examples: [
-              { ar: 'إِنْ جَاءَكَ ضَيْفٌ فَأَكْرِمْهُ', en: 'If a guest comes, then honor him', bn: 'যদি অতিথি আসে, তবে তাকে সন্মান করো' },
-              { ar: 'إِنْ تُرِدِ الْآخِرَةَ فَلَا تَسْعَ وَرَاءَ الدُّنْيَا', en: 'If you want the Hereafter, then do not pursue the worldly life', bn: 'যদি তুমি আখিরাত চাও, তবে দুনিয়াবাদে লিপ্ত হও না' },
+              {
+                ar: 'إِنْ جَاءَكَ ضَيْفٌ فَأَكْرِمْهُ',
+                en: 'If a guest comes, then honor him',
+                bn: 'যদি অতিথি আসে, তবে তাকে সন্মান করো',
+              },
+              {
+                ar: 'إِنْ تُرِدِ الْآخِرَةَ فَلَا تَسْعَ وَرَاءَ الدُّنْيَا',
+                en: 'If you want the Hereafter, then do not pursue the worldly life',
+                bn: 'যদি তুমি আখিরাত চাও, তবে দুনিয়াবাদে লিপ্ত হও না',
+              },
             ],
           },
         ],
@@ -125,7 +168,8 @@ export const lesson05: LessonData = {
       titleBn: 'প্রয়োগ: শর্তাধীন বাক্য গঠন',
       payload: {
         instruction: 'Form conditional sentences using إِنْ and apply Faa where appropriate.',
-        instructionBn: 'إِنْ ব্যবহার করে শর্তবাচক বাক্য তৈরি করুন এবং যেখানে প্রযোজ্য সেখানে ফা যুক্ত করুন।',
+        instructionBn:
+          'إِنْ ব্যবহার করে শর্তবাচক বাক্য তৈরি করুন এবং যেখানে প্রযোজ্য সেখানে ফা যুক্ত করুন।',
         text: 'Examples: إِنْ تَجْتَهِدْ → تَنْجَحْ; إِنْ يَأْتِ الضَّيْفُ فَأَكْرِمْهُ',
       },
     },
@@ -139,9 +183,24 @@ export const lesson05: LessonData = {
         instruction: 'Answer the short assessment tasks below.',
         instructionBn: 'নিম্নলিখিত ছোট মূল্যায়ন কাজগুলোর উত্তর দিন।',
         items: [
-          { emoji: '❓', ar: 'ترجم: إِنْ تُنْفِقْ تَجِدْ أَجْرَكَ', en: 'Translate: If you spend, you will find your reward', bn: 'অনুবাদ করুন: যদি তুমি ব্যয় কর, তুমি তোমার পুরস্কার পাবে' },
-          { emoji: '🔎', ar: 'اشرح: الفرق بين إِنْ مع الماضي و مع المضارع', en: 'Explain: Difference between إِنْ with past vs present', bn: 'ব্যাখ্যা করুন: অতীত বনাম বর্তমানের সাথে إِنْ এর পার্থক্য' },
-          { emoji: '✍️', ar: 'كون جملة شرطية: إِنْ + أمر', en: 'Form a conditional sentence with إِنْ + imperative', bn: 'إِنْ + আদেশ দিয়ে একটি শর্তবাচক বাক্য গঠন করুন' },
+          {
+            emoji: '❓',
+            ar: 'ترجم: إِنْ تُنْفِقْ تَجِدْ أَجْرَكَ',
+            en: 'Translate: If you spend, you will find your reward',
+            bn: 'অনুবাদ করুন: যদি তুমি ব্যয় কর, তুমি তোমার পুরস্কার পাবে',
+          },
+          {
+            emoji: '🔎',
+            ar: 'اشرح: الفرق بين إِنْ مع الماضي و مع المضارع',
+            en: 'Explain: Difference between إِنْ with past vs present',
+            bn: 'ব্যাখ্যা করুন: অতীত বনাম বর্তমানের সাথে إِنْ এর পার্থক্য',
+          },
+          {
+            emoji: '✍️',
+            ar: 'كون جملة شرطية: إِنْ + أمر',
+            en: 'Form a conditional sentence with إِنْ + imperative',
+            bn: 'إِنْ + আদেশ দিয়ে একটি শর্তবাচক বাক্য গঠন করুন',
+          },
         ],
       },
     },

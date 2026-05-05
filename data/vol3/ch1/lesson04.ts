@@ -23,7 +23,7 @@ export const lesson04: LessonData = {
           {
             id: 2,
             ar: 'فَنَاءٌ',
-            romanized: 'fanā\'',
+            romanized: "fanā'",
             en: 'Courtyard',
             bn: 'উঠোন',
             emoji: '🏠',
@@ -55,7 +55,7 @@ export const lesson04: LessonData = {
           {
             id: 6,
             ar: 'سَخَاءٌ',
-            romanized: 'sakhā\'',
+            romanized: "sakhā'",
             en: 'Generosity',
             bn: 'উদারতা',
             emoji: '💝',
@@ -67,12 +67,12 @@ export const lesson04: LessonData = {
     {
       id: '2',
       type: 'verb_table',
-      titleEn: 'Form II (Taf\'eel) — Teaching & Purifying Verbs',
+      titleEn: "Form II (Taf'eel) — Teaching & Purifying Verbs",
       titleAr: 'الباب الثاني (التفعيل)',
       titleBn: 'ফর্ম ২ (তাফইল)',
       payload: {
         verbTense: 'past',
-        baabLabel: 'Form II - Taf\'eel (التفعيل)',
+        baabLabel: "Form II - Taf'eel (التفعيل)",
         verbTable: [
           {
             root: 'عَلَّمَ',
@@ -195,12 +195,12 @@ export const lesson04: LessonData = {
     {
       id: '4',
       type: 'verb_table',
-      titleEn: 'Form V (Tafa\'al) — Reflexive Learning Verbs',
+      titleEn: "Form V (Tafa'al) — Reflexive Learning Verbs",
       titleAr: 'الباب الخامس (التفعّل)',
       titleBn: 'ফর্ম ৫ (তাফাল)',
       payload: {
         verbTense: 'past',
-        baabLabel: 'Form V - Tafa\'al (التفعّل)',
+        baabLabel: "Form V - Tafa'al (التفعّل)",
         verbTable: [
           {
             root: 'تَعَلَّمَ',
@@ -265,10 +265,10 @@ export const lesson04: LessonData = {
       payload: {
         rules: [
           {
-            label: 'Form II (Taf\'eel)',
+            label: "Form II (Taf'eel)",
             labelBn: 'ফর্ম ২ (তাফইল)',
             arabic: 'يظهر في الفعل الثاني تضعيف العين (double the middle letter)',
-            romanized: 'yaz\'hur fī al-fi\'l al-thānī taḍ\'īf al-\'ī\'n',
+            romanized: "yaz'hur fī al-fi'l al-thānī taḍ'īf al-'ī'n",
             meaning:
               'Form II is recognized by doubling the middle letter of the verb root. It typically means to cause, make, or intensify an action.',
             meaningBn:
@@ -299,11 +299,10 @@ export const lesson04: LessonData = {
       payload: {
         rules: [
           {
-            label: 'Plural Imperative Forms (Jama\'))',
+            label: "Plural Imperative Forms (Jama'))",
             labelBn: 'বহুবচন আদেশ ফর্ম',
             arabic: 'استخدم صيغة الأمر الجمع عندما تأمر جماعة من الناس',
-            romanized:
-              'istahdim ṣīghat al-amr al-jama\' \'indamā ta\'mur jamā\'ah min al-nās',
+            romanized: "istahdim ṣīghat al-amr al-jama' 'indamā ta'mur jamā'ah min al-nās",
             meaning:
               'Use the plural imperative form when commanding a group of people (more than one). The pattern remains consistent across different verb forms.',
             meaningBn:
@@ -334,7 +333,7 @@ export const lesson04: LessonData = {
       payload: {
         paragraphs: [
           {
-            titleEn: 'The Scholar\'s Sermon',
+            titleEn: "The Scholar's Sermon",
             titleBn: 'আলেমের উপদেশ',
             lines: [
               'قَالَ الْعَالِمُ فِي وَعْظِهِ : أَيُّهَا الْأَغْنِيَاءُ ! أَنْفِقُوا أَمْوَالَكُمْ فِي سَبِيلِ اللَّهِ',
@@ -349,7 +348,7 @@ export const lesson04: LessonData = {
               'আলেম তার উপদেশে বলেছেন: "হে সম্পদশালীরা! আল্লাহর পথে আপনার সম্পদ ব্যয় করুন এবং আপনার দুনিয়ার জন্য জমা করবেন না। কারণ আপনার সম্পদ আপনার মৃত্যুর পরে আপনাকে উপকৃত করবে না। নিশ্চয়ই মুসলিমরা আল্লাহর পথে সংগ্রাম করে এবং আল্লাহর দীনকে সমর্থন করে। মুশরিকদের ব্যাপারে তারা পৃথিবীতে বিপর্যয় সৃষ্টি করে এবং সংশোধন করে না। কিন্তু বিশ্বাসীরা পৃথিবীতে সংশোধন করে এবং বিপর্যয় সৃষ্টি করে না।"',
           },
           {
-            titleEn: 'Majid\'s Friends',
+            titleEn: "Majid's Friends",
             titleBn: 'মাজিদের বন্ধুরা',
             lines: [
               'أَصْدِقَاءُ مَاجِدٍ طَيِّبُونَ . عِنْدَمَا يَخْرُجُونَ مِنْ بُيُوتِهِمْ يُسَلِّمُونَ عَلَى آبَائِهِمْ وَ أُمَّهَاتِهِمْ .',
@@ -358,7 +357,7 @@ export const lesson04: LessonData = {
               'هُمْ يَتَكَلَّمُونَ مَعَ أَصْدِقَائِهِمُ الطَّيِّبِينَ بِاللُّغَةِ الْعَرَبِيَّةِ .',
             ],
             translationEn:
-              'Majid\'s friends are good. When they leave their homes, they greet their fathers and mothers. When they enter the classroom, they greet their teacher. They strive hard in their studies and succeed in the examination. They understand Allah\'s speech because they learned the Arabic language. They speak with their good friends in Arabic.',
+              "Majid's friends are good. When they leave their homes, they greet their fathers and mothers. When they enter the classroom, they greet their teacher. They strive hard in their studies and succeed in the examination. They understand Allah's speech because they learned the Arabic language. They speak with their good friends in Arabic.",
             translationBn:
               'মাজিদের বন্ধুরা ভালো। যখন তারা তাদের বাড়ি থেকে বের হয়, তারা তাদের পিতা এবং মায়েদের সাথে সালাম করে। যখন তারা শ্রেণিকক্ষে প্রবেশ করে, তারা তাদের শিক্ষকের সাথে সালাম করে। তারা তাদের অধ্যয়নে কঠোর পরিশ্রম করে এবং পরীক্ষায় সফল হয়। তারা আল্লাহর কথা বোঝে কারণ তারা আরবি ভাষা শিখেছে। তারা তাদের ভালো বন্ধুদের সাথে আরবিতে কথা বলে।',
           },
@@ -448,8 +447,10 @@ Try identifying these:
             question_bn: 'আলেম সম্পদশালীদের কাছে কী বলেছিল?',
             correct_ar:
               'قَالَ لَهُمْ : أَنْفِقُوا أَمْوَالَكُمْ فِي سَبِيلِ اللَّهِ وَ لَا تَجْمَعُوهَا',
-            correct_en: 'He said to them: Spend your wealth in the path of Allah and do not hoard it.',
-            correct_bn: 'তিনি তাদের বলেছিলেন: আল্লাহর পথে আপনার সম্পদ ব্যয় করুন এবং তা জমা করবেন না।',
+            correct_en:
+              'He said to them: Spend your wealth in the path of Allah and do not hoard it.',
+            correct_bn:
+              'তিনি তাদের বলেছিলেন: আল্লাহর পথে আপনার সম্পদ ব্যয় করুন এবং তা জমা করবেন না।',
             options_ar: [
               'أَنْفِقُوا أَمْوَالَكُمْ',
               'لَا تُنْفِقُوا أَمْوَالَكُمْ',
@@ -471,16 +472,12 @@ Try identifying these:
           {
             emoji: '✨',
             question_ar: 'بِمَ تَعَلَّمَ أَصْدِقَاءُ مَاجِدٍ الْعَرَبِيَّةَ؟',
-            question_en: 'How did Majid\'s friends learn Arabic?',
+            question_en: "How did Majid's friends learn Arabic?",
             question_bn: 'মাজিদের বন্ধুরা কিভাবে আরবি শিখেছে?',
             correct_ar: 'تَعَلَّمُوا اللُّغَةَ الْعَرَبِيَّةَ فِي الْفَصْلِ/',
             correct_en: 'They learned Arabic in the classroom.',
             correct_bn: 'তারা শ্রেণিকক্ষে আরবি শিখেছে।',
-            options_ar: [
-              'فِي الْبَيْتِ',
-              'فِي الْفَصْلِ',
-              'فِي الْمَسْجِدِ',
-            ],
+            options_ar: ['فِي الْبَيْتِ', 'فِي الْفَصْلِ', 'فِي الْمَسْجِدِ'],
             questionType: 'general',
           },
           {
@@ -489,8 +486,7 @@ Try identifying these:
             question_en:
               'What is the difference shown between Muslims and polytheists in the verse?',
             question_bn: 'আয়াতে মুসলিমদের এবং মুশরিকদের মধ্যে পার্থক্য কী দেখানো হয়েছে?',
-            correct_ar:
-              'الْمُسْلِمُونَ يُصْلِحُونَ وَ الْمُشْرِكُونَ يُفْسِدُونَ',
+            correct_ar: 'الْمُسْلِمُونَ يُصْلِحُونَ وَ الْمُشْرِكُونَ يُفْسِدُونَ',
             correct_en: 'Muslims rectify while polytheists cause corruption.',
             correct_bn: 'মুসলিমরা সংশোধন করে যখন মুশরিকরা বিপর্যয় সৃষ্টি করে।',
             options_ar: [
@@ -508,11 +504,7 @@ Try identifying these:
             correct_ar: 'عِنْدَمَا يَخْرُجُونَ مِنْ بُيُوتِهِمْ',
             correct_en: 'When they leave their homes.',
             correct_bn: 'যখন তারা তাদের বাড়ি থেকে বেরিয়ে যায়।',
-            options_ar: [
-              'فِي الصَّبَاحِ',
-              'عِنْدَمَا يَخْرُجُونَ',
-              'فِي الْمَسَاءِ',
-            ],
+            options_ar: ['فِي الصَّبَاحِ', 'عِنْدَمَا يَخْرُجُونَ', 'فِي الْمَسَاءِ'],
             questionType: 'general',
           },
         ],

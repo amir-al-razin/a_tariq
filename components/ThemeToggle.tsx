@@ -13,10 +13,10 @@ export const ThemeToggle: React.FC = () => {
     try {
       // Save to persistent storage
       await AsyncStorage.setItem(THEME_STORAGE_KEY, newTheme);
-      
+
       // Apply color scheme - this will automatically update useColorScheme hook
       nwColorScheme.set(newTheme);
-      
+
       console.log('[THEME] Toggled to:', newTheme);
     } catch (error) {
       console.warn('[THEME] Failed to toggle theme:', error);

@@ -40,8 +40,10 @@ export const lesson03: LessonData = {
               'أَصْدِقَاءُ رَاشِدٍ أَعْطَوْا رَاشِدًا كِتَابًا قَيِّمًا وَقَالُوا: قَدْ أَعْطَيْنَاكَ هَذَا الكِتَابَ.',
               'العُقَلَاءُ يُخْفُونَ عَنِ النَّاسِ سِرَّهُمْ، وَالسُّفَهَاءُ يُفْشُونَ سِرَّهُمْ لِكُلِّ أَحَدٍ.',
             ],
-            translationEn: 'Rashid’s friends gave him a valuable book. The wise hide their secrets from people, while the foolish disclose their secrets to everyone.',
-            translationBn: 'রাশিদের বন্ধুরা তাকে একটি মূল্যবান বই দিল। বুদ্ধিমানরা তাদের রহস্য মানুষ থেকে গোপন রাখে, কিন্তু নির্বোধরা সবার কাছে তা ফাঁস করে।',
+            translationEn:
+              'Rashid’s friends gave him a valuable book. The wise hide their secrets from people, while the foolish disclose their secrets to everyone.',
+            translationBn:
+              'রাশিদের বন্ধুরা তাকে একটি মূল্যবান বই দিল। বুদ্ধিমানরা তাদের রহস্য মানুষ থেকে গোপন রাখে, কিন্তু নির্বোধরা সবার কাছে তা ফাঁস করে।',
           },
           {
             titleEn: 'Prayer and the congregation',
@@ -50,8 +52,10 @@ export const lesson03: LessonData = {
               'المُعَلِّمُونَ وَتَلَامِيذُهُمْ صَلَّوْا صَلَاةَ الظُّهْرِ فِي مَسْجِدِ المَدْرَسَةِ.',
               'قَالَ مَحْمُودٌ لِأَوْلَادِهِ: اذْهَبُوا إِلَى مَسْجِدِ الحَيِّ وَصَلُّوا العَصْرَ مَعَ الجَمَاعَةِ.',
             ],
-            translationEn: 'The teachers and their students prayed Dhuhr in the school mosque. Mahmud told his children: go to the neighborhood mosque and pray Asr with the congregation.',
-            translationBn: 'শিক্ষকরা ও তাদের ছাত্ররা স্কুলের মসজিদে জোহর সালাত পড়ল। মাহমুদ তার সন্তানদের বললেন: মহল্লার মসজিদে যাও এবং জামাআতের সাথে আসরের সালাত পড়ো।',
+            translationEn:
+              'The teachers and their students prayed Dhuhr in the school mosque. Mahmud told his children: go to the neighborhood mosque and pray Asr with the congregation.',
+            translationBn:
+              'শিক্ষকরা ও তাদের ছাত্ররা স্কুলের মসজিদে জোহর সালাত পড়ল। মাহমুদ তার সন্তানদের বললেন: মহল্লার মসজিদে যাও এবং জামাআতের সাথে আসরের সালাত পড়ো।',
           },
         ],
       },
@@ -71,16 +75,29 @@ export const lesson03: LessonData = {
             romanized: 'man ṣallā fī al-masjidi?',
             meaning: '“Who prayed in the mosque?” can take singular masculine verb form.',
             meaningBn: '“কে মসজিদে সালাত পড়েছে?”—এখানে একবচন পুংলিঙ্গ ক্রিয়া ব্যবহার করা যায়।',
-            examples: [{ ar: 'مَنْ صَلَّى فِي الْمَسْجِدِ؟', en: 'Who prayed in the mosque?', bn: 'কে মসজিদে সালাত পড়েছে?' }],
+            examples: [
+              {
+                ar: 'مَنْ صَلَّى فِي الْمَسْجِدِ؟',
+                en: 'Who prayed in the mosque?',
+                bn: 'কে মসজিদে সালাত পড়েছে?',
+              },
+            ],
           },
           {
             label: 'Plural or feminine context',
             labelBn: 'বহুবচন বা স্ত্রীলিঙ্গ প্রসঙ্গ',
             arabic: 'مَنْ صَلَّوْا فِي الْمَسْجِدِ؟ / مَنْ صَلَّيْنَ فِي الْبَيْتِ؟',
             romanized: 'man ṣallaw ... / man ṣallayna ...',
-            meaning: 'When the questioner knows the group is plural or feminine, matching forms may also be used.',
+            meaning:
+              'When the questioner knows the group is plural or feminine, matching forms may also be used.',
             meaningBn: 'প্রশ্নকারী দলটি বহুবচন বা স্ত্রীলিঙ্গ জানলে, মিলিয়ে রূপও ব্যবহার করা যায়।',
-            examples: [{ ar: 'مَنْ صَلَّوْا فِي الْمَسْجِدِ؟', en: 'Who (plural) prayed in the mosque?', bn: 'কারা মসজিদে সালাত পড়েছে?' }],
+            examples: [
+              {
+                ar: 'مَنْ صَلَّوْا فِي الْمَسْجِدِ؟',
+                en: 'Who (plural) prayed in the mosque?',
+                bn: 'কারা মসজিদে সালাত পড়েছে?',
+              },
+            ],
           },
         ],
       },
@@ -144,7 +161,8 @@ export const lesson03: LessonData = {
             labelBn: 'লম + বর্তমান ক্রিয়া',
             arabic: 'لَمْ يَذْهَبْ / لَمْ يَذْهَبُوا',
             romanized: 'lam yadhhab / lam yadhhabū',
-            meaning: 'Lam makes the present tense jussive and gives the meaning of a negative past.',
+            meaning:
+              'Lam makes the present tense jussive and gives the meaning of a negative past.',
             meaningBn: 'লম বর্তমান ক্রিয়াকে জযম করে এবং নেতিবাচক অতীত অর্থ দেয়।',
             examples: [{ ar: 'لَمْ يَذْهَبُوا', en: 'They did not go', bn: 'তারা যায়নি' }],
           },
@@ -155,7 +173,13 @@ export const lesson03: LessonData = {
             romanized: 'mā dhahaba / lam yadhhab',
             meaning: 'Both forms are used to express negation in the past.',
             meaningBn: 'উভয় রূপই অতীতে নেতিবাচকতা প্রকাশ করে।',
-            examples: [{ ar: 'مَا رَجَعُوا / لَمْ يَرْجِعُوا', en: 'They did not return', bn: 'তারা ফিরে আসেনি' }],
+            examples: [
+              {
+                ar: 'مَا رَجَعُوا / لَمْ يَرْجِعُوا',
+                en: 'They did not return',
+                bn: 'তারা ফিরে আসেনি',
+              },
+            ],
           },
         ],
       },

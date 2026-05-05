@@ -14,28 +14,41 @@ export const lesson08: LessonData = {
           {
             label: 'Intention structure (want to do)',
             labelBn: 'ইচ্ছার গঠন',
-            arabic: 'يُرِيدُونَ أَنْ يَفْعَلُوا - تُرِيدُونَ أَنْ تَفْعَلُوا - نُرِيدُ أَنْ نَفْعَلَ',
-            romanized: 'yurīdūn an yaf\'alū - turīdūn an taf\'alū - nurīd an naf\'al',
+            arabic:
+              'يُرِيدُونَ أَنْ يَفْعَلُوا - تُرِيدُونَ أَنْ تَفْعَلُوا - نُرِيدُ أَنْ نَفْعَلَ',
+            romanized: "yurīdūn an yaf'alū - turīdūn an taf'alū - nurīd an naf'al",
             meaning:
               'The verb يُرِيدُ (to want) must be followed by أَنْ + subjunctive verb. The second verb is subordinate and expresses the intended action. Example: يُرِيدُونَ أَنْ يَشْرَبُوا (They want to drink).',
             meaningBn:
               'ক্রিয়া يُرِيدُ (চাওয়া) অবশ্যই أَنْ + নিমজ্জিত ক্রিয়া দ্বারা অনুসরণ করা হয়। দ্বিতীয় ক্রিয়া অধীনস্থ এবং অভিপ্রেত অ্যাকশন প্রকাশ করে।',
             examples: [
-              { ar: 'أَرَادُوا أَنْ يَشْرَبُوا', en: 'They wanted to drink', bn: 'তারা পানীয় করতে চেয়েছিল' },
-              { ar: 'يُرِيدُونَ أَنْ يَتَعَلَّمُوا', en: 'They want to learn', bn: 'তারা শিখতে চায়' },
+              {
+                ar: 'أَرَادُوا أَنْ يَشْرَبُوا',
+                en: 'They wanted to drink',
+                bn: 'তারা পানীয় করতে চেয়েছিল',
+              },
+              {
+                ar: 'يُرِيدُونَ أَنْ يَتَعَلَّمُوا',
+                en: 'They want to learn',
+                bn: 'তারা শিখতে চায়',
+              },
             ],
           },
           {
             label: 'Capability: يَسْتَطِيعُ with أَنْ',
             labelBn: 'সামর্থ্য: يَسْتَطِيعُ সহ أَنْ',
             arabic: 'لا يَسْتَطِيعُونَ أَنْ يَفْعَلُوا',
-            romanized: 'lā yastatiʿūn an yaf\'alū',
+            romanized: "lā yastatiʿūn an yaf'alū",
             meaning:
               'Similarly, يَسْتَطِيعُ (can/be able to) takes أَنْ + subjunctive verb. Negation: لَا يَسْتَطِيعُونَ أَنْ يَفْعَلُوا (They cannot do).',
             meaningBn:
               'একইভাবে, يَسْتَطِيعُ (পারা) أَنْ + নিমজ্জিত ক্রিয়া নেয়। নেতিবাচন: তারা করতে পারে না।',
             examples: [
-              { ar: 'لا يَسْتَطِيعُونَ أَنْ يَمْنَعُوا', en: 'They cannot prevent', bn: 'তারা প্রতিরোধ করতে পারে না' },
+              {
+                ar: 'لا يَسْتَطِيعُونَ أَنْ يَمْنَعُوا',
+                en: 'They cannot prevent',
+                bn: 'তারা প্রতিরোধ করতে পারে না',
+              },
             ],
           },
         ],
@@ -49,14 +62,70 @@ export const lesson08: LessonData = {
       titleBn: 'মূল শব্দভান্ডার: ইচ্ছা ও সামর্থ্য',
       payload: {
         words: [
-          { id: 1, ar: 'صَائِمُونَ', romanized: 'sāʾimūn', en: 'Fasting people', bn: 'রোজাদার', emoji: '🌙' },
-          { id: 2, ar: 'يُفْطِرُوا', romanized: 'yufṭirū', en: 'They break the fast', bn: 'রোজা ভাঙা', emoji: '🍽️' },
-          { id: 3, ar: 'أَكْوَاب', romanized: 'akwāb', en: 'Cups / glasses', bn: 'কাপ', emoji: '🥤' },
-          { id: 4, ar: 'يَسْتَطِعْنَ', romanized: 'yastatiʿn', en: 'They (fem) can / are able', bn: 'তারা পারে', emoji: '💪' },
-          { id: 5, ar: 'يُجَاهِدُوا', romanized: 'yujāhidū', en: 'They strive / do jihad', bn: 'সংগ্রাম করা', emoji: '⚔️' },
-          { id: 6, ar: 'يُنْفِقُوا', romanized: 'yunfiqū', en: 'They spend (wealth)', bn: 'খরচ করা', emoji: '💰' },
-          { id: 7, ar: 'يَنَالُوا', romanized: 'yanālū', en: 'They attain / acquire', bn: 'অর্জন করা', emoji: '🎯' },
-          { id: 8, ar: 'الخِيَاطَة', romanized: 'al-khiyāṭah', en: 'Sewing', bn: 'সেলাই', emoji: '🧵' },
+          {
+            id: 1,
+            ar: 'صَائِمُونَ',
+            romanized: 'sāʾimūn',
+            en: 'Fasting people',
+            bn: 'রোজাদার',
+            emoji: '🌙',
+          },
+          {
+            id: 2,
+            ar: 'يُفْطِرُوا',
+            romanized: 'yufṭirū',
+            en: 'They break the fast',
+            bn: 'রোজা ভাঙা',
+            emoji: '🍽️',
+          },
+          {
+            id: 3,
+            ar: 'أَكْوَاب',
+            romanized: 'akwāb',
+            en: 'Cups / glasses',
+            bn: 'কাপ',
+            emoji: '🥤',
+          },
+          {
+            id: 4,
+            ar: 'يَسْتَطِعْنَ',
+            romanized: 'yastatiʿn',
+            en: 'They (fem) can / are able',
+            bn: 'তারা পারে',
+            emoji: '💪',
+          },
+          {
+            id: 5,
+            ar: 'يُجَاهِدُوا',
+            romanized: 'yujāhidū',
+            en: 'They strive / do jihad',
+            bn: 'সংগ্রাম করা',
+            emoji: '⚔️',
+          },
+          {
+            id: 6,
+            ar: 'يُنْفِقُوا',
+            romanized: 'yunfiqū',
+            en: 'They spend (wealth)',
+            bn: 'খরচ করা',
+            emoji: '💰',
+          },
+          {
+            id: 7,
+            ar: 'يَنَالُوا',
+            romanized: 'yanālū',
+            en: 'They attain / acquire',
+            bn: 'অর্জন করা',
+            emoji: '🎯',
+          },
+          {
+            id: 8,
+            ar: 'الخِيَاطَة',
+            romanized: 'al-khiyāṭah',
+            en: 'Sewing',
+            bn: 'সেলাই',
+            emoji: '🧵',
+          },
         ],
       },
     },
@@ -87,7 +156,7 @@ export const lesson08: LessonData = {
               'إِنَّ بَنَاتِ مَاجِدٍ لا يَسْتَطِعْنَ أَنْ يَتَكَلَّمْنَ بِاللُّغَةِ الْعَرَبِيَّةِ ، لِأَنَّهُنَّ مَا تَعَلَّمْنَهَا جَيِّدًا .',
             ],
             translationEn:
-              'Majid\'s children want to learn the Arabic language to understand the speech of Allah. Indeed, Majid\'s daughters cannot speak the Arabic language, because they did not learn it well.',
+              "Majid's children want to learn the Arabic language to understand the speech of Allah. Indeed, Majid's daughters cannot speak the Arabic language, because they did not learn it well.",
             translationBn:
               'মাজিদের সন্তানরা আল্লাহর বাণী বুঝতে আরবি ভাষা শিখতে চায়। প্রকৃতপক্ষে, মাজিদের কন্যারা আরবিতে কথা বলতে পারে না, কারণ তারা এটি ভালোভাবে শিখেনি।',
           },
@@ -111,7 +180,7 @@ export const lesson08: LessonData = {
               'وَلا نُرِيدُ أَنْ نُزَيِّنَهَا بِاللِّبَاسِ ، لِأَنَّ زِينَةَ الْعِلْمِ خَيْرٌ مِنْ زِينَةِ اللِّبَاسِ .',
             ],
             translationEn:
-              'Fatima\'s daughters wanted to learn sewing from their mother. And we do not want to adorn it with clothing, because the adornment of knowledge is better than the adornment of clothing.',
+              "Fatima's daughters wanted to learn sewing from their mother. And we do not want to adorn it with clothing, because the adornment of knowledge is better than the adornment of clothing.",
             translationBn:
               'ফাতিমার কন্যারা তাদের মায়ের কাছ থেকে সেলাই শিখতে চেয়েছিল। এবং আমরা এটি পোশাকের সাথে সাজাতে চাই না, কারণ জ্ঞানের সজ্জা পোশাকের সজ্জার চেয়ে ভাল।',
           },
@@ -157,10 +226,30 @@ Practice: Complete the pattern
         instruction: 'Answer these comprehension questions from the reading passages.',
         instructionBn: 'পাঠের অংশগুলি থেকে এই বোধগম্য প্রশ্নের উত্তর দিন।',
         items: [
-          { emoji: '❓', ar: 'مَاذَا أَرَادَ الصَّائِمُونَ ؟', en: 'What did the fasting people want?', bn: 'রোজাদাররা কি করতে চেয়েছিল?' },
-          { emoji: '❓', ar: 'لِمَ أَخَذُوا الْأَكْوَابَ ؟', en: 'Why did they take the cups?', bn: 'তারা কেন কাপ নিয়েছিল?' },
-          { emoji: '❓', ar: 'مَاذَا يُرِيدُ أَوْلادُ مَاجِدٍ ؟', en: 'What do Majid\'s sons want?', bn: 'মাজিদের সন্তানরা কি চায়?' },
-          { emoji: '❓', ar: 'لِمَ يُرِيدُونَ أَنْ يَتَعَلَّمُوا اللُّغَةَ الْعَرَبِيَّةَ ؟', en: 'Why do they want to learn Arabic?', bn: 'তারা কেন আরবি শিখতে চায়?' },
+          {
+            emoji: '❓',
+            ar: 'مَاذَا أَرَادَ الصَّائِمُونَ ؟',
+            en: 'What did the fasting people want?',
+            bn: 'রোজাদাররা কি করতে চেয়েছিল?',
+          },
+          {
+            emoji: '❓',
+            ar: 'لِمَ أَخَذُوا الْأَكْوَابَ ؟',
+            en: 'Why did they take the cups?',
+            bn: 'তারা কেন কাপ নিয়েছিল?',
+          },
+          {
+            emoji: '❓',
+            ar: 'مَاذَا يُرِيدُ أَوْلادُ مَاجِدٍ ؟',
+            en: "What do Majid's sons want?",
+            bn: 'মাজিদের সন্তানরা কি চায়?',
+          },
+          {
+            emoji: '❓',
+            ar: 'لِمَ يُرِيدُونَ أَنْ يَتَعَلَّمُوا اللُّغَةَ الْعَرَبِيَّةَ ؟',
+            en: 'Why do they want to learn Arabic?',
+            bn: 'তারা কেন আরবি শিখতে চায়?',
+          },
         ],
       },
     },
@@ -176,8 +265,9 @@ Practice: Complete the pattern
         questions: [
           {
             emoji: '🎯',
-            question_ar: 'هَلْ تَسْتَطِيعُ بَنَاتُ مَاجِدٍ أَنْ يَتَكَلَّمْنَ بِاللُّغَةِ الْعَرَبِيَّةِ ؟',
-            question_en: 'Can Majid\'s daughters speak Arabic?',
+            question_ar:
+              'هَلْ تَسْتَطِيعُ بَنَاتُ مَاجِدٍ أَنْ يَتَكَلَّمْنَ بِاللُّغَةِ الْعَرَبِيَّةِ ؟',
+            question_en: "Can Majid's daughters speak Arabic?",
             question_bn: 'মাজিদের কন্যারা কি আরবিতে কথা বলতে পারে?',
             correct_ar: 'لَا ، لَا يَسْتَطِعْنَ لِأَنَّهُنَّ مَا تَعَلَّمْنَهَا جَيِّدًا',
             correct_en: 'No, they cannot because they did not learn it well.',
@@ -193,13 +283,17 @@ Practice: Complete the pattern
             correct_ar: 'يُرِيدُونَ أَنْ يُنْفِقُوا أَمْوَالَهُمْ فِي سَبِيلِ اللهِ',
             correct_en: 'They want to spend their wealth in the path of Allah.',
             correct_bn: 'তারা আল্লাহর পথে তাদের সম্পদ ব্যয় করতে চায়।',
-            options_ar: ['يُرِيدُونَ أَنْ يَكْنِزُوا', 'يُرِيدُونَ أَنْ يُنْفِقُوا', 'يُرِيدُونَ أَنْ يَبِيعُوا'],
+            options_ar: [
+              'يُرِيدُونَ أَنْ يَكْنِزُوا',
+              'يُرِيدُونَ أَنْ يُنْفِقُوا',
+              'يُرِيدُونَ أَنْ يَبِيعُوا',
+            ],
             questionType: 'general',
           },
           {
             emoji: '🧵',
             question_ar: 'مِمَّنْ أَرَادَتْ بَنَاتُ فَاطِمَةَ أَنْ يَتَعَلَّمْنَ الْخِيَاطَةَ ؟',
-            question_en: 'From whom did Fatima\'s daughters want to learn sewing?',
+            question_en: "From whom did Fatima's daughters want to learn sewing?",
             question_bn: 'ফাতিমার কন্যারা কার কাছ থেকে সেলাই শিখতে চেয়েছিল?',
             correct_ar: 'مِنْ أُمِّهِنَّ',
             correct_en: 'From their mother.',

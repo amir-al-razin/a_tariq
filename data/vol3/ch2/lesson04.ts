@@ -41,8 +41,22 @@ export const lesson04: LessonData = {
       payload: {
         words: [
           { id: 1, ar: 'هَدْيٌ', romanized: 'hady', en: 'Guidance', bn: 'পথনির্দেশ', emoji: '🧭' },
-          { id: 2, ar: 'حَذَّرَ', romanized: 'ḥadhdhara', en: 'Warned', bn: 'সতর্ক করল', emoji: '⚠️' },
-          { id: 3, ar: 'بَاسِطًا يَدَهُ', romanized: 'bāsiṭan yadahū', en: 'Stretching his hand', bn: 'হাত বাড়িয়ে', emoji: '🤲' },
+          {
+            id: 2,
+            ar: 'حَذَّرَ',
+            romanized: 'ḥadhdhara',
+            en: 'Warned',
+            bn: 'সতর্ক করল',
+            emoji: '⚠️',
+          },
+          {
+            id: 3,
+            ar: 'بَاسِطًا يَدَهُ',
+            romanized: 'bāsiṭan yadahū',
+            en: 'Stretching his hand',
+            bn: 'হাত বাড়িয়ে',
+            emoji: '🤲',
+          },
         ],
       },
     },
@@ -61,8 +75,10 @@ export const lesson04: LessonData = {
               'قَالَ اللّٰهُ تَعَالَى: الْيَوْمَ أَكْمَلْتُ لَكُمْ دِينَكُمْ وَأَتْمَمْتُ عَلَيْكُمْ نِعْمَتِي.',
               'أَعَزَّنَا اللّٰهُ بِالْإِسْلَامِ، وَأَرْسَلَ رَسُولَهُ لِيَدْعُوَ النَّاسَ إِلَى اللّٰهِ.',
             ],
-            translationEn: 'Allah the Exalted said: Today I have perfected for you your religion and completed My favor upon you. Allah honored us with Islam and sent His Messenger to call people to Allah.',
-            translationBn: 'আল্লাহ তাআলা বলেছেন: আজ আমি তোমাদের জন্য তোমাদের দ্বীনকে পূর্ণ করলাম এবং তোমাদের ওপর আমার নেয়ামত সম্পূর্ণ করলাম। আল্লাহ ইসলাম দিয়ে আমাদের সম্মানিত করেছেন এবং তাঁর রাসূলকে মানুষকে আল্লাহর দিকে ডাকতে পাঠিয়েছেন।',
+            translationEn:
+              'Allah the Exalted said: Today I have perfected for you your religion and completed My favor upon you. Allah honored us with Islam and sent His Messenger to call people to Allah.',
+            translationBn:
+              'আল্লাহ তাআলা বলেছেন: আজ আমি তোমাদের জন্য তোমাদের দ্বীনকে পূর্ণ করলাম এবং তোমাদের ওপর আমার নেয়ামত সম্পূর্ণ করলাম। আল্লাহ ইসলাম দিয়ে আমাদের সম্মানিত করেছেন এবং তাঁর রাসূলকে মানুষকে আল্লাহর দিকে ডাকতে পাঠিয়েছেন।',
           },
           {
             titleEn: 'Iftar and preparation',
@@ -71,8 +87,10 @@ export const lesson04: LessonData = {
               'قَالَتِ الْأُمُّ لِأَوْلَادِهَا: أَدْخُلُ الْآنَ الْمَطْبَخَ لِأُعِدَّ لَكُمْ طَعَامَ الْغَدَاءِ.',
               'دَعَوْتُ الصَّائِمَ إِلَى الْفِطْرِ وَقُلْتُ لَهُ: خُذْ فِطْرَكَ يَا صَائِمُ.',
             ],
-            translationEn: 'The mother said to her children: I will enter the kitchen now to prepare lunch for you. I invited the fasting person to iftar and said: take your iftar, O fasting person.',
-            translationBn: 'মা সন্তানদের বললেন: আমি এখন রান্নাঘরে যাচ্ছি তোমাদের জন্য দুপুরের খাবার প্রস্তুত করতে। আমি রোযাদারকে ইফতারের জন্য ডাকলাম এবং বললাম: তোমার ইফতার নাও।',
+            translationEn:
+              'The mother said to her children: I will enter the kitchen now to prepare lunch for you. I invited the fasting person to iftar and said: take your iftar, O fasting person.',
+            translationBn:
+              'মা সন্তানদের বললেন: আমি এখন রান্নাঘরে যাচ্ছি তোমাদের জন্য দুপুরের খাবার প্রস্তুত করতে। আমি রোযাদারকে ইফতারের জন্য ডাকলাম এবং বললাম: তোমার ইফতার নাও।',
           },
         ],
       },
@@ -95,7 +113,11 @@ export const lesson04: LessonData = {
             correct_ar: 'الْيَوْمَ أَكْمَلْتُ لَكُمْ دِينَكُمْ',
             correct_en: 'Today I have perfected for you your religion',
             correct_bn: 'আজ আমি তোমাদের জন্য তোমাদের দ্বীনকে পূর্ণ করলাম',
-            options_ar: ['الْيَوْمَ أَكْمَلْتُ لَكُمْ دِينَكُمْ', 'لَا تَقْرَأْ', 'إِنْ شَاءَ اللّٰهُ'],
+            options_ar: [
+              'الْيَوْمَ أَكْمَلْتُ لَكُمْ دِينَكُمْ',
+              'لَا تَقْرَأْ',
+              'إِنْ شَاءَ اللّٰهُ',
+            ],
             questionType: 'hal',
           },
           {

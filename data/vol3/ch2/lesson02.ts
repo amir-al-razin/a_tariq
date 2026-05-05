@@ -20,7 +20,11 @@ export const lesson02: LessonData = {
             meaningBn: 'পুংবচনে দুর্বল অক্ষর বাদ যায়; স্ত্রীবচনে ধারা থাকে।',
             examples: [
               { ar: 'دَعَوْا / دَعَوْنَ', en: 'They called (m./f.)', bn: 'তারা ডাকল (পুং/স্ত্রী)' },
-              { ar: 'لَنْ يَدْعُوا / لَنْ يَدْعُونَ', en: 'They will never call', bn: 'তারা কখনো ডাকবে না' },
+              {
+                ar: 'لَنْ يَدْعُوا / لَنْ يَدْعُونَ',
+                en: 'They will never call',
+                bn: 'তারা কখনো ডাকবে না',
+              },
             ],
           },
           {
@@ -28,7 +32,8 @@ export const lesson02: LessonData = {
             labelBn: 'ইয়া-ধাতুর ক্রিয়া',
             arabic: 'بَكَى - يَبْكِي',
             romanized: 'bakā - yabkī',
-            meaning: 'Masculine plurals drop the weak letter; feminine plural keeps the ya-pattern.',
+            meaning:
+              'Masculine plurals drop the weak letter; feminine plural keeps the ya-pattern.',
             meaningBn: 'পুংবচনে দুর্বল অক্ষর বাদ যায়; স্ত্রীবচনে ইয়া-ধারা থাকে।',
             examples: [
               { ar: 'بَكَوْا / بَكَيْنَ', en: 'They cried (m./f.)', bn: 'তারা কাঁদল (পুং/স্ত্রী)' },
@@ -40,11 +45,20 @@ export const lesson02: LessonData = {
             labelBn: 'আলিফ-মাকসুরা ক্রিয়া',
             arabic: 'نَسِيَ - يَنْسَى',
             romanized: 'nasiya - yansā',
-            meaning: 'The masculine plural drops the final alif maqsurah; feminine plural returns to the ya-based pattern.',
+            meaning:
+              'The masculine plural drops the final alif maqsurah; feminine plural returns to the ya-based pattern.',
             meaningBn: 'পুংবচনে শেষের আলিফ-মাকসুরা পড়ে যায়; স্ত্রীবচনে ইয়া-ধারা ফিরে আসে।',
             examples: [
-              { ar: 'نَسُوا / نَسِينَ', en: 'They forgot (m./f.)', bn: 'তারা ভুলে গেল (পুং/স্ত্রী)' },
-              { ar: 'لَنْ يَنْسَوْا / لَنْ يَنْسَيْنَ', en: 'They will never forget', bn: 'তারা কখনো ভুলবে না' },
+              {
+                ar: 'نَسُوا / نَسِينَ',
+                en: 'They forgot (m./f.)',
+                bn: 'তারা ভুলে গেল (পুং/স্ত্রী)',
+              },
+              {
+                ar: 'لَنْ يَنْسَوْا / لَنْ يَنْسَيْنَ',
+                en: 'They will never forget',
+                bn: 'তারা কখনো ভুলবে না',
+              },
             ],
           },
           {
@@ -52,10 +66,15 @@ export const lesson02: LessonData = {
             labelBn: 'ফাতহা-মধ্যবর্তী ক্রিয়া',
             arabic: 'سَعَى - يَسْعَى',
             romanized: 'saʿā - yasʿā',
-            meaning: 'The masculine plural drops the alif maqsurah; feminine plural returns to the ya-based spelling.',
+            meaning:
+              'The masculine plural drops the alif maqsurah; feminine plural returns to the ya-based spelling.',
             meaningBn: 'পুংবচনে আলিফ-মাকসুরা পড়ে যায়; স্ত্রীবচনে ইয়া-রূপ ফিরে আসে।',
             examples: [
-              { ar: 'سَعَوْا / سَعَيْنَ', en: 'They strove (m./f.)', bn: 'তারা চেষ্টা করল (পুং/স্ত্রী)' },
+              {
+                ar: 'سَعَوْا / سَعَيْنَ',
+                en: 'They strove (m./f.)',
+                bn: 'তারা চেষ্টা করল (পুং/স্ত্রী)',
+              },
               { ar: 'اِسْعَوْا / اِسْعَيْنَ', en: 'Strive!', bn: 'চেষ্টা করো!' },
             ],
           },
@@ -70,11 +89,39 @@ export const lesson02: LessonData = {
       titleBn: 'শব্দভান্ডার: হেদায়াত ও মুসাফাহা',
       payload: {
         words: [
-          { id: 1, ar: 'الْهِدَايَةُ', romanized: 'al-hidāyah', en: 'Guidance', bn: 'পথনির্দেশ', emoji: '🧭' },
+          {
+            id: 1,
+            ar: 'الْهِدَايَةُ',
+            romanized: 'al-hidāyah',
+            en: 'Guidance',
+            bn: 'পথনির্দেশ',
+            emoji: '🧭',
+          },
           { id: 2, ar: 'الْخَشْيَةُ', romanized: 'al-khashyah', en: 'Fear', bn: 'ভয়', emoji: '😨' },
-          { id: 3, ar: 'الِافْتِرَاءُ', romanized: 'al-iftirāʾ', en: 'Slander', bn: 'মিথ্যা অপবাদ', emoji: '🗣️' },
-          { id: 4, ar: 'الْإِفْشَاءُ', romanized: 'al-ifsāʾ', en: 'Disclosure', bn: 'ফাঁস করা', emoji: '📢' },
-          { id: 5, ar: 'الْمُصَافَحَةُ', romanized: 'al-muṣāfaḥah', en: 'Handshake', bn: 'মুসাফাহা', emoji: '🤝' },
+          {
+            id: 3,
+            ar: 'الِافْتِرَاءُ',
+            romanized: 'al-iftirāʾ',
+            en: 'Slander',
+            bn: 'মিথ্যা অপবাদ',
+            emoji: '🗣️',
+          },
+          {
+            id: 4,
+            ar: 'الْإِفْشَاءُ',
+            romanized: 'al-ifsāʾ',
+            en: 'Disclosure',
+            bn: 'ফাঁস করা',
+            emoji: '📢',
+          },
+          {
+            id: 5,
+            ar: 'الْمُصَافَحَةُ',
+            romanized: 'al-muṣāfaḥah',
+            en: 'Handshake',
+            bn: 'মুসাফাহা',
+            emoji: '🤝',
+          },
           { id: 6, ar: 'طَازَجٌ', romanized: 'ṭāzaj', en: 'Fresh', bn: 'টাটকা', emoji: '🥛' },
         ],
       },
@@ -109,8 +156,10 @@ export const lesson02: LessonData = {
               'الْمُسْلِمُونَ يَدْعُونَ النَّاسَ إِلَى الْجَنَّةِ وَالْمُشْرِكُونَ يَدْعُونَهُمْ إِلَى النَّارِ.',
               'لَا تُشْرِكُوا بِاللَّهِ شَيْئًا وَلَا تَدْعُوا مَعَ اللَّهِ أَحَدًا.',
             ],
-            translationEn: 'Muslims invite people to Paradise, while the polytheists invite them to the Fire. Do not associate anything with Allah and do not call upon anyone along with Allah.',
-            translationBn: 'মুসলমানরা মানুষকে জান্নাতের দিকে ডাকে, আর মুশরিকরা তাদের আগুনের দিকে ডাকে। আল্লাহর সাথে কোনো কিছু শিরক করো না এবং আল্লাহর সাথে কাউকে ডাকো না।',
+            translationEn:
+              'Muslims invite people to Paradise, while the polytheists invite them to the Fire. Do not associate anything with Allah and do not call upon anyone along with Allah.',
+            translationBn:
+              'মুসলমানরা মানুষকে জান্নাতের দিকে ডাকে, আর মুশরিকরা তাদের আগুনের দিকে ডাকে। আল্লাহর সাথে কোনো কিছু শিরক করো না এবং আল্লাহর সাথে কাউকে ডাকো না।',
           },
           {
             titleEn: 'Patience and knowledge',
@@ -119,8 +168,10 @@ export const lesson02: LessonData = {
               'قَالَ الْعَالِمُ: لَا تَبْكُوا، بَلِ اصْبِرُوا صَبْرًا جَمِيلًا وَادْعُوا اللَّهَ لِأَبِيكُمْ.',
               'قَالَ الْوَالِدُ: تَعَلَّمُوا الْعِلْمَ لَا لِتَكْسِبُوا ثَنَاءَ النَّاسِ.',
             ],
-            translationEn: 'The scholar said: do not cry, rather be patient and pray for your father. The father said: learn knowledge not to earn people’s praise.',
-            translationBn: 'আলেম বললেন: কেঁদো না, বরং ধৈর্য ধরো এবং তোমাদের বাবার জন্য দোয়া করো। পিতা বললেন: মানুষের প্রশংসার জন্য নয়, জ্ঞান শেখো।',
+            translationEn:
+              'The scholar said: do not cry, rather be patient and pray for your father. The father said: learn knowledge not to earn people’s praise.',
+            translationBn:
+              'আলেম বললেন: কেঁদো না, বরং ধৈর্য ধরো এবং তোমাদের বাবার জন্য দোয়া করো। পিতা বললেন: মানুষের প্রশংসার জন্য নয়, জ্ঞান শেখো।',
           },
         ],
       },

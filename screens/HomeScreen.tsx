@@ -14,9 +14,24 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { t } = useTranslation();
 
   const VOLUMES: { key: VolumeKey; titleKey: string; subtitleKey: string; locked: boolean }[] = [
-    { key: 'VolumeOne',   titleKey: 'home.volume1', subtitleKey: 'home.volume1Subtitle', locked: false },
-    { key: 'VolumeTwo',   titleKey: 'home.volume2', subtitleKey: 'home.volume2Subtitle', locked: false },
-    { key: 'VolumeThree', titleKey: 'home.volume3', subtitleKey: 'home.volume3Subtitle', locked: false },
+    {
+      key: 'VolumeOne',
+      titleKey: 'home.volume1',
+      subtitleKey: 'home.volume1Subtitle',
+      locked: false,
+    },
+    {
+      key: 'VolumeTwo',
+      titleKey: 'home.volume2',
+      subtitleKey: 'home.volume2Subtitle',
+      locked: false,
+    },
+    {
+      key: 'VolumeThree',
+      titleKey: 'home.volume3',
+      subtitleKey: 'home.volume3Subtitle',
+      locked: false,
+    },
   ];
 
   return (

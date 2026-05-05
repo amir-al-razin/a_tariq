@@ -16,15 +16,17 @@ export const lesson07: LessonData = {
             labelBn: 'দ্বিবচনের ক্রিয়া',
             arabic: 'نَسِيَا / نَسِيَتَا',
             romanized: 'nasiyā / nasiyatā',
-            meaning: 'In the past lessons, we presented to you the verbs of singular and plural, and now we present the verbs of the dual. The masculine dual past ends in Alif, and the feminine adds Ta before the Alif.',
-            meaningBn: 'আগের পাঠগুলোতে আমরা একবচন ও বহুবচনের ক্রিয়া নিয়ে আলোচনা করেছি, এখন আমরা দ্বিবচনের ক্রিয়া নিয়ে আলোচনা করব। পুংলিঙ্গ দ্বিবচন অতীতের শেষে আলিফ হয়, এবং স্ত্রীলিঙ্গের ক্ষেত্রে আলিফের আগে তা (ت) যুক্ত হয়।',
+            meaning:
+              'In the past lessons, we presented to you the verbs of singular and plural, and now we present the verbs of the dual. The masculine dual past ends in Alif, and the feminine adds Ta before the Alif.',
+            meaningBn:
+              'আগের পাঠগুলোতে আমরা একবচন ও বহুবচনের ক্রিয়া নিয়ে আলোচনা করেছি, এখন আমরা দ্বিবচনের ক্রিয়া নিয়ে আলোচনা করব। পুংলিঙ্গ দ্বিবচন অতীতের শেষে আলিফ হয়, এবং স্ত্রীলিঙ্গের ক্ষেত্রে আলিফের আগে তা (ت) যুক্ত হয়।',
             examples: [
               { ar: 'نَسِيَا', en: 'They two men forgot', bn: 'তারা দুজন লোক ভুলে গেল' },
-              { ar: 'نَسِيَتَا', en: 'They two women forgot', bn: 'তারা দুজন নারী ভুলে গেল' }
-            ]
-          }
-        ]
-      }
+              { ar: 'نَسِيَتَا', en: 'They two women forgot', bn: 'তারা দুজন নারী ভুলে গেল' },
+            ],
+          },
+        ],
+      },
     },
     {
       id: '2',
@@ -35,17 +37,80 @@ export const lesson07: LessonData = {
       payload: {
         words: [
           { id: 1, ar: 'أَرْسَلَ', romanized: 'arsala', en: 'To send', bn: 'পাঠানো', emoji: '📤' },
-          { id: 2, ar: 'أَكْرَمَ', romanized: 'akrama', en: 'To honor', bn: 'সম্মান করা', emoji: '🥇' },
-          { id: 3, ar: 'أَنْفَقَ', romanized: 'anfaqa', en: 'To spend', bn: 'ব্যয় করা', emoji: '💸' },
-          { id: 4, ar: 'تَوَكَّلَ', romanized: 'tawakkala', en: 'To rely / trust', bn: 'ভরসা করা', emoji: '🤲' },
-          { id: 5, ar: 'تَصَدَّقَ', romanized: 'taṣaddaqa', en: 'To give charity', bn: 'দান করা', emoji: '🪙' },
-          { id: 6, ar: 'اِغْتَسَلَ', romanized: 'ightasala', en: 'To bathe / wash', bn: 'গোসল করা / ধোয়া', emoji: '🚿' },
-          { id: 7, ar: 'اِبْتَسَمَ', romanized: 'ibtasama', en: 'To smile', bn: 'হাসা / মুচকি হাসা', emoji: '🙂' },
-          { id: 8, ar: 'اِسْتَيْقَظَ', romanized: 'istayqaẓa', en: 'To wake up', bn: 'জেগে ওঠা', emoji: '⏰' },
-          { id: 9, ar: 'اِسْتَعَانَ', romanized: 'istaʿāna', en: 'To seek help', bn: 'সাহায্য চাওয়া', emoji: '🆘' },
-          { id: 10, ar: 'زَكَّى', romanized: 'zakkā', en: 'To purify', bn: 'পবিত্র করা', emoji: '✨' }
-        ]
-      }
+          {
+            id: 2,
+            ar: 'أَكْرَمَ',
+            romanized: 'akrama',
+            en: 'To honor',
+            bn: 'সম্মান করা',
+            emoji: '🥇',
+          },
+          {
+            id: 3,
+            ar: 'أَنْفَقَ',
+            romanized: 'anfaqa',
+            en: 'To spend',
+            bn: 'ব্যয় করা',
+            emoji: '💸',
+          },
+          {
+            id: 4,
+            ar: 'تَوَكَّلَ',
+            romanized: 'tawakkala',
+            en: 'To rely / trust',
+            bn: 'ভরসা করা',
+            emoji: '🤲',
+          },
+          {
+            id: 5,
+            ar: 'تَصَدَّقَ',
+            romanized: 'taṣaddaqa',
+            en: 'To give charity',
+            bn: 'দান করা',
+            emoji: '🪙',
+          },
+          {
+            id: 6,
+            ar: 'اِغْتَسَلَ',
+            romanized: 'ightasala',
+            en: 'To bathe / wash',
+            bn: 'গোসল করা / ধোয়া',
+            emoji: '🚿',
+          },
+          {
+            id: 7,
+            ar: 'اِبْتَسَمَ',
+            romanized: 'ibtasama',
+            en: 'To smile',
+            bn: 'হাসা / মুচকি হাসা',
+            emoji: '🙂',
+          },
+          {
+            id: 8,
+            ar: 'اِسْتَيْقَظَ',
+            romanized: 'istayqaẓa',
+            en: 'To wake up',
+            bn: 'জেগে ওঠা',
+            emoji: '⏰',
+          },
+          {
+            id: 9,
+            ar: 'اِسْتَعَانَ',
+            romanized: 'istaʿāna',
+            en: 'To seek help',
+            bn: 'সাহায্য চাওয়া',
+            emoji: '🆘',
+          },
+          {
+            id: 10,
+            ar: 'زَكَّى',
+            romanized: 'zakkā',
+            en: 'To purify',
+            bn: 'পবিত্র করা',
+            emoji: '✨',
+          },
+        ],
+      },
     },
     {
       id: '3',
@@ -59,8 +124,8 @@ export const lesson07: LessonData = {
 ذَهَبَا - ذَهَبَتَا - ذَهَبْتُمَا - ذَهَبْتُمَا - ذَهَبْنَا
 يَذْهَبَانِ - تَذْهَبَانِ - تَذْهَبَانِ - تَذْهَبَانِ - نَذْهَبُ
 اِذْهَبَا - اِذْهَبَا - لَا تَذْهَبَا - لَا تَذْهَبَا
-`.trim()
-      }
+`.trim(),
+      },
     },
     {
       id: '4',
@@ -76,8 +141,8 @@ export const lesson07: LessonData = {
 أَرْسِلَا - أَرْسِلَا - لَا تُرْسِلَا - لَا تُرْسِلَا
 أَكْرَمَا - يُكْرِمَانِ - أَكْرِمَا - لَا تُكْرِمَا
 أَنْفَقَا - يُنْفِقَانِ - أَنْفِقَا - لَا تُنْفِقَا
-`.trim()
-      }
+`.trim(),
+      },
     },
     {
       id: '5',
@@ -100,8 +165,8 @@ export const lesson07: LessonData = {
 سَافَرَا - يُسَافِرَانِ - سَافِرَا - لَا تُسَافِرَا
 سَاعَدَا - يُسَاعِدَانِ - سَاعِدَا - لَا تُسَاعِدَا
 قَاتَلَا - يُقَاتِلَانِ - قَاتِلَا - لَا تُقَاتِلَا
-`.trim()
-      }
+`.trim(),
+      },
     },
     {
       id: '6',
@@ -124,8 +189,8 @@ export const lesson07: LessonData = {
 اِسْتَرَاحَا - يَسْتَرِيحَانِ - اِسْتَرِيحَا - لَا تَسْتَرِيحَا
 اِسْتَقَامَا - يَسْتَقِيمَانِ - اِسْتَقِيمَا - لَا تَسْتَقِيمَا
 اِسْتَعَانَا - يَسْتَعِينَانِ - اِسْتَعِينَا - لَا تَسْتَعِينَا
-`.trim()
-      }
+`.trim(),
+      },
     },
     {
       id: '7',
@@ -160,8 +225,8 @@ export const lesson07: LessonData = {
 اِشْتَرَيَا - اِشْتَرَتَا - اِشْتَرَيْتُمَا - اِشْتَرَيْتُمَا - اِشْتَرَيْنَا
 يَشْتَرِيَانِ - تَشْتَرِيَانِ - تَشْتَرِيَانِ - تَشْتَرِيَانِ - نَشْتَرِي
 اِشْتَرِيَا - اِشْتَرِيَا - لَا تَشْتَرِيَا - لَا تَشْتَرِيَا
-`.trim()
-      }
+`.trim(),
+      },
     },
     {
       id: '8',
@@ -180,8 +245,8 @@ export const lesson07: LessonData = {
 لَنْ يُلْقِيَا - لَنْ تُلْقِيَا - لَنْ تُلْقِيَا - لَنْ تُلْقِيَا - لَنْ نُلْقِيَ
 لَنْ يُصَلِّيَا - لَنْ تُصَلِّيَا - لَنْ تُصَلِّيَا - لَنْ تُصَلِّيَا - لَنْ نُصَلِّيَ
 لَنْ يَشْتَرِيَا - لَنْ تَشْتَرِيَا - لَنْ تَشْتَرِيَا - لَنْ تَشْتَرِيَا - لَنْ نَشْتَرِيَ
-`.trim()
-      }
+`.trim(),
+      },
     },
     {
       id: '9',
@@ -200,7 +265,7 @@ export const lesson07: LessonData = {
             past: 'فَتَحَ',
             present: 'يَفْتَحُ',
             imperative: 'اِفْتَحْ',
-            prohibitive: 'لَا تَفْتَحْ'
+            prohibitive: 'لَا تَفْتَحْ',
           },
           {
             masdar: 'النَّصْر',
@@ -209,7 +274,7 @@ export const lesson07: LessonData = {
             past: 'نَصَرَ',
             present: 'يَنْصُرُ',
             imperative: 'اُنْصُرْ',
-            prohibitive: 'لَا تَنْصُرْ'
+            prohibitive: 'لَا تَنْصُرْ',
           },
           {
             masdar: 'الجُلُوس',
@@ -218,7 +283,7 @@ export const lesson07: LessonData = {
             past: 'جَلَسَ',
             present: 'يَجْلِسُ',
             imperative: 'اِجْلِسْ',
-            prohibitive: 'لَا تَجْلِسْ'
+            prohibitive: 'لَا تَجْلِسْ',
           },
           {
             masdar: 'السَّمْع',
@@ -227,7 +292,7 @@ export const lesson07: LessonData = {
             past: 'سَمِعَ',
             present: 'يَسْمَعُ',
             imperative: 'اِسْمَعْ',
-            prohibitive: 'لَا تَسْمَعْ'
+            prohibitive: 'لَا تَسْمَعْ',
           },
           {
             masdar: 'الشُّرْب',
@@ -236,7 +301,7 @@ export const lesson07: LessonData = {
             past: 'شَرِبَ',
             present: 'يَشْرَبُ',
             imperative: 'اِشْرَبْ',
-            prohibitive: 'لَا تَشْرَبْ'
+            prohibitive: 'لَا تَشْرَبْ',
           },
           {
             masdar: 'الصِّدْق',
@@ -245,10 +310,10 @@ export const lesson07: LessonData = {
             past: 'صَدَقَ',
             present: 'يَصْدُقُ',
             imperative: 'اُصْدُقْ',
-            prohibitive: 'لَا تَصْدُقْ'
-          }
-        ]
-      }
-    }
-  ]
+            prohibitive: 'لَا تَصْدُقْ',
+          },
+        ],
+      },
+    },
+  ],
 };

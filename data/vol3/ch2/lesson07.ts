@@ -11,15 +11,64 @@ export const lesson07: LessonData = {
       titleBn: 'শব্দভান্ডার',
       payload: {
         words: [
-          { id: 1, ar: 'إِرْهَابٌ', romanized: 'irhāb', en: 'Terrorizing / Frightening', bn: 'ভয় দেখানো', emoji: '😨' },
-          { id: 2, ar: 'فَصْلُ الرَّبِيعِ', romanized: 'faṣlu ar-rabīʿ', en: 'The spring season', bn: 'বসন্তকাল', emoji: '🌸' },
-          { id: 3, ar: 'فَصْلُ الصَّيْفِ', romanized: 'faṣlu aṣ-ṣayf', en: 'The summer season', bn: 'গ্রীষ্মকাল', emoji: '☀️' },
-          { id: 4, ar: 'فَصْلُ الْخَرِيفِ', romanized: 'faṣlu al-kharīf', en: 'The autumn season', bn: 'শরৎকাল', emoji: '🍂' },
-          { id: 5, ar: 'فَصْلُ الشِّتَاءِ', romanized: 'faṣlu ash-shitāʾ', en: 'The winter season', bn: 'শীতকাল', emoji: '❄️' },
+          {
+            id: 1,
+            ar: 'إِرْهَابٌ',
+            romanized: 'irhāb',
+            en: 'Terrorizing / Frightening',
+            bn: 'ভয় দেখানো',
+            emoji: '😨',
+          },
+          {
+            id: 2,
+            ar: 'فَصْلُ الرَّبِيعِ',
+            romanized: 'faṣlu ar-rabīʿ',
+            en: 'The spring season',
+            bn: 'বসন্তকাল',
+            emoji: '🌸',
+          },
+          {
+            id: 3,
+            ar: 'فَصْلُ الصَّيْفِ',
+            romanized: 'faṣlu aṣ-ṣayf',
+            en: 'The summer season',
+            bn: 'গ্রীষ্মকাল',
+            emoji: '☀️',
+          },
+          {
+            id: 4,
+            ar: 'فَصْلُ الْخَرِيفِ',
+            romanized: 'faṣlu al-kharīf',
+            en: 'The autumn season',
+            bn: 'শরৎকাল',
+            emoji: '🍂',
+          },
+          {
+            id: 5,
+            ar: 'فَصْلُ الشِّتَاءِ',
+            romanized: 'faṣlu ash-shitāʾ',
+            en: 'The winter season',
+            bn: 'শীতকাল',
+            emoji: '❄️',
+          },
           { id: 6, ar: 'حَرٌّ', romanized: 'ḥarr', en: 'Heat', bn: 'গরম', emoji: '🔥' },
           { id: 7, ar: 'بَرْدٌ', romanized: 'bard', en: 'Cold', bn: 'ঠান্ডা', emoji: '🥶' },
-          { id: 8, ar: 'قِيمَةٌ', romanized: 'qīmah', en: 'Value / Valuable', bn: 'মূল্যবান', emoji: '💎' },
-          { id: 9, ar: 'مُبْتَسِمٌ', romanized: 'mubtasim', en: 'Smiling', bn: 'হাস্যোজ্জ্বল', emoji: '😊' },
+          {
+            id: 8,
+            ar: 'قِيمَةٌ',
+            romanized: 'qīmah',
+            en: 'Value / Valuable',
+            bn: 'মূল্যবান',
+            emoji: '💎',
+          },
+          {
+            id: 9,
+            ar: 'مُبْتَسِمٌ',
+            romanized: 'mubtasim',
+            en: 'Smiling',
+            bn: 'হাস্যোজ্জ্বল',
+            emoji: '😊',
+          },
         ],
       },
     },
@@ -36,8 +85,10 @@ export const lesson07: LessonData = {
             labelBn: 'স্ত্রীলিঙ্গ বহুবচন সর্বনাম (ইদগাম ভাঙ্গা)',
             arabic: 'أَحَبُّوا -> أَحْبَبْنَ',
             romanized: 'aḥabbū -> aḥbabna',
-            meaning: 'When conjugating doubled verbs for feminine plural or attaching consonant pronouns, the merged double letter must be separated.',
-            meaningBn: 'স্ত্রীলিঙ্গ বহুবচন বা ব্যঞ্জনবর্ণ সর্বনাম যুক্ত করার সময়, একত্রিত দ্বৈত অক্ষরটি আলাদা করতে হবে।',
+            meaning:
+              'When conjugating doubled verbs for feminine plural or attaching consonant pronouns, the merged double letter must be separated.',
+            meaningBn:
+              'স্ত্রীলিঙ্গ বহুবচন বা ব্যঞ্জনবর্ণ সর্বনাম যুক্ত করার সময়, একত্রিত দ্বৈত অক্ষরটি আলাদা করতে হবে।',
             examples: [
               { ar: 'أَحَبُّوا', en: 'They (m.pl.) loved', bn: 'তারা (পুং) ভালোবেসেছিল' },
               { ar: 'أَحْبَبْنَ', en: 'They (f.pl.) loved', bn: 'তারা (স্ত্রী) ভালোবেসেছিল' },
@@ -152,8 +203,10 @@ export const lesson07: LessonData = {
               'قَالَ العَالِمُ : أَيُّهَا الْمُسْلِمُونَ ! أَعِدُّوا لِلْمُشْرِكِينَ قُوَّةً تُرْهِبُونَ بِهَا عَدُوَّ اللهِ وَعَدُوَّكُمْ .',
               'قَالَ اللهُ تَعَالَى فِي القُرْآنِ : أَلَا تُحِبُّونَ أَنْ يَغْفِرَ اللهُ لَكُمْ .',
             ],
-            translationEn: 'The scholar said: O Muslims! Prepare a force against the polytheists by which you terrify the enemy of Allah and your enemy. Allah the Almighty said in the Quran: "Do you not love that Allah should forgive you?"',
-            translationBn: 'আলেম বললেন: হে মুসলিমরা! মুশরিকদের বিরুদ্ধে এমন শক্তি প্রস্তুত করো যা দ্বারা তোমরা আল্লাহর শত্রু এবং তোমাদের শত্রুকে ভীত করতে পারো। আল্লাহ তাআলা কুরআনে বলেছেন: "তোমরা কি ভালোবাসো না যে আল্লাহ তোমাদের ক্ষমা করুন?"',
+            translationEn:
+              'The scholar said: O Muslims! Prepare a force against the polytheists by which you terrify the enemy of Allah and your enemy. Allah the Almighty said in the Quran: "Do you not love that Allah should forgive you?"',
+            translationBn:
+              'আলেম বললেন: হে মুসলিমরা! মুশরিকদের বিরুদ্ধে এমন শক্তি প্রস্তুত করো যা দ্বারা তোমরা আল্লাহর শত্রু এবং তোমাদের শত্রুকে ভীত করতে পারো। আল্লাহ তাআলা কুরআনে বলেছেন: "তোমরা কি ভালোবাসো না যে আল্লাহ তোমাদের ক্ষমা করুন?"',
           },
           {
             titleEn: 'Completing the work',
@@ -162,8 +215,10 @@ export const lesson07: LessonData = {
               'قَالَ الْوَالِدُ لِأَوْلَادِهِ : أَطْلُبُ مِنْكُمْ أَنْ تُتِمُّوا هَذَا الْعَمَلَ فِي ثَلَاثِ سَاعَاتٍ .',
               'قَالَ مَاجِدٌ : يَا أَصْدِقَائِي ! سَمِعْتُ أَنَّكُمْ قَدْ أَعْدَدْتُمْ كِتَابَةً قَيِّمَةً تَنْشُرُونَهَا فِي جَرِيدَةِ صَوْتِ الْإِسْلَامِ ؟',
             ],
-            translationEn: 'The father said to his children: I ask you to complete this work in three hours. Majid said: O my friends! I heard that you have prepared a valuable article that you will publish in the Voice of Islam newspaper?',
-            translationBn: 'বাবা তার সন্তানদের বললেন: আমি তোমাদের এই কাজটি তিন ঘণ্টার মধ্যে সম্পূর্ণ করতে বলছি। মাজেদ বলল: হে আমার বন্ধুরা! আমি শুনেছি তোমরা একটি মূল্যবান লেখা প্রস্তুত করেছ যা তোমরা ভয়েস অফ ইসলাম পত্রিকায় প্রকাশ করবে?',
+            translationEn:
+              'The father said to his children: I ask you to complete this work in three hours. Majid said: O my friends! I heard that you have prepared a valuable article that you will publish in the Voice of Islam newspaper?',
+            translationBn:
+              'বাবা তার সন্তানদের বললেন: আমি তোমাদের এই কাজটি তিন ঘণ্টার মধ্যে সম্পূর্ণ করতে বলছি। মাজেদ বলল: হে আমার বন্ধুরা! আমি শুনেছি তোমরা একটি মূল্যবান লেখা প্রস্তুত করেছ যা তোমরা ভয়েস অফ ইসলাম পত্রিকায় প্রকাশ করবে?',
           },
           {
             titleEn: 'Seasons',
@@ -172,8 +227,10 @@ export const lesson07: LessonData = {
               'نَحْنُ نُحِبُّ فَصْلَ الرَّبِيعِ ، لِأَنَّهُ فَصْلُ الْجَمَالِ وَالْأَزْهَارِ .',
               'يَكُونُ الْحَرُّ شَدِيدًا فِي فَصْلِ الصَّيْفِ وَيَكُونُ الْبَرْدُ شَدِيدًا فِي فَصْلِ الشِّتَاءِ . أَمَّا فَصْلُ الْخَرِيفِ فَهُوَ فَصْلُ الْأَمْطَارِ .',
             ],
-            translationEn: 'We love the spring season, because it is the season of beauty and flowers. The heat is severe in the summer season and the cold is severe in the winter season. As for the autumn season, it is the season of rains.',
-            translationBn: 'আমরা বসন্তকাল পছন্দ করি, কারণ এটি সৌন্দর্য ও ফুলের ঋতু। গ্রীষ্মকালে গরম প্রচণ্ড থাকে এবং শীতকালে ঠান্ডা প্রচণ্ড থাকে। আর শরৎকাল হলো বৃষ্টির ঋতু।',
+            translationEn:
+              'We love the spring season, because it is the season of beauty and flowers. The heat is severe in the summer season and the cold is severe in the winter season. As for the autumn season, it is the season of rains.',
+            translationBn:
+              'আমরা বসন্তকাল পছন্দ করি, কারণ এটি সৌন্দর্য ও ফুলের ঋতু। গ্রীষ্মকালে গরম প্রচণ্ড থাকে এবং শীতকালে ঠান্ডা প্রচণ্ড থাকে। আর শরৎকাল হলো বৃষ্টির ঋতু।',
           },
         ],
       },
@@ -207,7 +264,8 @@ export const lesson07: LessonData = {
             },
             {
               id: 'q4',
-              question: 'هُوَ يُكَلِّمُ النَّاسَ مُبْتَسِمًا -> (هُمْ) يُكَلِّمُونَ النَّاسَ _______',
+              question:
+                'هُوَ يُكَلِّمُ النَّاسَ مُبْتَسِمًا -> (هُمْ) يُكَلِّمُونَ النَّاسَ _______',
               options: ['مُبْتَسِمِينَ', 'مُبْتَسِمُونَ', 'مُبْتَسِمًا'],
               correctAnswer: 'مُبْتَسِمِينَ',
             },

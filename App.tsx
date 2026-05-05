@@ -95,46 +95,50 @@ export default function App() {
           <ErrorBoundary>
             <NavigationContainer theme={navigationTheme}>
               <Tab.Navigator
-              screenOptions={{
-                headerShown: false,
-                sceneStyle: {
-                  backgroundColor: isDark ? '#1A1815' : '#F8F7F4',
-                },
-                tabBarStyle: {
-                  borderTopWidth: 1,
-                  borderTopColor: isDark ? '#22201B' : '#E5E1D8',
-                  backgroundColor: isDark ? '#1A1815' : '#F8F7F4',
-                  elevation: 0,
-                  shadowOpacity: 0,
-                },
-                tabBarLabelStyle: {
-                  fontFamily: 'Lexend_500Medium',
-                  fontSize: 12,
-                },
-                tabBarActiveTintColor: isDark ? '#F0EEE8' : '#22201B',
-                tabBarInactiveTintColor: isDark ? '#4F4A40' : '#B9AF9C',
-              }}>
-              <Tab.Screen
-                name="Home"
-                component={HomeNavigator}
-                options={{
-                  tabBarIcon: ({ color, focused, size }) => (
-                    <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />
-                  ),
-                }}
-              />
-              <Tab.Screen
-                name="Settings"
-                component={SettingsScreen}
-                options={{
-                  tabBarIcon: ({ color, focused, size }) => (
-                    <Ionicons
-                      name={focused ? 'settings' : 'settings-outline'}
-                      size={size}
-                      color={color}
-                    />
-                  ),
-                }}
+                screenOptions={{
+                  headerShown: false,
+                  sceneStyle: {
+                    backgroundColor: isDark ? '#1A1815' : '#F8F7F4',
+                  },
+                  tabBarStyle: {
+                    borderTopWidth: 1,
+                    borderTopColor: isDark ? '#22201B' : '#E5E1D8',
+                    backgroundColor: isDark ? '#1A1815' : '#F8F7F4',
+                    elevation: 0,
+                    shadowOpacity: 0,
+                  },
+                  tabBarLabelStyle: {
+                    fontFamily: 'Lexend_500Medium',
+                    fontSize: 12,
+                  },
+                  tabBarActiveTintColor: isDark ? '#F0EEE8' : '#22201B',
+                  tabBarInactiveTintColor: isDark ? '#4F4A40' : '#B9AF9C',
+                }}>
+                <Tab.Screen
+                  name="Home"
+                  component={HomeNavigator}
+                  options={{
+                    tabBarIcon: ({ color, focused, size }) => (
+                      <Ionicons
+                        name={focused ? 'home' : 'home-outline'}
+                        size={size}
+                        color={color}
+                      />
+                    ),
+                  }}
+                />
+                <Tab.Screen
+                  name="Settings"
+                  component={SettingsScreen}
+                  options={{
+                    tabBarIcon: ({ color, focused, size }) => (
+                      <Ionicons
+                        name={focused ? 'settings' : 'settings-outline'}
+                        size={size}
+                        color={color}
+                      />
+                    ),
+                  }}
                 />
               </Tab.Navigator>
             </NavigationContainer>

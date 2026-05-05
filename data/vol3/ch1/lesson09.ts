@@ -56,14 +56,35 @@ export const lesson09: LessonData = {
       titleBn: 'সক্রিয় কর্তৃপদ শব্দভান্ডার',
       payload: {
         words: [
-          { id: 1, ar: 'نَاصِرٌ', romanized: 'nasir', en: 'Helper', bn: 'সাহায্যকারী', emoji: '💪' },
+          {
+            id: 1,
+            ar: 'نَاصِرٌ',
+            romanized: 'nasir',
+            en: 'Helper',
+            bn: 'সাহায্যকারী',
+            emoji: '💪',
+          },
           { id: 2, ar: 'ضَارِبٌ', romanized: 'darib', en: 'Striker', bn: 'আঘাতকারী', emoji: '✊' },
           { id: 3, ar: 'قَاتِلٌ', romanized: 'qatil', en: 'Killer', bn: 'হত্যাকারী', emoji: '⚔️' },
           { id: 4, ar: 'شَارِبٌ', romanized: 'sharib', en: 'Drinker', bn: 'পানকারী', emoji: '🥤' },
           { id: 5, ar: 'سَامِعٌ', romanized: 'sami', en: 'Listener', bn: 'শ্রোতা', emoji: '👂' },
-          { id: 6, ar: 'حَافِظٌ', romanized: 'hafiz', en: 'Memorizer', bn: 'মুখস্তকারী', emoji: '📖' },
+          {
+            id: 6,
+            ar: 'حَافِظٌ',
+            romanized: 'hafiz',
+            en: 'Memorizer',
+            bn: 'মুখস্তকারী',
+            emoji: '📖',
+          },
           { id: 7, ar: 'عَابِدٌ', romanized: 'abid', en: 'Worshipper', bn: 'উপাসক', emoji: '🙏' },
-          { id: 8, ar: 'مُعَلِّمٌ', romanized: 'muallim', en: 'Teacher', bn: 'শিক্ষক', emoji: '📚' },
+          {
+            id: 8,
+            ar: 'مُعَلِّمٌ',
+            romanized: 'muallim',
+            en: 'Teacher',
+            bn: 'শিক্ষক',
+            emoji: '📚',
+          },
         ],
       },
     },
@@ -99,7 +120,7 @@ export const lesson09: LessonData = {
               'مَات تَائِبًا إِلَى اللهِ',
             ],
             translationEn:
-              'Drink sitting and do not drink standing. Majid\'s friend spoke raising his voice. The man went out in the rain spreading his umbrella. He died repenting to Allah.',
+              "Drink sitting and do not drink standing. Majid's friend spoke raising his voice. The man went out in the rain spreading his umbrella. He died repenting to Allah.",
             translationBn:
               'বসে পান করো এবং দাঁড়িয়ে পান করবে না। মাজিদের বন্ধু তার কণ্ঠ উঁচু করে কথা বলেছেন। পুরুষ বৃষ্টিতে তার ছাতা ছড়িয়ে বেরিয়ে গেছেন। তিনি আল্লাহর কাছে অনুতাপ করে মারা গেছেন।',
           },
@@ -113,7 +134,8 @@ export const lesson09: LessonData = {
       titleAr: 'تَكْوِينُ أَسْمَاءِ الفَاعِلِ',
       titleBn: 'সক্রিয় কর্তৃপদ গঠন',
       payload: {
-        instruction: 'Form the active participle for each verb in masculine singular, dual, and plural:',
+        instruction:
+          'Form the active participle for each verb in masculine singular, dual, and plural:',
         text: 'النَّصْرُ: نَاصِرٌ - نَاصِرَانِ - نَاصِرُونَ\nالضَّرْبُ: ضَارِبٌ - ضَارِبَانِ - ضَارِبُونَ\nالقَتْلُ: قَاتِلٌ - قَاتِلَانِ - قَاتِلُونَ\nالشُّرْبُ: شَارِبٌ - شَارِبَانِ - شَارِبُونَ',
       },
     },
@@ -180,7 +202,11 @@ export const lesson09: LessonData = {
             correct_ar: 'اِسْمٌ يَدُلُّ عَلَى مَنْ قَامَ بِالفِعْلِ',
             correct_en: 'A noun that indicates who performs the action',
             correct_bn: 'একটি বিশেষ্য যা কর্মকর্তা নির্দেশ করে',
-            options_ar: ['اِسْمٌ يَدُلُّ عَلَى الفِعْلِ', 'اِسْمٌ يَدُلُّ عَلَى الفَاعِلِ', 'فِعْلٌ ماضٍ'],
+            options_ar: [
+              'اِسْمٌ يَدُلُّ عَلَى الفِعْلِ',
+              'اِسْمٌ يَدُلُّ عَلَى الفَاعِلِ',
+              'فِعْلٌ ماضٍ',
+            ],
             questionType: 'hal',
           },
           {
@@ -196,7 +222,8 @@ export const lesson09: LessonData = {
           },
           {
             emoji: '🎯',
-            question_ar: 'كَيْفَ نُكَوِّنُ فِعْلَ الشُّرْبِ إِلَى اِسْمِ الفَاعِلِ للمُؤَنَّثِ الجَمْعِ؟',
+            question_ar:
+              'كَيْفَ نُكَوِّنُ فِعْلَ الشُّرْبِ إِلَى اِسْمِ الفَاعِلِ للمُؤَنَّثِ الجَمْعِ؟',
             question_en: 'How do we form the feminine plural active participle from الْشُّرْبُ?',
             question_bn: 'আমরা الْशُّرْبُ থেকে স্ত্রীলিঙ্গ বহুবচন সক্রিয় কর্তৃপদ কীভাবে গঠন করি?',
             correct_ar: 'شَارِبَاتٌ',
