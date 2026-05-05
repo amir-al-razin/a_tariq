@@ -8,13 +8,14 @@ import { Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-na
 
 import type { HomeStackParamList } from './HomeNavigator';
 import { CHAPTERS_VOL3 } from '../data/vol3/curriculum_vol3';
+import { ChapterBanner } from '../components/LearningPath/ChapterBanner';
 
 // ─────────────────────────────────────────────
 // Volume 3 colour palette — Violet / Indigo
 // Signals mastery, advanced grammar, Quranic immersion
 // ─────────────────────────────────────────────
 const C = {
-  accent50:  '#F5F3FF',
+  accent50: '#F5F3FF',
   accent100: '#EDE9FE',
   accent200: '#DDD6FE',
   accent300: '#C4B5FD',
@@ -24,7 +25,7 @@ const C = {
   accent700: '#6D28D9',
   accent800: '#5B21B6',
   accent900: '#4C1D95',
-  neutral50:  '#F8F7F4',
+  neutral50: '#F8F7F4',
   neutral100: '#F0EEE8',
   neutral200: '#E5E1D8',
   neutral300: '#D5CEBF',
@@ -47,33 +48,9 @@ const getLessonStatus = (darsNum: number, chapterId: number): LessonStatus => {
 const NODE_SIZE = 72;
 const V_SPACING = 28;
 const H_PAD = 16;
-const WAVE = [0.27, 0.40, 0.56, 0.73, 0.56, 0.40] as const;
+const WAVE = [0.27, 0.4, 0.56, 0.73, 0.56, 0.4] as const;
 
-type ChapterInfo = typeof CHAPTERS_VOL3[number];
-
-const ChapterBanner: React.FC<{ chapter: ChapterInfo; isDark: boolean }> = ({ chapter, isDark }) => {
-  const { t } = useTranslation();
-  return (
-    <View style={{ marginHorizontal: 16, marginTop: 20, marginBottom: 12, borderRadius: 16, backgroundColor: isDark ? C.neutral800 : C.neutral100 }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 20 }}>
-        <View style={{ flex: 1, paddingRight: 12 }}>
-          <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: isDark ? C.accent400 : C.accent600, marginBottom: 6 }}>
-            {t('volume.chapterMeta', { id: chapter.id, count: chapter.lessons.length })}
-          </Text>
-          <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 20, lineHeight: 28, color: isDark ? C.neutral100 : C.neutral900 }}>
-            {chapter.titleEn}
-          </Text>
-          <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral600, marginTop: 2 }}>
-            {t(`vol3chapters.${chapter.id}subtitle`)}
-          </Text>
-        </View>
-        <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.neutral300 : C.neutral700, textAlign: 'right' }}>
-          {chapter.titleAr}
-        </Text>
-      </View>
-    </View>
-  );
-};
+type ChapterInfo = (typeof CHAPTERS_VOL3)[number];
 
 type LessonRowProps = {
   darsNum: number;
@@ -86,51 +63,81 @@ type LessonRowProps = {
 };
 
 const LessonRow: React.FC<LessonRowProps> = ({
-  darsNum, status, waveX, trackWidth, entryDelay, isDark, onPress,
+  darsNum,
+  status,
+  waveX,
+  trackWidth,
+  entryDelay,
+  isDark,
+  onPress,
 }) => {
   const { t } = useTranslation();
   const usable = trackWidth - 2 * H_PAD;
   const nodeLeft = Math.round(H_PAD + waveX * usable - NODE_SIZE / 2);
   const nodeRight = trackWidth - nodeLeft - NODE_SIZE;
 
-  const isCurrent   = status === 'current';
+  const isCurrent = status === 'current';
   const isCompleted = status === 'completed';
-  const isLocked    = status === 'locked';
+  const isLocked = status === 'locked';
   const isInteractive = !isLocked;
-  const labelOnRight  = waveX <= 0.5;
+  const labelOnRight = waveX <= 0.5;
 
-  const circleBg = (isCurrent || isCompleted)
-    ? C.accent500
-    : isLocked
-      ? (isDark ? C.neutral700 : C.neutral300)
-      : (isDark ? C.accent800 : C.accent100);
+  const circleBg =
+    isCurrent || isCompleted
+      ? C.accent500
+      : isLocked
+        ? isDark
+          ? C.neutral700
+          : C.neutral300
+        : isDark
+          ? C.accent800
+          : C.accent100;
 
-  const circleBorder = (isCurrent || isCompleted)
-    ? (isDark ? C.accent700 : C.accent600)
-    : isLocked
-      ? (isDark ? C.neutral600 : C.neutral500)
-      : (isDark ? C.accent900 : C.accent200);
+  const circleBorder =
+    isCurrent || isCompleted
+      ? isDark
+        ? C.accent700
+        : C.accent600
+      : isLocked
+        ? isDark
+          ? C.neutral600
+          : C.neutral500
+        : isDark
+          ? C.accent900
+          : C.accent200;
 
-  const iconColor = isCurrent || isCompleted
-    ? '#fff'
-    : isLocked
-      ? (isDark ? C.neutral500 : C.neutral700)
-      : (isDark ? C.accent300 : C.accent600);
+  const iconColor =
+    isCurrent || isCompleted
+      ? '#fff'
+      : isLocked
+        ? isDark
+          ? C.neutral500
+          : C.neutral700
+        : isDark
+          ? C.accent300
+          : C.accent600;
 
   const labelColor = isCurrent
-    ? (isDark ? C.accent300 : C.accent700)
+    ? isDark
+      ? C.accent300
+      : C.accent700
     : isLocked
-      ? (isDark ? C.neutral600 : C.neutral500)
-      : (isDark ? C.neutral400 : C.neutral600);
+      ? isDark
+        ? C.neutral600
+        : C.neutral500
+      : isDark
+        ? C.neutral400
+        : C.neutral600;
 
   return (
     <View style={{ marginBottom: V_SPACING }}>
-      <View style={{
-        flexDirection: labelOnRight ? 'row' : 'row-reverse',
-        alignItems: 'center',
-        paddingLeft:  labelOnRight ? nodeLeft : 0,
-        paddingRight: !labelOnRight ? nodeRight : 0,
-      }}>
+      <View
+        style={{
+          flexDirection: labelOnRight ? 'row' : 'row-reverse',
+          alignItems: 'center',
+          paddingLeft: labelOnRight ? nodeLeft : 0,
+          paddingRight: !labelOnRight ? nodeRight : 0,
+        }}>
         <MotiView
           from={{ opacity: 0, scale: 0.4 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -143,27 +150,40 @@ const LessonRow: React.FC<LessonRowProps> = ({
             {({ pressed }) => {
               const pushDepth = pressed && isInteractive ? 0 : -6;
               return (
-                <View style={{ width: NODE_SIZE, height: NODE_SIZE + 6, justifyContent: 'flex-end' }}>
-                  <View style={{
-                    position: 'absolute', bottom: 0,
-                    width: NODE_SIZE,
-                    height: NODE_SIZE + (pressed && isInteractive ? 0 : 6),
-                    borderRadius: NODE_SIZE / 2,
-                    backgroundColor: circleBorder,
-                  }} />
-                  <View style={{
-                    width: NODE_SIZE, height: NODE_SIZE,
-                    borderRadius: NODE_SIZE / 2,
-                    backgroundColor: circleBg,
-                    alignItems: 'center', justifyContent: 'center',
-                    transform: [{ translateY: pushDepth }],
-                  }}>
+                <View
+                  style={{ width: NODE_SIZE, height: NODE_SIZE + 6, justifyContent: 'flex-end' }}>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      width: NODE_SIZE,
+                      height: NODE_SIZE + (pressed && isInteractive ? 0 : 6),
+                      borderRadius: NODE_SIZE / 2,
+                      backgroundColor: circleBorder,
+                    }}
+                  />
+                  <View
+                    style={{
+                      width: NODE_SIZE,
+                      height: NODE_SIZE,
+                      borderRadius: NODE_SIZE / 2,
+                      backgroundColor: circleBg,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      transform: [{ translateY: pushDepth }],
+                    }}>
                     {isLocked ? (
                       <Ionicons name="lock-closed" size={24} color={iconColor} />
                     ) : isCompleted ? (
                       <Ionicons name="checkmark" size={30} color={iconColor} />
                     ) : (
-                      <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 24, color: iconColor, lineHeight: 30 }}>
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_600SemiBold',
+                          fontSize: 24,
+                          color: iconColor,
+                          lineHeight: 30,
+                        }}>
                         {darsNum}
                       </Text>
                     )}
@@ -205,23 +225,47 @@ export const VolumeThreeScreen: React.FC = () => {
       style={{ flex: 1, backgroundColor: isDark ? C.neutral900 : C.neutral50 }}
       contentContainerStyle={{ paddingTop: 28, paddingBottom: 80 }}
       showsVerticalScrollIndicator={false}>
-
       {/* Volume header */}
       <View style={{ paddingHorizontal: 20, marginBottom: 24 }}>
-        <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <View
+          style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
           <View>
-            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 28, lineHeight: 34, color: isDark ? C.accent200 : C.accent700 }}>
+            <Text
+              style={{
+                fontFamily: 'Lexend_600SemiBold',
+                fontSize: 28,
+                lineHeight: 34,
+                color: isDark ? C.accent200 : C.accent700,
+              }}>
               {t('volume.vol3Title')}
             </Text>
-            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral400 : C.neutral600, marginTop: 4 }}>
+            <Text
+              style={{
+                fontFamily: 'Lexend_400Regular',
+                fontSize: 14,
+                color: isDark ? C.neutral400 : C.neutral600,
+                marginTop: 4,
+              }}>
               {t('volume.vol3Meta')}
             </Text>
           </View>
-          <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 22, color: isDark ? C.accent300 : C.accent700, textAlign: 'right' }}>
+          <Text
+            style={{
+              fontFamily: 'NotoSansArabic_600SemiBold',
+              fontSize: 22,
+              color: isDark ? C.accent300 : C.accent700,
+              textAlign: 'right',
+            }}>
             الجزء الثالث
           </Text>
         </View>
-        <View style={{ height: 1, backgroundColor: isDark ? C.neutral700 : C.neutral200, marginTop: 16 }} />
+        <View
+          style={{
+            height: 1,
+            backgroundColor: isDark ? C.neutral700 : C.neutral200,
+            marginTop: 16,
+          }}
+        />
       </View>
 
       {/* Chapters */}
@@ -233,7 +277,15 @@ export const VolumeThreeScreen: React.FC = () => {
 
         return (
           <View key={chapter.id}>
-            <ChapterBanner chapter={chapter} isDark={isDark} />
+            <ChapterBanner
+              chapterId={chapter.id}
+              lessonCount={chapter.lessons.length}
+              titleEn={chapter.titleEn}
+              titleAr={chapter.titleAr}
+              subtitleI18nKey={`vol3chapters.${chapter.id}subtitle`}
+              isDark={isDark}
+              accentColor={isDark ? C.accent400 : C.accent600}
+            />
             <View style={{ paddingTop: 24, paddingBottom: 12 }}>
               {lessons.map(({ num, status }, idx) => (
                 <LessonRow
@@ -249,26 +301,56 @@ export const VolumeThreeScreen: React.FC = () => {
               ))}
             </View>
             {chapterIdx < CHAPTERS_VOL3.length - 1 && (
-              <View style={{ height: 1, backgroundColor: isDark ? C.neutral700 : C.neutral200, marginHorizontal: 32, marginBottom: 8 }} />
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: isDark ? C.neutral700 : C.neutral200,
+                  marginHorizontal: 32,
+                  marginBottom: 8,
+                }}
+              />
             )}
           </View>
         );
       })}
 
       {/* End banner */}
-      <View style={{ marginHorizontal: 20, marginTop: 24, borderRadius: 16, backgroundColor: isDark ? C.neutral800 : C.neutral100 }}>
+      <View
+        style={{
+          marginHorizontal: 20,
+          marginTop: 24,
+          borderRadius: 16,
+          backgroundColor: isDark ? C.neutral800 : C.neutral100,
+        }}>
         <View style={{ alignItems: 'center', paddingHorizontal: 24, paddingVertical: 32 }}>
-          <View style={{
-            width: 48, height: 48, borderRadius: 24,
-            backgroundColor: isDark ? `${C.accent600}20` : `${C.accent500}20`,
-            alignItems: 'center', justifyContent: 'center', marginBottom: 16,
-          }}>
+          <View
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: 24,
+              backgroundColor: isDark ? `${C.accent600}20` : `${C.accent500}20`,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 16,
+            }}>
             <Ionicons name="star-outline" size={24} color={isDark ? C.accent400 : C.accent600} />
           </View>
-          <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral900 }}>
+          <Text
+            style={{
+              fontFamily: 'NotoSansArabic_600SemiBold',
+              fontSize: 18,
+              color: isDark ? C.neutral100 : C.neutral900,
+            }}>
             تم الجزء الثالث بفضل الله
           </Text>
-          <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral400 : C.neutral600, marginTop: 8, textAlign: 'center' }}>
+          <Text
+            style={{
+              fontFamily: 'Lexend_400Regular',
+              fontSize: 14,
+              color: isDark ? C.neutral400 : C.neutral600,
+              marginTop: 8,
+              textAlign: 'center',
+            }}>
             {t('volume.endOfPart', { number: 3 })}
           </Text>
         </View>
