@@ -107,7 +107,6 @@ type LessonRowProps = {
   status: LessonStatus;
   waveX: number;
   trackWidth: number;
-  isFirstInChapter: boolean;
   entryDelay: number;
   isDark: boolean;
   onPress: () => void;
@@ -243,7 +242,6 @@ export const VolumeOneScreen: React.FC = () => {
                   status={status}
                   waveX={WAVE[idx % WAVE.length]}
                   trackWidth={width}
-                  isFirstInChapter={idx === 0}
                   entryDelay={idx * 40}
                   isDark={isDark}
                   onPress={() => goToLesson(chapter, num)}
