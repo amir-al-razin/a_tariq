@@ -6,9 +6,10 @@ export const neutral = {
   900: '#1A1815',
 } as const;
 export const vol1 = {  // emerald teal
-  100: '#D1FAEF', 300: '#6EE7C8', 400: '#34D3AA',
-  500: '#16B78E', 600: '#0F9373', 700: '#0D775F',
-  800: '#0F5F4D', 900: '#0A4134',
+  50: '#ECFDF8', 100: '#D1FAEF', 200: '#A7F3DE',
+  300: '#6EE7C8', 400: '#34D3AA', 500: '#16B78E',
+  600: '#0F9373', 700: '#0D775F', 800: '#0F5F4D',
+  900: '#0A4134',
 } as const;
 export const vol2 = {  // amber gold
   100: '#FEF3C7', 300: '#FCD34D', 400: '#FBBF24',
