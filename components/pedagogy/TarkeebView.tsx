@@ -19,19 +19,20 @@ const TreeNode: React.FC<{ node: TarkeebNode; isDark: boolean; C: Record<string,
     const { t_content } = useLanguage();
     const isLeaf = !node.children || node.children.length === 0;
     return (
-        <View style={{ alignItems: 'center', marginHorizontal: 6 }}>
+        <View style={{ alignItems: 'center', marginHorizontal: 8 }}>
             {/* Arabic text box */}
             <View style={{
                 borderWidth: 1.5,
                 borderColor: isDark ? C.primary400 : C.primary700,
                 borderRadius: 8,
-                paddingHorizontal: 10,
-                paddingVertical: 6,
+                paddingHorizontal: 12,
+                paddingVertical: 8,
                 backgroundColor: isDark ? C.neutral800 : '#fff',
-                minWidth: 60,
+                minWidth: 80,
                 alignItems: 'center',
+                justifyContent: 'center',
             }}>
-                <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral900, textAlign: 'center' }}>
+                <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral900, textAlign: 'center', lineHeight: 24 }}>
                     {node.text}
                 </Text>
             </View>
@@ -45,17 +46,36 @@ const TreeNode: React.FC<{ node: TarkeebNode; isDark: boolean; C: Record<string,
             {/* Branch line + children */}
             {!isLeaf && (
                 <>
-                    <View style={{ width: 1.5, height: 16, backgroundColor: isDark ? C.neutral600 : C.neutral300 }} />
-                    <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                        {node.children!.map((child, i) => (
-                            <View key={i} style={{ alignItems: 'center' }}>
-                                {node.children!.length > 1 && (
-                                    <View style={{ width: '100%', height: 1.5, backgroundColor: isDark ? C.neutral600 : C.neutral300 }} />
-                                )}
-                                <TreeNode node={child} isDark={isDark} C={C} depth={depth + 1} />
-                            </View>
-                        ))}
-                    </View>
+                    <View style={{ width: 1.5, height: 20, backgroundColor: isDark ? C.neutral600 : C.neutral300 }} />
+                    {node.children!.length === 1 ? (
+                        // Single child - just connect directly
+                        <TreeNode node={node.children![0]} isDark={isDark} C={C} depth={depth + 1} />
+                    ) : (
+                        // Multiple children - create horizontal branch
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            {/* Horizontal connecting line */}
+                            <View style={{ 
+                                position: 'absolute', 
+                                left: 0, 
+                                right: 0, 
+                                height: 1.5, 
+                                backgroundColor: isDark ? C.neutral600 : C.neutral300,
+                                top: 0 
+                            }} />
+                            {node.children!.map((child, i) => (
+                                <View key={i} style={{ alignItems: 'center', flex: 1 }}>
+                                    {/* Vertical line from horizontal branch to child */}
+                                    <View style={{ 
+                                        width: 1.5, 
+                                        height: 12, 
+                                        backgroundColor: isDark ? C.neutral600 : C.neutral300,
+                                        marginTop: -1.5 // Align with horizontal line
+                                    }} />
+                                    <TreeNode node={child} isDark={isDark} C={C} depth={depth + 1} />
+                                </View>
+                            ))}
+                        </View>
+                    )}
                 </>
             )}
         </View>
@@ -122,10 +142,12 @@ export const TarkeebView: React.FC<Props> = ({ isDark, C, payload, onProgress, o
 
 
                     {/* Tree diagram */}
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', paddingVertical: 8 }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12 }}>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', paddingVertical: 12 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 16, minHeight: 80 }}>
                             {item.tree.map((node, i) => (
-                                <TreeNode key={i} node={node} isDark={isDark} C={C} />
+                                <View key={i} style={{ alignItems: 'center' }}>
+                                    <TreeNode node={node} isDark={isDark} C={C} />
+                                </View>
                             ))}
                         </View>
                     </ScrollView>
