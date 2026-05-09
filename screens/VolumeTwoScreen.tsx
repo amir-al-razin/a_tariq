@@ -1,41 +1,14 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { MotiView } from 'moti';
 import { useColorScheme } from 'nativewind';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native';
+import { ScrollView, Text, View, useWindowDimensions } from 'react-native';
 
+import { ChapterBanner } from '../components/LearningPath/ChapterBanner';
+import { LessonNode } from '../components/LearningPath/LessonNode';
+import { VOLUME_ACCENT, neutral, vol2 } from '../theme/colors';
 import type { HomeStackParamList } from './HomeNavigator';
-
-// ─────────────────────────────────────────────
-// Volume 2 colour palette — Amber / Gold
-// Signals action, verbs, time — a new era vs Vol 1 teal
-// ─────────────────────────────────────────────
-const C = {
-  // Amber accent
-  accent50:  '#FFFBEB',
-  accent100: '#FEF3C7',
-  accent200: '#FDE68A',
-  accent300: '#FCD34D',
-  accent400: '#FBBF24',
-  accent500: '#F59E0B',
-  accent600: '#D97706',
-  accent700: '#B45309',
-  accent800: '#92400E',
-  accent900: '#78350F',
-  // Neutrals (shared)
-  neutral50:  '#F8F7F4',
-  neutral100: '#F0EEE8',
-  neutral200: '#E5E1D8',
-  neutral300: '#D5CEBF',
-  neutral400: '#B9AF9C',
-  neutral500: '#9A8F7B',
-  neutral600: '#7D7463',
-  neutral700: '#4F4A40',
-  neutral800: '#22201B',
-  neutral900: '#1A1815',
-};
 
 // ─────────────────────────────────────────────
 // Volume 2 chapter structure
@@ -83,35 +56,6 @@ const H_PAD = 16;
 const WAVE = [0.27, 0.40, 0.56, 0.73, 0.56, 0.40] as const;
 
 // ─────────────────────────────────────────────
-// Chapter banner
-// ─────────────────────────────────────────────
-type ChapterInfo = typeof VOL2_CHAPTERS[number];
-
-const ChapterBanner: React.FC<{ chapter: ChapterInfo; isDark: boolean }> = ({ chapter, isDark }) => {
-  const { t } = useTranslation();
-  return (
-    <View style={{ marginHorizontal: 16, marginTop: 20, marginBottom: 12, borderRadius: 16, backgroundColor: isDark ? C.neutral800 : C.neutral100 }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 20 }}>
-        <View style={{ flex: 1, paddingRight: 12 }}>
-          <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: isDark ? C.accent400 : C.accent600, marginBottom: 6 }}>
-            {t('volume.chapterMeta', { id: chapter.id, count: chapter.lessonCount })}
-          </Text>
-          <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 20, lineHeight: 28, color: isDark ? C.neutral100 : C.neutral900 }}>
-            {chapter.titleEn}
-          </Text>
-          <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral600, marginTop: 2 }}>
-            {t(`vol2chapters.${chapter.id}subtitle`)}
-          </Text>
-        </View>
-        <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.neutral300 : C.neutral700, textAlign: 'right' }}>
-          {chapter.titleAr}
-        </Text>
-      </View>
-    </View>
-  );
-};
-
-// ─────────────────────────────────────────────
 // Lesson node row
 // ─────────────────────────────────────────────
 type LessonRowProps = {
@@ -135,32 +79,31 @@ const LessonRow: React.FC<LessonRowProps> = ({
   const isCurrent  = status === 'current';
   const isCompleted = status === 'completed';
   const isLocked   = status === 'locked';
-  const isInteractive = !isLocked;
   const labelOnRight = waveX <= 0.5;
 
   const circleBg = (isCurrent || isCompleted)
-    ? C.accent500
+    ? vol2[500]
     : isLocked
-      ? (isDark ? C.neutral700 : C.neutral300)
-      : (isDark ? C.accent800 : C.accent100);
+      ? (isDark ? neutral[700] : neutral[300])
+      : (isDark ? vol2[800] : vol2[100]);
 
   const circleBorder = (isCurrent || isCompleted)
-    ? (isDark ? C.accent700 : C.accent600)
+    ? (isDark ? vol2[700] : vol2[600])
     : isLocked
-      ? (isDark ? C.neutral800 : C.neutral500)
-      : (isDark ? C.accent900 : C.accent200);
+      ? (isDark ? neutral[800] : neutral[500])
+      : (isDark ? vol2[900] : vol2[200]);
 
   const iconColor = isCurrent || isCompleted
     ? '#fff'
     : isLocked
-      ? (isDark ? C.neutral600 : C.neutral700)
-      : (isDark ? C.accent300 : C.accent600);
+      ? (isDark ? neutral[600] : neutral[700])
+      : (isDark ? vol2[300] : vol2[600]);
 
   const labelColor = isCurrent
-    ? (isDark ? C.accent300 : C.accent700)
+    ? (isDark ? vol2[300] : vol2[700])
     : isLocked
-      ? (isDark ? C.neutral600 : C.neutral500)
-      : (isDark ? C.neutral400 : C.neutral600);
+      ? (isDark ? neutral[600] : neutral[500])
+      : (isDark ? neutral[400] : neutral[600]);
 
   return (
     <View style={{ marginBottom: V_SPACING }}>
@@ -170,58 +113,23 @@ const LessonRow: React.FC<LessonRowProps> = ({
         paddingLeft:  labelOnRight ? nodeLeft : 0,
         paddingRight: !labelOnRight ? nodeRight : 0,
       }}>
-        <MotiView
-          from={{ opacity: 0, scale: 0.4 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: 'spring', delay: entryDelay, damping: 20, stiffness: 250 }}
-          style={{ flexShrink: 0 }}
-        >
-          <Pressable
-            onPress={isInteractive ? onPress : undefined}
-            disabled={isLocked}
-            style={{ width: NODE_SIZE, height: NODE_SIZE + 6, justifyContent: 'flex-end' }}>
-            {({ pressed }) => {
-              const pushDepth = pressed && isInteractive ? 0 : -6;
-              return (
-                <View style={{ width: NODE_SIZE, height: NODE_SIZE + 6, justifyContent: 'flex-end' }}>
-                  {/* Shadow base */}
-                  <View style={{
-                    position: 'absolute', bottom: 0,
-                    width: NODE_SIZE,
-                    height: NODE_SIZE + (pressed && isInteractive ? 0 : 6),
-                    borderRadius: NODE_SIZE / 2,
-                    backgroundColor: circleBorder,
-                  }} />
-                  {/* Top face */}
-                  <View style={{
-                    width: NODE_SIZE, height: NODE_SIZE,
-                    borderRadius: NODE_SIZE / 2,
-                    backgroundColor: circleBg,
-                    alignItems: 'center', justifyContent: 'center',
-                    transform: [{ translateY: pushDepth }],
-                  }}>
-                    {isLocked ? (
-                      <Ionicons name="lock-closed" size={24} color={iconColor} />
-                    ) : isCompleted ? (
-                      <Ionicons name="checkmark" size={30} color={iconColor} />
-                    ) : (
-                      <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 24, color: iconColor, lineHeight: 30 }}>
-                        {darsNum}
-                      </Text>
-                    )}
-                  </View>
-                </View>
-              );
-            }}
-          </Pressable>
-        </MotiView>
+        <LessonNode
+          number={darsNum}
+          status={status}
+          isDark={isDark}
+          faceColor={circleBg}
+          shadowColor={circleBorder}
+          textColor={iconColor}
+          entryDelay={entryDelay}
+          onPress={onPress}
+        />
 
         <View style={{ paddingHorizontal: 12 }}>
           <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: labelColor }}>
             {t('lesson.dars', { number: darsNum })}
           </Text>
           {isCurrent && (
-            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 12, color: isDark ? C.accent400 : C.accent500, marginTop: 2 }}>
+            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 12, color: isDark ? vol2[400] : vol2[500], marginTop: 2 }}>
               {t('lesson.comingSoon')}
             </Text>
           )}
@@ -243,7 +151,7 @@ export const VolumeTwoScreen: React.FC = () => {
 
   return (
     <ScrollView
-      style={{ flex: 1, backgroundColor: isDark ? C.neutral900 : C.neutral50 }}
+      style={{ flex: 1, backgroundColor: isDark ? neutral[900] : neutral[50] }}
       contentContainerStyle={{ paddingTop: 28, paddingBottom: 80 }}
       showsVerticalScrollIndicator={false}>
 
@@ -251,18 +159,18 @@ export const VolumeTwoScreen: React.FC = () => {
       <View style={{ paddingHorizontal: 20, marginBottom: 24 }}>
         <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
           <View>
-            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 28, lineHeight: 34, color: isDark ? C.accent200 : C.accent700 }}>
+            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 28, lineHeight: 34, color: isDark ? vol2[200] : vol2[700] }}>
               {t('volume.vol2Title')}
             </Text>
-            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral400 : C.neutral600, marginTop: 4 }}>
+            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? neutral[400] : neutral[600], marginTop: 4 }}>
               {t('volume.vol2Meta')}
             </Text>
           </View>
-          <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 22, color: isDark ? C.accent300 : C.accent700, textAlign: 'right' }}>
+          <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 22, color: isDark ? vol2[300] : vol2[700], textAlign: 'right' }}>
             الجزء الثاني
           </Text>
         </View>
-        <View style={{ height: 1, backgroundColor: isDark ? C.neutral700 : C.neutral200, marginTop: 16 }} />
+        <View style={{ height: 1, backgroundColor: isDark ? neutral[700] : neutral[200], marginTop: 16 }} />
       </View>
 
       {/* Chapters */}
@@ -274,7 +182,15 @@ export const VolumeTwoScreen: React.FC = () => {
 
         return (
           <View key={chapter.id}>
-            <ChapterBanner chapter={chapter} isDark={isDark} />
+            <ChapterBanner
+              chapterId={chapter.id}
+              lessonCount={chapter.lessonCount}
+              titleEn={chapter.titleEn}
+              titleAr={chapter.titleAr}
+              subtitleI18nKey={`vol2chapters.${chapter.id}subtitle`}
+              isDark={isDark}
+              accentColor={isDark ? vol2[400] : vol2[600]}
+            />
 
             <View style={{ paddingTop: 24, paddingBottom: 12 }}>
               {lessons.map(({ num, status }, idx) => (
@@ -300,7 +216,7 @@ export const VolumeTwoScreen: React.FC = () => {
             </View>
 
             {chapterIdx < VOL2_CHAPTERS.length - 1 && (
-              <View style={{ height: 1, backgroundColor: isDark ? C.neutral700 : C.neutral200, marginHorizontal: 32, marginBottom: 8 }} />
+              <View style={{ height: 1, backgroundColor: isDark ? neutral[700] : neutral[200], marginHorizontal: 32, marginBottom: 8 }} />
             )}
           </View>
         );
@@ -311,21 +227,21 @@ export const VolumeTwoScreen: React.FC = () => {
         marginHorizontal: 20,
         marginTop: 24,
         borderRadius: 16,
-        backgroundColor: isDark ? C.neutral800 : C.neutral100,
+        backgroundColor: isDark ? neutral[800] : neutral[100],
       }}>
         <View style={{ alignItems: 'center', paddingHorizontal: 24, paddingVertical: 32 }}>
           <View style={{
             width: 48, height: 48, borderRadius: 24,
-            backgroundColor: isDark ? `${C.accent600}20` : `${C.accent500}20`,
+            backgroundColor: isDark ? `${vol2[600]}20` : `${vol2[500]}20`,
             alignItems: 'center', justifyContent: 'center',
             marginBottom: 16,
           }}>
-            <Ionicons name="flash-outline" size={24} color={isDark ? C.accent400 : C.accent600} />
+            <Ionicons name="flash-outline" size={24} color={isDark ? vol2[400] : vol2[600]} />
           </View>
-          <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral900 }}>
+          <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? neutral[100] : neutral[900] }}>
             تم الجزء الثاني بفضل الله
           </Text>
-          <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral400 : C.neutral600, marginTop: 8, textAlign: 'center' }}>
+          <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? neutral[400] : neutral[600], marginTop: 8, textAlign: 'center' }}>
             {t('volume.endOfPart', { number: 2 })}
           </Text>
         </View>
