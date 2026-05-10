@@ -172,14 +172,13 @@ Should show: `origin/integration-sprint-1`
 In your IDE (Cursor/Windsurf/etc.):
 
 1. Run `.claude/commands/prime.md` to load context
-2. Run `.claude/commands/plan.md` with this test task:
+2. Run `.claude/commands/plan.md` with any task you want to test
 
-```
-Create a simple utility function that formats Arabic text for display.
-File: apps/web/src/lib/format-arabic.ts
-Function: formatArabicText(text: string): string
-Should trim whitespace and ensure proper Unicode normalization.
-```
+**Describe your task** including:
+- What you want to build
+- Files involved
+- Expected behavior
+- Reference implementations (if any)
 
 **Expected**: Creates `docs/plans/issue-1-plan.md`
 
@@ -191,7 +190,7 @@ cat docs/plans/issue-1-plan.md
 
 Should contain:
 - Issue metadata
-- Files to create: `apps/web/src/lib/format-arabic.ts`
+- Files to create/modify
 - Step-by-step implementation
 - Validation commands
 

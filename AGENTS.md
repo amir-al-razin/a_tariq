@@ -5,7 +5,7 @@
 **Repository**: Arabic Pedagogical Engine (Mobile + Web Monorepo)
 **Tech Stack**: 
 - Mobile: React Native + Expo + NativeWind + Zustand
-- Web: Vite + React + Tailwind + Drizzle ORM + shadcn/ui
+- Web: Tanstack start + Vite + React + Tailwind + Drizzle ORM + shadcn/ui
 - Shared: TypeScript packages with Arabic curriculum data
 - Database: PostgreSQL (Neon) with Drizzle ORM
 - i18n: Arabic (RTL), English, Bangla

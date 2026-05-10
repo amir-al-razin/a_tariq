@@ -14,9 +14,7 @@ bash scripts/worktree-jules-setup.sh integration-sprint-1
 In your IDE (Cursor/Windsurf/etc.):
 
 1. Run `.claude/commands/prime.md` to load project context
-2. Run `.claude/commands/plan.md` and describe a simple task
-
-Example task: "Add a new Arabic text component that displays text with proper RTL support"
+2. Run `.claude/commands/plan.md` and describe your task
 
 This creates: `docs/plans/issue-1-plan.md`
 

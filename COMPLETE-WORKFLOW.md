@@ -32,25 +32,14 @@ Loads entire project context into IDE memory.
 .claude/commands/create-prd.md sprint-N-{name}.md
 ```
 
-**Example for Sprint 1**:
-```
-Sprint 1: Web Foundation
+**Describe your sprint goal and tasks**. The PRD should include:
+- Sprint goal and objectives
+- List of tasks to accomplish
+- Reference implementations (from mobile app or existing code)
+- Tech stack and tools to use
+- Success criteria
 
-Goal: Set up infrastructure for web app
-
-Tasks:
-1. RTL + Arabic font global setup (CRITICAL FIRST)
-2. i18n setup (copy from mobile locales/)
-3. Design tokens → Tailwind config
-4. Drizzle schema for user progress
-5. React Router setup
-6. Verify shared package imports
-
-Reference: apps/mobile/ for all patterns
-Tech: Vite + React + Tailwind + Drizzle + shadcn/ui
-```
-
-**Output**: `.agents/PRDs/sprint-1-foundation.md`
+**Output**: `.agents/PRDs/sprint-N-{name}.md`
 
 ---
 
@@ -80,43 +69,18 @@ For **each issue**, run:
 .claude/commands/plan.md
 ```
 
-**Critical**: Always provide mobile reference:
-```
-Issue #1: RTL + Arabic font setup
-
-Reference implementation:
-- apps/mobile/App.tsx (RTL setup)
-- apps/mobile/theme/fonts.ts
-- apps/mobile/tailwind.config.js
-
-Web equivalent:
-- Set dir="rtl" on HTML root in apps/web/index.html
-- Configure Tailwind RTL plugin in apps/web/tailwind.config.ts
-- Add Arabic font (Amiri) via Google Fonts
-- Create test component to verify RTL rendering
-
-Files to create:
-- apps/web/src/components/ArabicTextTest.tsx
-
-Files to modify:
-- apps/web/index.html
-- apps/web/tailwind.config.ts
-- apps/web/src/App.tsx
-
-Files NOT to touch:
-- apps/mobile/** (reference only)
-- packages/shared/** (import only)
-
-Validation commands:
-- npx tsc --noEmit
-- pnpm --filter web run build
-- pnpm --filter web dev (manual check: Arabic text flows RTL)
-```
+**Critical**: Each plan should include:
+- Reference implementation (from mobile app or existing code)
+- Files to create
+- Files to modify
+- Files NOT to touch
+- Validation commands
+- Clear implementation steps
 
 **Output**: 
 - `docs/plans/issue-1-plan.md`
 - `docs/plans/issue-2-plan.md`
-- ... (10-15 plans)
+- ... (one plan per issue)
 
 ---
 
