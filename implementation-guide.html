@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arabic App — Mobile → Web Implementation Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;1,300;1,600&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #faf8f5;
+      --surface:    #ffffff;
+      --surface-2:  #f2ede6;
+      --border:     #e5dfd6;
+      --border-2:   #cbc3b8;
+      --ink:        #1c1710;
+      --ink-2:      #4a4238;
+      --ink-3:      #8c8278;
+
+      --sand:       #c9a96e;
+      --sand-lt:    #fdf6eb;
+      --sand-bd:    #e8d5a8;
+
+      --blue:       #1e40af;
+      --blue-lt:    #eff6ff;
+      --blue-bd:    #bfdbfe;
+      --green:      #166534;
+      --green-lt:   #f0fdf4;
+      --green-bd:   #bbf7d0;
+      --red:        #991b1b;
+      --red-lt:     #fef2f2;
+      --red-bd:     #fecaca;
+      --purple:     #5b21b6;
+      --purple-lt:  #f5f3ff;
+      --purple-bd:  #ddd6fe;
+      --teal:       #134e4a;
+      --teal-lt:    #f0fdfa;
+      --teal-bd:    #99f6e4;
+      --amber:      #78350f;
+      --amber-lt:   #fffbeb;
+      --amber-bd:   #fde68a;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--surface);
+      border-bottom: 1.5px solid var(--border);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .header-inner {
+      max-width: 1080px; margin: 0 auto;
+      padding: 0 36px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 18px; color: var(--ink);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo-mark {
+      width: 34px; height: 34px; border-radius: 9px;
+      background: var(--ink);
+      display: grid; place-items: center;
+      font-size: 16px;
+    }
+    nav { display: flex; gap: 24px; }
+    nav a {
+      font-size: 12.5px; font-weight: 500; color: var(--ink-3);
+      text-decoration: none; transition: color .15s;
+    }
+    nav a:hover { color: var(--ink); }
+
+    /* LAYOUT */
+    main { max-width: 1080px; margin: 0 auto; padding: 0 36px 100px; }
+
+    /* HERO */
+    .hero {
+      padding: 68px 0 56px;
+      border-bottom: 1.5px solid var(--border);
+      margin-bottom: 68px;
+    }
+    .hero-kicker {
+      font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--sand); margin-bottom: 18px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(36px, 4.5vw, 54px);
+      font-weight: 300;
+      line-height: 1.12; color: var(--ink);
+      max-width: 700px; margin-bottom: 18px;
+    }
+    .hero h1 em { font-style: italic; color: var(--sand); }
+    .hero p { font-size: 16px; color: var(--ink-2); max-width: 580px; line-height: 1.7; margin-bottom: 30px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      font-size: 12px; font-weight: 500;
+      padding: 4px 12px; border-radius: 99px;
+      border: 1.5px solid var(--border); background: var(--surface); color: var(--ink-2);
+    }
+    .tag.sand   { background: var(--sand-lt);   border-color: var(--sand-bd);   color: var(--amber); }
+    .tag.blue   { background: var(--blue-lt);   border-color: var(--blue-bd);   color: var(--blue); }
+    .tag.green  { background: var(--green-lt);  border-color: var(--green-bd);  color: var(--green); }
+    .tag.purple { background: var(--purple-lt); border-color: var(--purple-bd); color: var(--purple); }
+
+    /* SECTION */
+    .section { margin-bottom: 80px; scroll-margin-top: 72px; }
+    .sec-label {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--ink-3); margin-bottom: 4px;
+    }
+    .sec-title {
+      font-family: 'Fraunces', serif;
+      font-size: 28px; font-weight: 300; color: var(--ink); margin-bottom: 6px;
+    }
+    .sec-sub { font-size: 14px; color: var(--ink-3); max-width: 620px; margin-bottom: 32px; }
+
+    hr { border: none; border-top: 1.5px solid var(--border); margin: 72px 0 64px; }
+
+    /* MONOREPO MAP */
+    .repo-map {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;
+      margin-bottom: 24px;
+    }
+    .repo-col {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .repo-col-head {
+      padding: 14px 18px;
+      border-bottom: 1.5px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .repo-col-head .ricon {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: grid; place-items: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .repo-col-head h4 { font-size: 14px; font-weight: 600; }
+    .repo-col-head p  { font-size: 11.5px; color: var(--ink-3); margin-top: 1px; }
+    .repo-col-body { padding: 16px 18px; }
+    .tree-line {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px; line-height: 2;
+      color: var(--ink-2);
+    }
+    .tree-line .dim    { color: var(--border-2); }
+    .tree-line .hi-g   { color: var(--green); font-weight: 500; }
+    .tree-line .hi-b   { color: var(--blue); font-weight: 500; }
+    .tree-line .hi-s   { color: var(--sand); font-weight: 500; }
+    .tree-line .hi-p   { color: var(--purple); font-weight: 500; }
+    .repo-col.done   .repo-col-head { background: var(--green-lt); }
+    .repo-col.target .repo-col-head { background: var(--blue-lt); }
+    .repo-col.shared .repo-col-head { background: var(--sand-lt); }
+
+    /* TRANSFER MAP TABLE */
+    .transfer-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+    .transfer-table th {
+      background: var(--surface-2);
+      text-align: left; padding: 11px 16px;
+      font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      color: var(--ink-3);
+      border-bottom: 1.5px solid var(--border);
+    }
+    .transfer-table td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      color: var(--ink-2);
+    }
+    .transfer-table tr:last-child td { border-bottom: none; }
+    .transfer-table .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue); }
+    .transfer-table .arrow { color: var(--border-2); padding: 0 4px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10.5px; font-weight: 700; letter-spacing: .05em;
+      padding: 2px 8px; border-radius: 99px;
+    }
+    .b-green  { background: var(--green-lt);  color: var(--green);  border: 1px solid var(--green-bd); }
+    .b-blue   { background: var(--blue-lt);   color: var(--blue);   border: 1px solid var(--blue-bd); }
+    .b-sand   { background: var(--sand-lt);   color: var(--amber);  border: 1px solid var(--sand-bd); }
+    .b-purple { background: var(--purple-lt); color: var(--purple); border: 1px solid var(--purple-bd); }
+    .b-red    { background: var(--red-lt);    color: var(--red);    border: 1px solid var(--red-bd); }
+    .b-teal   { background: var(--teal-lt);   color: var(--teal);   border: 1px solid var(--teal-bd); }
+    .b-neutral{ background: var(--surface-2); color: var(--ink-2);  border: 1px solid var(--border); }
+
+    /* STEPS */
+    .steps { display: flex; flex-direction: column; }
+    .step { display: grid; grid-template-columns: 52px 1fr; gap: 20px; }
+    .step-spine { display: flex; flex-direction: column; align-items: center; }
+    .step-num {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--surface); border: 2px solid var(--border);
+      display: grid; place-items: center;
+      font-size: 14px; font-weight: 700; color: var(--ink-3);
+      flex-shrink: 0; position: relative; z-index: 1;
+    }
+    .step-num.on     { background: var(--ink);    color: #fff; border-color: var(--ink); }
+    .step-num.g      { background: var(--green);  color: #fff; border-color: var(--green); }
+    .step-num.b      { background: var(--blue);   color: #fff; border-color: var(--blue); }
+    .step-num.s      { background: var(--sand);   color: #fff; border-color: var(--sand); }
+    .step-num.p      { background: var(--purple); color: #fff; border-color: var(--purple); }
+    .step-line { flex: 1; width: 2px; background: var(--border); margin: 5px 0; }
+    .step-body { padding-bottom: 40px; }
+    .step:last-child .step-line { display: none; }
+    .step:last-child .step-body { padding-bottom: 0; }
+
+    .step-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .step-head {
+      padding: 18px 24px 14px;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .step-head h4 { font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+    .step-head p  { font-size: 13px; color: var(--ink-3); line-height: 1.55; }
+    .step-content { padding: 20px 24px; }
+    .step-content > p { font-size: 13.5px; color: var(--ink-2); line-height: 1.65; margin-bottom: 14px; }
+
+    /* CODE */
+    .code-block {
+      background: var(--ink);
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.85;
+      color: #d8d2cb;
+      overflow-x: auto;
+      margin-bottom: 14px;
+    }
+    .code-block .cm  { color: #5a5248; }
+    .code-block .cmd { color: #93c5fd; }
+    .code-block .str { color: #fcd34d; }
+    .code-block .key { color: #6ee7b7; }
+    .code-block .hi  { color: #f9a8d4; }
+    .code-block .val { color: #c4b5fd; }
+
+    /* CALLOUT */
+    .callout {
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px; line-height: 1.6;
+      display: flex; gap: 10px; align-items: flex-start;
+      margin-top: 14px;
+    }
+    .callout .ico { flex-shrink: 0; margin-top: 1px; }
+    .callout.tip    { background: var(--teal-lt);   border: 1px solid var(--teal-bd);   color: var(--teal); }
+    .callout.warn   { background: var(--amber-lt);  border: 1px solid var(--amber-bd);  color: var(--amber); }
+    .callout.info   { background: var(--blue-lt);   border: 1px solid var(--blue-bd);   color: var(--blue); }
+    .callout.danger { background: var(--red-lt);    border: 1px solid var(--red-bd);    color: var(--red); }
+    .callout strong { font-weight: 600; }
+    code.ic {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; background: rgba(0,0,0,.07);
+      padding: 1px 5px; border-radius: 3px;
+    }
+
+    /* PANEL PAIR */
+    .panel-pair {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+      margin-top: 14px;
+    }
+    .panel {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+    .panel-label {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .panel-label.mobile { color: var(--green); }
+    .panel-label.web    { color: var(--blue); }
+    .panel-label.shared { color: var(--amber); }
+    .panel-label.you    { color: var(--purple); }
+    .panel ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .panel li { font-size: 12.5px; color: var(--ink-2); display: flex; gap: 8px; align-items: flex-start; }
+    .panel li::before { content: "›"; color: var(--border-2); }
+
+    /* SPRINT TABLE */
+    .sprint-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+    .sprint-table th {
+      background: var(--surface-2);
+      text-align: left; padding: 11px 16px;
+      font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      color: var(--ink-3);
+      border-bottom: 1.5px solid var(--border);
+    }
+    .sprint-table td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink-2);
+      vertical-align: top;
+    }
+    .sprint-table tr:last-child td { border-bottom: none; }
+    .sprint-table .sprint-num {
+      font-family: 'Fraunces', serif;
+      font-size: 22px; font-weight: 600;
+      color: var(--sand);
+      white-space: nowrap;
+    }
+    .sprint-table .issue-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .sprint-table .issue-list li {
+      font-size: 12.5px; display: flex; gap: 8px; align-items: flex-start;
+    }
+    .sprint-table .issue-list li::before { content: "#"; color: var(--border-2); font-family: monospace; }
+
+    /* TOOLCHAIN */
+    .toolchain {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    }
+    .tool-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 16px 14px;
+    }
+    .tool-card .t-icon { font-size: 22px; margin-bottom: 8px; }
+    .tool-card h5 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .tool-card p  { font-size: 12px; color: var(--ink-3); line-height: 1.5; }
+    .tool-card .t-use {
+      margin-top: 8px; padding-top: 8px;
+      border-top: 1px solid var(--border);
+      font-size: 11.5px; color: var(--ink-3);
+      font-style: italic;
+    }
+
+    /* FLOW STRIP */
+    .flow-strip {
+      display: flex; align-items: center; gap: 0;
+      overflow-x: auto; padding: 0 0 4px;
+      margin-bottom: 24px;
+    }
+    .flow-node {
+      flex-shrink: 0;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 16px;
+      text-align: center;
+      min-width: 100px;
+    }
+    .flow-node .fn-icon { font-size: 18px; }
+    .flow-node .fn-label { font-size: 11.5px; font-weight: 600; color: var(--ink); margin-top: 3px; }
+    .flow-node .fn-sub   { font-size: 10.5px; color: var(--ink-3); margin-top: 1px; }
+    .flow-node.active { background: var(--ink); border-color: var(--ink); }
+    .flow-node.active .fn-label { color: #fff; }
+    .flow-node.active .fn-sub   { color: rgba(255,255,255,.5); }
+    .flow-arrow { padding: 0 6px; font-size: 16px; color: var(--border-2); flex-shrink: 0; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1.5px solid var(--border);
+      padding: 24px 36px;
+      max-width: 1080px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; color: var(--ink-3);
+    }
+
+    @media (max-width: 780px) {
+      .repo-map   { grid-template-columns: 1fr; }
+      .panel-pair { grid-template-columns: 1fr; }
+      .toolchain  { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark">ع</div>
+      Arabic App — Implementation Guide
+    </div>
+    <nav>
+      <a href="#anatomy">Repo Anatomy</a>
+      <a href="#transfer">What Transfers</a>
+      <a href="#toolchain">Toolchain</a>
+      <a href="#sprints">Sprint Plan</a>
+      <a href="#daily">Daily Loop</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-kicker">🕌 Arabic Pedagogical Engine</div>
+    <h1>Mobile → Web: <em>The Complete</em><br/>Implementation Playbook</h1>
+    <p>You have a working mobile app, a scaffolded web app, shared data packages, docs, skill files, Jules API, and local IDE. This guide glues them all together into one coherent daily workflow — sprint by sprint, command by command.</p>
+    <div class="tag-row">
+      <span class="tag green">✓ Mobile done</span>
+      <span class="tag blue">→ Web: next</span>
+      <span class="tag sand">packages/shared: the bridge</span>
+      <span class="tag purple">Jules × parallel agents</span>
+      <span class="tag">Vite + React + Drizzle</span>
+      <span class="tag">i18n + RTL Arabic</span>
+    </div>
+  </div>
+
+  <!-- ═══ REPO ANATOMY ═══ -->
+  <section class="section" id="anatomy">
+    <div class="sec-label">01 — Understand First</div>
+    <div class="sec-title">Your Monorepo — What Each Part Does</div>
+    <div class="sec-sub">Before writing a single line, you need to see the three zones clearly. The bridge between mobile and web is <code style="font-family:monospace">packages/shared</code>.</div>
+
+    <div class="repo-map">
+
+      <!-- Mobile: Done -->
+      <div class="repo-col done">
+        <div class="repo-col-head">
+          <div class="ricon" style="background:var(--green-lt);">📱</div>
+          <div>
+            <h4>apps/mobile</h4>
+            <p>Status: <strong>Done ✓</strong> — your reference</p>
+          </div>
+        </div>
+        <div class="repo-col-body">
+          <div class="tree-line">
+<span class="hi-g">screens/</span>        <span class="dim">← all your screens</span>
+<span class="hi-g">components/</span>     <span class="dim">← RN components</span>
+<span class="hi-g">state/</span>          <span class="dim">← Zustand/context</span>
+<span class="hi-g">i18n/</span>           <span class="dim">← translations</span>
+<span class="hi-g">locales/</span>        <span class="dim">← AR/EN strings</span>
+<span class="hi-g">theme/</span>          <span class="dim">← design tokens</span>
+App.tsx         <span class="dim">← entry point</span>
+tailwind.config.js
+          </div>
+        </div>
+      </div>
+
+      <!-- Shared: Bridge -->
+      <div class="repo-col shared">
+        <div class="repo-col-head">
+          <div class="ricon" style="background:var(--sand-lt);">🔗</div>
+          <div>
+            <h4>packages/shared</h4>
+            <p>The Bridge — used by both apps</p>
+          </div>
+        </div>
+        <div class="repo-col-body">
+          <div class="tree-line">
+<span class="hi-s">data/</span>           <span class="dim">← Arabic content</span>
+                <span class="dim">   chapters, words,</span>
+                <span class="dim">   exercises, vocab</span>
+<span class="hi-s">index.ts</span>        <span class="dim">← exports everything</span>
+
+<span class="dim">↑ THIS is where your</span>
+<span class="dim">  Arabic pedagogical</span>
+<span class="dim">  data lives. Both</span>
+<span class="dim">  mobile and web</span>
+<span class="dim">  import from here.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Web: Target -->
+      <div class="repo-col target">
+        <div class="repo-col-head">
+          <div class="ricon" style="background:var(--blue-lt);">🌐</div>
+          <div>
+            <h4>apps/web</h4>
+            <p>Status: Scaffolded — build this</p>
+          </div>
+        </div>
+        <div class="repo-col-body">
+          <div class="tree-line">
+<span class="hi-b">src/</span>            <span class="dim">← empty shell</span>
+<span class="hi-b">messages/</span>       <span class="dim">← i18n strings</span>
+drizzle.config.ts <span class="dim">← DB ready</span>
+vite.config.ts
+components.json <span class="dim">← shadcn</span>
+
+<span class="dim">↑ Needs:</span>
+<span class="dim">  • pages / routes</span>
+<span class="dim">  • components</span>
+<span class="dim">  • state</span>
+<span class="dim">  • RTL support</span>
+<span class="dim">  • same features</span>
+<span class="dim">    as mobile</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout info">
+      <span class="ico">💡</span>
+      <span><strong>Key insight:</strong> Your Arabic content data in <code class="ic">packages/shared/data/</code> is the most valuable asset — it took the most work. The web app just needs to consume it differently (browser rendering, Drizzle DB, URL routing instead of React Native navigation). <strong>You're not rebuilding the content. You're rebuilding the container.</strong></span>
+    </div>
+  </section>
+
+  <hr/>
+
+  <!-- ═══ WHAT TRANSFERS ═══ -->
+  <section class="section" id="transfer">
+    <div class="sec-label">02 — The Transfer Map</div>
+    <div class="sec-title">What Moves Directly vs What Gets Rewritten</div>
+    <div class="sec-sub">Every mobile asset falls into one of four categories. Knowing this prevents wasted Jules tasks.</div>
+
+    <table class="transfer-table">
+      <thead>
+        <tr>
+          <th>Mobile Asset</th>
+          <th>Transfer Type</th>
+          <th>Web Equivalent</th>
+          <th>Who Does It</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code class="mono">packages/shared/data/*</code></td>
+          <td><span class="badge b-green">✓ Direct reuse</span></td>
+          <td>Same import, same package</td>
+          <td><span class="badge b-neutral">Already done</span></td>
+        </tr>
+        <tr>
+          <td><code class="mono">locales/*.json</code> (AR/EN strings)</td>
+          <td><span class="badge b-green">✓ Direct reuse</span></td>
+          <td>Copy into <code class="mono">messages/</code>, adapt to next-intl / i18next</td>
+          <td><span class="badge b-blue">Jules task</span></td>
+        </tr>
+        <tr>
+          <td><code class="mono">theme/</code> design tokens</td>
+          <td><span class="badge b-sand">~ Adapt</span></td>
+          <td>Convert to CSS variables in web Tailwind config</td>
+          <td><span class="badge b-blue">Jules task</span></td>
+        </tr>
+        <tr>
+          <td><code class="mono">docs/design-system.md</code></td>
+          <td><span class="badge b-green">✓ Direct reuse</span></td>
+          <td>Reference doc — same design language on web</td>
+          <td><span class="badge b-neutral">You reference it</span></td>
+        </tr>
+        <tr>
+          <td><code class="mono">state/</code> (Zustand stores)</td>
+          <td><span class="badge b-sand">~ Adapt</span></td>
+          <td>Same Zustand stores work in browser — minor adjustments (no AsyncStorage)</td>
+          <td><span class="badge b-blue">Jules task</span></td>
+        </tr>
+        <tr>
+          <td><code class="mono">screens/</code> logic (non-UI)</td>
+          <td><span class="badge b-sand">~ Adapt</span></td>
+          <td>Extract business logic → hooks; rebuild UI in React + Tailwind</td>
+          <td><span class="badge b-blue">Jules task</span></td>
+        </tr>
+        <tr>
+          <td><code class="mono">components/</code> React Native UI</td>
+          <td><span class="badge b-red">✗ Rewrite</span></td>
+          <td>New web components using shadcn + Tailwind (same design language)</td>
+          <td><span class="badge b-blue">Jules task</span></td>
+        </tr>
+        <tr>
+          <td>React Navigation (mobile routing)</td>
+          <td><span class="badge b-red">✗ Replace</span></td>
+          <td>React Router v6 / TanStack Router with URL-based routes</td>
+          <td><span class="badge b-blue">Jules task</span></td>
+        </tr>
+        <tr>
+          <td>Arabic text rendering / RTL</td>
+          <td><span class="badge b-purple">⚠ Critical</span></td>
+          <td><code class="mono">dir="rtl"</code> on HTML + <code class="mono">font-arabic</code> class. Must be set up in Sprint 1 globally.</td>
+          <td><span class="badge b-blue">Jules task S1</span></td>
+        </tr>
+        <tr>
+          <td>Audio / TTS (if any)</td>
+          <td><span class="badge b-sand">~ Adapt</span></td>
+          <td>Web Audio API / Howler.js instead of Expo AV</td>
+          <td><span class="badge b-blue">Jules task</span></td>
+        </tr>
+        <tr>
+          <td><code class="mono">docs/notebooklm/**</code> chapters</td>
+          <td><span class="badge b-green">✓ Direct reuse</span></td>
+          <td>Same content, rendered via shared package</td>
+          <td><span class="badge b-neutral">Already done</span></td>
+        </tr>
+        <tr>
+          <td>Drizzle schema (web already has config)</td>
+          <td><span class="badge b-green">✓ Ready</span></td>
+          <td>Define tables for progress, user, session tracking</td>
+          <td><span class="badge b-blue">Jules task S1</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout warn" style="margin-top:16px;">
+      <span class="ico">⚠️</span>
+      <span><strong>Arabic RTL is non-negotiable in Sprint 1.</strong> If you build even 5 components without RTL configured globally, you'll have to retrofit every single one. Set <code class="ic">dir="rtl"</code>, Arabic font, and Tailwind RTL plugin in the very first Jules task before anything visual is built.</span>
+    </div>
+  </section>
+
+  <hr/>
+
+  <!-- ═══ TOOLCHAIN SETUP ═══ -->
+  <section class="section" id="toolchain">
+    <div class="sec-label">03 — Gluing It Together</div>
+    <div class="sec-title">Your Toolchain — Who Does What</div>
+    <div class="sec-sub">You already have everything. This is how each tool fits into the workflow.</div>
+
+    <div class="toolchain" style="margin-bottom:28px;">
+      <div class="tool-card">
+        <div class="t-icon">🧠</div>
+        <h5>Local IDE</h5>
+        <p>Cursor / Windsurf / Copilot / VS Code</p>
+        <div class="t-use">Runs <code class="ic">prime.md</code> → <code class="ic">create-prd.md</code> → <code class="ic">plan.md</code>. Never writes production code for Jules tasks.</div>
+      </div>
+      <div class="tool-card">
+        <div class="t-icon">📜</div>
+        <h5>.claude/commands/</h5>
+        <p>Your prompt skill library</p>
+        <div class="t-use">Run in sequence: prime → create-prd → create-stories → plan → review → validate. Already built.</div>
+      </div>
+      <div class="tool-card">
+        <div class="t-icon">🤖</div>
+        <h5>Jules AI</h5>
+        <p>Google Jules API, 100 tasks/day</p>
+        <div class="t-use">Executes plan.md files. Opens PRs. You trigger it, review PRs, merge. Never ask Jules to plan — only to execute.</div>
+      </div>
+      <div class="tool-card">
+        <div class="t-icon">🌳</div>
+        <h5>Git Worktrees</h5>
+        <p>scripts/worktree-setup.sh</p>
+        <div class="t-use">Review Jules PRs without branch switching. One folder per PR branch. Already scripted.</div>
+      </div>
+      <div class="tool-card">
+        <div class="t-icon">📦</div>
+        <h5>packages/shared</h5>
+        <p>The monorepo bridge</p>
+        <div class="t-use">All Arabic data, types, and utilities. Web imports from here exactly like mobile does. Never duplicate content.</div>
+      </div>
+      <div class="tool-card">
+        <div class="t-icon">⚗️</div>
+        <h5>Drizzle ORM</h5>
+        <p>Already configured in web</p>
+        <div class="t-use">User progress, session data, bookmarks. Define schema in Sprint 1. Jules uses it from Sprint 2 onward.</div>
+      </div>
+      <div class="tool-card">
+        <div class="t-icon">🌍</div>
+        <h5>i18n (messages/)</h5>
+        <p>Web already scaffolded</p>
+        <div class="t-use">Copy AR/EN strings from mobile <code class="ic">locales/</code> into web <code class="ic">messages/</code>. Adapt key names to web i18n library format.</div>
+      </div>
+      <div class="tool-card">
+        <div class="t-icon">🎨</div>
+        <h5>docs/design-system.md</h5>
+        <p>Your visual bible</p>
+        <div class="t-use">Include this in every plan.md Jules receives. It ensures web components match mobile design language automatically.</div>
+      </div>
+    </div>
+
+    <div class="sec-label" style="margin-bottom:12px;">The One-Time Setup — Before Sprint 1</div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="badge b-purple" style="margin-bottom:8px;">⚙️ Do This First — Takes ~1 Hour</div>
+        <h4>Bootstrap: AGENTS.md + worktrees + integration branch</h4>
+        <p>Everything Jules does depends on these being in place. Do this once before triggering any Jules task.</p>
+      </div>
+      <div class="step-content">
+        <div class="code-block">
+<span class="cm"># 1. Create AGENTS.md at repo root (Jules reads this natively)</span>
+<span class="cm">#    Copy your rules.md content + add Jules-specific rules below</span>
+cat rules.md > AGENTS.md
+cat >> AGENTS.md << <span class="str">'EOF'</span>
+
+<span class="cm">## Jules Execution Rules</span>
+- Read the plan file specified in your task prompt BEFORE writing any code
+- Only modify files listed in the plan. Never touch files outside the plan.
+- Branch from: integration-sprint-1 (unless plan says otherwise)
+- Run all validation commands in the plan before opening a PR
+- If blocked: stop and leave a detailed comment in the PR — do NOT guess
+- Arabic RTL: all components must respect dir="rtl" set at html root
+- Import shared data from: @arabic-app/shared (never duplicate content)
+- Design system: read docs/design-system.md before building any UI component
+- i18n: use t() for all user-facing strings. No hardcoded Arabic or English text.
+EOF
+
+<span class="cm"># 2. Create integration branch for Sprint 1</span>
+<span class="cmd">git checkout</span> main
+<span class="cmd">git checkout -b</span> integration-sprint-1
+<span class="cmd">git push -u origin</span> integration-sprint-1
+
+<span class="cm"># 3. Set up worktrees (your script already exists)</span>
+<span class="cm">#    Edit scripts/worktree-setup.sh — verify these vars:</span>
+<span class="cm">#    WT_BASE="../arabic-app-wt"</span>
+<span class="cm">#    INTEGRATION_BRANCH="integration-sprint-1"</span>
+<span class="cmd">bash</span> scripts/worktree-setup.sh
+
+<span class="cm"># 4. Create docs/plans/ folder for Jules plan files</span>
+<span class="cmd">mkdir -p</span> docs/plans
+<span class="cmd">echo</span> <span class="str">"# Jules Plan Files"</span> > docs/plans/README.md
+<span class="cmd">git add</span> . && <span class="cmd">git commit -m</span> <span class="str">"chore: bootstrap AGENTS.md and worktrees"</span>
+<span class="cmd">git push</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr/>
+
+  <!-- ═══ SPRINT PLAN ═══ -->
+  <section class="section" id="sprints">
+    <div class="sec-label">04 — The Master Plan</div>
+    <div class="sec-title">Sprint-by-Sprint Breakdown</div>
+    <div class="sec-sub">Six sprints to get from scaffold to feature-complete web app. Each sprint runs as a parallel Jules batch. Foundation first — always.</div>
+
+    <table class="sprint-table">
+      <thead>
+        <tr>
+          <th>Sprint</th>
+          <th>Theme</th>
+          <th>Issues to Generate</th>
+          <th>Jules Tasks</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td class="sprint-num">S1</td>
+          <td>
+            <strong>Foundation</strong><br/>
+            <span style="font-size:12px;color:var(--ink-3)">No UI yet — infrastructure only</span>
+          </td>
+          <td>
+            <ul class="issue-list">
+              <li>RTL + Arabic font global setup (html dir, Tailwind RTL plugin)</li>
+              <li>i18n setup — copy locales/, wire up web messages/</li>
+              <li>Design tokens → web Tailwind config (from mobile theme/)</li>
+              <li>Drizzle schema: users, progress, sessions, bookmarks</li>
+              <li>Routing skeleton: React Router v6 + layout components</li>
+              <li>shared package import verification in web</li>
+            </ul>
+          </td>
+          <td><span class="badge b-sand">6 tasks</span></td>
+        </tr>
+
+        <tr>
+          <td class="sprint-num">S2</td>
+          <td>
+            <strong>Core UI Components</strong><br/>
+            <span style="font-size:12px;color:var(--ink-3)">Web component library</span>
+          </td>
+          <td>
+            <ul class="issue-list">
+              <li>ArabicText component (RTL, font, diacritics, size variants)</li>
+              <li>ProgressBar component (matches mobile design)</li>
+              <li>LessonCard component</li>
+              <li>NavigationSidebar / mobile nav</li>
+              <li>Button, Input, Modal (from shadcn + design-system.md)</li>
+              <li>AudioPlayer component (Howler.js, matches mobile audio UX)</li>
+              <li>ChapterBadge / level indicator</li>
+            </ul>
+          </td>
+          <td><span class="badge b-sand">7 tasks</span></td>
+        </tr>
+
+        <tr>
+          <td class="sprint-num">S3</td>
+          <td>
+            <strong>Core Screens: Learning</strong><br/>
+            <span style="font-size:12px;color:var(--ink-3)">Port mobile screens as web pages</span>
+          </td>
+          <td>
+            <ul class="issue-list">
+              <li>Home / Dashboard page (progress overview)</li>
+              <li>Chapter list page (all volumes + chapters)</li>
+              <li>Lesson page — chapter reading view</li>
+              <li>Vocabulary page (word list, search, filter)</li>
+              <li>Exercise page (exercises from shared/data)</li>
+              <li>Progress/Stats page</li>
+            </ul>
+          </td>
+          <td><span class="badge b-sand">6 tasks</span></td>
+        </tr>
+
+        <tr>
+          <td class="sprint-num">S4</td>
+          <td>
+            <strong>Pedagogical Engine</strong><br/>
+            <span style="font-size:12px;color:var(--ink-3)">The Arabic learning logic</span>
+          </td>
+          <td>
+            <ul class="issue-list">
+              <li>Zustand state: port mobile state/ stores to web</li>
+              <li>Spaced repetition / review scheduler</li>
+              <li>Morphology / grammar analysis display</li>
+              <li>Translation toggle (AR ↔ EN)</li>
+              <li>Search across all Arabic content</li>
+              <li>Bookmarks — persist to Drizzle</li>
+              <li>User progress persistence (Drizzle)</li>
+            </ul>
+          </td>
+          <td><span class="badge b-sand">7 tasks</span></td>
+        </tr>
+
+        <tr>
+          <td class="sprint-num">S5</td>
+          <td>
+            <strong>Polish + Web-Specific</strong><br/>
+            <span style="font-size:12px;color:var(--ink-3)">Features native to web</span>
+          </td>
+          <td>
+            <ul class="issue-list">
+              <li>Keyboard shortcuts (j/k navigation, space for audio)</li>
+              <li>Print / PDF export of lessons</li>
+              <li>URL deep-linking (share exact lesson/word)</li>
+              <li>Dark mode toggle (design-system.md dark palette)</li>
+              <li>Responsive: tablet + desktop layout variants</li>
+              <li>PWA manifest + offline support</li>
+            </ul>
+          </td>
+          <td><span class="badge b-sand">6 tasks</span></td>
+        </tr>
+
+        <tr>
+          <td class="sprint-num">S6</td>
+          <td>
+            <strong>QA + Launch</strong><br/>
+            <span style="font-size:12px;color:var(--ink-3)">Hardening and deploy</span>
+          </td>
+          <td>
+            <ul class="issue-list">
+              <li>Smoke tests for all critical user flows</li>
+              <li>RTL audit — verify every screen renders correctly</li>
+              <li>Performance: bundle analysis + code splitting</li>
+              <li>Security review (run security-review.md)</li>
+              <li>CI/CD pipeline + deploy config</li>
+            </ul>
+          </td>
+          <td><span class="badge b-sand">5 tasks</span></td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div class="callout tip" style="margin-top:16px;">
+      <span class="ico">💡</span>
+      <span><strong>With 100 Jules tasks/day:</strong> Each sprint above is one batch. You could theoretically run S1 on Monday morning and be on S4 by Wednesday. In practice, plan 1 sprint per day — review and audit time is the bottleneck, not Jules execution time.</span>
+    </div>
+  </section>
+
+  <hr/>
+
+  <!-- ═══ DAILY LOOP ═══ -->
+  <section class="section" id="daily">
+    <div class="sec-label">05 — The Daily Loop</div>
+    <div class="sec-title">Exact Commands — Every Single Day</div>
+    <div class="sec-sub">This is the precise sequence you run for each sprint batch. Step by step, command by command.</div>
+
+    <div class="flow-strip">
+      <div class="flow-node active"><div class="fn-icon">🧠</div><div class="fn-label">Prime IDE</div><div class="fn-sub">context load</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="fn-icon">📄</div><div class="fn-label">PRD</div><div class="fn-sub">.agents/PRDs/</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="fn-icon">🎫</div><div class="fn-label">GH Issues</div><div class="fn-sub">batch script</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="fn-icon">🗺️</div><div class="fn-label">plan.md × N</div><div class="fn-sub">one per issue</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="fn-icon">🚀</div><div class="fn-label">Jules × N</div><div class="fn-sub">fire all at once</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="fn-icon">🌳</div><div class="fn-label">Worktree</div><div class="fn-sub">review PRs</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="fn-icon">✅</div><div class="fn-label">Merge</div><div class="fn-sub">gated</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="fn-icon">🔄</div><div class="fn-label">Evolve</div><div class="fn-sub">AGENTS.md</div></div>
+    </div>
+
+    <div class="steps">
+
+      <!-- 1 -->
+      <div class="step">
+        <div class="step-spine"><div class="step-num b">1</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-card">
+            <div class="step-head">
+              <div class="badge b-blue" style="margin-bottom:8px;">🧠 Morning — Prime Your Local IDE</div>
+              <h4>Load project context before any planning</h4>
+              <p>Your IDE has no memory. Every session starts with prime.md to reload full project context.</p>
+            </div>
+            <div class="step-content">
+              <div class="code-block">
+<span class="cm"># In your local IDE (Cursor / Windsurf / Copilot / VS Code):</span>
+<span class="cm"># Open .claude/commands/prime.md and run it as a prompt.</span>
+<span class="cm"># It tells the IDE: your stack, file structure, design system, conventions.</span>
+
+<span class="cm"># For a sprint focused on UI components, also run:</span>
+<span class="cm"># .claude/commands/prime-client.md  (frontend context)</span>
+
+<span class="cm"># For a sprint focused on API/DB work, also run:</span>
+<span class="cm"># .claude/commands/prime-server.md  (backend context)</span>
+
+<span class="cm"># Tip: Include this in your prime prompt for every sprint:</span>
+<span class="cm"># "Also read docs/design-system.md and docs/theming.md"</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="step">
+        <div class="step-spine"><div class="step-num b">2</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-card">
+            <div class="step-head">
+              <div class="badge b-blue" style="margin-bottom:8px;">📄 PRD — Describe This Sprint's Goal</div>
+              <h4>Run create-prd.md → save to .agents/PRDs/sprint-N.md</h4>
+              <p>Even for web porting work, write a PRD. It grounds every plan Jules follows and prevents scope drift.</p>
+            </div>
+            <div class="step-content">
+              <div class="code-block">
+<span class="cm"># Run .claude/commands/create-prd.md in your IDE</span>
+<span class="cm"># Append your sprint goal, e.g. for Sprint 2:</span>
+
+<span class="str">"Build the web UI component library for the Arabic learning app.
+ Reference: docs/design-system.md, mobile app components/ folder.
+ Web stack: React + Vite + Tailwind + shadcn/ui.
+ RTL is already configured globally (Sprint 1 done).
+ Components needed: ArabicText, ProgressBar, LessonCard,
+ NavigationSidebar, AudioPlayer, Button, Modal variants.
+ Each component must have: TypeScript types, RTL support,
+ dark mode support, storybook-style usage comment."</span>
+
+<span class="cm"># Output lands in .agents/PRDs/sprint-2-components.md</span>
+<span class="cm"># Review it — if anything looks wrong, edit the text now.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="step">
+        <div class="step-spine"><div class="step-num b">3</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-card">
+            <div class="step-head">
+              <div class="badge b-blue" style="margin-bottom:8px;">🎫 Issues — PRD → GitHub Backlog</div>
+              <h4>Run create-stories.md → execute the batch script</h4>
+              <p>One GitHub issue per Jules task. Each issue must be independently completable — no implicit dependencies.</p>
+            </div>
+            <div class="step-content">
+              <div class="code-block">
+<span class="cm"># Run .claude/commands/create-stories.md in your IDE</span>
+<span class="cm"># It reads the PRD and outputs a shell script</span>
+
+<span class="cm"># Output: .agents/stories/create-sprint-2-issues.sh</span>
+
+<span class="cm"># Review the script — check each issue:</span>
+<span class="cm"># ✓ Self-contained (Jules can do it alone)</span>
+<span class="cm"># ✓ References the right files to create/modify</span>
+<span class="cm"># ✓ Includes link to design-system.md in body</span>
+<span class="cm"># ✓ Has acceptance criteria Jules can verify</span>
+
+<span class="cmd">chmod +x</span> .agents/stories/create-sprint-2-issues.sh
+<span class="cmd">bash</span> .agents/stories/create-sprint-2-issues.sh
+
+<span class="cm"># Verify issues in GitHub:</span>
+<span class="cmd">gh issue list</span> --label sprint-2
+
+<span class="cm"># Create this sprint's integration branch:</span>
+<span class="cmd">git checkout</span> integration-sprint-1   <span class="cm"># base from previous sprint</span>
+<span class="cmd">git checkout -b</span> integration-sprint-2
+<span class="cmd">git push -u origin</span> integration-sprint-2
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="step">
+        <div class="step-spine"><div class="step-num on">4</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-card">
+            <div class="step-head">
+              <div class="badge b-sand" style="margin-bottom:8px;">🗺️ Plans — The Most Important Step</div>
+              <h4>Run plan.md for each issue → commit docs/plans/</h4>
+              <p>The plan file is what Jules reads. It must be precise, include mobile reference paths, and list exact files to create or modify. This is where you transfer mobile knowledge to Jules.</p>
+            </div>
+            <div class="step-content">
+              <p>For each issue, run <code class="ic">.claude/commands/plan.md</code> in your IDE. Add this to the prompt so the IDE knows where the mobile reference lives:</p>
+              <div class="code-block">
+<span class="cm"># Prompt addition for every plan.md call on this project:</span>
+<span class="str">"Reference implementation: apps/mobile/components/[ComponentName]
+ Design tokens source: apps/mobile/theme/
+ Shared data: packages/shared/data/
+ Design system: docs/design-system.md
+ Existing mobile state: apps/mobile/state/
+ The web version uses: React + Vite + Tailwind + shadcn + Drizzle"</span>
+
+<span class="cm"># Output: docs/plans/issue-23-plan.md</span>
+<span class="cm"># Required sections in every plan:</span>
+<span class="cm"># ✓ Issue number + title</span>
+<span class="cm"># ✓ Branch: feat/issue-23</span>
+<span class="cm"># ✓ Base branch: integration-sprint-2</span>
+<span class="cm"># ✓ Files to CREATE (with full paths)</span>
+<span class="cm"># ✓ Files to MODIFY (with full paths)</span>
+<span class="cm"># ✓ Files NOT to touch</span>
+<span class="cm"># ✓ Mobile reference: apps/mobile/components/X.tsx</span>
+<span class="cm"># ✓ Logic to implement (step-by-step)</span>
+<span class="cm"># ✓ Validation commands</span>
+
+<span class="cm"># After all plans are written — FILE CONFLICT CHECK:</span>
+<span class="cm"># Grep all plans for file names — no two plans in this batch</span>
+<span class="cm"># should list the same file under "Files to modify"</span>
+<span class="cmd">grep -h</span> <span class="str">"Files to modify"</span> -A 10 docs/plans/issue-*.md | sort | uniq -d
+
+<span class="cm"># Push plans to GitHub (Jules reads from the repo):</span>
+<span class="cmd">git add</span> docs/plans/
+<span class="cmd">git commit -m</span> <span class="str">"plans: sprint-2 component issues"</span>
+<span class="cmd">git push origin</span> integration-sprint-2
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="step">
+        <div class="step-spine"><div class="step-num g">5</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-card">
+            <div class="step-head">
+              <div class="badge b-green" style="margin-bottom:8px;">🚀 Trigger Jules — Fire All Agents</div>
+              <h4>Send all issues to Jules API simultaneously</h4>
+              <p>Jules clones your repo, reads the plan, implements, runs validations, opens PR. You do nothing during execution.</p>
+            </div>
+            <div class="step-content">
+              <div class="code-block">
+<span class="cm"># Jules task prompt template (paste this for each issue, change the number):</span>
+<span class="str">"Read docs/plans/issue-23-plan.md and implement it exactly.
+ Follow all rules in AGENTS.md.
+ Read docs/design-system.md before writing any UI code.
+ Branch from integration-sprint-2, branch name feat/issue-23.
+ Run all validation commands before opening PR.
+ Open PR to integration-sprint-2 when complete."</span>
+
+<span class="cm"># Jules UI: jules.google.com → New Task × N (one per issue)</span>
+<span class="cm"># Or via API (if you have a trigger script from scripts/):</span>
+
+curl -X POST https://jules.google.com/api/v1/tasks \
+  -H <span class="str">"Authorization: Bearer $JULES_API_KEY"</span> \
+  -H <span class="str">"Content-Type: application/json"</span> \
+  -d <span class="str">'{
+    "prompt": "Read docs/plans/issue-23-plan.md and implement exactly. Follow AGENTS.md. Read docs/design-system.md before UI work. Branch feat/issue-23 from integration-sprint-2. Auto-create PR.",
+    "githubRepoContext": {
+      "repo": "your-org/arabic-app",
+      "startingBranch": "integration-sprint-2",
+      "targetBranch": "feat/issue-23"
+    },
+    "automationMode": "AUTO_CREATE_PR"
+  }'</span>
+
+<span class="cm"># Fire all N tasks. Go have coffee. Jules runs in parallel.</span>
+<span class="cm"># Average Jules execution time per task: 5–20 minutes.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="step">
+        <div class="step-spine"><div class="step-num p">6</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-card">
+            <div class="step-head">
+              <div class="badge b-purple" style="margin-bottom:8px;">🌳 Worktree Review — No Branch Switching</div>
+              <h4>Add worktrees for Jules PRs → review locally</h4>
+              <p>Jules opens PRs. You add a worktree per branch, open it in your IDE, check it runs correctly, especially RTL and Arabic rendering.</p>
+            </div>
+            <div class="step-content">
+              <div class="code-block">
+<span class="cm"># Fetch all Jules branches:</span>
+<span class="cmd">git fetch</span> --all
+
+<span class="cm"># Add a worktree for each Jules PR you want to inspect locally:</span>
+<span class="cmd">git worktree add</span> ../arabic-app-wt/feat-issue-23 feat/issue-23
+<span class="cmd">git worktree add</span> ../arabic-app-wt/feat-issue-24 feat/issue-24
+
+<span class="cm"># Check a PR (never switches your main folder's branch):</span>
+<span class="cmd">cd</span> ../arabic-app-wt/feat-issue-23
+<span class="cmd">pnpm install</span> && <span class="cmd">pnpm</span> --filter web dev
+
+<span class="cm"># Arabic-specific review checklist per PR:</span>
+<span class="cm"># ✓ Arabic text renders correctly with proper font</span>
+<span class="cm"># ✓ Layout flows right-to-left visually</span>
+<span class="cm"># ✓ No hardcoded Arabic strings (all via t())</span>
+<span class="cm"># ✓ Component matches mobile visual reference</span>
+<span class="cm"># ✓ TypeScript has no errors</span>
+
+<span class="cm"># Run .claude/commands/review.md prompt in the worktree folder</span>
+<span class="cm"># for AI-assisted diff review against the PRD</span>
+
+<span class="cm"># Remove worktree after merge:</span>
+<span class="cmd">git worktree remove</span> ../arabic-app-wt/feat-issue-23
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="step">
+        <div class="step-spine"><div class="step-num g">7</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-card">
+            <div class="step-head">
+              <div class="badge b-green" style="margin-bottom:8px;">✅ Merge — Gated, In Order</div>
+              <h4>CI green → merge → smoke test every 5</h4>
+              <p>Never batch-merge everything at once. Gate every 5 with your smoke.ts script.</p>
+            </div>
+            <div class="step-content">
+              <div class="code-block">
+<span class="cm"># See all PR statuses:</span>
+<span class="cmd">gh pr list</span> --base integration-sprint-2
+
+<span class="cm"># Merge a passing PR:</span>
+<span class="cmd">gh pr merge</span> [PR_NUMBER] --squash --delete-branch
+
+<span class="cm"># Every 5 merges — run smoke test on integration branch:</span>
+<span class="cmd">cd</span> ../arabic-app-wt/integration-sprint-2
+<span class="cmd">git pull origin</span> integration-sprint-2
+<span class="cmd">pnpm</span> --filter web run build    <span class="cm"># Vite build must succeed</span>
+<span class="cmd">pnpm</span> run scripts/smoke.ts      <span class="cm"># your existing smoke script</span>
+
+<span class="cm"># CI failing? Send Jules the error:</span>
+<span class="str">"The CI failed on feat/issue-23. Error: [paste GitHub Actions output].
+ Fix the issue, re-run all validation commands, push the fix."</span>
+
+<span class="cm"># Merge conflict? Send Jules:</span>
+<span class="str">"Pull latest integration-sprint-2, resolve all conflicts,
+ re-run validation commands, push the update."</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="step">
+        <div class="step-spine"><div class="step-num on">8</div></div>
+        <div class="step-body">
+          <div class="step-card">
+            <div class="step-head">
+              <div class="badge b-neutral" style="margin-bottom:8px;">🔄 Sprint Close — Audit + Next Sprint</div>
+              <h4>validate.md → update AGENTS.md → next integration branch</h4>
+              <p>Run the audit, capture systemic mistakes, strengthen AGENTS.md, and prep the next sprint branch.</p>
+            </div>
+            <div class="step-content">
+              <div class="code-block">
+<span class="cm"># Full validation on the integration branch:</span>
+<span class="cmd">cd</span> ../arabic-app-wt/integration-sprint-2
+<span class="cm"># Run .claude/commands/validate.md prompt</span>
+<span class="cm"># Run .claude/commands/review.md prompt (compares vs PRD)</span>
+
+<span class="cm"># RTL audit (critical for Arabic app):</span>
+<span class="cm"># Open the web app in browser — flip to Arabic mode</span>
+<span class="cm"># Check every new screen/component renders correctly RTL</span>
+
+<span class="cm"># Capture systemic Jules mistakes → update AGENTS.md</span>
+<span class="cm"># Examples for Arabic apps:</span>
+<span class="cm"># "Jules used dir='rtl' on div instead of html root → add rule"</span>
+<span class="cm"># "Jules hardcoded Arabic string instead of using t() → add rule"</span>
+<span class="cm"># "Jules used LTR margin instead of RTL margin → add rule"</span>
+
+<span class="cm"># Teardown sprint worktrees:</span>
+<span class="cmd">bash</span> scripts/worktree-teardown.sh
+
+<span class="cm"># Prep next sprint:</span>
+<span class="cmd">git checkout</span> integration-sprint-2
+<span class="cmd">git checkout -b</span> integration-sprint-3
+<span class="cmd">git push -u origin</span> integration-sprint-3
+<span class="cm"># Update INTEGRATION_BRANCH in worktree-setup.sh → sprint-3</span>
+<span class="cmd">bash</span> scripts/worktree-setup.sh
+              </div>
+
+              <div class="callout tip">
+                <span class="ico">🕌</span>
+                <span><strong>Arabic-specific AGENTS.md rules to add as you go:</strong> Every time Jules gets RTL wrong, renders Arabic text without diacritics support, uses a hardcoded string, or imports from the wrong i18n key path — add a precise rule. After 3 sprints, Jules will produce near-perfect Arabic components automatically.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end steps -->
+  </section>
+
+  <hr/>
+
+  <!-- QUICK REF -->
+  <section class="section">
+    <div class="sec-label">Quick Reference</div>
+    <div class="sec-title">Commands You'll Run Every Day</div>
+
+    <div class="code-block">
+<span class="cm">## ── START OF DAY ──────────────────────────────────────────────────</span>
+<span class="cmd">git fetch</span> --all                          <span class="cm"># pull all Jules branches</span>
+<span class="cmd">gh pr list</span> --base integration-sprint-N   <span class="cm"># check PR statuses</span>
+<span class="cm"># Prime IDE with prime.md prompt</span>
+
+<span class="cm">## ── PLANNING (before triggering Jules) ────────────────────────────</span>
+<span class="cm"># .claude/commands/create-prd.md     → .agents/PRDs/</span>
+<span class="cm"># .claude/commands/create-stories.md → .agents/stories/create-sprint-N.sh</span>
+<span class="cmd">bash</span> .agents/stories/create-sprint-N.sh
+<span class="cm"># .claude/commands/plan.md × N       → docs/plans/issue-N-plan.md</span>
+<span class="cmd">git add</span> docs/plans/ && <span class="cmd">git commit -m</span> <span class="str">"plans: sprint N"</span> && <span class="cmd">git push</span>
+
+<span class="cm">## ── TRIGGER JULES ──────────────────────────────────────────────────</span>
+<span class="cm"># jules.google.com → New Task × N (fire all in one session)</span>
+<span class="cm"># Prompt: "Read docs/plans/issue-N-plan.md, follow AGENTS.md, PR to integration-sprint-N"</span>
+
+<span class="cm">## ── REVIEW PRs (while Jules runs) ────────────────────────────────</span>
+<span class="cmd">git worktree add</span> ../arabic-app-wt/feat-issue-N feat/issue-N
+<span class="cmd">cd</span> ../arabic-app-wt/feat-issue-N
+<span class="cmd">pnpm install</span> && <span class="cmd">pnpm</span> --filter web dev
+
+<span class="cm">## ── MERGE (gated) ─────────────────────────────────────────────────</span>
+<span class="cmd">gh pr merge</span> N --squash --delete-branch
+<span class="cm"># Every 5 merges → cd ../arabic-app-wt/integration-sprint-N && pnpm run build</span>
+
+<span class="cm">## ── CONFLICT / FAIL → SEND JULES ──────────────────────────────────</span>
+<span class="cm"># Conflict: "Pull latest integration-sprint-N, resolve conflicts, re-run validation, push."</span>
+<span class="cm"># CI fail:  "CI failed: [paste error]. Fix, re-run validation, push."</span>
+
+<span class="cm">## ── SPRINT CLOSE ──────────────────────────────────────────────────</span>
+<span class="cmd">bash</span> scripts/worktree-teardown.sh
+<span class="cmd">git checkout -b</span> integration-sprint-N+1
+<span class="cmd">git push -u origin</span> integration-sprint-N+1
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span style="font-family:'Fraunces',serif;font-size:16px;font-weight:300;">Arabic Pedagogical Engine — Web Implementation Guide</span>
+  <span style="font-family:'JetBrains Mono',monospace;font-size:11px;">prime → prd → plan → delegate → worktree → merge → evolve</span>
+</footer>
+
+</body>
+</html>
