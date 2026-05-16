@@ -27,7 +27,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     // Other redirect strategies are possible; see
     // https://github.com/TanStack/router/tree/main/examples/react/i18n-paraglide#offline-redirect
     if (typeof document !== 'undefined') {
-      document.documentElement.setAttribute('lang', getLocale())
+      const locale = getLocale()
+      document.documentElement.setAttribute('lang', locale)
+      document.documentElement.setAttribute('dir', locale === 'ar' ? 'rtl' : 'ltr')
     }
   },
 
@@ -55,8 +57,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const locale = getLocale()
+  const dir = locale === 'ar' ? 'rtl' : 'ltr'
+
   return (
-    <html lang={getLocale()} suppressHydrationWarning>
+    <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
