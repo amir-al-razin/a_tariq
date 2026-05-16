@@ -11,11 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VolumeVolumeIdRouteImport } from './routes/volume/$volumeId'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoI18nRouteImport } from './routes/demo.i18n'
 import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
 import { Route as DemoBetterAuthRouteImport } from './routes/demo/better-auth'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as VolumeVolumeIdChapterChapterIdLessonDarsNumRouteImport } from './routes/volume/$volumeId/chapter/$chapterId/lesson/$darsNum'
+import { Route as VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRouteImport } from './routes/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -25,6 +28,11 @@ const AboutRoute = AboutRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VolumeVolumeIdRoute = VolumeVolumeIdRouteImport.update({
+  id: '/volume/$volumeId',
+  path: '/volume/$volumeId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
@@ -52,6 +60,18 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VolumeVolumeIdChapterChapterIdLessonDarsNumRoute =
+  VolumeVolumeIdChapterChapterIdLessonDarsNumRouteImport.update({
+    id: '/chapter/$chapterId/lesson/$darsNum',
+    path: '/chapter/$chapterId/lesson/$darsNum',
+    getParentRoute: () => VolumeVolumeIdRoute,
+  } as any)
+const VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute =
+  VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRouteImport.update({
+    id: '/chunk/$chunkId',
+    path: '/chunk/$chunkId',
+    getParentRoute: () => VolumeVolumeIdChapterChapterIdLessonDarsNumRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,7 +80,10 @@ export interface FileRoutesByFullPath {
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/volume/$volumeId': typeof VolumeVolumeIdRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumRouteWithChildren
+  '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -69,7 +92,10 @@ export interface FileRoutesByTo {
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/volume/$volumeId': typeof VolumeVolumeIdRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumRouteWithChildren
+  '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -79,7 +105,10 @@ export interface FileRoutesById {
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/volume/$volumeId': typeof VolumeVolumeIdRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumRouteWithChildren
+  '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -90,7 +119,10 @@ export interface FileRouteTypes {
     | '/demo/drizzle'
     | '/demo/i18n'
     | '/demo/tanstack-query'
+    | '/volume/$volumeId'
     | '/api/auth/$'
+    | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum'
+    | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -99,7 +131,10 @@ export interface FileRouteTypes {
     | '/demo/drizzle'
     | '/demo/i18n'
     | '/demo/tanstack-query'
+    | '/volume/$volumeId'
     | '/api/auth/$'
+    | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum'
+    | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
   id:
     | '__root__'
     | '/'
@@ -108,7 +143,10 @@ export interface FileRouteTypes {
     | '/demo/drizzle'
     | '/demo/i18n'
     | '/demo/tanstack-query'
+    | '/volume/$volumeId'
     | '/api/auth/$'
+    | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum'
+    | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,6 +156,7 @@ export interface RootRouteChildren {
   DemoDrizzleRoute: typeof DemoDrizzleRoute
   DemoI18nRoute: typeof DemoI18nRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  VolumeVolumeIdRoute: typeof VolumeVolumeIdRouteWithChildren
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -135,6 +174,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/volume/$volumeId': {
+      id: '/volume/$volumeId'
+      path: '/volume/$volumeId'
+      fullPath: '/volume/$volumeId'
+      preLoaderRoute: typeof VolumeVolumeIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/tanstack-query': {
@@ -172,8 +218,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum': {
+      id: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum'
+      path: '/chapter/$chapterId/lesson/$darsNum'
+      fullPath: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum'
+      preLoaderRoute: typeof VolumeVolumeIdChapterChapterIdLessonDarsNumRouteImport
+      parentRoute: typeof VolumeVolumeIdRoute
+    }
+    '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId': {
+      id: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
+      path: '/chunk/$chunkId'
+      fullPath: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
+      preLoaderRoute: typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRouteImport
+      parentRoute: typeof VolumeVolumeIdChapterChapterIdLessonDarsNumRoute
+    }
   }
 }
+
+interface VolumeVolumeIdChapterChapterIdLessonDarsNumRouteChildren {
+  VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute: typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
+}
+
+const VolumeVolumeIdChapterChapterIdLessonDarsNumRouteChildren: VolumeVolumeIdChapterChapterIdLessonDarsNumRouteChildren =
+  {
+    VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute:
+      VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute,
+  }
+
+const VolumeVolumeIdChapterChapterIdLessonDarsNumRouteWithChildren =
+  VolumeVolumeIdChapterChapterIdLessonDarsNumRoute._addFileChildren(
+    VolumeVolumeIdChapterChapterIdLessonDarsNumRouteChildren,
+  )
+
+interface VolumeVolumeIdRouteChildren {
+  VolumeVolumeIdChapterChapterIdLessonDarsNumRoute: typeof VolumeVolumeIdChapterChapterIdLessonDarsNumRouteWithChildren
+}
+
+const VolumeVolumeIdRouteChildren: VolumeVolumeIdRouteChildren = {
+  VolumeVolumeIdChapterChapterIdLessonDarsNumRoute:
+    VolumeVolumeIdChapterChapterIdLessonDarsNumRouteWithChildren,
+}
+
+const VolumeVolumeIdRouteWithChildren = VolumeVolumeIdRoute._addFileChildren(
+  VolumeVolumeIdRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -182,6 +270,7 @@ const rootRouteChildren: RootRouteChildren = {
   DemoDrizzleRoute: DemoDrizzleRoute,
   DemoI18nRoute: DemoI18nRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  VolumeVolumeIdRoute: VolumeVolumeIdRouteWithChildren,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
