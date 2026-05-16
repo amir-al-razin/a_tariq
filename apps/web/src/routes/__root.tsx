@@ -58,6 +58,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   const locale = getLocale()
+  // RTL should activate when Arabic content is displayed
   const dir = locale === 'ar' ? 'rtl' : 'ltr'
 
   return (
