@@ -7,20 +7,26 @@ export const HomeScreen = () => {
   const volumes = [
     {
       id: 1,
-      title: m.home_volume1(),
-      subtitle: m.home_volume1subtitle1(),
+      // @ts-ignore
+      title: m['home.volume1'](),
+      // @ts-ignore
+      subtitle: m['home.volume1subtitle1'] ? m['home.volume1subtitle1']() : m['home.volume1Subtitle'] ? m['home.volume1Subtitle']() : '',
       locked: false,
     },
     {
       id: 2,
-      title: m.home_volume2(),
-      subtitle: m.home_volume2subtitle1(),
+      // @ts-ignore
+      title: m['home.volume2'](),
+      // @ts-ignore
+      subtitle: m['home.volume2subtitle1'] ? m['home.volume2subtitle1']() : m['home.volume2Subtitle'] ? m['home.volume2Subtitle']() : '',
       locked: false,
     },
     {
       id: 3,
-      title: m.home_volume3(),
-      subtitle: m.home_volume3subtitle1(),
+      // @ts-ignore
+      title: m['home.volume3'](),
+      // @ts-ignore
+      subtitle: m['home.volume3subtitle1'] ? m['home.volume3subtitle1']() : m['home.volume3Subtitle'] ? m['home.volume3Subtitle']() : '',
       locked: false,
     },
   ]
@@ -30,10 +36,12 @@ export const HomeScreen = () => {
       <div className="max-w-[1024px] mx-auto w-full flex flex-col gap-5">
         <div className="flex flex-col gap-2 mb-2">
           <h1 className="font-english-semibold text-[34px] leading-[40px] tracking-[-0.4px] text-neutral-900 dark:text-neutral-100">
-            {m.home_title()}
+            {/* @ts-ignore */}
+            {m['home.title'] ? m['home.title']() : m.home_title ? m.home_title() : ''}
           </h1>
           <p className="font-english text-[16px] leading-[26px] text-neutral-500 dark:text-neutral-400">
-            {m.home_subtitle()}
+            {/* @ts-ignore */}
+            {m['home.subtitle'] ? m['home.subtitle']() : m.home_subtitle ? m.home_subtitle() : ''}
           </p>
         </div>
 
@@ -50,7 +58,8 @@ export const HomeScreen = () => {
                       {vol.title}
                     </h2>
                     <p className="font-english text-[14px] leading-[22px] text-neutral-400 dark:text-neutral-600">
-                      {m.home_locked()}
+                      {/* @ts-ignore */}
+                      {m['home.locked'] ? m['home.locked']() : m.home_locked ? m.home_locked() : ''}
                     </p>
                   </div>
                   <Lock size={18} color="#9A8F7B" />
