@@ -26,8 +26,8 @@
     "locked": "Locked"
   },
   "volume": {
-    "chapterMeta": "Chapter {{id}}  ·  {{count}} lessons",
-    "endOfPart": "End of Part {{number}} · by the grace of Allah",
+    "chapterMeta": "Chapter {id}  ·  {count} lessons",
+    "endOfPart": "End of Part {number} · by the grace of Allah",
     "vol1Title": "Volume One",
     "vol1Meta": "3 chapters · 20 lessons",
     "vol2Title": "Volume Two",
@@ -55,8 +55,8 @@
     "4subtitle": "Quranic & Hadith readings — direct Arabic immersion"
   },
   "lesson": {
-    "title": "Lesson {{number}} · {{chapter}}",
-    "dars": "Dars {{number}}",
+    "title": "Lesson {number} · {chapter}",
+    "dars": "Dars {number}",
     "inProgress": "In progress",
     "comingSoon": "Coming soon",
     "resume": "RESUME",

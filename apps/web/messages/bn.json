@@ -26,8 +26,8 @@
     "locked": "লক করা"
   },
   "volume": {
-    "chapterMeta": "অধ্যায় {{id}}  ·  {{count}} পাঠ",
-    "endOfPart": "{{number}} নং খণ্ড সমাপ্ত · আল্লাহর রহমতে",
+    "chapterMeta": "অধ্যায় {id}  ·  {count} পাঠ",
+    "endOfPart": "{number} নং খণ্ড সমাপ্ত · আল্লাহর রহমতে",
     "vol1Title": "প্রথম খণ্ড",
     "vol1Meta": "৩ অধ্যায় · ২০ পাঠ",
     "vol2Title": "দ্বিতীয় খণ্ড",
@@ -55,8 +55,8 @@
     "4subtitle": "কুরআন ও হাদিস পাঠ — সরাসরি আরবি নিমজ্জন"
   },
   "lesson": {
-    "title": "পাঠ {{number}} · {{chapter}}",
-    "dars": "দরস {{number}}",
+    "title": "পাঠ {number} · {chapter}",
+    "dars": "দরস {number}",
     "inProgress": "চলমান",
     "comingSoon": "শীঘ্রই আসছে",
     "resume": "চালিয়ে যান",
