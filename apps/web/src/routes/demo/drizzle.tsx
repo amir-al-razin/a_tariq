@@ -122,7 +122,6 @@ function DemoDrizzle() {
             style={{
               background: 'rgba(93, 103, 227, 0.1)',
               borderColor: 'rgba(93, 103, 227, 0.3)',
-              focusRing: 'rgba(93, 103, 227, 0.5)',
             }}
           />
           <button
