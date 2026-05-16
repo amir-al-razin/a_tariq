@@ -10,7 +10,7 @@ export default {
         arabic: ['Noto Sans Arabic', 'sans-serif'],
         'arabic-medium': ['Noto Sans Arabic', 'sans-serif'],
         'arabic-semibold': ['Noto Sans Arabic', 'sans-serif'],
-        bengali: ['Noto Sans Bengali', 'sans-serif'],
+        bengali: ['Noto Sans Bengali', 'sans-serif'], // Added Noto Sans Bengali font for Bangla text
       },
       fontSize: {
         display: ['34px', { lineHeight: '40px', letterSpacing: '-0.4px' }],
