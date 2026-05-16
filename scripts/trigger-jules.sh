@@ -7,8 +7,8 @@ set -euo pipefail
 # CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
 
-JULES_API_KEY="${JULES_API_KEY:-AQ.Ab8RN6JeOhOJ0iP_OSVm4Z_yMK5l7u8GenBeJdnOYSb1hCQPLAYeah}"
-JULES_API_URL="https://jules.google.com/api/v1/tasks"
+JULES_API_KEY="${JULES_API_KEY:-AQ.Ab8RN6JeOhOJ0iP_OSVm4Z_yMK5l7u8GenBeJdnOYSb1hCQPLA}"
+JULES_API_URL="https://jules.googleapis.com/v1alpha/sessions"
 
 # Get repository info
 REPO_ROOT="$(git rev-parse --show-toplevel)"
@@ -19,6 +19,11 @@ GIT_REMOTE="$(git remote get-url origin)"
 if [[ "$GIT_REMOTE" =~ github.com[:/]([^/]+)/([^/.]+) ]]; then
   GITHUB_ORG="${BASH_REMATCH[1]}"
   GITHUB_REPO="${BASH_REMATCH[2]}"
+  
+  # Handle repo name mismatch (local: tariq, Jules: a_tariq)
+  if [ "$GITHUB_REPO" = "tariq" ]; then
+    GITHUB_REPO="a_tariq"
+  fi
 else
   echo "❌ Could not parse GitHub org/repo from remote: $GIT_REMOTE"
   exit 1
@@ -89,13 +94,27 @@ echo ""
 # BUILD JULES PROMPT
 # ─────────────────────────────────────────────────────────────────────────────
 
-JULES_PROMPT="Read $PLAN_FILE and implement it exactly.
+# Read the plan file content
+PLAN_CONTENT=$(cat "$PLAN_FILE")
+
+# Build prompt with embedded plan content
+JULES_PROMPT="# Implementation Plan for Issue #$ISSUE_NUMBER
+
+$PLAN_CONTENT
+
+---
+
+# Execution Instructions
+
 Follow all rules in AGENTS.md.
-Read docs/design-system.md before building any UI component.
+Read docs/design-system.md before building any UI component (if applicable).
 Branch from $INTEGRATION_BRANCH, branch name $FEATURE_BRANCH.
 Run all validation commands listed in the plan before opening PR.
 If blocked, stop and leave a detailed comment in the PR.
 Open PR to $INTEGRATION_BRANCH when complete."
+
+# Get source name (format: sources/github/owner/repo)
+SOURCE_NAME="sources/github/$GITHUB_ORG/$GITHUB_REPO"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # TRIGGER JULES API
@@ -104,43 +123,50 @@ Open PR to $INTEGRATION_BRANCH when complete."
 echo "🚀 Sending request to Jules API..."
 echo ""
 
+# Create JSON payload with proper escaping using jq
+JSON_PAYLOAD=$(jq -n \
+  --arg prompt "$JULES_PROMPT" \
+  --arg source "$SOURCE_NAME" \
+  --arg branch "$INTEGRATION_BRANCH" \
+  --arg title "Issue #$ISSUE_NUMBER: $FEATURE_BRANCH" \
+  '{
+    prompt: $prompt,
+    sourceContext: {
+      source: $source,
+      githubRepoContext: {
+        startingBranch: $branch
+      }
+    },
+    automationMode: "AUTO_CREATE_PR",
+    title: $title
+  }')
+
 RESPONSE=$(curl -s -X POST "$JULES_API_URL" \
-  -H "Authorization: Bearer $JULES_API_KEY" \
+  -H "X-Goog-Api-Key: $JULES_API_KEY" \
   -H "Content-Type: application/json" \
-  -d @- <<EOF
-{
-  "prompt": "$JULES_PROMPT",
-  "githubRepoContext": {
-    "repo": "$GITHUB_ORG/$GITHUB_REPO",
-    "startingBranch": "$INTEGRATION_BRANCH",
-    "targetBranch": "$FEATURE_BRANCH"
-  },
-  "automationMode": "AUTO_CREATE_PR"
-}
-EOF
-)
+  -d "$JSON_PAYLOAD")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # PARSE RESPONSE
 # ─────────────────────────────────────────────────────────────────────────────
 
-# Check if response contains task ID (basic validation)
-if echo "$RESPONSE" | grep -q '"taskId"'; then
-  TASK_ID=$(echo "$RESPONSE" | grep -o '"taskId":"[^"]*"' | cut -d'"' -f4)
+# Check if response contains session ID (basic validation)
+if echo "$RESPONSE" | grep -q '"id"'; then
+  SESSION_ID=$(echo "$RESPONSE" | grep -o '"id":"[^"]*"' | head -1 | cut -d'"' -f4)
   
-  echo "✅ Jules task created successfully"
+  echo "✅ Jules session created successfully"
   echo ""
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  echo "📋 Task Details"
+  echo "📋 Session Details"
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   echo ""
-  echo "Task ID:     $TASK_ID"
+  echo "Session ID:  $SESSION_ID"
   echo "Issue:       #$ISSUE_NUMBER"
   echo "Branch:      $FEATURE_BRANCH"
   echo "Target:      $INTEGRATION_BRANCH"
   echo ""
   echo "🔍 Monitor progress:"
-  echo "   https://jules.google.com/tasks/$TASK_ID"
+  echo "   https://jules.google.com/sessions/$SESSION_ID"
   echo ""
   echo "📨 After Jules opens PR:"
   echo "   git fetch --all"
@@ -148,7 +174,7 @@ if echo "$RESPONSE" | grep -q '"taskId"'; then
   echo "   cd ../$REPO_NAME-wt/feat-issue-$ISSUE_NUMBER"
   echo ""
 else
-  echo "❌ Failed to create Jules task"
+  echo "❌ Failed to create Jules session"
   echo ""
   echo "Response:"
   echo "$RESPONSE"
