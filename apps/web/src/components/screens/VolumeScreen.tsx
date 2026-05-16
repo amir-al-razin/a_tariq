@@ -120,30 +120,21 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
   }
 
   const titleMap = {
-    // @ts-ignore
-    1: m.volume_vol1title1,
-    // @ts-ignore
-    2: m.volume_vol2title1,
-    // @ts-ignore
-    3: m.volume_vol3title1,
+    1: m['volume.vol1Title'],
+    2: m['volume.vol2Title'],
+    3: m['volume.vol3Title'],
   }
 
   const metaMap = {
-    // @ts-ignore
-    1: m.volume_vol1meta1,
-    // @ts-ignore
-    2: m.volume_vol2meta1,
-    // @ts-ignore
-    3: m.volume_vol3meta1,
+    1: m['volume.vol1Meta'],
+    2: m['volume.vol2Meta'],
+    3: m['volume.vol3Meta'],
   }
 
   const endMap = {
-    // @ts-ignore
-    1: m.volume_vol1end1,
-    // @ts-ignore
-    2: m.volume_vol2end1,
-    // @ts-ignore
-    3: m.volume_vol3end1,
+    1: m['volume.vol1End'],
+    2: m['volume.vol2End'],
+    3: m['volume.vol3End'],
   }
 
   const arTitleMap = {
@@ -270,8 +261,7 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
             className="font-english-semibold text-[13px]"
             style={{ color: labelColor }}
           >
-            {/* @ts-ignore */}
-            {m.lesson_dars ? m.lesson_dars({ number: num }) : `Dars ${num}`}
+            {m['lesson.dars'] ? m['lesson.dars']({ number: num }) : `Dars ${num}`}
           </span>
         </div>
       </div>
@@ -337,7 +327,7 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                 lessonCount={chapter.lessons.length}
                 titleEn={chapter.titleEn}
                 titleAr={chapter.titleAr}
-                subtitleI18nKey={`vol${volumeId}chapters_${chapter.id}subtitle`}
+                subtitleI18nKey={`vol${volumeId}chapters.${chapter.id}subtitle`}
                 accentColorClassName={`${volTextColorClassLight} ${volTextColorClassDark}`}
               />
               <WaveLayout>
@@ -372,10 +362,8 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
             {getMessage(`volume_vol${volumeId}end1`, endMap, `تم الجزء بفضل الله`)}
           </h3>
           <p className="font-english mt-2 text-[14px] text-neutral-600 dark:text-neutral-400 text-center">
-            {/* @ts-ignore */}
-            {m.volume_endofpart2
-              // @ts-ignore
-              ? m.volume_endofpart2({ number: volumeId })
+            {m['volume.endOfPart']
+              ? m['volume.endOfPart']({ number: volumeId })
               : `End of Part ${volumeId} · by the grace of Allah`}
           </p>
         </div>

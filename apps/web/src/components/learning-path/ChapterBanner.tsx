@@ -35,14 +35,13 @@ export const ChapterBanner: React.FC<Props> = ({
           <p
             className={`font-english-semibold text-[13px] mb-1.5 ${accentColorClassName}`}
           >
-            {/* @ts-ignore */}
-            {m.volume_chaptermeta1 ? m.volume_chaptermeta1({ id: chapterId, count: lessonCount }) : `Chapter ${chapterId} · ${lessonCount} lessons`}
+            {m['volume.chapterMeta'] ? m['volume.chapterMeta']({ id: chapterId, count: lessonCount }) : `Chapter ${chapterId} · ${lessonCount} lessons`}
           </p>
           <h2 className={`font-english-semibold text-[20px] leading-7 ${text}`}>
             {titleEn}
           </h2>
           <p className={`font-english mt-0.5 text-[13px] ${sub}`}>
-            {getMessage(subtitleI18nKey.replace(/\./g, '_'))}
+            {getMessage(subtitleI18nKey)}
           </p>
         </div>
         <div
