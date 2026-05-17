@@ -12,9 +12,15 @@ export function useLanguageContent() {
     if (language === 'bn' && bangla) {
       return bangla;
     }
-
     return english;
   };
 
-  return { getContent };
+  const t_content = (enContent: string, bnContent?: string) => {
+    if (language === 'bn' && bnContent) {
+      return bnContent;
+    }
+    return enContent;
+  };
+
+  return { getContent, t_content };
 }
