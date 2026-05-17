@@ -128,5 +128,12 @@
   "nav": {
     "home": "হোম",
     "settings": "সেটিংস"
+  },
+  "common": {
+    "showTranslation": "অনুবাদ দেখান",
+    "hideTranslation": "অনুবাদ লুকান",
+    "translation": "অনুবাদ",
+    "example": "উদাহরণ",
+    "examples": "উদাহরণসমূহ"
   }
 }

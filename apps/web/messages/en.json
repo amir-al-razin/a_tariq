@@ -128,5 +128,12 @@
   "nav": {
     "home": "Home",
     "settings": "Settings"
+  },
+  "common": {
+    "showTranslation": "Show Translation",
+    "hideTranslation": "Hide Translation",
+    "translation": "Translation",
+    "example": "Example",
+    "examples": "Examples"
   }
 }
