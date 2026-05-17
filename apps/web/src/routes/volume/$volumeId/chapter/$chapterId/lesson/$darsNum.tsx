@@ -1,5 +1,7 @@
 import { createFileRoute, notFound } from '@tanstack/react-router'
 
+import { LessonScreen } from '../../../../../../components/screens/LessonScreen'
+
 export const Route = createFileRoute(
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum',
 )({
@@ -28,8 +30,6 @@ export const Route = createFileRoute(
   component: LessonRoute,
   pendingComponent: () => <div>Loading Lesson...</div>,
 })
-
-import { LessonScreen } from '../../../../../../components/screens/LessonScreen'
 
 function LessonRoute() {
   const { volumeId, chapterId, darsNum } = Route.useParams()
