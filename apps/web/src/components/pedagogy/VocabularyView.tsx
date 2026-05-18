@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ArrowRight, Check, Eye } from 'lucide-react';
 import * as m from '#/paraglide/messages.js';
-import { useLanguageContent } from '../../hooks/useLanguageContent';
 
 type VocabWord = {
     id: number;
@@ -17,20 +16,30 @@ const FALLBACK_WORDS: VocabWord[] = [
     { id: 2, ar: 'قَلَمٌ', romanized: 'qalamun', en: 'A pen', bn: 'একটি কলম', emoji: '🖊️' },
 ];
 
-type Props = { payload?: any; onProgress?: (v: number) => void; onComplete?: () => void };
+type Props = { payload?: any; onProgress?: (v: number) => void; onComplete?: () => void; accent400?: string; accent700?: string };
 
-export const VocabularyView: React.FC<Props> = ({ payload, onProgress, onComplete }) => {
-    const { t_content } = useLanguageContent();
+export const VocabularyView: React.FC<Props> = ({ payload, onProgress, onComplete, accent400 = '#34D3AA', accent700 = '#0D775F' }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [flipped, setFlipped] = useState(false);
     const [done, setDone] = useState(false);
+    const [isDark, setIsDark] = useState(false);
+
+    useEffect(() => {
+        const checkDark = () => {
+            setIsDark(document.documentElement.classList.contains('dark'));
+        };
+        checkDark();
+        const observer = new MutationObserver(checkDark);
+        observer.observe(document.documentElement, { attributes: true });
+        return () => observer.disconnect();
+    }, []);
 
     const words: VocabWord[] = payload?.words?.length ? payload.words : FALLBACK_WORDS;
     const word = words[currentIndex];
     const isLast = currentIndex === words.length - 1;
     const isFirst = currentIndex === 0;
     const total = words.length;
-    const meaning = t_content(word.en, word.bn);
+    const meaning = word ? word.en : '';
 
     useEffect(() => {
         if (done) {
@@ -99,9 +108,9 @@ export const VocabularyView: React.FC<Props> = ({ payload, onProgress, onComplet
                 className="w-full min-h-[200px] rounded-[20px] border border-neutral-200 dark:border-neutral-700 overflow-hidden transition-all active:scale-[0.98] outline-none"
             >
                 {!flipped ? (
-                    <div className="w-full h-full min-h-[200px] bg-primary-50 dark:bg-neutral-900 flex flex-col items-center justify-center p-6">
+                    <div className="w-full h-full min-h-[200px] bg-neutral-50 dark:bg-neutral-900 flex flex-col items-center justify-center p-6">
                         <span className="text-5xl mb-3">{word.emoji}</span>
-                        <h2 className="font-arabic-semibold text-[44px] leading-tight text-primary-700 dark:text-primary-400 text-center">{word.ar}</h2>
+                        <h2 className="font-arabic-semibold text-[44px] leading-tight text-center" style={{ color: isDark ? accent400 : accent700 }}>{word.ar}</h2>
                         <p className="font-english text-sm text-neutral-500 dark:text-neutral-400 mt-2">{word.romanized}</p>
                     </div>
                 ) : (
@@ -118,8 +127,9 @@ export const VocabularyView: React.FC<Props> = ({ payload, onProgress, onComplet
                         className={`h-1.5 rounded-full transition-all duration-300 ${
                             i === currentIndex ? 'w-5' : 'w-1.5'
                         } ${
-                            i < currentIndex || done ? 'bg-primary-400' : i === currentIndex ? 'bg-primary-400' : 'bg-neutral-200 dark:bg-neutral-700'
+                            i < currentIndex || done ? '' : i === currentIndex ? '' : 'bg-neutral-200 dark:bg-neutral-700'
                         }`}
+                        style={{ backgroundColor: (i < currentIndex || done || i === currentIndex) ? accent400 : undefined }}
                     />
                 ))}
             </div>
@@ -146,11 +156,12 @@ export const VocabularyView: React.FC<Props> = ({ payload, onProgress, onComplet
                 <button
                     onClick={handleNext}
                     disabled={done}
-                    className={`flex-1 h-12 rounded-xl flex items-center justify-center gap-1.5 transition-all outline-none ${
-                        done
-                            ? 'bg-neutral-200 dark:bg-neutral-800 opacity-40 cursor-not-allowed'
-                            : 'bg-primary-400 active:bg-primary-500'
-                    }`}
+                    className="flex-1 h-12 rounded-xl flex items-center justify-center gap-1.5 transition-all outline-none"
+                    style={{
+                        backgroundColor: done ? undefined : accent400,
+                        opacity: done ? 0.4 : 1,
+                        cursor: done ? 'not-allowed' : 'pointer',
+                    }}
                 >
                     <span className={`font-english-semibold text-sm ${done ? 'text-neutral-500' : 'text-white'}`}>
                         {!flipped ? m['vocabulary.reveal']() : isLast ? m['vocabulary.finish']() : m['vocabulary.next']()}

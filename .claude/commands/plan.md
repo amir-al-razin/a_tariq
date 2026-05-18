@@ -9,11 +9,16 @@ argument-hint: <feature description | path/to/prd.md>
 
 ## Objective
 
-Transform the input into a battle-tested implementation plan through codebase exploration and pattern extraction.
+Create a detailed directive plan that tells Jules WHAT to build (with comprehensive explanation) and WHERE to look, but NOT complete code implementations.
 
-**Core Principle**: PLAN ONLY - no code written. Create a context-rich document that enables one-pass implementation.
+**Core Principle**: DETAILED DIRECTIVES - comprehensive explanations prevent hallucination, but no code implementations. Jules (Gemini 2.0 Flash Thinking) generates code from detailed requirements and patterns.
 
-**Order**: CODEBASE FIRST. Solutions must fit existing patterns.
+**Philosophy**: 
+- ✅ MORE detail about WHAT = better AI output
+- ✅ Comprehensive requirements = less hallucination
+- ❌ Complete code = wasted credits, Jules becomes copy-paste agent
+
+**Target Length**: 80-150 lines (detailed explanations, no code blocks)
 
 ---
 
@@ -40,24 +45,21 @@ Transform the input into a battle-tested implementation plan through codebase ex
 
 ## Phase 2: EXPLORE
 
-### Study the Codebase
+### Find Reference Implementations
 
-Use the Explore agent to find:
+Use search tools to find:
 
-1. **Similar implementations** - analogous features with file:line references
-2. **Naming conventions** - actual examples from the codebase
-3. **Error handling patterns** - how errors are created and handled
-4. **Type definitions** - relevant interfaces and types
-5. **Test patterns** - test file structure and assertion styles
+1. **Similar mobile implementations** - analogous features with file:line references
+2. **Key patterns** - how similar features are structured
+3. **Data sources** - where data comes from (e.g., `@tariq/shared`)
 
-### Document Patterns
+### Document References (NOT code)
 
-| Category | File:Lines | Pattern |
-|----------|------------|---------|
-| NAMING | `path/to/file.ts:10-15` | {pattern description} |
-| ERRORS | `path/to/file.ts:20-30` | {pattern description} |
-| TYPES | `path/to/file.ts:1-10` | {pattern description} |
-| TESTS | `path/to/test.ts:1-25` | {pattern description} |
+| Category | File:Lines | Pattern Description |
+|----------|------------|---------------------|
+| MAIN REFERENCE | `path/to/file.tsx:10-150` | Primary implementation to mirror |
+| DATA SOURCE | `@tariq/shared` | Import curriculum data from here |
+| PATTERN | `path/to/file.tsx:20-30` | Key pattern (e.g., "circular layout with dynamic radius") |
 
 ---
 
@@ -79,135 +81,107 @@ Use the Explore agent to find:
 
 ## Phase 4: GENERATE
 
-### Create Plan File
+### Create Detailed Directive Plan File
 
-**Output path**: `.agents/plans/{kebab-case-name}.plan.md`
+**Output path**: `docs/plans/issue-{N}-plan.md`
 
-```bash
-mkdir -p .agents/plans
-```
+**Target**: 80-150 lines (detailed explanations, no code implementations)
 
 ```markdown
-# Plan: {Feature Name}
+# Plan: {Feature Name} (Issue #{N})
 
-## Summary
+## Objective
 
-{One paragraph: What we're building and approach}
+{3-5 paragraphs explaining:
+- What we're building
+- Why we're building it
+- How it fits into the app
+- Key user flows
+- Important behaviors
+- Edge cases to consider}
 
-## User Story
+## Reference Implementation
 
-As a {user type}
-I want to {action}
-So that {benefit}
+- Mobile: `path/to/file.tsx:line-range`
+- Pattern: {detailed description of key patterns to follow}
+- Data: `@tariq/shared` (import curriculum data from here)
+- Similar features: `path/to/similar.tsx` (for reference)
 
-## Metadata
+## Files to Create
 
-| Field | Value |
-|-------|-------|
-| Type | {type} |
-| Complexity | {LOW/MEDIUM/HIGH} |
-| Systems Affected | {list} |
-| Jira Issue | {issue key if available, e.g. RH-5, or "N/A"} |
+- `path/to/file.tsx` - {Detailed purpose: what this file does, what it contains, how it's used}
+- `path/to/other.tsx` - {Detailed purpose}
 
----
+## Files to Modify
 
-## Patterns to Follow
+- `path/to/file.tsx` - {Detailed explanation of what changes and why}
+- `path/to/other.tsx` - {Detailed explanation}
 
-### Naming
-```
-// SOURCE: {file:lines}
-{actual code snippet}
-```
+## Critical Requirements
 
-### Error Handling
-```
-// SOURCE: {file:lines}
-{actual code snippet}
-```
-
-### Tests
-```
-// SOURCE: {file:lines}
-{actual code snippet}
-```
-
----
-
-## Files to Change
-
-| File | Action | Purpose |
-|------|--------|---------|
-| `path/to/file.ts` | CREATE | {why} |
-| `path/to/other.ts` | UPDATE | {why} |
-
----
-
-## Tasks
-
-Execute in order. Each task is atomic and verifiable.
-
-### Task 1: {Description}
-
-- **File**: `path/to/file.ts`
-- **Action**: CREATE / UPDATE
-- **Implement**: {what to do}
-- **Mirror**: `path/to/example.ts:lines` - follow this pattern
-- **Validate**: `pnpm run build`
-
-### Task 2: {Description}
-
-- **File**: `path/to/file.ts`
-- **Action**: CREATE / UPDATE
-- **Implement**: {what to do}
-- **Mirror**: `path/to/example.ts:lines`
-- **Validate**: `pnpm run build`
-
-{Continue for each task...}
-
----
+1. {Detailed requirement with explanation}
+2. {Detailed requirement with explanation}
+3. {Detailed requirement with explanation}
+4. {Detailed requirement with explanation}
+5. {Detailed requirement with explanation}
+... (10-20 comprehensive requirements)
 
 ## Validation
 
 ```bash
-# Type check
-pnpm run build
-
-# Lint
-pnpm run lint
-
-# Tests
-pnpm test
+npx tsc --noEmit
+pnpm --filter web dev
+# Test: {detailed test scenarios}
+# Verify: {what to verify}
+# Check: {what to check}
 ```
 
----
+## Dependencies
 
-## Acceptance Criteria
+**Blocks**: #{X}
+**Blocked By**: #{Y}
 
-- [ ] All tasks completed
-- [ ] Type check passes
-- [ ] Tests pass
-- [ ] Follows existing patterns
+## Notes
+
+{Any additional context, gotchas, or important considerations}
 ```
+
+**What to include:**
+- ✅ Detailed objective (3-5 paragraphs)
+- ✅ Comprehensive requirements (10-20 bullet points)
+- ✅ Detailed file purposes
+- ✅ Detailed change explanations
+- ✅ Reference file paths
+
+**What NOT to include:**
+- ❌ Complete code implementations
+- ❌ Step-by-step code snippets  
+- ❌ Copy-paste solutions
+- ❌ Code blocks with full component code
+
+**Why**: Detailed explanations prevent hallucination. Complete code wastes credits.
 
 ---
 
 ## Phase 5: OUTPUT
 
 ```markdown
-## Plan Created
+## Detailed Directive Plan Created
 
-**File**: `.agents/plans/{name}.plan.md`
+**File**: `docs/plans/issue-{N}-plan.md`
+**Length**: {X} lines (target: 80-150)
 
 **Summary**: {2-3 sentence overview}
 
 **Scope**:
 - {N} files to CREATE
 - {M} files to UPDATE
-- {K} total tasks
 
-**Key Patterns**:
-- {Pattern 1 with file:line}
-- {Pattern 2 with file:line}
+**Key References**:
+- Mobile: `{file:lines}`
+- Pattern: {detailed description}
 
-**Next Step**: Review the plan, then implement tasks in order.
+**Requirements**: {X} comprehensive requirements listed
+
+**Next Step**: Validate plan with `bash scripts/validate-plans.sh`, then trigger Jules.
 ```

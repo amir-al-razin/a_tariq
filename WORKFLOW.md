@@ -66,15 +66,43 @@ For **each issue**, run in your IDE:
 .claude/commands/plan.md
 ```
 
-**Each plan must include:**
-- Reference implementation (mobile app or existing code)
-- Files to create
-- Files to modify
-- Files NOT to touch
-- Validation commands (npx tsc --noEmit, pnpm run lint, etc.)
-- Step-by-step implementation
+**CRITICAL: Plans are DIRECTIVES, not implementations**
 
-**Output**: `docs/plans/issue-N-plan.md` (one per issue)
+Jules (Gemini 3.1 Pro Thinking) is a frontier model that generates code. Plans should tell Jules WHAT to build and WHERE to look, not HOW to build it.
+
+**Each plan must include (30-120 lines):**
+- **Objective**: 1-2 sentences describing what to build
+- **Reference Implementation**: Mobile file paths with line numbers (e.g., `apps/mobile/screens/HomeScreen.tsx:1-150`)
+- **Files to create**: List with purpose
+- **Files to modify**: List with changes
+- **Critical Requirements**: Key constraints (5-10 bullet points)
+- **Validation commands**: `npx tsc --noEmit`, `pnpm run lint`, etc.
+- **Dependencies**: What blocks/is blocked by this issue
+
+**What NOT to include:**
+- ❌ Complete code implementations
+- ❌ Step-by-step code snippets
+- ❌ Copy-paste solutions
+- ❌ Verbose explanations
+
+**Why**: Jules reads mobile reference files and generates web implementations. Providing complete code wastes local IDE credits and defeats the purpose of using a frontier model.
+
+**Output**: `docs/plans/issue-N-plan.md` (one per issue, 30-120 lines each)
+
+### Step 4.5: Validate Plans
+
+Before triggering Jules, validate all plans:
+
+```bash
+bash scripts/validate-plans.sh
+```
+
+**Checks:**
+- ✅ All plans exist (issue-16 through issue-30)
+- ✅ Minimum 80 lines per plan (ensures sufficient detail)
+- ✅ Maximum 200 lines per plan (prevents code bloat)
+
+**If validation fails**: Fix plans before continuing.
 
 ### Step 5: File Conflict Check
 
@@ -84,18 +112,34 @@ For **each issue**, run in your IDE:
 grep -h "Files to modify" -A 10 docs/plans/issue-*.md | sort | uniq -d
 ```
 
-**If duplicates found**: Serialize those tasks (run one after another, not parallel).
+**Understanding Conflicts:**
+
+**Real Conflicts (Must be Serial):**
+1. File created in Task A, modified in Task B
+2. Same file, same section/lines modified
+3. Task B depends on Task A's output
+
+**False Conflicts (Can be Parallel):**
+1. Same file, different sections (Jules uses `strReplace` with specific old_str/new_str)
+2. Different files entirely
+3. Independent features
+
+**If duplicates found**: Analyze if they're real conflicts. Only serialize if truly conflicting.
 
 ### Step 6: Set Up Sprint Infrastructure
 
 ```bash
 # Create integration branch and worktree structure
 bash scripts/worktree-jules-setup.sh integration-sprint-N
+
+# Initialize lessons-learned document
+cp .agents/templates/lessons-learned.md docs/sprint-N-lessons-learned.md
 ```
 
 **Result**:
 - `integration-sprint-N` branch created
 - `../{repo-name}-wt/integration-sprint-N/` worktree created
+- `docs/sprint-N-lessons-learned.md` ready for tracking issues/decisions
 
 ---
 
@@ -316,39 +360,47 @@ Point to:
 
 ## 🎓 Phase 6: System Evolution (Learn & Improve)
 
-### Step 19: Capture Systemic Mistakes
+### Step 19: Review Lessons Learned
 
-**Question**: What did Jules do wrong repeatedly?
+Open `docs/sprint-N-lessons-learned.md` and review:
+- **Issues Encountered**: What went wrong?
+- **Decisions Made**: What choices were made and why?
+- **Improvements Needed**: What should change?
 
-Examples:
-- Used wrong import paths
-- Forgot RTL utilities
-- Hardcoded strings instead of i18n
-- Wrong component patterns
-- Skipped validation commands
+### Step 20: Update System Files
 
-### Step 20: Update AGENTS.md
+Based on lessons learned, update:
 
-```bash
-nano AGENTS.md
-```
-
-Add new rules based on mistakes:
-
+**AGENTS.md** - Add new rules for Jules:
 ```markdown
 ### 11. [New Rule Based on Mistakes]
 - ALWAYS [correct behavior]
 - NEVER [wrong behavior]
-- Example: [code example]
 ```
+
+**WORKFLOW.md** - Improve process:
+- Add new steps
+- Clarify existing steps
+- Remove obsolete steps
+
+**.claude/commands/plan.md** - Improve plan template:
+- Update required sections
+- Add new validation checks
+- Clarify directive vs implementation
+
+**.claude/commands/create-stories.md** - Improve issue generation:
+- Add label pre-creation
+- Improve issue templates
 
 ### Step 21: Commit System Improvements
 
 ```bash
-git add AGENTS.md
-git commit -m "chore: update rules based on sprint N learnings"
+git add AGENTS.md WORKFLOW.md .claude/commands/*.md
+git commit -m "chore: evolve system based on sprint N learnings"
 git push
 ```
+
+**Key Principle**: The system gets smarter with each sprint. Never repeat the same mistake twice.
 
 ---
 
@@ -508,15 +560,17 @@ A successful sprint:
 ## 🔑 Key Principles
 
 1. **Integration branch is testing ground** → Main is sacred
-2. **Plan quality determines Jules quality** → Garbage in, garbage out
-3. **Always reference existing code** → Don't reinvent
-4. **File conflict check before triggering** → Prevent merge hell
-5. **Merge in batches of 5** → Catch cascading failures early
-6. **Smoke test after each batch** → Validate continuously
-7. **Evolve AGENTS.md after each sprint** → Get smarter over time
-8. **Dynamic testing with Agent Browser** → Catch visual bugs
-9. **User validates before main merge** → Production quality
-10. **Learn from mistakes** → System improves with each sprint
+2. **Plans are directives, not implementations** → Let Jules generate code
+3. **Trust the frontier model** → Jules (Gemini 2.0 Flash Thinking) is capable
+4. **Always reference existing code** → Don't reinvent
+5. **File conflict check before triggering** → Prevent merge hell
+6. **Merge in batches of 5** → Catch cascading failures early
+7. **Smoke test after each batch** → Validate continuously
+8. **Track issues and decisions** → Update lessons-learned throughout sprint
+9. **Evolve system after each sprint** → Get smarter over time
+10. **Dynamic testing with Agent Browser** → Catch visual bugs
+11. **User validates before main merge** → Production quality
+12. **Learn from mistakes** → Never repeat the same issue twice
 
 ---
 

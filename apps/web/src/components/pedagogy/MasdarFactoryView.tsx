@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import type { MasdarRow } from '@tariq/shared';
 import * as m from '#/paraglide/messages.js';
-import { useLanguageContent } from '../../hooks/useLanguageContent';
 
 interface Props {
   payload?: {
@@ -12,6 +11,8 @@ interface Props {
   };
   onProgress?: (v: number) => void;
   onComplete?: () => void;
+  accent400?: string;
+  accent700?: string;
 }
 
 const getCols = () => [
@@ -21,8 +22,7 @@ const getCols = () => [
   { key: 'prohibitive' as const, arLabel: 'نَهْي', labelKey: m['masdar.prohibit']?.() ?? 'Prohibition' },
 ];
 
-export const MasdarFactoryView: React.FC<Props> = ({ payload, onProgress }) => {
-  const { t_content } = useLanguageContent();
+export const MasdarFactoryView: React.FC<Props> = ({ payload, onProgress, accent400 = '#34D3AA', accent700 = '#0D775F' }) => {
   const rows: MasdarRow[] = payload?.masdarRows ?? [];
   const COLS = getCols();
 
@@ -52,8 +52,11 @@ export const MasdarFactoryView: React.FC<Props> = ({ payload, onProgress }) => {
     <div className="w-full flex flex-col gap-5">
       {/* Optional Baab label */}
       {payload?.baabLabel && (
-        <div className="self-center bg-[#ECFDF8] dark:bg-primary-800/40 rounded-xl px-3.5 py-1.5 border border-[#A7F3DE] dark:border-primary-800">
-          <span className="font-arabic-semibold text-base text-primary-700 dark:text-primary-400 text-center block">
+        <div className="self-center rounded-xl px-3.5 py-1.5 border" style={{
+          backgroundColor: `${accent400}22`,
+          borderColor: accent700
+        }}>
+          <span className="font-arabic-semibold text-base text-center block" style={{ color: accent700 }}>
             {payload.baabLabel}
           </span>
         </div>
@@ -62,18 +65,18 @@ export const MasdarFactoryView: React.FC<Props> = ({ payload, onProgress }) => {
       {/* Optional instruction */}
       {payload?.instruction && (
         <span className="font-english text-sm text-neutral-500 dark:text-neutral-400 text-center italic block">
-          {t_content(payload.instruction, payload.instructionBn)}
+          {payload.instruction}
         </span>
       )}
 
       {/* Horizontally scrollable table */}
-      <div className="w-full overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+      <div className="w-full overflow-x-auto pb-1 scrollbar-hide">
         <div className="flex flex-col gap-0 min-w-max">
           {/* ── Column headers ── */}
           <div className="flex flex-row rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-700 mb-0.5">
             {/* Masdar header cell */}
             <div className="w-[110px] bg-neutral-200 dark:bg-neutral-700 p-2 flex flex-col items-center justify-center border-r border-neutral-200 dark:border-neutral-700 shrink-0">
-              <span className="font-arabic-semibold text-[13px] text-primary-700 dark:text-primary-400">
+              <span className="font-arabic-semibold text-[13px]" style={{ color: accent700 }}>
                 مَصْدَر
               </span>
               <span className="font-english text-[10px] text-neutral-500 dark:text-neutral-400 mt-0.5">
@@ -108,12 +111,12 @@ export const MasdarFactoryView: React.FC<Props> = ({ payload, onProgress }) => {
               }`}
             >
               {/* Masdar cell */}
-              <div className="w-[110px] bg-[#ECFDF8] dark:bg-primary-800/30 p-2.5 flex flex-col items-center justify-center border-r border-neutral-200 dark:border-neutral-700 shrink-0 gap-1">
-                <span className="font-arabic-semibold text-base text-primary-700 dark:text-primary-400 text-center leading-tight">
+              <div className="w-[110px] p-2.5 flex flex-col items-center justify-center border-r border-neutral-200 dark:border-neutral-700 shrink-0 gap-1" style={{ backgroundColor: `${accent400}22` }}>
+                <span className="font-arabic-semibold text-base text-center leading-tight" style={{ color: accent700 }}>
                   {row.masdar}
                 </span>
                 <span className="font-english text-[10px] text-neutral-500 dark:text-neutral-400 text-center leading-tight">
-                  {t_content(row.masdarEn, row.masdarBn)}
+                  {row.masdarEn}
                 </span>
               </div>
 
@@ -139,7 +142,7 @@ export const MasdarFactoryView: React.FC<Props> = ({ payload, onProgress }) => {
       <div className="flex flex-row flex-wrap gap-2 justify-center mt-1">
         {COLS.map((col) => (
           <div key={col.key} className="flex flex-row items-center gap-1">
-            <span className="font-arabic-semibold text-[11px] text-primary-700 dark:text-primary-400">
+            <span className="font-arabic-semibold text-[11px]" style={{ color: accent700 }}>
               {col.arLabel}
             </span>
             <span className="font-english text-[11px] text-neutral-500 dark:text-neutral-400">

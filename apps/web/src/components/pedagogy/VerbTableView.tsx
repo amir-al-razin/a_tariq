@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import type { VerbTableRow } from '@tariq/shared';
 import * as m from '#/paraglide/messages.js';
-import { useLanguageContent } from '../../hooks/useLanguageContent';
 
 interface Props {
   payload?: {
@@ -13,6 +12,8 @@ interface Props {
   };
   onProgress?: (v: number) => void;
   onComplete?: () => void;
+  accent400?: string;
+  accent700?: string;
 }
 
 const getTenseLabel = (tense: string) => {
@@ -48,8 +49,7 @@ const getColHeaders = () => [
   { ar: 'أَنَا', labelKey: m['verbTable.pronoun.i']?.() ?? 'I' },
 ];
 
-export const VerbTableView: React.FC<Props> = ({ payload, onProgress }) => {
-  const { t_content } = useLanguageContent();
+export const VerbTableView: React.FC<Props> = ({ payload, onProgress, accent400 = '#34D3AA', accent700 = '#0D775F' }) => {
   const rows = payload?.verbTable ?? [];
   const tense = payload?.verbTense ?? 'past';
   const tenseLabel = getTenseLabel(tense);
@@ -85,8 +85,8 @@ export const VerbTableView: React.FC<Props> = ({ payload, onProgress }) => {
     <div className="w-full flex flex-col gap-4">
       {/* Instruction note */}
       {payload?.instruction && (
-        <div className="bg-[#D1FAF0] dark:bg-[#0D775F22] rounded-lg p-2.5">
-          <div className="font-english text-xs text-primary-700 dark:text-primary-400 text-center">
+        <div className="rounded-lg p-2.5" style={{ backgroundColor: `${accent400}22` }}>
+          <div className="font-english text-xs text-center" style={{ color: accent700 }}>
             {payload.instruction}
           </div>
         </div>
@@ -95,7 +95,8 @@ export const VerbTableView: React.FC<Props> = ({ payload, onProgress }) => {
       {/* Tense header */}
       <div className="flex flex-col items-center mb-1">
         <span
-          className="font-arabic-semibold text-xl text-primary-700 dark:text-primary-400"
+          className="font-arabic-semibold text-xl"
+          style={{ color: accent700 }}
           dir="rtl"
         >
           {tenseLabel.ar}
@@ -106,7 +107,7 @@ export const VerbTableView: React.FC<Props> = ({ payload, onProgress }) => {
       </div>
 
       {/* Verb Table Scrollable Container */}
-      <div className="w-full overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+      <div className="w-full overflow-x-auto pb-2 scrollbar-hide">
         <div className="flex flex-col gap-4 min-w-max">
           {/* Column headers */}
           <div className="flex flex-row rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-700 bg-neutral-200 dark:bg-neutral-700">
@@ -150,13 +151,14 @@ export const VerbTableView: React.FC<Props> = ({ payload, onProgress }) => {
               {/* Root + meaning */}
               <div className="w-20 p-1.5 flex flex-col items-center justify-center border-r border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 shrink-0">
                 <span
-                  className="font-arabic-semibold text-[15px] text-primary-700 dark:text-primary-400"
+                  className="font-arabic-semibold text-[15px]"
+                  style={{ color: accent700 }}
                   dir="rtl"
                 >
                   {row.root}
                 </span>
                 <span className="font-english text-[9px] text-neutral-500 dark:text-neutral-400 text-center">
-                  {t_content(row.meaning, row.meaningBn)}
+                  {row.meaning}
                 </span>
               </div>
               {[row.he, row.she, row.youM, row.youF, row.i].map((form, i) => (

@@ -268,19 +268,6 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
     )
   }
 
-  // Generate a dynamic hex color for tailwind mapping or use style
-  const volTextColorClassDark =
-    volumeId === 1
-      ? 'dark:text-primary-200'
-      : volumeId === 2
-        ? 'dark:text-amber-200'
-        : 'dark:text-purple-200'
-  const volTextColorClassLight =
-    volumeId === 1
-      ? 'text-primary-700'
-      : volumeId === 2
-        ? 'text-amber-700'
-        : 'text-purple-700'
 
   return (
     <div className="flex flex-col flex-1 min-h-screen bg-neutral-50 dark:bg-neutral-900 pb-20 pt-7">
@@ -289,7 +276,7 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
         <div className="flex flex-row items-end justify-between">
           <div>
             <h1
-              className={`font-english-semibold text-[28px] leading-[34px] ${volTextColorClassLight} ${volTextColorClassDark}`}
+              className="font-english-semibold text-[28px] leading-[34px]"
               style={{
                 color: isDark ? colors[200] : colors[700],
               }}
@@ -328,7 +315,7 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                 titleEn={chapter.titleEn}
                 titleAr={chapter.titleAr}
                 subtitleI18nKey={`vol${volumeId}chapters.${chapter.id}subtitle`}
-                accentColorClassName={`${volTextColorClassLight} ${volTextColorClassDark}`}
+                accentColor={isDark ? colors[300] : colors[700]}
               />
               <WaveLayout>
                 {lessons.map(({ num, status }, idx) =>

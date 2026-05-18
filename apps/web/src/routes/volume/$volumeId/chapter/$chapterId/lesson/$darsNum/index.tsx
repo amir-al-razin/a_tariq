@@ -1,9 +1,9 @@
 import { createFileRoute, notFound } from '@tanstack/react-router'
 
-import { LessonScreen } from '../../../../../../components/screens/LessonScreen'
+import { LessonScreen } from '../../../../../../../components/screens/LessonScreen'
 
 export const Route = createFileRoute(
-  '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum',
+  '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/',
 )({
   params: {
     parse: (params) => {
@@ -18,11 +18,13 @@ export const Route = createFileRoute(
       }
 
       return {
+        volumeId: params.volumeId,
         chapterId: chapId,
         darsNum: lessonNum,
       }
     },
     stringify: (params) => ({
+      volumeId: String(params.volumeId),
       chapterId: String(params.chapterId),
       darsNum: String(params.darsNum),
     }),

@@ -1,24 +1,22 @@
 import React from 'react';
 import type { ApplicationItem } from '@tariq/shared';
 import * as m from '#/paraglide/messages.js';
-import { useLanguageContent } from '../../hooks/useLanguageContent';
 
 interface Props {
   payload?: any;
+  accent700?: string;
 }
 
-export const ApplicationView: React.FC<Props> = ({ payload }) => {
-  const { t_content } = useLanguageContent();
+export const ApplicationView: React.FC<Props> = ({ payload, accent700 = '#0D775F' }) => {
   const items: ApplicationItem[] = payload?.items || [];
-  const instruction = payload?.instruction
-    ? t_content(payload.instruction, payload.instructionBn)
-    : (m['chunk.reviewThenContinue']?.() ?? 'Review these examples, then continue');
+  const instruction = payload?.instruction || (m['chunk.reviewThenContinue']?.() ?? 'Review these examples, then continue');
 
   if (items.length === 0 && (payload?.text || payload?.instruction)) {
     return (
       <div className="w-full flex justify-center">
         <span
-          className="font-arabic-semibold text-xl text-primary-700 dark:text-primary-400 text-right leading-8"
+          className="font-arabic-semibold text-xl text-right leading-8"
+          style={{ color: accent700 }}
           dir="rtl"
         >
           {payload?.text || payload?.instruction}
@@ -43,13 +41,14 @@ export const ApplicationView: React.FC<Props> = ({ payload }) => {
           </div>
           <div className="flex-1 flex flex-col items-end sm:items-start text-right sm:text-left">
             <span
-              className="font-arabic-semibold text-xl text-primary-700 dark:text-primary-400"
+              className="font-arabic-semibold text-xl"
+              style={{ color: accent700 }}
               dir="rtl"
             >
               {item.ar}
             </span>
             <span className="font-english text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">
-              {t_content(item.en, item.bn)}
+              {item.en}
             </span>
           </div>
         </div>

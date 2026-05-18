@@ -7,14 +7,16 @@ import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
 import { SCROLL_COMPLETE_TYPES, VOLUME_ACCENT } from '../../lib/pedagogy'
 import * as m from '#/paraglide/messages.js'
 
-// Placeholders for pedagogy views (to be created in #24-26)
-const PlaceholderView = ({ type, title }: { type: string; title: string }) => (
-  <div className="flex flex-col items-center justify-center p-12 text-center">
-    <div className="text-4xl mb-4">🚧</div>
-    <h3 className="text-xl font-english-semibold mb-2">{title}</h3>
-    <p className="text-neutral-500 font-english">{type} view coming soon</p>
-  </div>
-)
+import { VocabularyView } from '../pedagogy/VocabularyView'
+import { GrammarRuleView } from '../pedagogy/GrammarRuleView'
+import { ApplicationView } from '../pedagogy/ApplicationView'
+import { QAndAView } from '../pedagogy/QAndAView'
+import { TarkeebView } from '../pedagogy/TarkeebView'
+import { VerbTableView } from '../pedagogy/VerbTableView'
+import { IdafahDrillView } from '../pedagogy/IdafahDrillView'
+import { ParagraphView } from '../pedagogy/ParagraphView'
+import { MasdarFactoryView } from '../pedagogy/MasdarFactoryView'
+import { setChunkProgress } from '../../state/progressStore'
 
 type Props = {
   volumeId: 1 | 2 | 3
@@ -36,6 +38,12 @@ export const ChunkEngineScreen: React.FC<Props> = ({
 
   const contentRef = useRef<HTMLDivElement>(null)
   const completeFiredRef = useRef(false)
+
+  useEffect(() => {
+    setProgress(0)
+    setIsComplete(false)
+    completeFiredRef.current = false
+  }, [chunkId])
 
   const accent = VOLUME_ACCENT[volumeId] || VOLUME_ACCENT[1]
 
@@ -63,12 +71,18 @@ export const ChunkEngineScreen: React.FC<Props> = ({
     ? SCROLL_COMPLETE_TYPES.includes(chunk.type)
     : false
 
+  const currentChunkIndex = lesson?.chunks.findIndex((c) => c.id === chunkId) ?? -1
+  const nextChunk = currentChunkIndex !== -1 && currentChunkIndex < (lesson?.chunks.length ?? 0) - 1 
+    ? lesson?.chunks[currentChunkIndex + 1] 
+    : null
+
   const handleComplete = useCallback(() => {
     if (completeFiredRef.current) return
     completeFiredRef.current = true
     setProgress(1)
     setIsComplete(true)
-  }, [])
+    setChunkProgress(volumeId, chapterId, darsNum, chunkId, 'completed')
+  }, [volumeId, chapterId, darsNum, chunkId])
 
   const checkScrollCompletion = useCallback(() => {
     if (!isScrollCompletionType || completeFiredRef.current || !contentRef.current)
@@ -105,11 +119,27 @@ export const ChunkEngineScreen: React.FC<Props> = ({
     navigate({
       to: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum',
       params: {
-        volumeId: volumeId,
+        volumeId: volumeId.toString(),
         chapterId: chapterId,
         darsNum: darsNum,
       },
     })
+  }
+
+  const handleContinue = () => {
+    if (nextChunk) {
+      navigate({
+        to: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId',
+        params: {
+          volumeId: volumeId.toString(),
+          chapterId: chapterId.toString(),
+          darsNum: darsNum.toString(),
+          chunkId: nextChunk.id,
+        },
+      })
+    } else {
+      goBack()
+    }
   }
 
   if (!chunk) {
@@ -123,22 +153,44 @@ export const ChunkEngineScreen: React.FC<Props> = ({
   }
 
   const renderContent = () => {
-    // For now, render placeholder.
-    // Progress calculation for non-scroll types is simulated with a button in the placeholder for testing,
-    // but actual pedagogy components will call onComplete
-    return (
-      <div className="flex flex-col items-center">
-        <PlaceholderView type={chunk.type} title={chunk.titleEn} />
-        {!isScrollCompletionType && !isComplete && (
-          <button
-            onClick={handleComplete}
-            className="mt-4 px-4 py-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg"
-          >
-            Simulate Completion
-          </button>
-        )}
-      </div>
-    )
+    switch (chunk.type.toUpperCase()) {
+      case 'VOCABULARY':
+      case 'MIXED':
+        return <VocabularyView payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+      case 'GRAMMAR_RULE':
+        return <GrammarRuleView payload={chunk.payload} accent400={accent.accent400} accent700={accent.accent700} />
+      case 'APPLICATION':
+        return <ApplicationView payload={chunk.payload} accent700={accent.accent700} />
+      case 'Q_AND_A':
+      case 'ASSESSMENT':
+        return <QAndAView payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} />
+      case 'TARKEEB':
+        return <TarkeebView payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent700={accent.accent700} />
+      case 'VERB_TABLE':
+        return <VerbTableView payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+      case 'IDAFAH_DRILL':
+        return <IdafahDrillView payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+      case 'PARAGRAPH':
+        return <ParagraphView payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+      case 'MASDAR_FACTORY':
+        return <MasdarFactoryView payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+      default:
+        return (
+          <div className="flex flex-col items-center justify-center p-12 text-center">
+            <div className="text-4xl mb-4">⚠️</div>
+            <h3 className="text-xl font-english-semibold mb-2">Unknown Type</h3>
+            <p className="text-neutral-500 font-english">{chunk.type} is not supported yet.</p>
+            {!isScrollCompletionType && !isComplete && (
+              <button
+                onClick={handleComplete}
+                className="mt-4 px-4 py-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg"
+              >
+                Mark Complete
+              </button>
+            )}
+          </div>
+        )
+    }
   }
 
   const barWidth = `${Math.round(progress * 100)}%`
@@ -209,13 +261,6 @@ export const ChunkEngineScreen: React.FC<Props> = ({
 
         <div className="w-full max-w-2xl p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800 flex flex-col items-center">
           {renderContent()}
-
-          {/* Add vertical space for scrollable types to test scroll logic */}
-          {isScrollCompletionType && (
-            <div className="h-[150vh] w-full flex items-center justify-center opacity-10 border-t border-dashed border-neutral-400 mt-10 pt-10">
-              <ArrowDown size={48} />
-            </div>
-          )}
         </div>
       </div>
 
@@ -229,7 +274,7 @@ export const ChunkEngineScreen: React.FC<Props> = ({
             className="fixed bottom-0 left-0 right-0 p-6 pb-12 bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 z-40 flex justify-center"
           >
             <button
-              onClick={goBack}
+              onClick={handleContinue}
               className="w-full max-w-md h-14 rounded-2xl flex items-center justify-center transition-transform active:scale-95"
               style={{ backgroundColor: accent.accent400 }}
             >

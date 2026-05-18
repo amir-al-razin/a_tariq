@@ -1,22 +1,21 @@
 import React, { useEffect } from 'react';
 import type { TarkeebItem, TarkeebNode } from '@tariq/shared';
 import * as m from '#/paraglide/messages.js';
-import { useLanguageContent } from '../../hooks/useLanguageContent';
 
 interface Props {
   payload?: { tarkeeb?: TarkeebItem[]; text?: string; instruction?: string };
   onProgress?: (v: number) => void;
   onComplete?: () => void;
+  accent700?: string;
 }
 
-const TreeNode: React.FC<{ node: TarkeebNode; depth?: number }> = ({ node, depth = 0 }) => {
-  const { t_content } = useLanguageContent();
+const TreeNode: React.FC<{ node: TarkeebNode; depth?: number; accent700?: string }> = ({ node, depth = 0, accent700 = '#0D775F' }) => {
   const isLeaf = !node.children || node.children.length === 0;
 
   return (
     <div className="flex flex-col items-center mx-2">
       {/* Arabic text box */}
-      <div className="border-[1.5px] border-primary-700 dark:border-primary-400 rounded-lg px-3 py-2 bg-white dark:bg-neutral-800 min-w-[80px] flex items-center justify-center">
+      <div className="border-[1.5px] rounded-lg px-3 py-2 bg-white dark:bg-neutral-800 min-w-[80px] flex items-center justify-center" style={{ borderColor: accent700 }}>
         <span
           className="font-arabic-semibold text-lg text-neutral-900 dark:text-neutral-100 text-center leading-6"
           dir="rtl"
@@ -29,7 +28,7 @@ const TreeNode: React.FC<{ node: TarkeebNode; depth?: number }> = ({ node, depth
         {node.label}
       </span>
       <span className="font-english text-[9px] text-neutral-400 dark:text-neutral-500 text-center">
-        {t_content(node.labelEn, node.labelBn)}
+        {node.labelEn}
       </span>
 
       {/* Branch line + children */}
@@ -59,8 +58,7 @@ const TreeNode: React.FC<{ node: TarkeebNode; depth?: number }> = ({ node, depth
   );
 };
 
-export const TarkeebView: React.FC<Props> = ({ payload, onProgress }) => {
-  const { t_content } = useLanguageContent();
+export const TarkeebView: React.FC<Props> = ({ payload, onProgress, accent700 = '#0D775F' }) => {
   const items = payload?.tarkeeb ?? [];
 
   useEffect(() => {
@@ -98,11 +96,11 @@ export const TarkeebView: React.FC<Props> = ({ payload, onProgress }) => {
         >
           {/* Type badge */}
           <div
-            className={`self-start rounded-md px-2 py-1 mb-2.5 ${
-              item.type === 'complete'
-                ? 'bg-[#D1FAF0] dark:bg-[#0D775F33] text-primary-700 dark:text-primary-400'
-                : 'bg-[#F5F0E8] dark:bg-[#7D746333] text-primary-700 dark:text-primary-400'
-            }`}
+            className="self-start rounded-md px-2 py-1 mb-2.5"
+            style={{
+              backgroundColor: item.type === 'complete' ? '#D1FAF0' : '#F5F0E8',
+              color: accent700
+            }}
           >
             <span className="font-english text-[10px] font-semibold">
               {item.type === 'complete'
@@ -119,14 +117,14 @@ export const TarkeebView: React.FC<Props> = ({ payload, onProgress }) => {
             {item.sentence}
           </span>
           <span className="font-english text-sm text-neutral-600 dark:text-neutral-300 text-center mb-0.5">
-            {t_content(item.sentenceEn, item.sentenceBn)}
+            {item.sentenceEn}
           </span>
 
           {/* Tree diagram */}
           <div className="w-full overflow-x-auto overflow-y-hidden mt-3 py-3 scrollbar-hide">
             <div className="flex flex-row items-start justify-center gap-4 min-h-[80px] min-w-max px-2">
               {item.tree.map((node, i) => (
-                <TreeNode key={i} node={node} />
+                <TreeNode key={i} node={node} accent700={accent700} />
               ))}
             </div>
           </div>

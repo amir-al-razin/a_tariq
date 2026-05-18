@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import type { QAItem } from '@tariq/shared';
 import * as m from '#/paraglide/messages.js';
-import { useLanguageContent } from '../../hooks/useLanguageContent';
 
 interface Props {
   payload?: any;
   onProgress?: (v: number) => void;
   onComplete?: () => void;
+  accent400?: string;
 }
 
-export const QAndAView: React.FC<Props> = ({ payload, onProgress, onComplete }) => {
-  const { t_content } = useLanguageContent();
+export const QAndAView: React.FC<Props> = ({ payload, onProgress, onComplete, accent400 = '#34D3AA' }) => {
   const questions: QAItem[] = payload?.questions || [];
   const instruction: string = payload?.instruction || '';
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -63,7 +62,7 @@ export const QAndAView: React.FC<Props> = ({ payload, onProgress, onComplete }) 
     <div className="w-full flex flex-col items-center">
       {instruction ? (
         <span className="font-english text-sm text-neutral-600 dark:text-neutral-400 mb-5 text-center italic">
-          {t_content(instruction, payload?.instructionBn)}
+          {instruction}
         </span>
       ) : null}
 
@@ -76,9 +75,10 @@ export const QAndAView: React.FC<Props> = ({ payload, onProgress, onComplete }) 
               i <= currentIndex ? 'w-5' : 'w-1.5'
             } ${
               i <= currentIndex
-                ? 'bg-primary-500'
+                ? ''
                 : 'bg-neutral-200 dark:bg-neutral-700'
             }`}
+            style={{ backgroundColor: i <= currentIndex ? accent400 : undefined }}
           />
         ))}
       </div>
@@ -95,7 +95,7 @@ export const QAndAView: React.FC<Props> = ({ payload, onProgress, onComplete }) 
         {q.question_ar}
       </span>
       <span className="font-english text-sm text-neutral-600 dark:text-neutral-400 mb-6 text-center">
-        {t_content(q.question_en, q.question_bn)}
+        {q.question_en}
       </span>
 
       {/* Options */}
@@ -163,7 +163,7 @@ export const QAndAView: React.FC<Props> = ({ payload, onProgress, onComplete }) 
             {q.correct_ar}
           </div>
           <div className="font-english text-sm text-neutral-600 dark:text-neutral-400">
-            {t_content(q.correct_en, q.correct_bn)}
+            {q.correct_en}
           </div>
         </div>
       )}
@@ -172,7 +172,8 @@ export const QAndAView: React.FC<Props> = ({ payload, onProgress, onComplete }) 
       {revealed && !isLastQ && (
         <button
           onClick={handleNext}
-          className="mt-5 px-8 py-3.5 rounded-xl bg-primary-500 hover:bg-primary-600 transition-colors flex items-center justify-center w-full cursor-pointer"
+          className="mt-5 px-8 py-3.5 rounded-xl transition-colors flex items-center justify-center w-full cursor-pointer"
+          style={{ backgroundColor: accent400 }}
         >
           <span className="font-english text-base font-semibold text-white">
             {m['qanda.nextQuestion']?.() ?? 'Next Question'}

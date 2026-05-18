@@ -12,10 +12,16 @@ export const Route = createFileRoute(
       }
 
       return {
+        volumeId: params.volumeId,
+        chapterId: params.chapterId,
+        darsNum: params.darsNum,
         chunkId: chunkId,
       };
     },
     stringify: (params) => ({
+      volumeId: String(params.volumeId),
+      chapterId: String(params.chapterId),
+      darsNum: String(params.darsNum),
       chunkId: String(params.chunkId),
     }),
   },

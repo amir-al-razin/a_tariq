@@ -1,7 +1,6 @@
 import { createFileRoute, notFound } from '@tanstack/react-router'
-import { VolumeScreen as VolumeScreenComponent } from '../../components/screens/VolumeScreen'
-
-export const Route = createFileRoute('/volume/$volumeId')({
+import { VolumeScreen as VolumeScreenComponent } from '../../../components/screens/VolumeScreen'
+export const Route = createFileRoute('/volume/$volumeId/')({
   params: {
     parse: (params) => {
       const volId = Number(params.volumeId)

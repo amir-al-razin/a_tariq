@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import type { GrammarRule } from '@tariq/shared';
 import * as m from '#/paraglide/messages.js';
-import { useLanguageContent } from '../../hooks/useLanguageContent';
 
 interface Props {
   payload?: any;
+  accent400?: string;
+  accent700?: string;
 }
 
-export const GrammarRuleView: React.FC<Props> = ({ payload }) => {
-  const { t_content } = useLanguageContent();
+export const GrammarRuleView: React.FC<Props> = ({ payload, accent400 = '#34D3AA', accent700 = '#0D775F' }) => {
   const rules: GrammarRule[] = payload?.rules || [];
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const checkDark = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+    checkDark();
+    const observer = new MutationObserver(checkDark);
+    observer.observe(document.documentElement, { attributes: true });
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="w-full">
@@ -24,7 +35,7 @@ export const GrammarRuleView: React.FC<Props> = ({ payload }) => {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="text-primary-500"
+          style={{ color: accent400 }}
         >
           <circle cx="12" cy="12" r="10" />
           <path d="M12 16v-4" />
@@ -44,16 +55,21 @@ export const GrammarRuleView: React.FC<Props> = ({ payload }) => {
             key={i}
             className={`mb-4 p-4 rounded-xl border ${
               isFirst
-                ? 'bg-[#ECFDF8] dark:bg-primary-900/40 border-[#A7F3DE] dark:border-primary-800'
+                ? ''
                 : 'bg-neutral-100 dark:bg-neutral-800/40 border-neutral-200 dark:border-neutral-700'
             }`}
+            style={isFirst ? {
+              backgroundColor: isDark ? `${accent700}40` : `${accent400}22`,
+              borderColor: isDark ? accent700 : accent400
+            } : undefined}
           >
             <div
               className={`font-english text-xs font-medium mb-2 tracking-wide ${
                 isFirst
-                  ? 'text-primary-700 dark:text-primary-400'
+                  ? ''
                   : 'text-neutral-500 dark:text-neutral-400'
               }`}
+              style={isFirst ? { color: isDark ? accent400 : accent700 } : undefined}
             >
               {labelText}
             </div>
@@ -62,10 +78,11 @@ export const GrammarRuleView: React.FC<Props> = ({ payload }) => {
               <span
                 className={`font-arabic-semibold text-3xl mb-1.5 ${
                   isFirst
-                    ? 'text-primary-700 dark:text-primary-400'
+                    ? ''
                     : 'text-neutral-700 dark:text-neutral-300'
                 }`}
                 dir="rtl"
+                style={isFirst ? { color: isDark ? accent400 : accent700 } : undefined}
               >
                 {rule.arabic}
               </span>
@@ -73,7 +90,7 @@ export const GrammarRuleView: React.FC<Props> = ({ payload }) => {
                 {rule.romanized}
               </span>
               <span className="font-english text-sm text-neutral-500 dark:text-neutral-400 mt-0.5 text-center">
-                {t_content(rule.meaning, rule.meaningBn)}
+                {rule.meaning}
               </span>
             </div>
 
@@ -87,15 +104,16 @@ export const GrammarRuleView: React.FC<Props> = ({ payload }) => {
                 <div
                   className={`font-arabic-semibold text-lg text-right ${
                     isFirst
-                      ? 'text-primary-700 dark:text-primary-400'
+                      ? ''
                       : 'text-neutral-700 dark:text-neutral-300'
                   }`}
                   dir="rtl"
+                  style={isFirst ? { color: isDark ? accent400 : accent700 } : undefined}
                 >
                   {ex.ar}
                 </div>
                 <div className="font-english text-sm text-neutral-500 dark:text-neutral-400 mt-0.5 text-right sm:text-left">
-                  {t_content(ex.en, ex.bn)}
+                  {ex.en}
                 </div>
               </div>
             ))}

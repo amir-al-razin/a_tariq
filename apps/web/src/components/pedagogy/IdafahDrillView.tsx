@@ -1,16 +1,16 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import type { IdafahPair } from '@tariq/shared';
 import * as m from '#/paraglide/messages.js';
-import { useLanguageContent } from '../../hooks/useLanguageContent';
 
 interface Props {
   payload?: { idafahPairs?: IdafahPair[]; instruction?: string; instructionBn?: string };
   onProgress?: (v: number) => void;
   onComplete?: () => void;
+  accent400?: string;
+  accent700?: string;
 }
 
-export const IdafahDrillView: React.FC<Props> = ({ payload, onProgress, onComplete }) => {
-  const { t_content } = useLanguageContent();
+export const IdafahDrillView: React.FC<Props> = ({ payload, onProgress, onComplete, accent400 = '#34D3AA', accent700 = '#0D775F' }) => {
   const pairs = payload?.idafahPairs ?? [];
   const [revealed, setRevealed] = useState<boolean[]>(Array(pairs.length).fill(false));
 
@@ -59,9 +59,9 @@ export const IdafahDrillView: React.FC<Props> = ({ payload, onProgress, onComple
   return (
     <div className="w-full flex flex-col gap-3">
       {payload?.instruction && (
-        <div className="bg-[#D1FAF0] dark:bg-[#0D775F22] rounded-lg p-2.5 mb-1">
-          <div className="font-english text-xs text-primary-700 dark:text-primary-400 text-center">
-            {t_content(payload.instruction, payload.instructionBn)}
+        <div className="rounded-lg p-2.5 mb-1" style={{ backgroundColor: `${accent400}22` }}>
+          <div className="font-english text-xs text-center" style={{ color: accent700 }}>
+            {payload.instruction}
           </div>
         </div>
       )}
@@ -89,33 +89,39 @@ export const IdafahDrillView: React.FC<Props> = ({ payload, onProgress, onComple
           {/* Base */}
           <div className="flex-1 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 flex flex-col items-center justify-center gap-1">
             <span
-              className="font-arabic-semibold text-base text-primary-700 dark:text-primary-400 text-center"
+              className="font-arabic-semibold text-base text-center"
+              style={{ color: accent700 }}
               dir="rtl"
             >
               {pair.baseAr}
             </span>
             <span className="font-english text-[11px] text-neutral-500 dark:text-neutral-400 text-center">
-              {t_content(pair.baseEn, pair.baseBn)}
+              {pair.baseEn}
             </span>
           </div>
           {/* Expanded — tap to reveal */}
           <div
             className={`flex-1 rounded-xl border-[1.5px] p-3 flex flex-col items-center justify-center gap-1 transition-colors ${
               revealed[i]
-                ? 'border-primary-700 dark:border-primary-400 bg-[#D1FAF0] dark:bg-[#0D775F22]'
+                ? ''
                 : 'border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-700'
             }`}
+            style={revealed[i] ? {
+              borderColor: accent700,
+              backgroundColor: `${accent400}22`
+            } : undefined}
           >
             {revealed[i] ? (
               <>
                 <span
-                  className="font-arabic-semibold text-base text-primary-700 dark:text-primary-400 text-center"
+                  className="font-arabic-semibold text-base text-center"
+                  style={{ color: accent700 }}
                   dir="rtl"
                 >
                   {pair.expandedAr}
                 </span>
                 <span className="font-english text-[11px] text-neutral-500 dark:text-neutral-400 text-center">
-                  {t_content(pair.expandedEn, pair.expandedBn)}
+                  {pair.expandedEn}
                 </span>
               </>
             ) : (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Lock, Check } from 'lucide-react'
+import { ArrowLeft, Lock, Check, ArrowDown } from 'lucide-react'
 
 import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
 import { getLastVisitedChunk, setLastVisitedChunk } from '../../lib/progress'
@@ -161,18 +161,16 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
         </div>
         <div className="w-10"></div>
       </div>
-
+      
       <div className="flex-1 flex items-center justify-center relative w-full max-w-[800px] mx-auto min-h-[500px]">
         {/* Desktop Circular Layout & Mobile Grid Wrapper */}
         <div className="hidden md:flex w-full h-full items-center justify-center relative">
           {chunks.map((chunk, idx) => {
-            // Re-eval status logic based strictly on requirements
             const isCompleted = progressStore[`progress.v${volumeId}.c${chapterId}.d${darsNum}.${chunk.id}`] === 'completed'
-            const isCurrent = idx === 0 || progressStore[`progress.v${volumeId}.c${chapterId}.d${darsNum}.${chunks[idx-1]?.id}`] === 'completed'
-            const status = isCompleted ? 'completed' : isCurrent ? 'current' : 'locked'
+            const status = isCompleted ? 'completed' : 'open'
 
             const isLastVisited = lastVisited === idx
-            const isInteractive = status !== 'locked'
+            const isInteractive = true
 
             const dynamicRadius = Math.max(90, (numChunks * 85) / (2 * Math.PI))
             const angle = -Math.PI / 2 + (idx * 2 * Math.PI) / numChunks
@@ -181,46 +179,47 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
 
             const circleBg = isLastVisited
               ? colors[500]
-              : (status === 'current' || status === 'completed') ? colors[500]
-                : status === 'locked' ? (isDark ? neutral[700] : neutral[300])
-                  : (isDark ? colors[800] : colors[100])
+              : isCompleted ? colors[500]
+                : (isDark ? colors[800] : colors[100])
 
             const circleBorder = isLastVisited
               ? colors[700]
-              : (status === 'current' || status === 'completed') ? (isDark ? colors[700] : colors[600])
-                : status === 'locked' ? (isDark ? neutral[600] : neutral[500])
-                  : (isDark ? colors[900] : colors[300])
+              : isCompleted ? (isDark ? colors[700] : colors[600])
+                : (isDark ? colors[900] : colors[300])
 
-            const iconColor = isLastVisited || status === 'current' || status === 'completed' ? '#fff'
-              : status === 'locked' ? (isDark ? neutral[800] : neutral[700])
-                : (isDark ? colors[300] : colors[600])
+            const iconColor = isLastVisited || isCompleted ? '#fff'
+              : (isDark ? colors[300] : colors[600])
 
             return (
-              <motion.div
+              <div
                 key={chunk.id}
-                initial={{ opacity: 0, scale: 0.4 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ type: 'spring', delay: 0.1 + idx * 0.04, damping: 20, stiffness: 250 }}
                 style={{
                   position: 'absolute',
                   transform: `translate(${x}px, ${y}px)`,
                   width: CHUNK_SIZE,
                   height: CHUNK_SIZE + 6,
-                  zIndex: (isLastVisited || (status === 'current' && lastVisited === null && idx === 0)) ? 100 : (isInteractive ? 5 : 1),
+                  zIndex: (isLastVisited || (lastVisited === null && idx === 0)) ? 100 : 5,
                 }}
                 className="flex items-end justify-center"
               >
-                <ChunkNode
-                  idx={idx}
-                  status={status}
-                  isLastVisited={isLastVisited}
-                  circleBg={circleBg}
-                  circleBorder={circleBorder}
-                  iconColor={iconColor}
-                  accent={colors}
-                  onPress={() => isInteractive && handleChunkPress(chunk.id, idx)}
-                />
-              </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.4 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ type: 'spring', delay: 0.1 + idx * 0.04, damping: 20, stiffness: 250 }}
+                  className="w-full h-full flex items-end justify-center"
+                >
+                  <ChunkNode
+                    idx={idx}
+                    status={status}
+                    isLastVisited={isLastVisited}
+                    circleBg={circleBg}
+                    circleBorder={circleBorder}
+                    iconColor={iconColor}
+                    accent={colors}
+                    onPress={() => isInteractive && handleChunkPress(chunk.id, idx)}
+                  />
+                </motion.div>
+              </div>
             )
           })}
         </div>
@@ -229,27 +228,23 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
         <div className="grid md:hidden grid-cols-3 gap-6 p-6 content-center">
           {chunks.map((chunk, idx) => {
              const isCompleted = progressStore[`progress.v${volumeId}.c${chapterId}.d${darsNum}.${chunk.id}`] === 'completed'
-             const isCurrent = idx === 0 || progressStore[`progress.v${volumeId}.c${chapterId}.d${darsNum}.${chunks[idx-1]?.id}`] === 'completed'
-             const status = isCompleted ? 'completed' : isCurrent ? 'current' : 'locked'
+             const status = isCompleted ? 'completed' : 'open'
 
              const isLastVisited = lastVisited === idx
-             const isInteractive = status !== 'locked'
+             const isInteractive = true
 
              const circleBg = isLastVisited
                ? colors[500]
-               : (status === 'current' || status === 'completed') ? colors[500]
-                 : status === 'locked' ? (isDark ? neutral[700] : neutral[300])
-                   : (isDark ? colors[800] : colors[100])
+               : isCompleted ? colors[500]
+                 : (isDark ? colors[800] : colors[100])
 
              const circleBorder = isLastVisited
                ? colors[700]
-               : (status === 'current' || status === 'completed') ? (isDark ? colors[700] : colors[600])
-                 : status === 'locked' ? (isDark ? neutral[600] : neutral[500])
-                   : (isDark ? colors[900] : colors[300])
+               : isCompleted ? (isDark ? colors[700] : colors[600])
+                 : (isDark ? colors[900] : colors[300])
 
-             const iconColor = isLastVisited || status === 'current' || status === 'completed' ? '#fff'
-               : status === 'locked' ? (isDark ? neutral[800] : neutral[700])
-                 : (isDark ? colors[300] : colors[600])
+             const iconColor = isLastVisited || isCompleted ? '#fff'
+               : (isDark ? colors[300] : colors[600])
 
              return (
               <motion.div
@@ -260,7 +255,7 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
                 style={{
                   width: CHUNK_SIZE,
                   height: CHUNK_SIZE + 6,
-                  zIndex: (isLastVisited || (status === 'current' && lastVisited === null && idx === 0)) ? 100 : (isInteractive ? 5 : 1),
+                  zIndex: (isLastVisited || (lastVisited === null && idx === 0)) ? 100 : 5,
                 }}
                 className="flex items-end justify-center"
               >
@@ -304,7 +299,6 @@ const ChunkNode = ({
 }) => {
   const isLocked = status === 'locked'
   const isCompleted = status === 'completed'
-  const isCurrent = status === 'current'
 
   return (
     <motion.button
@@ -341,7 +335,7 @@ const ChunkNode = ({
           </span>
         )}
 
-        {(isLastVisited || (isCurrent && !isLastVisited && idx === 0)) && (
+        {(isLastVisited || (status === 'open' && !isLastVisited && idx === 0)) && (
           <motion.div
             initial={{ scale: 1, y: 0 }}
             animate={{ scale: 1.03, y: -3 }}
@@ -351,22 +345,19 @@ const ChunkNode = ({
               repeat: Infinity,
               repeatType: 'reverse',
             }}
-            className="absolute -top-[30px] flex items-center justify-center border-[1.5px] rounded-lg px-2 py-[3px]"
+            className="absolute -top-[30px] flex items-center justify-center border-[1.5px] rounded-full w-7 h-7"
             style={{
               backgroundColor: isLastVisited ? accent[700] : accent[100],
               borderColor: accent[400],
             }}
           >
-            <span
-              className="font-english-semibold text-[10px]"
-              style={{
-                color: isLastVisited ? '#fff' : accent[700],
-              }}
-            >
-              {isLastVisited ? 'RESUME' : 'START'}
-            </span>
+            <ArrowDown
+              size={16}
+              color={isLastVisited ? '#fff' : accent[700]}
+              strokeWidth={2.5}
+            />
             <div
-              className="absolute -bottom-1 w-[6px] h-[6px] border-r-[1.5px] border-b-[1.5px]"
+              className="absolute -bottom-[5px] w-[6px] h-[6px] border-r-[1.5px] border-b-[1.5px]"
               style={{
                 backgroundColor: isLastVisited ? accent[700] : accent[100],
                 borderColor: accent[400],

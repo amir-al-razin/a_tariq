@@ -6,7 +6,7 @@ type Props = {
   titleEn: string
   titleAr: string
   subtitleI18nKey: string
-  accentColorClassName: string
+  accentColor?: string
 }
 
 export const ChapterBanner: React.FC<Props> = ({
@@ -15,7 +15,7 @@ export const ChapterBanner: React.FC<Props> = ({
   titleEn,
   titleAr,
   subtitleI18nKey,
-  accentColorClassName,
+  accentColor,
 }) => {
   const getMessage = (key: string) => {
     // @ts-ignore
@@ -33,7 +33,8 @@ export const ChapterBanner: React.FC<Props> = ({
       <div className="flex flex-row items-center justify-between px-5 py-5">
         <div className="flex-1 pr-3">
           <p
-            className={`font-english-semibold text-[13px] mb-1.5 ${accentColorClassName}`}
+            className="font-english-semibold text-[13px] mb-1.5"
+            style={{ color: accentColor }}
           >
             {m['volume.chapterMeta'] ? m['volume.chapterMeta']({ id: chapterId, count: lessonCount }) : `Chapter ${chapterId} · ${lessonCount} lessons`}
           </p>
