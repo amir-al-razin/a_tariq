@@ -225,7 +225,7 @@ export const lesson01: LessonData = {
                                     options_ar: ['هَذِهِ مِسْطَرَةٌ', 'تِلْكَ سَبُّوْرَةٌ', 'هَذَا قَلَمٌ'],
                                 },
                                 {
-                                    emoji: '🖊️',
+                                    emoji: '🖥️',
                                     question_ar: 'مَا تِلْكَ ؟',
                                     question_en: 'What is that?',
                                     correct_ar: 'تِلْكَ سَبُّوْرَةٌ',
