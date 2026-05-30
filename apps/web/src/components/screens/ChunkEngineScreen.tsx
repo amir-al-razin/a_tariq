@@ -156,24 +156,24 @@ export const ChunkEngineScreen: React.FC<Props> = ({
     switch (chunk.type.toUpperCase()) {
       case 'VOCABULARY':
       case 'MIXED':
-        return <VocabularyView payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+        return <VocabularyView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
       case 'GRAMMAR_RULE':
-        return <GrammarRuleView payload={chunk.payload} accent400={accent.accent400} accent700={accent.accent700} />
+        return <GrammarRuleView key={chunk.id} payload={chunk.payload} accent400={accent.accent400} accent700={accent.accent700} />
       case 'APPLICATION':
-        return <ApplicationView payload={chunk.payload} accent700={accent.accent700} />
+        return <ApplicationView key={chunk.id} payload={chunk.payload} accent700={accent.accent700} />
       case 'Q_AND_A':
       case 'ASSESSMENT':
-        return <QAndAView payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} />
+        return <QAndAView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} />
       case 'TARKEEB':
-        return <TarkeebView payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent700={accent.accent700} />
+        return <TarkeebView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent700={accent.accent700} />
       case 'VERB_TABLE':
-        return <VerbTableView payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+        return <VerbTableView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
       case 'IDAFAH_DRILL':
-        return <IdafahDrillView payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+        return <IdafahDrillView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
       case 'PARAGRAPH':
-        return <ParagraphView payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+        return <ParagraphView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
       case 'MASDAR_FACTORY':
-        return <MasdarFactoryView payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+        return <MasdarFactoryView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
       default:
         return (
           <div className="flex flex-col items-center justify-center p-12 text-center">
