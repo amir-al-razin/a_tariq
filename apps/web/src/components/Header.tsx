@@ -7,7 +7,7 @@ export default function Header() {
       <nav className="max-w-[1024px] mx-auto w-full flex items-center justify-between px-6 py-4">
         <Link
           to="/"
-          className="font-english-bold text-[22px] tracking-tight text-primary-600 dark:text-primary-400 no-underline"
+          className="font-english-bold text-[22px] tracking-tight !text-neutral-900 dark:!text-neutral-100 no-underline"
         >
           Tariq
         </Link>

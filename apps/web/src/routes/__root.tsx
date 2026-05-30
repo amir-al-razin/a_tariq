@@ -43,10 +43,42 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'Tariq',
+      },
+      {
+        name: 'description',
+        content: 'Tariq - Arabic Pedagogical Engine',
+      },
+      {
+        property: 'og:title',
+        content: 'Tariq',
+      },
+      {
+        property: 'og:description',
+        content: 'Tariq - Arabic Pedagogical Engine',
+      },
+      {
+        property: 'og:type',
+        content: 'website',
+      },
+      {
+        property: 'og:image',
+        content: '/logo512.png',
       },
     ],
     links: [
+      {
+        rel: 'icon',
+        href: '/favicon.ico',
+      },
+      {
+        rel: 'apple-touch-icon',
+        href: '/logo192.png',
+      },
+      {
+        rel: 'manifest',
+        href: '/manifest.json',
+      },
       {
         rel: 'stylesheet',
         href: appCss,
