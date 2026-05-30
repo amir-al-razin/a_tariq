@@ -14,9 +14,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoI18nRouteImport } from './routes/demo.i18n'
 import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
-import { Route as DemoBetterAuthRouteImport } from './routes/demo/better-auth'
 import { Route as VolumeVolumeIdIndexRouteImport } from './routes/volume/$volumeId/index'
-import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRouteImport } from './routes/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/index'
 import { Route as VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRouteImport } from './routes/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
 
@@ -45,19 +43,9 @@ const DemoDrizzleRoute = DemoDrizzleRouteImport.update({
   path: '/demo/drizzle',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoBetterAuthRoute = DemoBetterAuthRouteImport.update({
-  id: '/demo/better-auth',
-  path: '/demo/better-auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const VolumeVolumeIdIndexRoute = VolumeVolumeIdIndexRouteImport.update({
   id: '/volume/$volumeId/',
   path: '/volume/$volumeId/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
-  id: '/api/auth/$',
-  path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute =
@@ -76,11 +64,9 @@ const VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/demo/better-auth': typeof DemoBetterAuthRoute
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
   '/volume/$volumeId/': typeof VolumeVolumeIdIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
@@ -88,11 +74,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/demo/better-auth': typeof DemoBetterAuthRoute
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
   '/volume/$volumeId': typeof VolumeVolumeIdIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
@@ -101,11 +85,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/demo/better-auth': typeof DemoBetterAuthRoute
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
   '/volume/$volumeId/': typeof VolumeVolumeIdIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
@@ -115,11 +97,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/demo/better-auth'
     | '/demo/drizzle'
     | '/demo/i18n'
     | '/demo/tanstack-query'
-    | '/api/auth/$'
     | '/volume/$volumeId/'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
@@ -127,11 +107,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
-    | '/demo/better-auth'
     | '/demo/drizzle'
     | '/demo/i18n'
     | '/demo/tanstack-query'
-    | '/api/auth/$'
     | '/volume/$volumeId'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
@@ -139,11 +117,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
-    | '/demo/better-auth'
     | '/demo/drizzle'
     | '/demo/i18n'
     | '/demo/tanstack-query'
-    | '/api/auth/$'
     | '/volume/$volumeId/'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
@@ -152,11 +128,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  DemoBetterAuthRoute: typeof DemoBetterAuthRoute
   DemoDrizzleRoute: typeof DemoDrizzleRoute
   DemoI18nRoute: typeof DemoI18nRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
-  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   VolumeVolumeIdIndexRoute: typeof VolumeVolumeIdIndexRoute
   VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute: typeof VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute
   VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute: typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
@@ -199,25 +173,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoDrizzleRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/better-auth': {
-      id: '/demo/better-auth'
-      path: '/demo/better-auth'
-      fullPath: '/demo/better-auth'
-      preLoaderRoute: typeof DemoBetterAuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/volume/$volumeId/': {
       id: '/volume/$volumeId/'
       path: '/volume/$volumeId'
       fullPath: '/volume/$volumeId/'
       preLoaderRoute: typeof VolumeVolumeIdIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/auth/$': {
-      id: '/api/auth/$'
-      path: '/api/auth/$'
-      fullPath: '/api/auth/$'
-      preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/': {
@@ -240,11 +200,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  DemoBetterAuthRoute: DemoBetterAuthRoute,
   DemoDrizzleRoute: DemoDrizzleRoute,
   DemoI18nRoute: DemoI18nRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
-  ApiAuthSplatRoute: ApiAuthSplatRoute,
   VolumeVolumeIdIndexRoute: VolumeVolumeIdIndexRoute,
   VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute:
     VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute,
