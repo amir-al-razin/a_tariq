@@ -7,6 +7,45 @@ import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
 import { getLastVisitedChunk, setLastVisitedChunk } from '../../lib/progress'
 import { useProgressStore } from '../../state/progressStore'
 
+const ProgressRing = ({ progress, size = 40, strokeWidth = 3, color = '#34D3AA' }: { progress: number, size?: number, strokeWidth?: number, color?: string }) => {
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const strokeDashoffset = circumference - progress * circumference;
+
+  return (
+    <div style={{ width: size, height: size, position: 'relative' }}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke="currentColor"
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          className="text-neutral-200 dark:text-neutral-700"
+        />
+        <motion.circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={color}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          strokeDasharray={circumference}
+          initial={{ strokeDashoffset: circumference }}
+          animate={{ strokeDashoffset }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          strokeLinecap="round"
+          style={{ transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }}
+        />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center font-english-semibold text-[10px]" style={{ color }}>
+        {Math.round(progress * 100)}%
+      </div>
+    </div>
+  )
+}
+
 type VolumeAccent = {
   50: string
   100: string
@@ -141,6 +180,18 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
 
   const numChunks = chunks.length
 
+  const completedChunks = useMemo(() => {
+    let count = 0;
+    chunks.forEach(ch => {
+      if (progressStore[`progress.v${volumeId}.c${chapterId}.d${darsNum}.${ch.id}`] === 'completed') {
+        count++;
+      }
+    });
+    return count;
+  }, [chunks, progressStore, volumeId, chapterId, darsNum]);
+
+  const lessonProgress = numChunks === 0 ? 0 : completedChunks / numChunks;
+
   return (
     <div className="flex flex-col flex-1 min-h-screen bg-neutral-50 dark:bg-neutral-900 pb-20 pt-7">
       <div className="px-5 mb-6 max-w-[600px] mx-auto w-full flex items-center justify-between">
@@ -159,7 +210,9 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
         <div className="flex-1 text-center font-english-semibold text-[17px] text-neutral-900 dark:text-neutral-100">
           Lesson {darsNum} · {chapter.titleEn}
         </div>
-        <div className="w-10"></div>
+        <div className="w-10 flex justify-end items-center">
+          <ProgressRing progress={lessonProgress} color={isDark ? colors[400] : colors[600]} />
+        </div>
       </div>
       
       <div className="flex-1 flex items-center justify-center relative w-full max-w-[800px] mx-auto min-h-[500px]">

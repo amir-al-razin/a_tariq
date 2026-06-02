@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { Star } from 'lucide-react'
+import { motion } from 'framer-motion'
 import * as m from '#/paraglide/messages.js'
 
 import { ChapterBanner } from '../learning-path/ChapterBanner'
@@ -8,10 +9,45 @@ import { LessonNode, type NodeStatus } from '../learning-path/LessonNode'
 import { WaveLayout, WAVE } from '../learning-path/WaveLayout'
 
 import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
+import { useProgressStore } from '../../state/progressStore'
 
-const getLessonStatus = (darsNum: number, chapterId: number): NodeStatus => {
-  if (chapterId === 1 && darsNum === 1) return 'current'
-  return 'open'
+const ProgressRing = ({ progress, size = 56, strokeWidth = 4, color = '#34D3AA' }: { progress: number, size?: number, strokeWidth?: number, color?: string }) => {
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const strokeDashoffset = circumference - progress * circumference;
+
+  return (
+    <div style={{ width: size, height: size, position: 'relative' }}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke="currentColor"
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          className="text-neutral-200 dark:text-neutral-700"
+        />
+        <motion.circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={color}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          strokeDasharray={circumference}
+          initial={{ strokeDashoffset: circumference }}
+          animate={{ strokeDashoffset }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          strokeLinecap="round"
+          style={{ transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }}
+        />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center font-english-semibold text-[13px]" style={{ color }}>
+        {Math.round(progress * 100)}%
+      </div>
+    </div>
+  )
 }
 
 type VolumeAccent = {
@@ -90,6 +126,8 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
     typeof window !== 'undefined' ? window.innerWidth : 800,
   )
 
+  const progressStore = useProgressStore((state) => state.progress)
+
   useEffect(() => {
     const checkDark = () => {
       setIsDark(document.documentElement.classList.contains('dark'))
@@ -145,6 +183,40 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
 
   const chapters = dataMap[volumeId]
   const colors = colorMap[volumeId]
+
+  const totalChunks = useMemo(() => {
+    return chapters.reduce((acc, c) => acc + c.lessons.reduce((lAcc, l) => lAcc + l.chunks.length, 0), 0)
+  }, [chapters])
+
+  const completedChunks = useMemo(() => {
+    let count = 0
+    chapters.forEach(c => {
+      c.lessons.forEach(l => {
+        l.chunks.forEach(ch => {
+          if (progressStore[`progress.v${volumeId}.c${c.id}.d${l.darsNumber}.${ch.id}`] === 'completed') {
+            count++
+          }
+        })
+      })
+    })
+    return count
+  }, [chapters, progressStore, volumeId])
+
+  const volumeProgress = totalChunks === 0 ? 0 : completedChunks / totalChunks
+
+  const getLessonStatus = (chapterId: number, darsNum: number): NodeStatus => {
+    const chapter = chapters.find(c => c.id === chapterId)
+    const lesson = chapter?.lessons.find(l => l.darsNumber === darsNum)
+    if (!lesson) return 'open'
+
+    const chunks = lesson.chunks
+    const completedCount = chunks.filter(ch => progressStore[`progress.v${volumeId}.c${chapterId}.d${darsNum}.${ch.id}`] === 'completed').length
+
+    if (completedCount === chunks.length && chunks.length > 0) return 'completed'
+    // To make it engaging, any lesson that has at least 1 chunk done, or is the immediately next open lesson, could be "current".
+    // For simplicity, we just mark open.
+    return 'open'
+  }
 
   const NODE_SIZE = 72
   const H_PAD = 16
@@ -287,14 +359,17 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
               {getMessage(`volume_vol${volumeId}meta1`, metaMap, 'Chapters · Lessons')}
             </p>
           </div>
-          <h2
-            className={`font-arabic-semibold text-[22px] text-right`}
-            style={{
-              color: isDark ? colors[300] : colors[700],
-            }}
-          >
-            {arTitleMap[volumeId]}
-          </h2>
+          <div className="flex items-center gap-3">
+            <ProgressRing progress={volumeProgress} color={isDark ? colors[400] : colors[600]} />
+            <h2
+              className={`font-arabic-semibold text-[22px] text-right`}
+              style={{
+                color: isDark ? colors[300] : colors[700],
+              }}
+            >
+              {arTitleMap[volumeId]}
+            </h2>
+          </div>
         </div>
         <div className="h-px bg-neutral-200 dark:bg-neutral-700 mt-4" />
       </div>
@@ -304,7 +379,7 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
         {chapters.map((chapter, chapterIdx) => {
           const lessons = chapter.lessons.map((lesson) => ({
             num: lesson.darsNumber,
-            status: getLessonStatus(lesson.darsNumber, chapter.id),
+            status: getLessonStatus(chapter.id, lesson.darsNumber),
           }))
 
           return (
