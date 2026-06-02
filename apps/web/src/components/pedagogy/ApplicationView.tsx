@@ -36,8 +36,12 @@ export const ApplicationView: React.FC<Props> = ({ payload, accent700 = '#0D775F
           key={i}
           className="flex flex-row w-full items-center gap-4 bg-neutral-50 dark:bg-neutral-900 p-3.5 rounded-xl border border-neutral-200 dark:border-neutral-700 mb-3"
         >
-          <div className="w-14 h-14 shrink-0 rounded-lg bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-2xl">
-            {item.emoji}
+          <div className="w-14 h-14 shrink-0 rounded-lg bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-2xl overflow-hidden">
+            {item.imageUrl ? (
+              <img src={item.imageUrl} alt={item.en} className="w-10 h-10 object-contain" />
+            ) : item.emoji ? (
+              <span>{item.emoji}</span>
+            ) : null}
           </div>
           <div className="flex-1 flex flex-col items-end sm:items-start text-right sm:text-left">
             <span
