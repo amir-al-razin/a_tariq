@@ -26,6 +26,7 @@ export interface VocabWord {
     /** Secondary language translation — stored but not rendered (multilingual future use) */
     bn?: string;
     emoji?: string;
+    imageUrl?: string;
 }
 
 export interface GrammarRule {
@@ -40,6 +41,7 @@ export interface GrammarRule {
 
 export interface ApplicationItem {
     emoji: string;
+    imageUrl?: string;
     ar: string;
     en: string;
     bn?: string;
@@ -47,6 +49,7 @@ export interface ApplicationItem {
 
 export interface QAItem {
     emoji: string;
+    imageUrl?: string;
     question_ar: string;
     question_en: string;
     question_bn?: string;
@@ -79,11 +82,16 @@ export interface VerbTableRow {
     root: string;    // verb root (فَعَلَ)
     meaning: string; // English meaning (e.g. "to do")
     meaningBn?: string;
-    he: string;      // هُوَ
-    she: string;     // هِيَ
-    youM: string;    // أَنْتَ
-    youF: string;    // أَنْتِ
-    i: string;       // أَنَا
+    he?: string;      // هُوَ
+    she?: string;     // هِيَ
+    youM?: string;    // أَنْتَ
+    youF?: string;    // أَنْتِ
+    i?: string;       // أَنَا
+    theyM?: string;   // هُمْ
+    theyF?: string;   // هُنَّ
+    youPluralM?: string; // أَنْتُمْ
+    youPluralF?: string; // أَنْتُنَّ
+    we?: string;      // نَحْنُ
 }
 
 export interface MasdarRow {
@@ -126,6 +134,7 @@ export interface ChunkPayload {
     verbTable?: VerbTableRow[];
     /** tense label shown above verb table: 'past' | 'present' | 'imperative' */
     verbTense?: 'past' | 'present' | 'imperative';
+    isPlural?: boolean;
     masdarRows?: MasdarRow[];
     baabLabel?: string;
     idafahPairs?: IdafahPair[];

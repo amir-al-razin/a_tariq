@@ -41,19 +41,31 @@ const getTenseLabel = (tense: string) => {
   }
 };
 
-const getColHeaders = () => [
-  { ar: 'هُوَ', labelKey: m['verbTable.pronoun.he']?.() ?? 'He' },
-  { ar: 'هِيَ', labelKey: m['verbTable.pronoun.she']?.() ?? 'She' },
-  { ar: 'أَنْتَ', labelKey: m['verbTable.pronoun.youM']?.() ?? 'You (M)' },
-  { ar: 'أَنْتِ', labelKey: m['verbTable.pronoun.youF']?.() ?? 'You (F)' },
-  { ar: 'أَنَا', labelKey: m['verbTable.pronoun.i']?.() ?? 'I' },
-];
+const getColHeaders = (isPlural?: boolean) => {
+  if (isPlural) {
+    return [
+      { ar: 'هُمْ', labelKey: m['verbTable.pronoun.theyM']?.() ?? 'They (M)' },
+      { ar: 'هُنَّ', labelKey: m['verbTable.pronoun.theyF']?.() ?? 'They (F)' },
+      { ar: 'أَنْتُمْ', labelKey: m['verbTable.pronoun.youPluralM']?.() ?? 'You All (M)' },
+      { ar: 'أَنْتُنَّ', labelKey: m['verbTable.pronoun.youPluralF']?.() ?? 'You All (F)' },
+      { ar: 'نَحْنُ', labelKey: m['verbTable.pronoun.we']?.() ?? 'We' },
+    ];
+  }
+  return [
+    { ar: 'هُوَ', labelKey: m['verbTable.pronoun.he']?.() ?? 'He' },
+    { ar: 'هِيَ', labelKey: m['verbTable.pronoun.she']?.() ?? 'She' },
+    { ar: 'أَنْتَ', labelKey: m['verbTable.pronoun.youM']?.() ?? 'You (M)' },
+    { ar: 'أَنْتِ', labelKey: m['verbTable.pronoun.youF']?.() ?? 'You (F)' },
+    { ar: 'أَنَا', labelKey: m['verbTable.pronoun.i']?.() ?? 'I' },
+  ];
+};
 
 export const VerbTableView: React.FC<Props> = ({ payload, onProgress, accent400 = '#34D3AA', accent700 = '#0D775F' }) => {
   const rows = payload?.verbTable ?? [];
   const tense = payload?.verbTense ?? 'past';
   const tenseLabel = getTenseLabel(tense);
-  const COL_HEADERS = getColHeaders();
+  const isPlural = payload?.isPlural ?? false;
+  const COL_HEADERS = getColHeaders(isPlural);
 
   useEffect(() => {
     // Scroll-based completion handled by parent
@@ -161,7 +173,10 @@ export const VerbTableView: React.FC<Props> = ({ payload, onProgress, accent400 
                   {row.meaning}
                 </span>
               </div>
-              {[row.he, row.she, row.youM, row.youF, row.i].map((form, i) => (
+              {(isPlural 
+                ? [row.theyM, row.theyF, row.youPluralM, row.youPluralF, row.we] 
+                : [row.he, row.she, row.youM, row.youF, row.i]
+              ).map((form, i) => (
                 <div
                   key={i}
                   className={`w-[85px] p-1.5 flex items-center justify-center bg-white dark:bg-neutral-800 shrink-0 ${
@@ -172,7 +187,7 @@ export const VerbTableView: React.FC<Props> = ({ payload, onProgress, accent400 
                     className="font-arabic-semibold text-sm text-neutral-900 dark:text-neutral-100 text-center"
                     dir="rtl"
                   >
-                    {form}
+                    {form || '-'}
                   </span>
                 </div>
               ))}

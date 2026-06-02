@@ -67,13 +67,44 @@ export const lesson09: LessonData = {
         {
             id: '2-2-9-3',
             type: 'verb_table',
-            titleEn: 'Verb Table — Plural Conjugations (نَصَرَ)',
-            titleAr: 'جَدْوَلُ الأَفْعَالِ — صِيَغُ الْجَمْع',
+            titleEn: 'Verb Table — Past Plural (نَصَرَ)',
+            titleAr: 'الْمَاضِي — صِيَغُ الْجَمْع',
             payload: {
+                isPlural: true,
                 verbTense: 'past',
-                instruction: 'Plural conjugations for memorization — apply the same pattern to فَتَحَ, ضَرَبَ, سَمِعَ',
+                instruction: 'Past tense plural conjugations for memorization — apply the same pattern to فَتَحَ, ضَرَبَ, سَمِعَ',
                 verbTable: [
-                    { root: 'نَصَرَ', meaning: 'to help', he: 'نَصَرُوا (m) / نَصَرْنَ (f)', she: 'يَنْصُرُونَ (m) / يَنْصُرْنَ (f)', youM: 'نَصَرْتُمْ (m) / نَصَرْتُنَّ (f)', youF: 'تَنْصُرُونَ (m) / تَنْصُرْنَ (f)', i: 'نَصَرْنَا / نَنْصُرُ' },
+                    { 
+                        root: 'نَصَرَ', 
+                        meaning: 'to help', 
+                        theyM: 'نَصَرُوا', 
+                        theyF: 'نَصَرْنَ', 
+                        youPluralM: 'نَصَرْتُمْ', 
+                        youPluralF: 'نَصَرْتُنَّ', 
+                        we: 'نَصَرْنَا' 
+                    },
+                ],
+            },
+        },
+        {
+            id: '2-2-9-3b',
+            type: 'verb_table',
+            titleEn: 'Verb Table — Present Plural (نَصَرَ)',
+            titleAr: 'الْمُضَارِع — صِيَغُ الْجَمْع',
+            payload: {
+                isPlural: true,
+                verbTense: 'present',
+                instruction: 'Present tense plural conjugations for memorization — apply the same pattern to يَفْتَحُ, يَضْرِبُ, يَسْمَعُ',
+                verbTable: [
+                    { 
+                        root: 'يَنْصُرُ', 
+                        meaning: 'to help', 
+                        theyM: 'يَنْصُرُونَ', 
+                        theyF: 'يَنْصُرْنَ', 
+                        youPluralM: 'تَنْصُرُونَ', 
+                        youPluralF: 'تَنْصُرْنَ', 
+                        we: 'نَنْصُرُ' 
+                    },
                 ],
             },
         },

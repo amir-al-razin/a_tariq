@@ -115,7 +115,7 @@ export const ChunkEngineScreen: React.FC<Props> = ({
     }
   }, [isScrollCompletionType, checkScrollCompletion])
 
-  const goBack = () => {
+  const goBack = useCallback(() => {
     navigate({
       to: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum',
       params: {
@@ -124,9 +124,9 @@ export const ChunkEngineScreen: React.FC<Props> = ({
         darsNum: darsNum,
       },
     })
-  }
+  }, [navigate, volumeId, chapterId, darsNum])
 
-  const handleContinue = () => {
+  const handleContinue = useCallback(() => {
     if (nextChunk) {
       navigate({
         to: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId',
@@ -140,7 +140,18 @@ export const ChunkEngineScreen: React.FC<Props> = ({
     } else {
       goBack()
     }
-  }
+  }, [nextChunk, navigate, volumeId, chapterId, darsNum, goBack])
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === 'Space' && isComplete) {
+        e.preventDefault()
+        handleContinue()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isComplete, handleContinue])
 
   if (!chunk) {
     return (

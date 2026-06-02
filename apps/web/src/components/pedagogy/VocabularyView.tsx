@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, ArrowRight, Check, Eye } from 'lucide-react';
 import * as m from '#/paraglide/messages.js';
 
@@ -9,6 +9,7 @@ type VocabWord = {
     en: string;
     bn?: string;
     emoji?: string;
+    imageUrl?: string;
 };
 
 const FALLBACK_WORDS: VocabWord[] = [
@@ -66,7 +67,7 @@ export const VocabularyView: React.FC<Props> = ({ payload, onProgress, onComplet
         }
     };
 
-    const handlePrev = () => {
+    const handlePrev = useCallback(() => {
         if (isFirst && !flipped) return;
         if (flipped) {
             setFlipped(false);
@@ -75,9 +76,9 @@ export const VocabularyView: React.FC<Props> = ({ payload, onProgress, onComplet
             setFlipped(false);
             if (done) setDone(false);
         }
-    };
+    }, [isFirst, flipped, done]);
 
-    const handleNext = () => {
+    const handleNext = useCallback(() => {
         if (done) return;
         if (!flipped) {
             setFlipped(true);
@@ -88,7 +89,20 @@ export const VocabularyView: React.FC<Props> = ({ payload, onProgress, onComplet
             setDone(true);
             onComplete?.();
         }
-    };
+    }, [done, flipped, isLast, onComplete]);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'ArrowRight') {
+                handleNext();
+            } else if (e.key === 'ArrowLeft') {
+                handlePrev();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [handleNext, handlePrev]);
 
     return (
         <div className="w-full flex flex-col items-center">
@@ -109,7 +123,11 @@ export const VocabularyView: React.FC<Props> = ({ payload, onProgress, onComplet
             >
                 {!flipped ? (
                     <div className="w-full h-full min-h-[200px] bg-neutral-50 dark:bg-neutral-900 flex flex-col items-center justify-center p-6">
-                        <span className="text-5xl mb-3">{word.emoji}</span>
+                        {word.imageUrl ? (
+                            <img src={word.imageUrl} alt={word.en} className="w-16 h-16 object-contain mb-3" />
+                        ) : word.emoji ? (
+                            <span className="text-5xl mb-3">{word.emoji}</span>
+                        ) : null}
                         <h2 className="font-arabic-semibold text-[44px] leading-tight text-center" style={{ color: isDark ? accent400 : accent700 }}>{word.ar}</h2>
                         <p className="font-english text-sm text-neutral-500 dark:text-neutral-400 mt-2">{word.romanized}</p>
                     </div>
