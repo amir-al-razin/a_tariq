@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { QAItem } from '@tariq/shared';
 import * as m from '#/paraglide/messages.js';
 
@@ -52,11 +52,22 @@ export const QAndAView: React.FC<Props> = ({ payload, onProgress, onComplete, ac
     }
   };
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setSelected(null);
     setRevealed(false);
     setCurrentIndex((prev) => prev + 1);
-  };
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === 'Space' && revealed && !isLastQ) {
+        e.preventDefault();
+        handleNext();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [revealed, isLastQ, handleNext]);
 
   return (
     <div className="w-full flex flex-col items-center">

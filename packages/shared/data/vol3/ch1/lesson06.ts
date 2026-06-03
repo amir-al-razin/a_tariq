@@ -84,9 +84,9 @@ export const lesson06: LessonData = {
         instruction: 'Answer the following questions in Arabic from the passage.',
         instructionBn: 'অনুচ্ছেদ থেকে আরবিতে প্রশ্নগুলোর উত্তর দিন।',
         questions: [
-          { emoji: '❓', question_ar: 'مَنْ يُطِيْعُهُ الْمُسْلِمُوْنَ ؟', question_en: 'Who do the Muslims obey?', question_bn: 'মুসলিমরা কাকে মানে?', correct_ar: 'اللّٰهَ وَ رَسُولَهُ', correct_en: 'Allah and His Messenger', correct_bn: 'আল্লাহ ও তাঁর রাসূল', options_ar: ['اللّٰهَ', 'النَّاسَ', 'الشيطانَ'], questionType: 'general' },
-          { emoji: '🕰️', question_ar: 'مَتَى يَصُوْمُ الْمُسْلِمُوْنَ ؟', question_en: 'When do the Muslims fast?', question_bn: 'মুসলিমরা কখন রোযা রাখে?', correct_ar: 'نَهَارَ رَمَضَانَ', correct_en: 'During the days of Ramadan', correct_bn: 'রমজানের দিনে', options_ar: ['فِي رَمَضَانَ', 'فِي شَعْبَانَ', 'فِي ذو القعدة'], questionType: 'general' },
-          { emoji: '👥', question_ar: 'مَنْ يُطِيْعُ الْمُسْلِمُوْنَ وَ مَنْ يَخَافُوْنَ ؟', question_en: 'Who do the Muslims obey and who do they fear?', question_bn: 'মুসলিমরা কাকে মানে এবং কাকে ভয় পায়?', correct_ar: 'يُطِيْعُونَ اللّٰهَ وَ يَخَافُونَ مِنْ عَذَابِه', correct_en: 'They obey Allah and fear His punishment', correct_bn: 'তারা আল্লাহকে মানে এবং তাঁর শাস্তি ভয় করে', options_ar: ['اللّٰهَ', 'الملك', 'الناس'], questionType: 'general' },
+          { emoji: '❓', question_ar: 'مَنْ يُطِيْعُهُ الْمُسْلِمُوْنَ ؟', question_en: 'Who do the Muslims obey?', question_bn: 'মুসলিমরা কাকে মানে?', correct_ar: 'اللّٰهَ وَ رَسُولَهُ', correct_en: 'Allah and His Messenger', correct_bn: 'আল্লাহ ও তাঁর রাসূল', options_ar: ['اللّٰهَ وَ رَسُولَهُ', 'النَّاسَ', 'الشيطانَ'], questionType: 'general' },
+          { emoji: '🕰️', question_ar: 'مَتَى يَصُوْمُ الْمُسْلِمُوْنَ ؟', question_en: 'When do the Muslims fast?', question_bn: 'মুসলিমরা কখন রোযা রাখে?', correct_ar: 'نَهَارَ رَمَضَانَ', correct_en: 'During the days of Ramadan', correct_bn: 'রমজানের দিনে', options_ar: ['نَهَارَ رَمَضَانَ', 'فِي شَعْبَانَ', 'فِي ذِي الْقَعْدَةِ'], questionType: 'general' },
+          { emoji: '👥', question_ar: 'مَنْ يُطِيْعُ الْمُسْلِمُوْنَ وَ مَنْ يَخَافُوْنَ ؟', question_en: 'Who do the Muslims obey and who do they fear?', question_bn: 'মুসলিমরা কাকে মানে এবং কাকে ভয় পায়?', correct_ar: 'يُطِيْعُونَ اللّٰهَ وَ يَخَافُونَ مِنْ عَذَابِه', correct_en: 'They obey Allah and fear His punishment', correct_bn: 'তারা আল্লাহকে মানে এবং তাঁর শাস্তি ভয় করে', options_ar: ['يُطِيْعُونَ اللّٰهَ وَ يَخَافُونَ مِنْ عَذَابِه', 'يُطِيعُونَ النَّاسَ', 'لَا يُطِيعُونَ أَحَدًا'], questionType: 'general' },
         ],
       },
     },
@@ -99,11 +99,35 @@ export const lesson06: LessonData = {
       payload: {
         instruction: 'Complete the fill-in-the-blanks and translate into Bengali.',
         instructionBn: 'ফাঁক পূরণ করুন এবং বাংলা অনুবাদ করুন।',
-        items: [
-          { emoji: '✍️', ar: 'مَتَى يَصُوْمُ الْمُسْلِمُوْنَ ؟', en: 'When do the Muslims fast?', bn: 'মুসলিমরা কখন রোযা রাখে?' },
-          { emoji: '🔁', ar: 'جَمِيْعًا تَابَ ...', en: 'All repented ...', bn: 'সকলেই তাওবা করল ...' },
-          { emoji: '🔢', ar: 'ثَلَاثَةُ رِجَالٍ - أَرْبَعُ سَاعَاتٍ', en: 'Three men - Four hours', bn: 'তিনজন পুরুষ - চারটি ঘন্টা' },
-        ],
+        questions: [
+          {
+            emoji: '✍️',
+            question_ar: 'مَتَى يَصُوْمُ الْمُسْلِمُوْنَ؟',
+            question_en: 'When do the Muslims fast?',
+            correct_ar: 'فِي رَمَضَانَ',
+            correct_en: 'In Ramadan',
+            options_ar: ['فِي رَمَضَانَ', 'فِي شَوَّالٍ', 'فِي شَعْبَانَ'],
+            questionType: 'general'
+          },
+          {
+            emoji: '🔁',
+            question_ar: 'أَكْمِلْ: تَابُوا إِلَى اللَّهِ ....',
+            question_en: 'Complete: They repented to Allah...',
+            correct_ar: 'جَمِيعًا',
+            correct_en: 'Altogether',
+            options_ar: ['جَمِيعًا', 'كَثِيرًا', 'قَلِيلًا'],
+            questionType: 'general'
+          },
+          {
+            emoji: '🔢',
+            question_ar: 'تَرْجِمْ: Three men',
+            question_en: 'Translate: Three men',
+            correct_ar: 'ثَلَاثَةُ رِجَالٍ',
+            correct_en: 'Three men',
+            options_ar: ['ثَلَاثَةُ رِجَالٍ', 'ثَلَاثُ رِجَالٍ', 'ثَلَاثَةُ رَجُلٍ'],
+            questionType: 'general'
+          }
+        ]
       },
     },
     {

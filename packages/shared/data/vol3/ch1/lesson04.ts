@@ -373,27 +373,16 @@ export const lesson04: LessonData = {
       titleAr: 'تحديد الأبواب في السياق',
       titleBn: 'প্রাসঙ্গিক ক্রিয়া ফর্ম চিহ্নিতকরণ',
       payload: {
-        instruction:
-          'Identify the verb form (bāb) for each given verb and explain the meaning change from the root.',
-        instructionBn:
-          'প্রতিটি ক্রিয়ার জন্য ক্রিয়া ফর্ম (বাব) চিহ্নিত করুন এবং মূল থেকে অর্থ পরিবর্তন ব্যাখ্যা করুন।',
-        text: `
-Verb Form Recognition Exercise:
-
-1. عَلَّمَ - Identify: Form II • Meaning: to teach (intensive/causative)
-   Root فعل → Form II عَلَّم (doubled the letter ل)
-   
-2. تَعَلَّمَ - Identify: Form V • Meaning: to learn (passive/reflexive of teach)
-   Root فعل → Form V تَعَلَّم (learning as reflexive action)
-   
-3. أَنْفَقَ - Identify: Form IV • Meaning: to spend money (causative)
-   Root فقع → Form IV أَنْفَق (to cause to flow out)
-   
-Try identifying these:
-- جَاهَدَ → Form III (mutual effort/struggle)
-- نَوَّرَ → Form II → ؟
-- اجْتَهَدَ → Form VIII → ؟
-        `,
+        instruction: 'Identify the verb form (bāb) for each given verb and explain the meaning change from the root.',
+        instructionBn: 'প্রতিটি ক্রিয়ার জন্য ক্রিয়া ফর্ম (বাব) চিহ্নিত করুন এবং মূল থেকে অর্থ পরিবর্তন ব্যাখ্যা করুন।',
+        items: [
+          { emoji: '🔍', ar: 'عَلَّمَ - الباب الثاني (التفعيل)', en: 'Form II • Meaning: to teach (intensive/causative). Root: ع-ل-م' },
+          { emoji: '🧠', ar: 'تَعَلَّمَ - الباب الخامس (التفعّل)', en: 'Form V • Meaning: to learn (reflexive of teach). Root: ع-ل-م' },
+          { emoji: '💸', ar: 'أَنْفَقَ - الباب الرابع (الإفعال)', en: 'Form IV • Meaning: to spend money (causative). Root: ن-ف-ق' },
+          { emoji: '⚔️', ar: 'جَاهَدَ - الباب الثالث (المفاعلة)', en: 'Form III • Meaning: mutual effort/struggle. Root: ج-ه-د' },
+          { emoji: '💡', ar: 'نَوَّرَ - الباب الثاني (التفعيل)', en: 'Form II • Meaning: to illuminate (intensive/causative). Root: ن-و-ر' },
+          { emoji: '🎯', ar: 'اجْتَهَدَ - الباب الثامن (الافتعال)', en: 'Form VIII • Meaning: to strive (reflexive). Root: ج-ه-د' }
+        ]
       },
     },
     // Assessment
@@ -408,25 +397,42 @@ Try identifying these:
           'Complete the assessment exercises to verify your understanding of verb forms and commands.',
         instructionBn:
           'ক্রিয়া ফর্ম এবং আদেশের আপনার বোঝাপড়া যাচাই করতে মূল্যায়ন অনুশীলন সম্পূর্ণ করুন।',
-        items: [
+        questions: [
           {
             emoji: '✍️',
-            ar: 'أَكْمِلْ : عَلَّمَ (ماضي) → يُعَلِّمُ (مضارع) → ؟ (أمر)',
-            en: 'Complete: taught (past) → teaches (present) → ? (imperative)',
-            bn: 'সম্পূর্ণ করুন: শিক্ষা দিয়েছে (অতীত) → শিক্ষা দেয় (বর্তমান) → ? (আদেশ)',
+            question_ar: 'أَكْمِلْ : عَلَّمَ (مَاضِي) → يُعَلِّمُ (مُضَارِع) → ؟ (أَمْر)',
+            question_en: 'Complete: taught (past) → teaches (present) → ? (imperative)',
+            correct_ar: 'عَلِّمْ',
+            correct_en: 'Teach!',
+            options_ar: ['عَلِّمْ', 'تَعَلَّمْ', 'يُعَلِّمُ'],
+            questionType: 'general'
           },
           {
             emoji: '🎯',
-            ar: 'ترجم: نَوِّرُوا قُلُوبَكُمْ بِنُورِ الْعِلْمِ',
-            en: 'Translate: Enlighten your hearts with the light of knowledge (plural command)',
-            bn: 'অনুবাদ করুন: জ্ঞানের আলো দিয়ে আপনার হৃদয়কে আলোকিত করুন (বহুবচন আদেশ)',
+            question_ar: 'أَيُّ جُمْلَةٍ تَعْنِي: Enlighten your hearts with the light of knowledge؟',
+            question_en: 'Which sentence means: Enlighten your hearts with the light of knowledge?',
+            correct_ar: 'نَوِّرُوا قُلُوبَكُمْ بِنُورِ الْعِلْمِ',
+            correct_en: 'Enlighten your hearts with the light of knowledge',
+            options_ar: [
+              'نَوِّرُوا قُلُوبَكُمْ بِنُورِ الْعِلْمِ',
+              'عَلِّمُوا قُلُوبَكُمْ بِنُورِ الْعِلْمِ',
+              'نَظِّفُوا قُلُوبَكُمْ بِنُورِ الْعِلْمِ'
+            ],
+            questionType: 'general'
           },
           {
             emoji: '💡',
-            ar: 'أَيُّ بَاب : تَعَلَّمُوا؟ هل هو باب ثاني أو خامس؟ اشرح',
-            en: 'Which form: تَعَلَّمُوا? Is it Form II or Form V? Explain.',
-            bn: 'কোন ফর্ম: তা দীর্ঘ করুন? এটি ফর্ম ২ বা ফর্ম ৫? ব্যাখ্যা করুন।',
-          },
+            question_ar: 'أَيُّ بَابٍ هُوَ الْفِعْلُ (تَعَلَّمُوا)؟',
+            question_en: 'Which verb form (Baab) is the verb "تَعَلَّمُوا" (you all learn)?',
+            correct_ar: 'بَابُ التَّفَعُّلِ (الخامس)',
+            correct_en: 'Form V (Tafa\'al)',
+            options_ar: [
+              'بَابُ التَّفَعُّلِ (الخامس)',
+              'بَابُ التَّفْعِيلِ (الثاني)',
+              'بَابُ الْإِفْعَالِ (الرابع)'
+            ],
+            questionType: 'general'
+          }
         ],
       },
     },
@@ -446,14 +452,13 @@ Try identifying these:
             question_ar: 'مَاذَا قَالَ الْعَالِمُ لِلْأَغْنِيَاءِ؟',
             question_en: 'What did the scholar say to the wealthy?',
             question_bn: 'আলেম সম্পদশালীদের কাছে কী বলেছিল?',
-            correct_ar:
-              'قَالَ لَهُمْ : أَنْفِقُوا أَمْوَالَكُمْ فِي سَبِيلِ اللَّهِ وَ لَا تَجْمَعُوهَا',
+            correct_ar: 'قَالَ لَهُمْ : أَنْفِقُوا أَمْوَالَكُمْ فِي سَبِيلِ اللَّهِ وَ لَا تَجْمَعُوهَا',
             correct_en: 'He said to them: Spend your wealth in the path of Allah and do not hoard it.',
             correct_bn: 'তিনি তাদের বলেছিলেন: আল্লাহর পথে আপনার সম্পদ ব্যয় করুন এবং তা জমা করবেন না।',
             options_ar: [
-              'أَنْفِقُوا أَمْوَالَكُمْ',
-              'لَا تُنْفِقُوا أَمْوَالَكُمْ',
-              'اِحْفَظُوا أَمْوَالَكُمْ',
+              'قَالَ لَهُمْ : أَنْفِقُوا أَمْوَالَكُمْ فِي سَبِيلِ اللَّهِ وَ لَا تَجْمَعُوهَا',
+              'قَالَ لَهُمْ : لَا تُنْفِقُوا أَمْوَالَكُمْ',
+              'قَالَ لَهُمْ : اِحْفَظُوا أَمْوَالَكُمْ لِدُنْيَاكُمْ'
             ],
             questionType: 'general',
           },
@@ -465,7 +470,11 @@ Try identifying these:
             correct_ar: 'لَا ، الْبُخَلَاءُ لَا يُنْفِقُونَ',
             correct_en: 'No, the misers do not spend.',
             correct_bn: 'না, কৃপণরা ব্যয় করে না।',
-            options_ar: ['نَعَمْ', 'لَا', 'رُبَّما'],
+            options_ar: [
+              'لَا ، الْبُخَلَاءُ لَا يُنْفِقُونَ',
+              'نَعَمْ ، الْبُخَلَاءُ يُنْفِقُونَ',
+              'رُبَّما يُنْفِقُونَ'
+            ],
             questionType: 'hal',
           },
           {
@@ -473,30 +482,28 @@ Try identifying these:
             question_ar: 'بِمَ تَعَلَّمَ أَصْدِقَاءُ مَاجِدٍ الْعَرَبِيَّةَ؟',
             question_en: 'How did Majid\'s friends learn Arabic?',
             question_bn: 'মাজিদের বন্ধুরা কিভাবে আরবি শিখেছে?',
-            correct_ar: 'تَعَلَّمُوا اللُّغَةَ الْعَرَبِيَّةَ فِي الْفَصْلِ/',
+            correct_ar: 'تَعَلَّمُوا اللُّغَةَ الْعَرَبِيَّةَ فِي الْفَصْلِ',
             correct_en: 'They learned Arabic in the classroom.',
             correct_bn: 'তারা শ্রেণিকক্ষে আরবি শিখেছে।',
             options_ar: [
-              'فِي الْبَيْتِ',
-              'فِي الْفَصْلِ',
-              'فِي الْمَسْجِدِ',
+              'تَعَلَّمُوا اللُّغَةَ الْعَرَبِيَّةَ فِي الْفَصْلِ',
+              'تَعَلَّمُوا اللُّغَةَ الْعَرَبِيَّةَ فِي الْبَيْتِ',
+              'تَعَلَّمُوا اللُّغَةَ الْعَرَبِيَّةَ فِي الْمَسْجِدِ'
             ],
             questionType: 'general',
           },
           {
             emoji: '🌍',
             question_ar: 'مَا الْفَرْقُ بَيْنَ الْمُسْلِمِينَ وَ الْمُشْرِكِينَ فِي الآيَةِ؟',
-            question_en:
-              'What is the difference shown between Muslims and polytheists in the verse?',
+            question_en: 'What is the difference shown between Muslims and polytheists in the verse?',
             question_bn: 'আয়াতে মুসলিমদের এবং মুশরিকদের মধ্যে পার্থক্য কী দেখানো হয়েছে?',
-            correct_ar:
-              'الْمُسْلِمُونَ يُصْلِحُونَ وَ الْمُشْرِكُونَ يُفْسِدُونَ',
+            correct_ar: 'الْمُسْلِمُونَ يُصْلِحُونَ وَ الْمُشْرِكُونَ يُفْسِدُونَ',
             correct_en: 'Muslims rectify while polytheists cause corruption.',
             correct_bn: 'মুসলিমরা সংশোধন করে যখন মুশরিকরা বিপর্যয় সৃষ্টি করে।',
             options_ar: [
-              'الْمُسْلِمُونَ أَقْوِياءُ',
-              'الْمُشْرِكُونَ عُلَمَاءُ',
-              'الْمُسْلِمُونَ يُصْلِحُونَ',
+              'الْمُسْلِمُونَ يُصْلِحُونَ وَ الْمُشْرِكُونَ يُفْسِدُونَ',
+              'الْمُسْلِمُونَ يُفْسِدُونَ وَ الْمُشْرِكُونَ يُصْلِحُونَ',
+              'الْمُسْلِمُونَ أَقْوِياءُ وَ الْمُشْرِكُونَ ضُعَفَاءُ'
             ],
             questionType: 'general',
           },
@@ -509,9 +516,9 @@ Try identifying these:
             correct_en: 'When they leave their homes.',
             correct_bn: 'যখন তারা তাদের বাড়ি থেকে বেরিয়ে যায়।',
             options_ar: [
-              'فِي الصَّبَاحِ',
-              'عِنْدَمَا يَخْرُجُونَ',
-              'فِي الْمَسَاءِ',
+              'عِنْدَمَا يَخْرُجُونَ مِنْ بُيُوتِهِمْ',
+              'عِنْدَمَا يَدْخُلُونَ الْفَصْلَ',
+              'فِي الْمَسَاءِ عِنْدَمَا يَلْعَبُونَ'
             ],
             questionType: 'general',
           },

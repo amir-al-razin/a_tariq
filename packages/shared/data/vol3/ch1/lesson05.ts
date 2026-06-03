@@ -126,7 +126,20 @@ export const lesson05: LessonData = {
       payload: {
         instruction: 'Form conditional sentences using إِنْ and apply Faa where appropriate.',
         instructionBn: 'إِنْ ব্যবহার করে শর্তবাচক বাক্য তৈরি করুন এবং যেখানে প্রযোজ্য সেখানে ফা যুক্ত করুন।',
-        text: 'Examples: إِنْ تَجْتَهِدْ → تَنْجَحْ; إِنْ يَأْتِ الضَّيْفُ فَأَكْرِمْهُ',
+        items: [
+          {
+            emoji: '💡',
+            ar: 'إِنْ تَجْتَهِدْ ← تَنْجَحْ',
+            en: 'Example 1: No Faa (ف) needed because the answer is a present tense verb.',
+            bn: 'উদাহরণ ১: ফ (ف) প্রয়োজন নেই কারণ উত্তরটি বর্তমান কাল ক্রিয়া।'
+          },
+          {
+            emoji: '💡',
+            ar: 'إِنْ يَأْتِ الضَّيْفُ ← فَأَكْرِمْهُ',
+            en: 'Example 2: Faa (ف) is required because the answer is a command (imperative).',
+            bn: 'উদাহরণ ২: ফ (ف) প্রয়োজন কারণ উত্তরটি আদেশসূচক বাক্য।'
+          }
+        ]
       },
     },
     {
@@ -138,11 +151,35 @@ export const lesson05: LessonData = {
       payload: {
         instruction: 'Answer the short assessment tasks below.',
         instructionBn: 'নিম্নলিখিত ছোট মূল্যায়ন কাজগুলোর উত্তর দিন।',
-        items: [
-          { emoji: '❓', ar: 'ترجم: إِنْ تُنْفِقْ تَجِدْ أَجْرَكَ', en: 'Translate: If you spend, you will find your reward', bn: 'অনুবাদ করুন: যদি তুমি ব্যয় কর, তুমি তোমার পুরস্কার পাবে' },
-          { emoji: '🔎', ar: 'اشرح: الفرق بين إِنْ مع الماضي و مع المضارع', en: 'Explain: Difference between إِنْ with past vs present', bn: 'ব্যাখ্যা করুন: অতীত বনাম বর্তমানের সাথে إِنْ এর পার্থক্য' },
-          { emoji: '✍️', ar: 'كون جملة شرطية: إِنْ + أمر', en: 'Form a conditional sentence with إِنْ + imperative', bn: 'إِنْ + আদেশ দিয়ে একটি শর্তবাচক বাক্য গঠন করুন' },
-        ],
+        questions: [
+          {
+            emoji: '❓',
+            question_ar: 'أَيُّ جُمْلَةٍ تَعْنِي: If you spend, you will find your reward؟',
+            question_en: 'Which sentence means: If you spend, you will find your reward?',
+            correct_ar: 'إِنْ تُنْفِقْ تَجِدْ أَجْرَكَ',
+            correct_en: 'If you spend, you will find your reward',
+            options_ar: ['إِنْ تُنْفِقْ تَجِدْ أَجْرَكَ', 'إِنْ تَنْصُرْ تَجِدْ أَجْرَكَ', 'إِنْ تَصْبِرْ تَجِدْ أَجْرَكَ'],
+            questionType: 'general'
+          },
+          {
+            emoji: '🔎',
+            question_ar: 'مَاذَا تَفْعَلُ (إِنْ) عِنْدَمَا تَدْخُلُ عَلَى فِعْلٍ مَاضٍ؟',
+            question_en: 'What does إِنْ do when it enters a past tense verb?',
+            correct_ar: 'تَجْعَلُهُ مُسْتَقْبَلًا',
+            correct_en: 'It makes it give a future meaning',
+            options_ar: ['تَجْعَلُهُ مُسْتَقْبَلًا', 'تَجْعَلُهُ مَرْفُوعًا', 'لَا تُغَيِّرُهُ'],
+            questionType: 'general'
+          },
+          {
+            emoji: '✍️',
+            question_ar: 'أَيُّ جُمْلَةٍ شَرْطِيَّةٍ جَوَابُهَا (أَمْر)؟',
+            question_en: 'Which conditional sentence has a command (imperative) as its answer?',
+            correct_ar: 'إِنْ جَاءَكَ ضَيْفٌ فَأَكْرِمْهُ',
+            correct_en: 'If a guest comes, honor him',
+            options_ar: ['إِنْ جَاءَكَ ضَيْفٌ فَأَكْرِمْهُ', 'إِنْ تَجْتَهِدْ تَنْجَحْ', 'إِنْ تُنْفِقْ تَجِدْ أَجْرَكَ'],
+            questionType: 'general'
+          }
+        ]
       },
     },
     {
@@ -163,7 +200,11 @@ export const lesson05: LessonData = {
             correct_ar: 'نَعَمْ ، أَحْيَانًا يُحَوِّلُهُ إِلَى مَعْنًى مُسْتَقْبَلِيًّا',
             correct_en: 'Yes — sometimes it gives a future/hypothetical meaning.',
             correct_bn: 'হ্যাঁ — কখনও কখনও এটি ভবিষ্যত/কল্পিত অর্থ দেয়।',
-            options_ar: ['نَعَمْ', 'لَا', 'أَحْيَانًا'],
+            options_ar: [
+              'نَعَمْ ، أَحْيَانًا يُحَوِّلُهُ إِلَى مَعْنًى مُسْتَقْبَلِيًّا',
+              'لَا ، لَا يُغَيِّرُ الْمَعْنَى',
+              'دَائِمًا يُحَوِّلُهُ إِلَى أَمْرٍ'
+            ],
             questionType: 'general',
           },
           {
@@ -174,7 +215,11 @@ export const lesson05: LessonData = {
             correct_ar: 'يَنْبُتُ سَبْعَ سُنَبُلٍ فِي كُلِّ سُنْبُلَةٍ مِائَةُ حَبَّةٍ',
             correct_en: 'It sprouts seven ears, each with a hundred grains.',
             correct_bn: 'এটি সাতটি কুঁড়ে জন্মায়, প্রতিটি কুঁড়েতে একশো দানা থাকে।',
-            options_ar: ['سُنْبُلَةٌ', 'حَبَّةٌ', 'قَدَمٌ'],
+            options_ar: [
+              'يَنْبُتُ سَبْعَ سُنَبُلٍ فِي كُلِّ سُنْبُلَةٍ مِائَةُ حَبَّةٍ',
+              'يَنْبُتُ سُنْبُلَةً وَاحِدَةً فَقَطْ',
+              'لَا يَنْبُتُ شَيْئًا'
+            ],
             questionType: 'general',
           },
         ],

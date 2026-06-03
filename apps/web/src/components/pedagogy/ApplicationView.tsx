@@ -13,14 +13,23 @@ export const ApplicationView: React.FC<Props> = ({ payload, accent700 = '#0D775F
 
   if (items.length === 0 && (payload?.text || payload?.instruction)) {
     return (
-      <div className="w-full flex justify-center">
-        <span
-          className="font-arabic-semibold text-xl text-right leading-8"
-          style={{ color: accent700 }}
-          dir="rtl"
-        >
-          {payload?.text || payload?.instruction}
-        </span>
+      <div className="w-full flex flex-col items-center">
+        {payload?.instruction && (
+          <div className="font-english text-sm text-neutral-600 dark:text-neutral-300 mb-5 text-center">
+            {payload.instruction}
+          </div>
+        )}
+        {payload?.text && (
+          <div className="w-full flex justify-center">
+            <span
+              className="font-arabic-semibold text-xl text-right leading-9 whitespace-pre-wrap"
+              style={{ color: accent700 }}
+              dir="rtl"
+            >
+              {payload.text}
+            </span>
+          </div>
+        )}
       </div>
     );
   }
