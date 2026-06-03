@@ -81,17 +81,17 @@ export const lesson02: LessonData = {
     },
     {
       id: '3',
-      type: 'verb_table',
+      type: 'application',
       titleEn: 'Verb Chains: Defective Verbs',
       titleAr: 'سِلْسِلَةُ الأَفْعَالِ النَّاقِصَةُ',
       titleBn: 'নকিস ক্রিয়ার ধারা',
       payload: {
-        sourceText: `
-دَعَا / يَدْعُو — دَعَوْا، يَدْعُونَ، اُدْعُوا
-بَكَى / يَبْكِي — بَكَوْا، يَبْكُونَ، اِبْكُوا
-نَسِيَ / يَنْسَى — نَسُوا، يَنْسَوْنَ، اِنْسَوْا
-سَعَى / يَسْعَى — سَعَوْا، يَسْعَوْنَ، اِسْعَوْا
-`.trim(),
+        items: [
+          { emoji: '🗣️', ar: 'دَعَا / يَدْعُو — دَعَوْا، يَدْعُونَ، اُدْعُوا', en: 'He called / He calls — They called, They call, Call!', bn: 'সে ডাকল / ডাকে — তারা ডাকল, ডাকে, ডাকো!' },
+          { emoji: '😢', ar: 'بَكَى / يَبْكِي — بَكَوْا، يَبْكُونَ، اِبْكُوا', en: 'He cried / He cries — They cried, They cry, Cry!', bn: 'সে কাঁদল / কাঁদে — তারা কাঁদল, কাঁদে, কাঁদো!' },
+          { emoji: '🤷', ar: 'نَسِيَ / يَنْسَى — نَسُوا، يَنْسَوْنَ، اِنْسَوْا', en: 'He forgot / He forgets — They forgot, They forget, Forget!', bn: 'সে ভুলে গেল / ভুলে যায় — তারা ভুলে গেল, ভুলে যায়, ভুলে যাও!' },
+          { emoji: '🏃', ar: 'سَعَى / يَسْعَى — سَعَوْا، يَسْعَوْنَ، اِسْعَوْا', en: 'He strove / He strives — They strove, They strive, Strive!', bn: 'সে চেষ্টা করল / চেষ্টা করে — তারা চেষ্টা করল, চেষ্টা করে, চেষ্টা করো!' }
+        ]
       },
     },
     {
@@ -154,7 +154,7 @@ export const lesson02: LessonData = {
             correct_ar: 'الشِّرْكَ وَالدَّعْوَةَ مَعَ اللهِ',
             correct_en: 'Shirk and calling along with Allah',
             correct_bn: 'শিরক ও আল্লাহর সাথে কাউকে ডাকাকে',
-            options_ar: ['الشِّرْكَ', 'الْعِلْمَ', 'الصَّلَاةَ'],
+            options_ar: ['الشِّرْكَ وَالدَّعْوَةَ مَعَ اللهِ', 'الْعِلْمَ', 'الصَّلَاةَ'],
             questionType: 'general',
           },
           {
@@ -165,7 +165,7 @@ export const lesson02: LessonData = {
             correct_ar: 'أَنْ يَصْبِرُوا وَأَنْ يَدْعُوا لِأَبِيهِمْ',
             correct_en: 'To be patient and pray for their father',
             correct_bn: 'ধৈর্য ধরতে এবং তাদের বাবার জন্য দোয়া করতে',
-            options_ar: ['أَنْ يَصْبِرُوا', 'أَنْ يَلْعَبُوا', 'أَنْ يَصْرُخُوا'],
+            options_ar: ['أَنْ يَصْبِرُوا وَأَنْ يَدْعُوا لِأَبِيهِمْ', 'أَنْ يَلْعَبُوا', 'أَنْ يَصْرُخُوا'],
             questionType: 'general',
           },
         ],

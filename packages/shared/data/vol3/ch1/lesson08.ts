@@ -125,26 +125,16 @@ export const lesson08: LessonData = {
       titleAr: 'تطبيق: عبارات الفعل المقصود',
       titleBn: 'প্রয়োগ: উদ্দেশ্যমূলক কর্ম বাক্যাংশ',
       payload: {
-        instruction:
-          'Form sentences using يُرِيدُ/أَرَادَ + أَنْ + verb to express intentions and desires. Practice with different subjects (singular, plural, masculine, feminine).',
-        instructionBn:
-          'ইচ্ছা ও আকাঙ্ক্ষা প্রকাশ করতে يُرِيدُ/أَرَادَ + أَنْ + ক্রিয়া ব্যবহার করে বাক্য গঠন করুন।',
-        text: `
-Examples:
-1. يُرِيدُ + أَنْ + يَفْعَل (He wants to do)
-   يُرِيدُ أَنْ يَكْتُبَ الرِّسَالَةَ (He wants to write the letter)
-   
-2. يُرِيدُونَ + أَنْ + يَفْعَلُوا (They want to do)
-   يُرِيدُونَ أَنْ يَقْرَأُوا الْقُرْآنَ (They want to read the Quran)
-
-3. أَرَادَتْ + أَنْ + تَفْعَل (She wanted to do)
-   أَرَادَتْ أَنْ تَتَعَلَّمَ السِّبَاحَةَ (She wanted to learn swimming)
-
-Practice: Complete the pattern
-- يُرِيدُ أَنْ _____ (want to teach)
-- يَسْتَطِيعُونَ أَنْ _____ (can strive)
-- أَرَادَتِ البِنْتُ أَنْ _____ (girl wanted to...)
-        `,
+        instruction: 'Form sentences using يُرِيدُ/أَرَادَ + أَنْ + verb to express intentions and desires. Practice with different subjects.',
+        instructionBn: 'ইচ্ছা ও আকাঙ্ক্ষা প্রকাশ করতে يُرِيدُ/أَرَادَ + أَنْ + ক্রিয়া ব্যবহার করে বাক্য গঠন করুন।',
+        items: [
+          { emoji: '📝', ar: 'يُرِيدُ أَنْ يَكْتُبَ الرِّسَالَةَ', en: 'He wants to write the letter (يُرِيدُ + أَنْ + يَفْعَلَ)', bn: 'সে চিঠি লিখতে চায়' },
+          { emoji: '📖', ar: 'يُرِيدُونَ أَنْ يَقْرَأُوا الْقُرْآنَ', en: 'They want to read the Quran (يُرِيدُونَ + أَنْ + يَفْعَلُوا)', bn: 'তারা কুরআন পড়তে চায়' },
+          { emoji: '🏊', ar: 'أَرَادَتْ أَنْ تَتَعَلَّمَ السِّبَاحَةَ', en: 'She wanted to learn swimming (أَرَادَتْ + أَنْ + تَفْعَلَ)', bn: 'সে সাঁতার শিখতে চেয়েছিল' },
+          { emoji: '👨‍🏫', ar: 'يُرِيدُ أَنْ يُعَلِّمَ', en: 'He wants to teach (Complete: want to teach)', bn: 'সে শেখাতে চায়' },
+          { emoji: '⚔️', ar: 'يَسْتَطِيعُونَ أَنْ يُجَاهِدُوا', en: 'They can strive (Complete: can strive)', bn: 'তারা সংগ্রাম করতে পারে' },
+          { emoji: '👧', ar: 'أَرَادَتِ الْبِنْتُ أَنْ تَلْعَبَ', en: 'The girl wanted to play (Complete: girl wanted to)', bn: 'মেয়েটি খেলতে চেয়েছিল' }
+        ]
       },
     },
     {
@@ -156,12 +146,52 @@ Practice: Complete the pattern
       payload: {
         instruction: 'Answer these comprehension questions from the reading passages.',
         instructionBn: 'পাঠের অংশগুলি থেকে এই বোধগম্য প্রশ্নের উত্তর দিন।',
-        items: [
-          { emoji: '❓', ar: 'مَاذَا أَرَادَ الصَّائِمُونَ ؟', en: 'What did the fasting people want?', bn: 'রোজাদাররা কি করতে চেয়েছিল?' },
-          { emoji: '❓', ar: 'لِمَ أَخَذُوا الْأَكْوَابَ ؟', en: 'Why did they take the cups?', bn: 'তারা কেন কাপ নিয়েছিল?' },
-          { emoji: '❓', ar: 'مَاذَا يُرِيدُ أَوْلادُ مَاجِدٍ ؟', en: 'What do Majid\'s sons want?', bn: 'মাজিদের সন্তানরা কি চায়?' },
-          { emoji: '❓', ar: 'لِمَ يُرِيدُونَ أَنْ يَتَعَلَّمُوا اللُّغَةَ الْعَرَبِيَّةَ ؟', en: 'Why do they want to learn Arabic?', bn: 'তারা কেন আরবি শিখতে চায়?' },
-        ],
+        questions: [
+          {
+            emoji: '❓',
+            question_ar: 'مَاذَا أَرَادَ الصَّائِمُونَ ؟',
+            question_en: 'What did the fasting people want?',
+            question_bn: 'রোজাদাররা কি করতে চেয়েছিল?',
+            correct_ar: 'أَرَادُوا أَنْ يُفْطِرُوا',
+            correct_en: 'They wanted to break the fast',
+            correct_bn: 'তারা রোজা ভাঙতে চেয়েছিল',
+            options_ar: ['أَرَادُوا أَنْ يَصُومُوا', 'أَرَادُوا أَنْ يُفْطِرُوا', 'أَرَادُوا أَنْ يَنَامُوا'],
+            questionType: 'general'
+          },
+          {
+            emoji: '❓',
+            question_ar: 'لِمَ أَخَذُوا الْأَكْوَابَ ؟',
+            question_en: 'Why did they take the cups?',
+            question_bn: 'তারা কেন কাপ নিয়েছিল?',
+            correct_ar: 'لِيَشْرَبُوا شَرَابًا بَارِدًا',
+            correct_en: 'To drink a cold drink',
+            correct_bn: 'ঠান্ডা পানীয় পান করতে',
+            options_ar: ['لِيَأْكُلُوا طَعَامًا', 'لِيَشْرَبُوا شَرَابًا بَارِدًا', 'لِيَغْسِلُوا أَيْدِيَهُمْ'],
+            questionType: 'general'
+          },
+          {
+            emoji: '❓',
+            question_ar: 'مَاذَا يُرِيدُ أَوْلادُ مَاجِدٍ ؟',
+            question_en: 'What do Majid\'s sons want?',
+            question_bn: 'মাজিদের সন্তানরা কি চায়?',
+            correct_ar: 'يُرِيدُونَ أَنْ يَتَعَلَّمُوا اللُّغَةَ الْعَرَبِيَّةَ',
+            correct_en: 'They want to learn Arabic',
+            correct_bn: 'তারা আরবি ভাষা শিখতে চায়',
+            options_ar: ['يُرِيدُونَ أَنْ يَلْعَبُوا', 'يُرِيدُونَ أَنْ يَتَعَلَّمُوا اللُّغَةَ الْعَرَبِيَّةَ', 'يُرِيدُونَ أَنْ يَشْرَبُوا المَاءَ'],
+            questionType: 'general'
+          },
+          {
+            emoji: '❓',
+            question_ar: 'لِمَ يُرِيدُونَ أَنْ يَتَعَلَّمُوا اللُّغَةَ الْعَرَبِيَّةَ ؟',
+            question_en: 'Why do they want to learn Arabic?',
+            question_bn: 'তারা কেন আরবি শিখতে চায়?',
+            correct_ar: 'لِيَفْهَمُوا كَلامَ اللهِ',
+            correct_en: 'To understand the speech of Allah',
+            correct_bn: 'আল্লাহর বাণী বুঝতে',
+            options_ar: ['لِيَفْهَمُوا كَلامَ اللهِ', 'لِيَتَكَلَّمُوا مَعَ النَّاسِ', 'لِيَعْمَلُوا فِي الدُّوَلِ الْعَرَبِيَّةِ'],
+            questionType: 'general'
+          }
+        ]
       },
     },
     {
@@ -182,7 +212,7 @@ Practice: Complete the pattern
             correct_ar: 'لَا ، لَا يَسْتَطِعْنَ لِأَنَّهُنَّ مَا تَعَلَّمْنَهَا جَيِّدًا',
             correct_en: 'No, they cannot because they did not learn it well.',
             correct_bn: 'না, তারা পারে না কারণ তারা এটি ভালভাবে শিখেনি।',
-            options_ar: ['نَعَمْ', 'لَا', 'أَحْيَانًا'],
+            options_ar: ['نَعَمْ ، يَسْتَطِعْنَ', 'لَا ، لَا يَسْتَطِعْنَ لِأَنَّهُنَّ مَا تَعَلَّمْنَهَا جَيِّدًا'],
             questionType: 'hal',
           },
           {
@@ -193,7 +223,7 @@ Practice: Complete the pattern
             correct_ar: 'يُرِيدُونَ أَنْ يُنْفِقُوا أَمْوَالَهُمْ فِي سَبِيلِ اللهِ',
             correct_en: 'They want to spend their wealth in the path of Allah.',
             correct_bn: 'তারা আল্লাহর পথে তাদের সম্পদ ব্যয় করতে চায়।',
-            options_ar: ['يُرِيدُونَ أَنْ يَكْنِزُوا', 'يُرِيدُونَ أَنْ يُنْفِقُوا', 'يُرِيدُونَ أَنْ يَبِيعُوا'],
+            options_ar: ['يُرِيدُونَ أَنْ يَكْنِزُوا أَمْوَالَهُمْ', 'يُرِيدُونَ أَنْ يُنْفِقُوا أَمْوَالَهُمْ فِي سَبِيلِ اللهِ', 'يُرِيدُونَ أَنْ يَبِيعُوا أَمْوَالَهُمْ'],
             questionType: 'general',
           },
           {

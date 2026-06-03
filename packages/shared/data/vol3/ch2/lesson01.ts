@@ -24,21 +24,18 @@ export const lesson01: LessonData = {
     },
     {
       id: '2',
-      type: 'verb_table',
+      type: 'application',
       titleEn: 'Verb Chains and Negative Forms',
       titleAr: 'سِلْسِلَةُ الأَفْعَالِ وَالصُّوَرُ السَّلْبِيَّةُ',
       titleBn: 'ক্রিয়ার ধারা ও নেতিবাচক রূপ',
       payload: {
-        sourceText: `
-Past/Present/Imperative chains from the lesson:
-بَدَأُوا ... بَحَثُوا ... هَرَبُوا ... شَعَرُوا ... فَقَدُوا ... سَخِرُوا ... أَغْلَقُوا ... حَرَّكُوا ... اِعْتَرَفُوا ... اِسْتَقَامُوا
-
-Negative future:
-لَنْ يَبْدَءُوا ... لَنْ يَبْحَثُوا ... لَنْ يَهْرُبُوا ... لَنْ يَشْعُرُوا ... لَنْ يَفْقِدُوا ... لَنْ يَسْخَرُوا ... لَنْ يُغْلِقُوا
-
-Negative past:
-لَمْ يَبْدَءُوا ... لَمْ يَبْحَثُوا ... لَمْ يَهْرُبُوا ... لَمْ يَشْعُرُوا ... لَمْ يَفْقِدُوا ... لَمْ يَسْخَرُوا ... لَمْ يُغْلِقُوا
-`.trim(),
+        instruction: 'Past/Present/Imperative chains and Negative forms:',
+        items: [
+          { emoji: '🔗', ar: 'بَدَأُوا ... بَحَثُوا ... هَرَبُوا ... شَعَرُوا', en: 'They started ... searched ... fled ... felt' },
+          { emoji: '🔗', ar: 'فَقَدُوا ... سَخِرُوا ... أَغْلَقُوا ... حَرَّكُوا ... اِعْتَرَفُوا', en: 'They lost ... mocked ... closed ... moved ... confessed' },
+          { emoji: '🚫', ar: 'لَنْ يَبْدَءُوا ... لَنْ يَبْحَثُوا ... لَنْ يَهْرُبُوا', en: 'They will never start ... search ... flee (Negative Future)' },
+          { emoji: '🚫', ar: 'لَمْ يَبْدَءُوا ... لَمْ يَبْحَثُوا ... لَمْ يَهْرُبُوا', en: 'They did not start ... search ... flee (Negative Past)' }
+        ]
       },
     },
     {
@@ -101,7 +98,7 @@ Negative past:
             correct_ar: 'تَرَكُوا الْبَيْعَ وَأَغْلَقُوا حَوَانِيتَهُمْ وَأَسْرَعُوا إِلَى الْمَسْجِدِ',
             correct_en: 'They left selling, closed their shops, and hurried to the mosque',
             correct_bn: 'তারা কেনাবেচা ছেড়ে দিয়ে, দোকান বন্ধ করে মসজিদে ছুটে গেল',
-            options_ar: ['تَرَكُوا الْبَيْعَ', 'نَامُوا', 'لَعِبُوا'],
+            options_ar: ['تَرَكُوا الْبَيْعَ وَأَغْلَقُوا حَوَانِيتَهُمْ وَأَسْرَعُوا إِلَى الْمَسْجِدِ', 'نَامُوا', 'لَعِبُوا'],
             questionType: 'general',
           },
           {
@@ -112,7 +109,7 @@ Negative past:
             correct_ar: 'لَا، لَنْ يَهْرُبُوا مِنَ الْمَوْتِ',
             correct_en: 'No, they will not escape death',
             correct_bn: 'না, তারা মৃত্যু থেকে পালাতে পারবে না',
-            options_ar: ['نَعَمْ', 'لَا', 'أَحْيَانًا'],
+            options_ar: ['نَعَمْ', 'لَا، لَنْ يَهْرُبُوا مِنَ الْمَوْتِ', 'أَحْيَانًا'],
             questionType: 'hal',
           },
         ],
@@ -127,7 +124,10 @@ Negative past:
       payload: {
         instruction: 'Read these core phrases again.',
         instructionBn: 'এই মূল বাক্যগুলো আবার পড়ো।',
-        text: 'قَالَ الْوَالِدُ: تَعَلَّمُوا الْعِلْمَ لَا لِتَكْسِبُوا ثَنَاءَ النَّاسِ.\nقَالَ الْعَالِمُ: عَلِّمُوا أَوْلَادَكُمْ أُمُورَ دِينِهِمْ.',
+        items: [
+          { emoji: '👨', ar: 'قَالَ الْوَالِدُ: تَعَلَّمُوا الْعِلْمَ لَا لِتَكْسِبُوا ثَنَاءَ النَّاسِ.', en: 'The father said: Learn knowledge not to earn people\'s praise.', bn: 'পিতা বললেন: মানুষের প্রশংসার জন্য নয়, জ্ঞান শেখো।' },
+          { emoji: '👳', ar: 'قَالَ الْعَالِمُ: عَلِّمُوا أَوْلَادَكُمْ أُمُورَ دِينِهِمْ.', en: 'The scholar said: Teach your children the matters of their religion.', bn: 'আলেম বললেন: আপনার সন্তানদের তাদের ধর্মের বিষয়গুলো শেখান।' }
+        ]
       },
     },
   ],

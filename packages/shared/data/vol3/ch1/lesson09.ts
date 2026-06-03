@@ -114,7 +114,12 @@ export const lesson09: LessonData = {
       titleBn: 'সক্রিয় কর্তৃপদ গঠন',
       payload: {
         instruction: 'Form the active participle for each verb in masculine singular, dual, and plural:',
-        text: 'النَّصْرُ: نَاصِرٌ - نَاصِرَانِ - نَاصِرُونَ\nالضَّرْبُ: ضَارِبٌ - ضَارِبَانِ - ضَارِبُونَ\nالقَتْلُ: قَاتِلٌ - قَاتِلَانِ - قَاتِلُونَ\nالشُّرْبُ: شَارِبٌ - شَارِبَانِ - شَارِبُونَ',
+        items: [
+          { emoji: '✌️', ar: 'النَّصْرُ: نَاصِرٌ - نَاصِرَانِ - نَاصِرُونَ', en: 'Helping: Helper - Two helpers - Helpers', bn: 'সাহায্য করা: সাহায্যকারী - দুই সাহায্যকারী - সাহায্যকারীরা' },
+          { emoji: '✊', ar: 'الضَّرْبُ: ضَارِبٌ - ضَارِبَانِ - ضَارِبُونَ', en: 'Striking: Striker - Two strikers - Strikers', bn: 'আঘাত করা: আঘাতকারী - দুই আঘাতকারী - আঘাতকারীরা' },
+          { emoji: '⚔️', ar: 'القَتْلُ: قَاتِلٌ - قَاتِلَانِ - قَاتِلُونَ', en: 'Killing: Killer - Two killers - Killers', bn: 'হত্যা করা: হত্যাকারী - দুই হত্যাকারী - হত্যাকারীরা' },
+          { emoji: '🥤', ar: 'الشُّرْبُ: شَارِبٌ - شَارِبَانِ - شَارِبُونَ', en: 'Drinking: Drinker - Two drinkers - Drinkers', bn: 'পান করা: পানকারী - দুই পানকারী - পানকারীরা' }
+        ]
       },
     },
     {
@@ -134,7 +139,7 @@ export const lesson09: LessonData = {
             correct_ar: 'الأَصْدِقَاءُ الصَّالِحُونَ نَاصِرُونَ',
             correct_en: 'The righteous friends are helpers',
             correct_bn: 'সৎ বন্ধুরা সাহায্যকারী',
-            options_ar: ['نَاصِرُونَ', 'يَنْصُرُونَ', 'انْتَصَرُوا'],
+            options_ar: ['الأَصْدِقَاءُ الصَّالِحُونَ نَاصِرُونَ', 'الأَصْدِقَاءُ يَنْصُرُونَ', 'الأَصْدِقَاءُ انْتَصَرُوا'],
             questionType: 'hal',
           },
           {
@@ -145,7 +150,7 @@ export const lesson09: LessonData = {
             correct_ar: 'أَشْرَبُ جَالِسًا',
             correct_en: 'I drink sitting',
             correct_bn: 'আমি বসে পান করি',
-            options_ar: ['جَالِسًا', 'قَائِمًا', 'نَائِمًا'],
+            options_ar: ['أَشْرَبُ جَالِسًا', 'أَشْرَبُ قَائِمًا', 'أَشْرَبُ نَائِمًا'],
             questionType: 'hal',
           },
           {
@@ -156,7 +161,7 @@ export const lesson09: LessonData = {
             correct_ar: 'الْمُعَلِّمُ يُعَلِّمُ الطُّلَّابَ',
             correct_en: 'The teacher teaches students',
             correct_bn: 'শিক্ষক ছাত্রদের শেখান',
-            options_ar: ['الْمُعَلِّمُ', 'الْيُعَلِّمُ', 'يُعَلِّمُ'],
+            options_ar: ['الْمُعَلِّمُ يُعَلِّمُ الطُّلَّابَ', 'الْيُعَلِّمُ يُعَلِّمُ الطُّلَّابَ', 'يُعَلِّمُ الطُّلَّابَ'],
             questionType: 'general',
           },
         ],
@@ -180,7 +185,7 @@ export const lesson09: LessonData = {
             correct_ar: 'اِسْمٌ يَدُلُّ عَلَى مَنْ قَامَ بِالفِعْلِ',
             correct_en: 'A noun that indicates who performs the action',
             correct_bn: 'একটি বিশেষ্য যা কর্মকর্তা নির্দেশ করে',
-            options_ar: ['اِسْمٌ يَدُلُّ عَلَى الفِعْلِ', 'اِسْمٌ يَدُلُّ عَلَى الفَاعِلِ', 'فِعْلٌ ماضٍ'],
+            options_ar: ['اِسْمٌ يَدُلُّ عَلَى الفِعْلِ', 'اِسْمٌ يَدُلُّ عَلَى مَنْ قَامَ بِالفِعْلِ', 'فِعْلٌ ماضٍ'],
             questionType: 'hal',
           },
           {
@@ -191,7 +196,7 @@ export const lesson09: LessonData = {
             correct_ar: 'فَاعِلٌ للمُذَكَّرِ وَ فَاعِلَةٌ للمُؤَنَّثِ',
             correct_en: 'فَاعِلٌ for masculine, فَاعِلَةٌ for feminine',
             correct_bn: 'পুংলিঙ্গে فَاعِلٌ, স্ত্রীলিঙ্গে فَاعِلَةٌ',
-            options_ar: ['مُفْعِلٌ', 'فَاعِلٌ', 'مُفَاعِلٌ'],
+            options_ar: ['مُفْعِلٌ للمُذَكَّرِ', 'فَاعِلٌ للمُذَكَّرِ وَ فَاعِلَةٌ للمُؤَنَّثِ', 'مُفَاعِلٌ للمُذَكَّرِ'],
             questionType: 'general',
           },
           {

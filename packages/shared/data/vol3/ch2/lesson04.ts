@@ -121,7 +121,13 @@ export const lesson04: LessonData = {
       payload: {
         instruction: 'Read the subjunctive examples and compare them with the indicative forms.',
         instructionBn: 'নসবের উদাহরণগুলো পড়ো এবং সেগুলোকে সাধারণ রূপের সাথে তুলনা করো।',
-        text: 'لَنْ يَدْعُوَ، لَنْ يَبْكِيَ، لَنْ يَنْسَى، لِيُصَلِّيَ، لِيَشْتَرِيَ.',
+        items: [
+          { emoji: '🤲', ar: 'لَنْ يَدْعُوَ', en: 'He will never call', bn: 'সে কখনো ডাকবে না' },
+          { emoji: '😢', ar: 'لَنْ يَبْكِيَ', en: 'He will never cry', bn: 'সে কখনো কাঁদবে না' },
+          { emoji: '🤷', ar: 'لَنْ يَنْسَى', en: 'He will never forget', bn: 'সে কখনো ভুলবে না' },
+          { emoji: '🕌', ar: 'لِيُصَلِّيَ', en: 'In order to pray', bn: 'সালাত পড়ার জন্য' },
+          { emoji: '🛒', ar: 'لِيَشْتَرِيَ', en: 'In order to buy', bn: 'কেনার জন্য' }
+        ]
       },
     },
   ],

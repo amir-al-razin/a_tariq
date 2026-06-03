@@ -184,28 +184,43 @@ export const lesson05: LessonData = {
       titleAr: 'اِخْتِبَارٌ: اِمْلَأِ الْفَرَاغَ',
       titleBn: 'মূল্যায়ন: শূন্যস্থান পূরণ করো',
       payload: {
-        exercises: {
-          blanks: [
-            {
-              id: 'q1',
-              question: 'الْمُجَاهِدُونَ _______ أَن _______ مِنَ اللهِ الْجَنَّةِ',
-              options: ['يُرِيدُونَ / يَشْتَرُوا', 'يُرِيدُ / يَشْتَرِي', 'يُرِدْنَ / يَشْتَرِينَ'],
-              correctAnswer: 'يُرِيدُونَ / يَشْتَرُوا',
-            },
-            {
-              id: 'q2',
-              question: 'يَجِبُ عَلَى الْأُمَّهَاتِ أَنْ _______ أَوْلَادَهُنَّ عَلَى الصَّلَاحِ',
-              options: ['يُرَبِّينَ', 'يُرَبُّوا', 'يُرَبِّيَ'],
-              correctAnswer: 'يُرَبِّينَ',
-            },
-            {
-              id: 'q3',
-              question: 'أَيُّهَا الْمُسْلِمُونَ ! _______ بَيْتَ اللهِ',
-              options: ['ابْنُوا', 'ابْنِ', 'ابْنِينَ'],
-              correctAnswer: 'ابْنُوا',
-            },
-          ],
-        },
+        instruction: 'Fill in the blanks with the correct verb form:',
+        instructionBn: 'সঠিক ক্রিয়া রূপ দিয়ে শূন্যস্থান পূরণ করো:',
+        questions: [
+          {
+            emoji: '📝',
+            question_ar: 'الْمُجَاهِدُونَ _______ أَن _______ مِنَ اللهِ الْجَنَّةِ',
+            question_en: 'The strivers ____ to ____ paradise from Allah',
+            question_bn: 'মুজাহিদরা আল্লাহর কাছ থেকে জান্নাত ____ ____',
+            correct_ar: 'يُرِيدُونَ / يَشْتَرُوا',
+            correct_en: 'want / buy',
+            correct_bn: 'চায় / কিনতে',
+            options_ar: ['يُرِيدُونَ / يَشْتَرُوا', 'يُرِيدُ / يَشْتَرِي', 'يُرِدْنَ / يَشْتَرِينَ'],
+            questionType: 'general'
+          },
+          {
+            emoji: '📝',
+            question_ar: 'يَجِبُ عَلَى الْأُمَّهَاتِ أَنْ _______ أَوْلَادَهُنَّ عَلَى الصَّلَاحِ',
+            question_en: 'Mothers must ____ their children upon righteousness',
+            question_bn: 'মায়েদের অবশ্যই তাদের সন্তানদের নেক কাজের উপর ____',
+            correct_ar: 'يُرَبِّينَ',
+            correct_en: 'raise',
+            correct_bn: 'বড় করা',
+            options_ar: ['يُرَبِّينَ', 'يُرَبُّوا', 'يُرَبِّيَ'],
+            questionType: 'general'
+          },
+          {
+            emoji: '📝',
+            question_ar: 'أَيُّهَا الْمُسْلِمُونَ ! _______ بَيْتَ اللهِ',
+            question_en: 'O Muslims! ____ the house of Allah',
+            question_bn: 'হে মুসলিমরা! আল্লাহর ঘর ____',
+            correct_ar: 'ابْنُوا',
+            correct_en: 'Build',
+            correct_bn: 'বানাও',
+            options_ar: ['ابْنُوا', 'ابْنِ', 'ابْنِينَ'],
+            questionType: 'general'
+          }
+        ]
       },
     },
     {
