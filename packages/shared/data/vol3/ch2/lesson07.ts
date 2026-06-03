@@ -185,34 +185,54 @@ export const lesson07: LessonData = {
       titleAr: 'اِخْتِبَارٌ: تَمَارِينُ التَّصْرِيفِ',
       titleBn: 'মূল্যায়ন: রূপান্তর অনুশীলন',
       payload: {
-        exercises: {
-          blanks: [
-            {
-              id: 'q1',
-              question: 'كُنْ صَادِقًا -> (أَنْتُمْ) كُونُوا _______',
-              options: ['صَادِقِينَ', 'صَادِقُونَ', 'صَادِقَاتٍ'],
-              correctAnswer: 'صَادِقِينَ',
-            },
-            {
-              id: 'q2',
-              question: 'كَانَ صَالِحًا -> (أَنْتُنَّ) كُنَّ _______',
-              options: ['صَالِحَاتٍ', 'صَالِحَةً', 'صَالِحُونَ'],
-              correctAnswer: 'صَالِحَاتٍ',
-            },
-            {
-              id: 'q3',
-              question: 'طَلَبَتِ الْأُمُّ مِنْ بَنَاتِهَا أَنْ _______ هَذَا الْعَمَلَ',
-              options: ['يُتْمِمْنَ', 'يُتِمُّوا', 'يُتِمَّ'],
-              correctAnswer: 'يُتْمِمْنَ',
-            },
-            {
-              id: 'q4',
-              question: 'هُوَ يُكَلِّمُ النَّاسَ مُبْتَسِمًا -> (هُمْ) يُكَلِّمُونَ النَّاسَ _______',
-              options: ['مُبْتَسِمِينَ', 'مُبْتَسِمُونَ', 'مُبْتَسِمًا'],
-              correctAnswer: 'مُبْتَسِمِينَ',
-            },
-          ],
-        },
+        instruction: 'Choose the correct form to complete the sentence:',
+        instructionBn: 'বাক্যটি সম্পূর্ণ করতে সঠিক রূপটি বেছে নিন:',
+        questions: [
+          {
+            emoji: '📝',
+            question_ar: 'كُنْ صَادِقًا -> (أَنْتُمْ) كُونُوا _______',
+            question_en: 'Be truthful -> (You all m.) Be _______',
+            question_bn: 'সত্যবাদী হও -> (তোমরা সবাই) _______ হও',
+            correct_ar: 'صَادِقِينَ',
+            correct_en: 'truthful',
+            correct_bn: 'সত্যবাদী',
+            options_ar: ['صَادِقِينَ', 'صَادِقُونَ', 'صَادِقَاتٍ'],
+            questionType: 'general'
+          },
+          {
+            emoji: '📝',
+            question_ar: 'كَانَ صَالِحًا -> (أَنْتُنَّ) كُنَّ _______',
+            question_en: 'He was righteous -> (You all f.) Be _______',
+            question_bn: 'সে নেককার ছিল -> (তোমরা স্ত্রী) _______ হও',
+            correct_ar: 'صَالِحَاتٍ',
+            correct_en: 'righteous',
+            correct_bn: 'নেককার',
+            options_ar: ['صَالِحَاتٍ', 'صَالِحَةً', 'صَالِحُونَ'],
+            questionType: 'general'
+          },
+          {
+            emoji: '📝',
+            question_ar: 'طَلَبَتِ الْأُمُّ مِنْ بَنَاتِهَا أَنْ _______ هَذَا الْعَمَلَ',
+            question_en: 'The mother asked her daughters to _______ this work',
+            question_bn: 'মা তার মেয়েদের এই কাজটি _______ করতে বললেন',
+            correct_ar: 'يُتْمِمْنَ',
+            correct_en: 'complete',
+            correct_bn: 'সম্পূর্ণ',
+            options_ar: ['يُتْمِمْنَ', 'يُتِمُّوا', 'يُتِمَّ'],
+            questionType: 'general'
+          },
+          {
+            emoji: '📝',
+            question_ar: 'هُوَ يُكَلِّمُ النَّاسَ مُبْتَسِمًا -> (هُمْ) يُكَلِّمُونَ النَّاسَ _______',
+            question_en: 'He speaks to people smiling -> (They) speak to people _______',
+            question_bn: 'সে হাসিমুখে মানুষের সাথে কথা বলে -> (তারা) হাসিমুখে মানুষের সাথে কথা বলে',
+            correct_ar: 'مُبْتَسِمِينَ',
+            correct_en: 'smiling',
+            correct_bn: 'হাসিমুখে',
+            options_ar: ['مُبْتَسِمِينَ', 'مُبْتَسِمُونَ', 'مُبْتَسِمًا'],
+            questionType: 'general'
+          }
+        ]
       },
     },
   ],

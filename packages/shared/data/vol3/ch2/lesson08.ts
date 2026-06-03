@@ -163,22 +163,32 @@ export const lesson08: LessonData = {
       titleAr: 'اِخْتِبَارٌ: إِعَادَةُ كِتَابَةِ الْجُمَلِ',
       titleBn: 'মূল্যায়ন: বাক্যগুলো পুনরায় লেখো',
       payload: {
-        exercises: {
-          blanks: [
-            {
-              id: 'q1',
-              question: 'خَرَجَ الرِّجَالُ مِنَ الْمَسْجِدِ مُبْتَسِمِينَ -> خَرَجَ الرِّجَالُ مِنَ الْمَسْجِدِ _______',
-              options: ['وَهُمْ مُبْتَسِمُونَ', 'وَهُمْ مُبْتَسِمِينَ', 'وَهُوَ مُبْتَسِمٌ'],
-              correctAnswer: 'وَهُمْ مُبْتَسِمُونَ',
-            },
-            {
-              id: 'q2',
-              question: 'رَأَيْتُ الطَّالِبَاتِ مُشْتَرِيَاتٍ كُتُبًا -> رَأَيْتُ الطَّالِبَاتِ _______',
-              options: ['وَهُنَّ مُشْتَرِيَاتٌ', 'وَهُنَّ مُشْتَرِيَاتٍ', 'وَهُمْ مُشْتَرُونَ'],
-              correctAnswer: 'وَهُنَّ مُشْتَرِيَاتٌ',
-            },
-          ],
-        },
+        instruction: 'Rewrite the Haal using a nominal sentence (Waw Al-Haal):',
+        instructionBn: 'নামবাচক বাক্য (ওয়াও আল-হাল) ব্যবহার করে হাল পুনরায় লিখুন:',
+        questions: [
+          {
+            emoji: '📝',
+            question_ar: 'خَرَجَ الرِّجَالُ مِنَ الْمَسْجِدِ مُبْتَسِمِينَ -> خَرَجَ الرِّجَالُ مِنَ الْمَسْجِدِ _______',
+            question_en: 'The men left the mosque smiling -> The men left the mosque _______',
+            question_bn: 'লোকেরা হাসিমুখে মসজিদ থেকে বের হলো -> লোকেরা মসজিদ থেকে বের হলো _______',
+            correct_ar: 'وَهُمْ مُبْتَسِمُونَ',
+            correct_en: 'while they were smiling',
+            correct_bn: 'যখন তারা হাসছিল',
+            options_ar: ['وَهُمْ مُبْتَسِمُونَ', 'وَهُمْ مُبْتَسِمِينَ', 'وَهُوَ مُبْتَسِمٌ'],
+            questionType: 'general'
+          },
+          {
+            emoji: '📝',
+            question_ar: 'رَأَيْتُ الطَّالِبَاتِ مُشْتَرِيَاتٍ كُتُبًا -> رَأَيْتُ الطَّالِبَاتِ _______',
+            question_en: 'I saw the female students buying books -> I saw the female students _______',
+            question_bn: 'আমি ছাত্রীদের বই কিনতে দেখলাম -> আমি ছাত্রীদের দেখলাম _______',
+            correct_ar: 'وَهُنَّ مُشْتَرِيَاتٌ',
+            correct_en: 'while they were buying',
+            correct_bn: 'যখন তারা কিনছিল',
+            options_ar: ['وَهُنَّ مُشْتَرِيَاتٌ', 'وَهُنَّ مُشْتَرِيَاتٍ', 'وَهُمْ مُشْتَرُونَ'],
+            questionType: 'general'
+          }
+        ]
       },
     },
   ],
