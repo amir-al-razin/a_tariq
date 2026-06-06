@@ -7,7 +7,7 @@ import { VerbTableRow } from '@tariq/shared';
 interface Props {
     isDark: boolean;
     C: Record<string, string>;
-    payload?: { verbTable?: VerbTableRow[]; verbTense?: 'past' | 'present' | 'imperative'; instruction?: string; sourceText?: string; text?: string; isPlural?: boolean; };
+    payload?: { verbTable?: VerbTableRow[]; verbTense?: 'past' | 'present' | 'imperative'; instruction?: string; sourceText?: string; text?: string; isPlural?: boolean; isDual?: boolean; };
     onProgress: (v: number) => void;
     onComplete: () => void;
 }
@@ -18,7 +18,16 @@ const TENSE_LABELS = {
     imperative: { labelKey: 'verbTable.tense.imperative', ar: 'الْأَمْرُ وَالنَّهْيُ' },
 };
 
-const getColHeaders = (isPlural?: boolean) => {
+const getColHeaders = (isPlural?: boolean, isDual?: boolean) => {
+    if (isDual) {
+        return [
+            { ar: 'هُمَا', labelKey: 'verbTable.pronoun.theyM' }, // Using theyM as base translation and we'll append (Dual) in UI if needed, or rely on Arabic
+            { ar: 'هُمَا', labelKey: 'verbTable.pronoun.theyF' },
+            { ar: 'أَنْتُمَا', labelKey: 'verbTable.pronoun.youM' },
+            { ar: 'أَنْتُمَا', labelKey: 'verbTable.pronoun.youF' },
+            { ar: 'نَحْنُ', labelKey: 'verbTable.pronoun.we' },
+        ];
+    }
     if (isPlural) {
         return [
             { ar: 'هُمْ', labelKey: 'verbTable.pronoun.theyM' },
@@ -44,7 +53,8 @@ export const VerbTableView: React.FC<Props> = ({ isDark, C, payload, onProgress,
     const tense = payload?.verbTense ?? 'past';
     const tenseLabel = TENSE_LABELS[tense];
     const isPlural = payload?.isPlural ?? false;
-    const COL_HEADERS = getColHeaders(isPlural);
+    const isDual = payload?.isDual ?? false;
+    const COL_HEADERS = getColHeaders(isPlural, isDual);
 
     useEffect(() => {
         onProgress(0);
@@ -53,11 +63,43 @@ export const VerbTableView: React.FC<Props> = ({ isDark, C, payload, onProgress,
     if (rows.length === 0) {
         const fallbackText = payload?.sourceText || payload?.text || payload?.instruction;
         if (fallbackText) {
+            const lines = fallbackText.split('\n');
             return (
-                <View style={{ width: '100%', paddingVertical: 8 }}>
-                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral800, textAlign: 'right', lineHeight: 30 }}>
-                        {fallbackText}
-                    </Text>
+                <View style={{ width: '100%', gap: 16 }}>
+                    {payload?.instruction && (
+                        <View style={{ backgroundColor: isDark ? '#0D775F22' : '#D1FAF0', borderRadius: 8, padding: 10 }}>
+                            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 12, color: isDark ? C.primary400 : C.primary700, textAlign: 'center' }}>
+                                {payload.instruction}
+                            </Text>
+                        </View>
+                    )}
+                    {payload?.verbTense && (
+                        <View style={{ alignItems: 'center', marginBottom: 4 }}>
+                            <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.primary400 : C.primary700 }}>
+                                {tenseLabel.ar}
+                            </Text>
+                            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: isDark ? C.neutral300 : C.neutral600 }}>
+                                {t(tenseLabel.labelKey)}
+                            </Text>
+                        </View>
+                    )}
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -24 }} contentContainerStyle={{ paddingHorizontal: 24 }}>
+                        <View style={{ gap: 12, paddingBottom: 8, minWidth: '100%' }}>
+                            {lines.map((line, idx) => {
+                                if (!line.trim()) return null;
+                                const parts = line.split('-').map(p => p.trim()).filter(Boolean);
+                                return (
+                                    <View key={idx} style={{ flexDirection: 'row-reverse', justifyContent: 'center', gap: 8 }}>
+                                        {parts.map((part, pIdx) => (
+                                            <View key={pIdx} style={{ flex: 1, minWidth: 80, backgroundColor: isDark ? C.neutral800 : '#fff', borderRadius: 8, borderWidth: 1, borderColor: isDark ? C.neutral700 : C.neutral200, paddingVertical: 10, paddingHorizontal: 12, alignItems: 'center', justifyContent: 'center' }}>
+                                                <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 16, color: isDark ? C.neutral100 : C.neutral900, textAlign: 'center' }}>{part}</Text>
+                                            </View>
+                                        ))}
+                                    </View>
+                                );
+                            })}
+                        </View>
+                    </ScrollView>
                 </View>
             );
         }
@@ -117,7 +159,7 @@ export const VerbTableView: React.FC<Props> = ({ isDark, C, payload, onProgress,
                                 <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 15, color: isDark ? C.primary400 : C.primary700 }}>{row.root}</Text>
                                 <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 9, color: textSub, textAlign: 'center' }}>{t_content(row.meaning, row.meaningBn)}</Text>
                             </View>
-                            {(isPlural 
+                            {(isDual || isPlural 
                                 ? [row.theyM, row.theyF, row.youPluralM, row.youPluralF, row.we] 
                                 : [row.he, row.she, row.youM, row.youF, row.i]
                             ).map((form, i) => (
