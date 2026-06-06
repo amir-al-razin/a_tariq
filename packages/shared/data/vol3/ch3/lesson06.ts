@@ -62,21 +62,20 @@ export const lesson06: LessonData = {
     },
     {
       id: '3',
-      type: 'verb_table',
+      type: 'masdar_factory',
       titleEn: 'Verb Forms Infi\'aal and Tafaa\'ul',
       titleAr: 'سِلْسِلَةُ الْأَفْعَالِ',
       titleBn: 'ইনফিআ\'ল ও তাফাউল ক্রিয়ার রূপ',
       payload: {
-        verbTense: 'past',
-        sourceText: `
-اِنْفَتَحَ - يَنْفَتِحُ - اِنْفَتِحْ - لَا تَنْفَتِحْ
-اِنْكَسَرَ - يَنْكَسِرُ - اِنْكَسِرْ - لَا تَنْكَسِرْ
-اِنْكَشَفَ - يَنْكَشِفُ - اِنْكَشِفْ - لَا تَنْكَشِفْ
-تَنَاوَمَ - يَتَنَاوَمُ - تَنَاوَمْ - لَا تَتَنَاوَمْ
-تَمَارَضَ - يَتَمَارَضُ - تَمَارَضْ - لَا تَتَمَارَضْ
-تَشَاوَرَ - يَتَشَاوَرُ - تَشَاوَرْ - لَا تَتَشَاوَرْ
-تَقَاتَلَ - يَتَقَاتَلُ - تَقَاتَلْ - لَا تَتَقَاتَلْ
-`.trim()
+        masdarRows: [
+          { masdar: 'اِنْفِتَاح', masdarEn: 'Opening', masdarBn: 'খোলা', past: 'اِنْفَتَحَ', present: 'يَنْفَتِحُ', imperative: 'اِنْفَتِحْ', prohibitive: 'لَا تَنْفَتِحْ', baab: 'Infi\'aal' },
+          { masdar: 'اِنْكِسَار', masdarEn: 'Breaking', masdarBn: 'ভাঙা', past: 'اِنْكَسَرَ', present: 'يَنْكَسِرُ', imperative: 'اِنْكَسِرْ', prohibitive: 'لَا تَنْكَسِرْ', baab: 'Infi\'aal' },
+          { masdar: 'اِنْكِشَاف', masdarEn: 'Revealing', masdarBn: 'প্রকাশিত হওয়া', past: 'اِنْكَشَفَ', present: 'يَنْكَشِفُ', imperative: 'اِنْكَشِفْ', prohibitive: 'لَا تَنْكَشِفْ', baab: 'Infi\'aal' },
+          { masdar: 'تَنَاوُم', masdarEn: 'Feigning sleep', masdarBn: 'ঘুমের ভান করা', past: 'تَنَاوَمَ', present: 'يَتَنَاوَمُ', imperative: 'تَنَاوَمْ', prohibitive: 'لَا تَتَنَاوَمْ', baab: 'Tafaa\'ul' },
+          { masdar: 'تَمَارُض', masdarEn: 'Feigning sickness', masdarBn: 'অসুস্থতার ভান করা', past: 'تَمَارَضَ', present: 'يَتَمَارَضُ', imperative: 'تَمَارَضْ', prohibitive: 'لَا تَتَمَارَضْ', baab: 'Tafaa\'ul' },
+          { masdar: 'تَشَاوُر', masdarEn: 'Consulting', masdarBn: 'পরামর্শ করা', past: 'تَشَاوَرَ', present: 'يَتَشَاوَرُ', imperative: 'تَشَاوَرْ', prohibitive: 'لَا تَتَشَاوَرْ', baab: 'Tafaa\'ul' },
+          { masdar: 'تَقَاتُل', masdarEn: 'Fighting', masdarBn: 'লড়াই করা', past: 'تَقَاتَلَ', present: 'يَتَقَاتَلُ', imperative: 'تَقَاتَلْ', prohibitive: 'لَا تَتَقَاتَلْ', baab: 'Tafaa\'ul' }
+        ]
       }
     },
     {
