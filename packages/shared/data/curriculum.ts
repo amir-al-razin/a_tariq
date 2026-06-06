@@ -59,6 +59,7 @@ export interface QAItem {
     options_ar: string[];
     /** 'hal' = yes/no (هَلْ), 'a_am' = either/or (أَ...أَمْ), 'general' = open */
     questionType?: 'hal' | 'a_am' | 'general';
+    explanation?: string;
 }
 
 /** A single node in a Tarkeeb (sentence-diagram) tree */

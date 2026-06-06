@@ -103,6 +103,14 @@ export const QAndAView: React.FC<Props> = ({ isDark, C, payload, onProgress, onC
                     </Text>
                     <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral800 }}>{q.correct_ar}</Text>
                     <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral600 }}>{t_content(q.correct_en, q.correct_bn)}</Text>
+                    {q.explanation && (
+                        <View style={{ marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }}>
+                            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral300 : C.neutral700 }}>
+                                <Text style={{ fontFamily: 'Lexend_600SemiBold', color: isDark ? C.neutral100 : C.neutral900 }}>💡 {t('qanda.hint') ?? 'Hint:'} </Text>
+                                {q.explanation}
+                            </Text>
+                        </View>
+                    )}
                 </View>
             )}
 

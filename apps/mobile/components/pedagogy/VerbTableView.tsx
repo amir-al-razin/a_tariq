@@ -7,7 +7,7 @@ import { VerbTableRow } from '@tariq/shared';
 interface Props {
     isDark: boolean;
     C: Record<string, string>;
-    payload?: { verbTable?: VerbTableRow[]; verbTense?: 'past' | 'present' | 'imperative'; instruction?: string; sourceText?: string; text?: string; };
+    payload?: { verbTable?: VerbTableRow[]; verbTense?: 'past' | 'present' | 'imperative'; instruction?: string; sourceText?: string; text?: string; isPlural?: boolean; };
     onProgress: (v: number) => void;
     onComplete: () => void;
 }
@@ -18,13 +18,24 @@ const TENSE_LABELS = {
     imperative: { labelKey: 'verbTable.tense.imperative', ar: 'الْأَمْرُ وَالنَّهْيُ' },
 };
 
-const COL_HEADERS = [
-    { ar: 'هُوَ', labelKey: 'verbTable.pronoun.he' },
-    { ar: 'هِيَ', labelKey: 'verbTable.pronoun.she' },
-    { ar: 'أَنْتَ', labelKey: 'verbTable.pronoun.youM' },
-    { ar: 'أَنْتِ', labelKey: 'verbTable.pronoun.youF' },
-    { ar: 'أَنَا', labelKey: 'verbTable.pronoun.i' },
-];
+const getColHeaders = (isPlural?: boolean) => {
+    if (isPlural) {
+        return [
+            { ar: 'هُمْ', labelKey: 'verbTable.pronoun.theyM' },
+            { ar: 'هُنَّ', labelKey: 'verbTable.pronoun.theyF' },
+            { ar: 'أَنْتُمْ', labelKey: 'verbTable.pronoun.youPluralM' },
+            { ar: 'أَنْتُنَّ', labelKey: 'verbTable.pronoun.youPluralF' },
+            { ar: 'نَحْنُ', labelKey: 'verbTable.pronoun.we' },
+        ];
+    }
+    return [
+        { ar: 'هُوَ', labelKey: 'verbTable.pronoun.he' },
+        { ar: 'هِيَ', labelKey: 'verbTable.pronoun.she' },
+        { ar: 'أَنْتَ', labelKey: 'verbTable.pronoun.youM' },
+        { ar: 'أَنْتِ', labelKey: 'verbTable.pronoun.youF' },
+        { ar: 'أَنَا', labelKey: 'verbTable.pronoun.i' },
+    ];
+};
 
 export const VerbTableView: React.FC<Props> = ({ isDark, C, payload, onProgress, onComplete }) => {
     const { t } = useTranslation();
@@ -32,6 +43,8 @@ export const VerbTableView: React.FC<Props> = ({ isDark, C, payload, onProgress,
     const rows = payload?.verbTable ?? [];
     const tense = payload?.verbTense ?? 'past';
     const tenseLabel = TENSE_LABELS[tense];
+    const isPlural = payload?.isPlural ?? false;
+    const COL_HEADERS = getColHeaders(isPlural);
 
     useEffect(() => {
         onProgress(0);
@@ -104,9 +117,12 @@ export const VerbTableView: React.FC<Props> = ({ isDark, C, payload, onProgress,
                                 <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 15, color: isDark ? C.primary400 : C.primary700 }}>{row.root}</Text>
                                 <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 9, color: textSub, textAlign: 'center' }}>{t_content(row.meaning, row.meaningBn)}</Text>
                             </View>
-                            {[row.he, row.she, row.youM, row.youF, row.i].map((form, i) => (
+                            {(isPlural 
+                                ? [row.theyM, row.theyF, row.youPluralM, row.youPluralF, row.we] 
+                                : [row.he, row.she, row.youM, row.youF, row.i]
+                            ).map((form, i) => (
                                 <View key={i} style={{ width: 85, backgroundColor: cellBg, padding: 6, alignItems: 'center', justifyContent: 'center', borderRightWidth: i < 4 ? 1 : 0, borderRightColor: border }}>
-                                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 14, color: textMain, textAlign: 'center' }}>{form}</Text>
+                                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 14, color: textMain, textAlign: 'center' }}>{form || '-'}</Text>
                                 </View>
                             ))}
                         </View>

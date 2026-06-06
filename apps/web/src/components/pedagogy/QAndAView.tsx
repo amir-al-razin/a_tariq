@@ -180,6 +180,14 @@ export const QAndAView: React.FC<Props> = ({ payload, onProgress, onComplete, ac
           <div className="font-english text-sm text-neutral-600 dark:text-neutral-400">
             {q.correct_en}
           </div>
+          {q.explanation && (
+            <div className="mt-3 pt-3 border-t border-black/10 dark:border-white/10 font-english text-sm text-neutral-700 dark:text-neutral-300">
+              <span className="font-semibold text-neutral-900 dark:text-neutral-100 mr-1">
+                💡 {m['qanda.hint']?.() ?? 'Hint:'}
+              </span>
+              {q.explanation}
+            </div>
+          )}
         </div>
       )}
 

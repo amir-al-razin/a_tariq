@@ -138,7 +138,8 @@ export const lesson02: LessonData = {
           {
             emoji: '🏙️',
             question_ar: 'لَيْسَتْ هَذِهِ الْمَدِينَةُ بِـ ... مِن تِلْكَ الْمَدِينَةِ .',
-            question_en: 'This city is not [...] than that city. (Hint: majrur with fatha due to diptote)',
+            question_en: 'This city is not [...] than that city.',
+            explanation: 'Comparatives take a Fathah instead of Kasrah here.',
             question_bn: 'এই শহরটি ওই শহরের চেয়ে [...] নয়।',
             correct_ar: 'أَكْبَرَ',
             correct_en: 'bigger',
@@ -149,7 +150,8 @@ export const lesson02: LessonData = {
           {
             emoji: '🏙️',
             question_ar: 'لَيْسَتْ هَذِهِ الْمَدِينَةُ بِـ ... الْمُدُنِ .',
-            question_en: 'This city is not [...] of cities. (Hint: majrur with kasra due to mudaf)',
+            question_en: 'This city is not [...] of cities.',
+            explanation: 'It takes a Kasrah here because it is Mudaf/Possessed.',
             question_bn: 'এই শহরটি শহরগুলোর মধ্যে [...] নয়।',
             correct_ar: 'أَكْبَرِ',
             correct_en: 'the biggest',
