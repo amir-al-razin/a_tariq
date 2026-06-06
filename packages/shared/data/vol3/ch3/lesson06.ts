@@ -80,21 +80,22 @@ export const lesson06: LessonData = {
     },
     {
       id: '4',
-      type: 'paragraph',
+      type: 'grammar_rule',
       titleEn: 'Grammar Explanation',
       titleAr: 'شَرْحُ النَّحْوِ',
       titleBn: 'ব্যাকরণ ব্যাখ্যা',
       payload: {
-        paragraphs: [
+        rules: [
           {
-            titleEn: 'Mutuality in Bab At-Tafaa\'ul',
-            titleBn: 'বাবে তাফাউল এ পারস্পরিকতা',
-            lines: [
-              'إِنْ قُلْتَ : تَحَادَثَ الرَّجُلُ فَأَنْتَ مُخْطِئٌ، لِأَنَّ هَذَا الْفِعْلَ يَطْلُبُ فَاعِلَيْنِ أَوْ أَكْثَرَ .',
-              'فَيَجِبُ أَنْ تَقُولَ : تَحَادَثَ الرَّجُلَانِ . أَرْجُو أَنَّكَ قَدْ فَهِمْتَ الْأَمْرَ فَهْمًا جَيِّدًا .'
-            ],
-            translationEn: 'If you say: "The man conversed (mutually)", you are wrong, because this verb requires two subjects or more. So you must say: "The two men conversed". I hope that you have understood the matter very well.',
-            translationBn: 'যদি তুমি বলো: "লোকটি (পারস্পরিক) কথা বলল", তবে তুমি ভুল করছ, কারণ এই ক্রিয়াপদে দুই বা ততোধিক কর্তার প্রয়োজন হয়। তাই তোমাকে অবশ্যই বলতে হবে: "দুজন লোক কথা বলল"। আমি আশা করি তুমি বিষয়টি ভালোভাবে বুঝতে পেরেছ।'
+            label: 'Mutuality in Bab At-Tafaa\'ul',
+            labelBn: 'বাবে তাফাউল এ পারস্পরিকতা',
+            arabic: 'تَحَادَثَ الرَّجُلَانِ',
+            romanized: 'taḥādatha ar-rajulāni',
+            meaning: 'Verbs in this form require two or more subjects. If you say: "The man conversed (تَحَادَثَ الرَّجُلُ)", you are wrong. You must say: "The two men conversed (تَحَادَثَ الرَّجُلَانِ)".',
+            meaningBn: 'এই ফর্মে ক্রিয়াপদের জন্য দুই বা ততোধিক কর্তার প্রয়োজন। যদি তুমি বলো: "تَحَادَثَ الرَّجُلُ", তবে তা ভুল। তোমাকে অবশ্যই বলতে হবে: "تَحَادَثَ الرَّجُلَانِ"।',
+            examples: [
+              { ar: 'تَحَادَثَ الرَّجُلَانِ', en: 'The two men conversed', bn: 'দুজন লোক কথা বলল' }
+            ]
           }
         ]
       }
