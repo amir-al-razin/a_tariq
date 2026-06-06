@@ -79,9 +79,9 @@ export const MasdarFactoryView: React.FC<Props> = ({ payload, onProgress, accent
 
       {/* Horizontally scrollable table */}
       <div className="w-full overflow-x-auto pb-1 scrollbar-hide">
-        <div className="flex flex-col gap-0 min-w-max">
+        <div className="flex flex-col gap-4 min-w-max">
           {/* ── Column headers ── */}
-          <div className="flex flex-row rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-700 mb-0.5">
+          <div className="flex flex-row rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-700">
             {/* Masdar header cell */}
             <div className="w-[110px] bg-neutral-200 dark:bg-neutral-700 p-2 flex flex-col items-center justify-center border-r border-neutral-200 dark:border-neutral-700 shrink-0">
               <span className="font-arabic-semibold text-[13px]" style={{ color: accent700 }}>
@@ -96,7 +96,7 @@ export const MasdarFactoryView: React.FC<Props> = ({ payload, onProgress, accent
             {COLS.map((col, ci) => (
               <div
                 key={col.key}
-                className={`w-[90px] bg-neutral-200 dark:bg-neutral-700 p-2 flex flex-col items-center justify-center shrink-0 ${
+                className={`flex-1 min-w-[90px] bg-neutral-200 dark:bg-neutral-700 p-2 flex flex-col items-center justify-center shrink-0 ${
                   ci < COLS.length - 1 ? 'border-r border-neutral-200 dark:border-neutral-700' : ''
                 }`}
               >
@@ -114,9 +114,7 @@ export const MasdarFactoryView: React.FC<Props> = ({ payload, onProgress, accent
           {rows.map((row, ri) => (
             <div
               key={ri}
-              className={`flex flex-row border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden ${
-                ri < rows.length - 1 ? 'mb-1.5' : 'mb-0'
-              }`}
+              className="flex flex-row border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden"
             >
               {/* Masdar cell */}
               <div className="w-[110px] p-2.5 flex flex-col items-center justify-center border-r border-neutral-200 dark:border-neutral-700 shrink-0 gap-1" style={{ backgroundColor: `${accent400}22` }}>
@@ -132,7 +130,7 @@ export const MasdarFactoryView: React.FC<Props> = ({ payload, onProgress, accent
               {COLS.map((col, ci) => (
                 <div
                   key={col.key}
-                  className={`w-[90px] bg-white dark:bg-neutral-800 p-2.5 flex items-center justify-center shrink-0 ${
+                  className={`flex-1 min-w-[90px] bg-white dark:bg-neutral-800 p-2.5 flex items-center justify-center shrink-0 ${
                     ci < COLS.length - 1 ? 'border-r border-neutral-200 dark:border-neutral-700' : ''
                   }`}
                 >
