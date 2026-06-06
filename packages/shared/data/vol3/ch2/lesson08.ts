@@ -31,6 +31,12 @@ export const lesson08: LessonData = {
       titleAr: 'مَصْنَع المَصْدَر: أَسْمَاءُ الْفَاعِلِينَ',
       titleBn: 'মাসদার ফ্যাক্টরি: ইসম ফায়িল',
       payload: {
+        masdarColumnOverrides: {
+          imperativeAr: 'اسْم فَاعِل',
+          imperativeEn: 'Active Participle',
+          prohibitiveAr: 'جَمْع',
+          prohibitiveEn: 'Plural',
+        },
         masdarRows: [
           {
             masdar: 'السَّمْع',

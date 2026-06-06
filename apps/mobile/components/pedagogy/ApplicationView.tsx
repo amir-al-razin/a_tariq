@@ -14,12 +14,29 @@ export const ApplicationView: React.FC<Props> = ({ isDark, C, payload }) => {
         ? t_content(payload.instruction, payload.instructionBn)
         : t('chunk.reviewThenContinue');
 
+    const renderFormattedArabic = (text: string) => {
+        if (!text) return null;
+        const parts = text.split(/(\*\*.*?\*\*)/g);
+        return (
+            <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.neutral100 : C.neutral900, textAlign: 'right', lineHeight: 32 }}>
+                {parts.map((part, index) => {
+                    if (part.startsWith('**') && part.endsWith('**')) {
+                        return (
+                            <Text key={index} style={{ color: C.primary700 }}>
+                                {part.slice(2, -2)}
+                            </Text>
+                        );
+                    }
+                    return <Text key={index}>{part}</Text>;
+                })}
+            </Text>
+        );
+    };
+
     if (items.length === 0 && (payload?.text || payload?.instruction)) {
         return (
             <View style={{ width: '100%', alignItems: 'center' }}>
-                <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: C.primary700, textAlign: 'right', lineHeight: 32 }}>
-                    {payload?.text || payload?.instruction}
-                </Text>
+                {renderFormattedArabic(payload?.text || payload?.instruction)}
             </View>
         );
     }
@@ -36,7 +53,7 @@ export const ApplicationView: React.FC<Props> = ({ isDark, C, payload }) => {
                         <Text style={{ fontSize: 26 }}>{item.emoji}</Text>
                     </View>
                     <View style={{ flex: 1 }}>
-                        <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: C.primary700, textAlign: 'right' }}>{item.ar}</Text>
+                        {renderFormattedArabic(item.ar)}
                         <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral500, marginTop: 2 }}>{t_content(item.en, item.bn)}</Text>
                     </View>
                 </View>

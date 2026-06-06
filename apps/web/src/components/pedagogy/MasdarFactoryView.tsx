@@ -2,29 +2,37 @@ import React, { useEffect } from 'react';
 import type { MasdarRow } from '@tariq/shared';
 import * as m from '#/paraglide/messages.js';
 
-interface Props {
-  payload?: {
-    masdarRows?: MasdarRow[];
-    baabLabel?: string;
-    instruction?: string;
-    instructionBn?: string;
+export interface MasdarPayload {
+  masdarRows?: MasdarRow[];
+  masdarColumnOverrides?: {
+    imperativeAr?: string;
+    imperativeEn?: string;
+    prohibitiveAr?: string;
+    prohibitiveEn?: string;
   };
+  baabLabel?: string;
+  instruction?: string;
+  instructionBn?: string;
+}
+
+interface Props {
+  payload?: MasdarPayload;
   onProgress?: (v: number) => void;
   onComplete?: () => void;
   accent400?: string;
   accent700?: string;
 }
 
-const getCols = () => [
+const getCols = (overrides?: MasdarPayload['masdarColumnOverrides']) => [
   { key: 'past' as const, arLabel: 'مَاضٍ', labelKey: m['masdar.past']?.() ?? 'Past' },
   { key: 'present' as const, arLabel: 'مُضَارِع', labelKey: m['masdar.present']?.() ?? 'Present' },
-  { key: 'imperative' as const, arLabel: 'أَمْر', labelKey: m['masdar.command']?.() ?? 'Command' },
-  { key: 'prohibitive' as const, arLabel: 'نَهْي', labelKey: m['masdar.prohibit']?.() ?? 'Prohibition' },
+  { key: 'imperative' as const, arLabel: overrides?.imperativeAr ?? 'أَمْر', labelKey: overrides?.imperativeEn ?? (m['masdar.command']?.() ?? 'Command') },
+  { key: 'prohibitive' as const, arLabel: overrides?.prohibitiveAr ?? 'نَهْي', labelKey: overrides?.prohibitiveEn ?? (m['masdar.prohibit']?.() ?? 'Prohibition') },
 ];
 
 export const MasdarFactoryView: React.FC<Props> = ({ payload, onProgress, accent400 = '#34D3AA', accent700 = '#0D775F' }) => {
   const rows: MasdarRow[] = payload?.masdarRows ?? [];
-  const COLS = getCols();
+  const COLS = getCols(payload?.masdarColumnOverrides);
 
   useEffect(() => {
     // Scroll-based completion handled by parent

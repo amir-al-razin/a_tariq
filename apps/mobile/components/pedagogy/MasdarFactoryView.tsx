@@ -4,26 +4,34 @@ import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../../i18n/LanguageContext';
 import type { MasdarRow } from '@tariq/shared';
 
+export interface MasdarPayload {
+    masdarRows?: MasdarRow[];
+    masdarColumnOverrides?: {
+        imperativeAr?: string;
+        imperativeEn?: string;
+        prohibitiveAr?: string;
+        prohibitiveEn?: string;
+    };
+    baabLabel?: string;
+    instruction?: string;
+    instructionBn?: string;
+}
+
 interface Props {
     isDark: boolean;
     C: Record<string, string>;
-    payload?: {
-        masdarRows?: MasdarRow[];
-        baabLabel?: string;
-        instruction?: string;
-        instructionBn?: string;
-    };
+    payload?: MasdarPayload;
     onProgress: (v: number) => void;
     onComplete: () => void;
 }
 
-// Column header config
-const COLS = [
-    { key: 'past', arLabel: 'مَاضٍ', labelKey: 'masdar.past' },
-    { key: 'present', arLabel: 'مُضَارِع', labelKey: 'masdar.present' },
-    { key: 'imperative', arLabel: 'أَمْر', labelKey: 'masdar.command' },
-    { key: 'prohibitive', arLabel: 'نَهْي', labelKey: 'masdar.prohibit' },
-] as const;
+// Column header config builder
+const getCols = (overrides?: MasdarPayload['masdarColumnOverrides']) => [
+    { key: 'past' as const, arLabel: 'مَاضٍ', labelKey: 'masdar.past' },
+    { key: 'present' as const, arLabel: 'مُضَارِع', labelKey: 'masdar.present' },
+    { key: 'imperative' as const, arLabel: overrides?.imperativeAr ?? 'أَمْر', labelKey: 'masdar.command', customLabelEn: overrides?.imperativeEn },
+    { key: 'prohibitive' as const, arLabel: overrides?.prohibitiveAr ?? 'نَهْي', labelKey: 'masdar.prohibit', customLabelEn: overrides?.prohibitiveEn },
+];
 
 export const MasdarFactoryView: React.FC<Props> = ({
     isDark, C, payload, onProgress, onComplete,
@@ -31,6 +39,7 @@ export const MasdarFactoryView: React.FC<Props> = ({
     const { t } = useTranslation();
     const { t_content } = useLanguage();
     const rows: MasdarRow[] = payload?.masdarRows ?? [];
+    const COLS = getCols(payload?.masdarColumnOverrides);
 
     // Scroll-based completion handled by ChunkEngineScreen
     useEffect(() => { onProgress(0); }, []);
@@ -142,7 +151,7 @@ export const MasdarFactoryView: React.FC<Props> = ({
                                     {col.arLabel}
                                 </Text>
                                 <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 10, color: textSub }}>
-                                    {t(col.labelKey)}
+                                    {col.customLabelEn ?? t(col.labelKey)}
                                 </Text>
                             </View>
                         ))}
@@ -234,7 +243,7 @@ export const MasdarFactoryView: React.FC<Props> = ({
                             {col.arLabel}
                         </Text>
                         <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 11, color: textSub }}>
-                            = {t(col.labelKey)}
+                            = {col.customLabelEn ?? t(col.labelKey)}
                         </Text>
                     </View>
                 ))}

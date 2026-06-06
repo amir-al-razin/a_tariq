@@ -11,6 +11,28 @@ export const ApplicationView: React.FC<Props> = ({ payload, accent700 = '#0D775F
   const items: ApplicationItem[] = payload?.items || [];
   const instruction = payload?.instruction || (m['chunk.reviewThenContinue']?.() ?? 'Review these examples, then continue');
 
+  const renderFormattedArabic = (text: string, isItems: boolean) => {
+    if (!text) return null;
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return (
+      <span
+        className={`font-arabic-semibold text-xl text-right ${isItems ? '' : 'leading-9 whitespace-pre-wrap'} text-neutral-900 dark:text-neutral-100`}
+        dir="rtl"
+      >
+        {parts.map((part, index) => {
+          if (part.startsWith('**') && part.endsWith('**')) {
+            return (
+              <span key={index} style={{ color: accent700 }}>
+                {part.slice(2, -2)}
+              </span>
+            );
+          }
+          return <span key={index}>{part}</span>;
+        })}
+      </span>
+    );
+  };
+
   if (items.length === 0 && (payload?.text || payload?.instruction)) {
     return (
       <div className="w-full flex flex-col items-center">
@@ -21,13 +43,7 @@ export const ApplicationView: React.FC<Props> = ({ payload, accent700 = '#0D775F
         )}
         {payload?.text && (
           <div className="w-full flex justify-center">
-            <span
-              className="font-arabic-semibold text-xl text-right leading-9 whitespace-pre-wrap"
-              style={{ color: accent700 }}
-              dir="rtl"
-            >
-              {payload.text}
-            </span>
+            {renderFormattedArabic(payload.text, false)}
           </div>
         )}
       </div>
@@ -53,13 +69,7 @@ export const ApplicationView: React.FC<Props> = ({ payload, accent700 = '#0D775F
             ) : null}
           </div>
           <div className="flex-1 flex flex-col items-end sm:items-start text-right sm:text-left">
-            <span
-              className="font-arabic-semibold text-xl"
-              style={{ color: accent700 }}
-              dir="rtl"
-            >
-              {item.ar}
-            </span>
+            {renderFormattedArabic(item.ar, true)}
             <span className="font-english text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">
               {item.en}
             </span>

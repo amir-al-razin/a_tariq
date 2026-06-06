@@ -136,6 +136,12 @@ export interface ChunkPayload {
     verbTense?: 'past' | 'present' | 'imperative';
     isPlural?: boolean;
     masdarRows?: MasdarRow[];
+    masdarColumnOverrides?: {
+        imperativeAr?: string;
+        imperativeEn?: string;
+        prohibitiveAr?: string;
+        prohibitiveEn?: string;
+    };
     baabLabel?: string;
     idafahPairs?: IdafahPair[];
     paragraphs?: ParagraphBlock[];
