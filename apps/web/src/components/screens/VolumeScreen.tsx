@@ -145,6 +145,26 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
     }
   }, [])
 
+  useEffect(() => {
+    const lastLessonStr = sessionStorage.getItem('last_volume_lesson')
+    if (lastLessonStr) {
+      try {
+        const { volumeId: savedVol, chapterId: savedChap, darsNum: savedDars } = JSON.parse(lastLessonStr)
+        if (savedVol === volumeId) {
+          // Add a small delay to ensure rendering is complete
+          setTimeout(() => {
+            const el = document.getElementById(`lesson-${savedChap}-${savedDars}`)
+            if (el) {
+              el.scrollIntoView({ behavior: 'auto', block: 'center' })
+            }
+          }, 100)
+        }
+      } catch (e) {
+        // ignore parse error
+      }
+    }
+  }, [volumeId])
+
   const dataMap = {
     1: CHAPTERS,
     2: CHAPTERS_VOL2,
@@ -295,6 +315,7 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
     return (
       <div
         key={num}
+        id={`lesson-${chapterId}-${num}`}
         className="mb-7 flex"
         style={{
           flexDirection: labelOnRight ? 'row' : 'row-reverse',
@@ -315,6 +336,7 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
           textColor={iconColor}
           entryDelay={idx * 30}
           onPress={() => {
+            sessionStorage.setItem('last_volume_lesson', JSON.stringify({ volumeId, chapterId, darsNum: num }))
             navigate({
               to: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum',
               params: {

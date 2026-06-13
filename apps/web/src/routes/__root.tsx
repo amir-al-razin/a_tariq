@@ -1,6 +1,7 @@
 import {
   HeadContent,
   Scripts,
+  ScrollRestoration,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
@@ -102,6 +103,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
         <Header />
         {children}
+        <ScrollRestoration />
         <TanStackDevtools
           config={{
             position: 'bottom-right',
