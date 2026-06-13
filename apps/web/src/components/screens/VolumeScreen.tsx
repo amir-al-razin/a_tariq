@@ -151,13 +151,13 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
       try {
         const { volumeId: savedVol, chapterId: savedChap, darsNum: savedDars } = JSON.parse(lastLessonStr)
         if (savedVol === volumeId) {
-          // Add a small delay to ensure rendering is complete
+          // Add a small delay to ensure rendering is complete, then smoothly scroll
           setTimeout(() => {
             const el = document.getElementById(`lesson-${savedChap}-${savedDars}`)
             if (el) {
-              el.scrollIntoView({ behavior: 'auto', block: 'center' })
+              el.scrollIntoView({ behavior: 'smooth', block: 'center' })
             }
-          }, 100)
+          }, 150)
         }
       } catch (e) {
         // ignore parse error
