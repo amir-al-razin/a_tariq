@@ -6,8 +6,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Bookmark,
-  Sparkles,
-  BookOpen
 } from 'lucide-react';
 
 export const Route = createFileRoute('/mushaf-v2/')({
@@ -36,8 +34,16 @@ interface WordAPI {
   audio_url?: string;
   char_type_name: 'word' | 'end';
   text_uthmani: string;
+  code_v2?: string;
   line_number?: number;
   page_number?: number;
+  location?: string;
+}
+
+interface EnrichedWord extends WordAPI {
+  verse_key: string;
+  verse_number: number;
+  chapter_id: number;
 }
 
 interface VerseAPI {
@@ -76,6 +82,46 @@ function MushafV2Page() {
   const [verses, setVerses] = useState<VerseAPI[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [fontSize, setFontSize] = useState<number>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('mushaf_font_size');
+      if (saved) {
+        const parsed = parseInt(saved, 10);
+        if (!isNaN(parsed) && parsed >= 24 && parsed <= 50) {
+          return parsed;
+        }
+      }
+    }
+    return 34;
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('mushaf_font_size', fontSize.toString());
+    }
+  }, [fontSize]);
+
+  const handleIncreaseFontSize = () => {
+    setFontSize((prev) => Math.min(50, prev + 2));
+  };
+
+  const handleDecreaseFontSize = () => {
+    setFontSize((prev) => Math.max(24, prev - 2));
+  };
+
+  // Load QCF2 page font dynamically
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const fontFaceName = `p${pageNumber}-v2`;
+    const fontUrl = `/fonts/quran/hafs/v2/woff2/p${pageNumber}.woff2`;
+    const fontFace = new FontFace(
+      fontFaceName,
+      `local('QCF2${String(pageNumber).padStart(3, '0')}'), url('${fontUrl}') format('woff2')`
+    );
+    fontFace.display = 'block';
+    document.fonts.add(fontFace);
+    fontFace.load().catch((err) => console.warn('Font load error:', err));
+  }, [pageNumber]);
 
   // Map chapters by ID for quick lookup
   const chaptersMap = useMemo(() => {
@@ -125,7 +171,7 @@ function MushafV2Page() {
     }
 
     try {
-      const url = `https://api.quran.com/api/v4/verses/by_page/${targetPage}?words=true&per_page=50&fields=text_uthmani,chapter_id,verse_key&word_fields=text_uthmani`;
+      const url = `https://api.quran.com/api/v4/verses/by_page/${targetPage}?words=true&per_page=50&fields=text_uthmani,chapter_id,verse_key&word_fields=code_v2,text_uthmani,qpc_uthmani_hafs,line_number,location`;
       const res = await fetch(url);
       if (!res.ok) throw new Error(`Failed to load Mushaf page ${targetPage}`);
       const data = await res.json();
@@ -165,6 +211,37 @@ function MushafV2Page() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Flatten all words from all verses on this page and group by line_number (1..15)
+  const lineGroups = useMemo(() => {
+    const allWords: EnrichedWord[] = [];
+    verses.forEach((verse) => {
+      verse.words?.forEach((word) => {
+        allWords.push({
+          ...word,
+          verse_key: verse.verse_key,
+          verse_number: verse.verse_number,
+          chapter_id: verse.chapter_id,
+        });
+      });
+    });
+
+    const groups: { [line: number]: EnrichedWord[] } = {};
+    allWords.forEach((word) => {
+      const line = word.line_number ?? 1;
+      if (!groups[line]) {
+        groups[line] = [];
+      }
+      groups[line].push(word);
+    });
+
+    return Object.entries(groups)
+      .map(([lineStr, words]) => ({
+        lineNumber: Number(lineStr),
+        words,
+      }))
+      .sort((a, b) => a.lineNumber - b.lineNumber);
+  }, [verses]);
+
   // Current page metadata
   const firstVerse = verses[0];
   const juzNumber = firstVerse?.juz_number ?? 1;
@@ -189,10 +266,21 @@ function MushafV2Page() {
   };
 
   return (
-    <div className="min-h-screen pb-24 bg-[#F8F7F4] dark:bg-[#0B0F12] text-neutral-900 dark:text-neutral-50 transition-colors">
+    <div className="min-h-screen pb-24 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 transition-colors">
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            @font-face {
+              font-family: 'p${pageNumber}-v2';
+              src: local('QCF2${String(pageNumber).padStart(3, '0')}'), url('/fonts/quran/hafs/v2/woff2/p${pageNumber}.woff2') format('woff2');
+              font-display: block;
+            }
+          `,
+        }}
+      />
       {/* Quran.com Replica Sticky Top Bar */}
-      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#121619]/90 backdrop-blur-md px-4 md:px-8 py-3.5">
-        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <header className="sticky top-0 z-40 bg-white/90 dark:bg-neutral-950/90 backdrop-blur-md px-4 md:px-8 py-3.5">
+        <div className="max-w-[1024px] mx-auto flex flex-wrap items-center justify-between gap-3">
           {/* Left: Surah & Page Selectors */}
           <div className="flex items-center flex-wrap gap-2">
             {/* Surah Dropdown */}
@@ -200,7 +288,7 @@ function MushafV2Page() {
               <select
                 value={primaryChapter?.pages[0] ?? 1}
                 onChange={handleSurahSelect}
-                className="appearance-none bg-neutral-100/90 hover:bg-neutral-200/70 dark:bg-neutral-800/90 dark:hover:bg-neutral-700/80 text-neutral-950 dark:text-neutral-100 font-english-semibold text-xs md:text-sm font-semibold py-2 pl-3.5 pr-8 rounded-xl cursor-pointer outline-none transition-colors max-w-[220px] md:max-w-[280px] truncate"
+                className="appearance-none bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-english-semibold text-xs md:text-sm font-semibold py-2 pl-3.5 pr-8 rounded-2xl cursor-pointer outline-none transition-colors max-w-[220px] md:max-w-[280px] truncate"
               >
                 {chapters.map((ch) => (
                   <option key={ch.id} value={ch.pages[0]}>
@@ -220,7 +308,7 @@ function MushafV2Page() {
               <select
                 value={pageNumber}
                 onChange={handlePageSelect}
-                className="appearance-none bg-neutral-100/90 hover:bg-neutral-200/70 dark:bg-neutral-800/90 dark:hover:bg-neutral-700/80 text-neutral-950 dark:text-neutral-100 font-english-semibold text-xs md:text-sm font-semibold py-2 pl-3 pr-7 rounded-xl cursor-pointer outline-none transition-colors"
+                className="appearance-none bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-english-semibold text-xs md:text-sm font-semibold py-2 pl-3 pr-7 rounded-2xl cursor-pointer outline-none transition-colors"
               >
                 {Array.from({ length: 604 }, (_, i) => i + 1).map((pg) => (
                   <option key={pg} value={pg}>
@@ -237,8 +325,8 @@ function MushafV2Page() {
           </div>
 
           {/* Center: Page & Juz Metadata Badge */}
-          <div className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 text-xs font-semibold">
-            <Bookmark className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+          <div className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 text-xs font-semibold">
+            <Bookmark className="w-3.5 h-3.5 text-neutral-600 dark:text-neutral-400" />
             <span>
               Page {pageNumber} / 604 · Juz {juzNumber} / Hizb {hizbNumber}
             </span>
@@ -250,7 +338,7 @@ function MushafV2Page() {
               type="button"
               disabled={pageNumber <= 1}
               onClick={() => setPageNumber((p) => Math.max(1, p - 1))}
-              className="p-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              className="p-2 rounded-2xl bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               title="Previous Page"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -264,11 +352,36 @@ function MushafV2Page() {
               type="button"
               disabled={pageNumber >= 604}
               onClick={() => setPageNumber((p) => Math.min(604, p + 1))}
-              className="p-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              className="p-2 rounded-2xl bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               title="Next Page"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
+
+            {/* Font Size Adjustment Controls */}
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={handleDecreaseFontSize}
+                disabled={fontSize <= 24}
+                className="px-2.5 py-1.5 bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100 rounded-2xl text-xs font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                title="Decrease Font Size"
+              >
+                -
+              </button>
+              <span className="bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-2.5 py-1.5 rounded-2xl text-xs font-semibold select-none min-w-[36px] text-center">
+                A {fontSize}px
+              </span>
+              <button
+                type="button"
+                onClick={handleIncreaseFontSize}
+                disabled={fontSize >= 50}
+                className="px-2.5 py-1.5 bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100 rounded-2xl text-xs font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                title="Increase Font Size"
+              >
+                +
+              </button>
+            </div>
 
             <FontToggle variant="toolbar" />
             <ThemeToggle />
@@ -277,25 +390,25 @@ function MushafV2Page() {
       </header>
 
       {/* Main Container */}
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 md:pt-10 space-y-6">
+      <main className="max-w-[920px] mx-auto px-4 sm:px-6 pt-6 md:pt-10 space-y-6">
         {/* PHYSICAL MUSHAF MANUSCRIPT CONTAINER */}
-        <div className="mushaf-page-container rounded-3xl p-6 sm:p-10 md:p-14 relative overflow-hidden transition-all">
+        <div className="mushaf-page-container bg-white dark:bg-neutral-950 rounded-3xl p-4 sm:p-8 md:p-10 relative overflow-hidden transition-all">
           {/* Top Page Metadata Header Bar */}
           <div className="flex items-center justify-between pb-4 mb-6 text-xs font-semibold text-neutral-600 dark:text-neutral-400">
-            <span className="font-english text-xs font-medium text-neutral-500 dark:text-neutral-400">
+            <span className="font-english text-xs font-medium text-neutral-600 dark:text-neutral-400">
               Surah {primaryChapter ? primaryChapter.name_simple : ''}
             </span>
-            <span className="font-english uppercase tracking-widest text-[11px] bg-neutral-100 dark:bg-neutral-800/80 px-3 py-1 rounded-full">
+            <span className="font-english uppercase tracking-widest text-[11px] bg-neutral-100 dark:bg-neutral-900 px-3 py-1 rounded-full text-neutral-700 dark:text-neutral-300">
               Page {pageNumber}
             </span>
-            <span className="font-english text-[11px]">
+            <span className="font-english text-[11px] text-neutral-600 dark:text-neutral-400">
               Juz {juzNumber}
             </span>
           </div>
 
           {/* Error Banner */}
           {error && (
-            <div className="p-4 rounded-2xl bg-rose-500/10 text-rose-800 dark:text-rose-300 text-xs font-semibold text-center my-4">
+            <div className="p-4 rounded-2xl bg-neutral-100 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 text-xs font-semibold text-center my-4">
               {error}
             </div>
           )}
@@ -303,29 +416,41 @@ function MushafV2Page() {
           {/* Loading Skeleton */}
           {loading ? (
             <div className="animate-pulse space-y-8 py-12 px-4">
-              <div className="h-20 bg-neutral-100 dark:bg-neutral-800/50 rounded-2xl max-w-md mx-auto" />
+              <div className="h-20 bg-neutral-100 dark:bg-neutral-900 rounded-2xl max-w-md mx-auto" />
               <div className="space-y-6">
-                <div className="h-8 bg-neutral-100 dark:bg-neutral-800/40 rounded-xl w-full" />
-                <div className="h-8 bg-neutral-100 dark:bg-neutral-800/40 rounded-xl w-11/12 mx-auto" />
-                <div className="h-8 bg-neutral-100 dark:bg-neutral-800/40 rounded-xl w-full" />
-                <div className="h-8 bg-neutral-100 dark:bg-neutral-800/40 rounded-xl w-4/5 mx-auto" />
-                <div className="h-8 bg-neutral-100 dark:bg-neutral-800/40 rounded-xl w-full" />
+                <div className="h-8 bg-neutral-100 dark:bg-neutral-900 rounded-xl w-full" />
+                <div className="h-8 bg-neutral-100 dark:bg-neutral-900 rounded-xl w-11/12 mx-auto" />
+                <div className="h-8 bg-neutral-100 dark:bg-neutral-900 rounded-xl w-full" />
+                <div className="h-8 bg-neutral-100 dark:bg-neutral-900 rounded-xl w-4/5 mx-auto" />
+                <div className="h-8 bg-neutral-100 dark:bg-neutral-900 rounded-xl w-full" />
               </div>
             </div>
           ) : (
-            /* CONTINUOUS PHYSICAL MUSHAF MANUSCRIPT BODY */
+            /* CONTINUOUS PHYSICAL MUSHAF MANUSCRIPT BODY (LINE-BY-LINE 15-LINE FORMAT) */
             <div className="my-4" dir="rtl">
-              <div className="text-center md:text-justify leading-loose sm:leading-[2.5] md:leading-[2.8] select-none">
-                {verses.map((verse) => {
-                  const isNewSurah = verse.verse_number === 1;
-                  const chapter = chaptersMap.get(verse.chapter_id);
-                  const showBismillah = isNewSurah && chapter && chapter.bismillah_pre;
+              <div className="space-y-2 sm:space-y-3 select-none">
+                {lineGroups.map((lineGroup) => {
+                  // Check if any word in this line is verse 1, position 1 of a chapter
+                  const surahStartWord = lineGroup.words.find(
+                    (w) => w.verse_key?.endsWith(':1') && w.position === 1 && w.char_type_name === 'word'
+                  );
+                  const chapter = surahStartWord ? chaptersMap.get(surahStartWord.chapter_id) : null;
+                  const showBismillah = chapter && chapter.bismillah_pre && chapter.id !== 1 && chapter.id !== 9;
+
+                  const isCenteredPage = pageNumber === 1 || pageNumber === 2;
+                  const isShortLine = lineGroup.words.length <= 5;
+                  const justifyClass = (isCenteredPage || isShortLine)
+                    ? 'justify-center gap-2 sm:gap-3 md:gap-4'
+                    : 'justify-between';
 
                   return (
-                    <React.Fragment key={verse.id}>
-                      {/* Surah Calligraphic Header Ornament Banner if a new Surah starts on this verse */}
-                      {isNewSurah && chapter && (
-                        <div className="bg-neutral-100 dark:bg-neutral-800/50 rounded-2xl py-6 px-6 my-6 text-center" dir="ltr">
+                    <React.Fragment key={lineGroup.lineNumber}>
+                      {/* Surah Calligraphic Header Emblem Banner */}
+                      {chapter && (
+                        <div
+                          className="bg-neutral-100 dark:bg-neutral-900 rounded-3xl py-5 px-6 my-6 text-center"
+                          dir="ltr"
+                        >
                           <span className="font-surah text-5xl sm:text-6xl text-neutral-900 dark:text-neutral-100 select-none block my-1">
                             {getSurahGlyph(chapter.id)}
                           </span>
@@ -333,7 +458,9 @@ function MushafV2Page() {
                             <span>{chapter.verses_count} Verses</span>
                             <span>·</span>
                             <span className="capitalize">
-                              {chapter.revelation_place === 'makkah' ? 'Meccan Revelation' : 'Medinan Revelation'}
+                              {chapter.revelation_place === 'makkah'
+                                ? 'Meccan Revelation'
+                                : 'Medinan Revelation'}
                             </span>
                           </div>
                         </div>
@@ -341,41 +468,63 @@ function MushafV2Page() {
 
                       {/* Bismillah Header Banner */}
                       {showBismillah && (
-                        <div className="my-8 text-center" dir="ltr">
+                        <div className="my-6 text-center" dir="ltr">
                           <div className="inline-flex items-center justify-center gap-4 w-full">
-                            <span className="text-neutral-400 dark:text-neutral-600 text-xs">❖ ❖ ❖</span>
-                            <span className="font-mushaf text-3xl sm:text-4xl text-neutral-950 dark:text-neutral-100 inline-block px-4" dir="rtl">
+                            <span className="text-neutral-400 dark:text-neutral-600 text-xs">
+                              ❖ ❖ ❖
+                            </span>
+                            <span
+                              className="font-mushaf text-3xl sm:text-4xl text-neutral-900 dark:text-neutral-100 inline-block px-4"
+                              dir="rtl"
+                            >
                               بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
                             </span>
-                            <span className="text-neutral-400 dark:text-neutral-600 text-xs">❖ ❖ ❖</span>
+                            <span className="text-neutral-400 dark:text-neutral-600 text-xs">
+                              ❖ ❖ ❖
+                            </span>
                           </div>
                         </div>
                       )}
 
-                      {/* Verse Words */}
-                      {verse.words?.map((word) => {
-                        const isEndMarker = word.char_type_name === 'end';
+                      {/* 15-Line Physical Line Block */}
+                      <div
+                        className={`w-full flex flex-wrap ${justifyClass} items-center my-1 sm:my-1.5 px-1 direction-rtl text-center`}
+                        dir="rtl"
+                      >
+                        {lineGroup.words.map((word) => {
+                          const isEndMarker = word.char_type_name === 'end';
 
-                        if (isEndMarker) {
+                          if (isEndMarker) {
+                            return (
+                              <span
+                                key={word.id}
+                                style={{
+                                  fontFamily: `p${pageNumber}-v2, 'UthmanicHafs', serif`,
+                                  fontSize: `${fontSize}px`,
+                                  lineHeight: `${fontSize * 1.8}px`,
+                                }}
+                                className="inline-flex items-center justify-center font-mushaf text-neutral-600 dark:text-neutral-400 select-none mx-0"
+                              >
+                                {word.code_v2 || `﴿${toArabicNumeral(word.verse_number)}﴾`}
+                              </span>
+                            );
+                          }
+
                           return (
                             <span
                               key={word.id}
-                              className="inline-flex items-center justify-center font-mushaf text-[26px] sm:text-[30px] text-emerald-700 dark:text-emerald-400 mx-2 select-none"
+                              style={{
+                                fontFamily: `p${pageNumber}-v2, 'UthmanicHafs', serif`,
+                                fontSize: `${fontSize}px`,
+                                lineHeight: `${fontSize * 1.8}px`,
+                              }}
+                              className="font-mushaf text-neutral-900 dark:text-neutral-100 hover:text-neutral-600 dark:hover:text-neutral-400 transition-colors cursor-pointer mx-0"
                             >
-                              ﴿{toArabicNumeral(verse.verse_number)}﴾
+                              {word.code_v2 || word.text_uthmani}
                             </span>
                           );
-                        }
-
-                        return (
-                          <span
-                            key={word.id}
-                            className="font-mushaf text-[28px] sm:text-[34px] md:text-[38px] text-neutral-950 dark:text-neutral-100 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors cursor-pointer mx-1"
-                          >
-                            {word.text_uthmani}
-                          </span>
-                        );
-                      })}
+                        })}
+                      </div>
                     </React.Fragment>
                   );
                 })}
@@ -389,12 +538,12 @@ function MushafV2Page() {
               type="button"
               disabled={pageNumber <= 1}
               onClick={() => setPageNumber((p) => Math.max(1, p - 1))}
-              className="px-4 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-xs font-semibold hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 rounded-2xl bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 text-xs font-semibold hover:bg-neutral-200/80 dark:hover:bg-neutral-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" /> Previous Page
             </button>
 
-            <span className="font-english text-xs font-bold text-neutral-500 dark:text-neutral-400 tracking-wider">
+            <span className="font-english text-xs font-bold text-neutral-600 dark:text-neutral-400 tracking-wider">
               ❖ Page {pageNumber} of 604 ❖
             </span>
 
@@ -402,7 +551,7 @@ function MushafV2Page() {
               type="button"
               disabled={pageNumber >= 604}
               onClick={() => setPageNumber((p) => Math.min(604, p + 1))}
-              className="px-4 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-xs font-semibold hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 rounded-2xl bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 text-xs font-semibold hover:bg-neutral-200/80 dark:hover:bg-neutral-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 cursor-pointer"
             >
               Next Page <ChevronRight className="w-4 h-4" />
             </button>
@@ -414,3 +563,4 @@ function MushafV2Page() {
 }
 
 export default MushafV2Page;
+

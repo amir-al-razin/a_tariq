@@ -25,11 +25,11 @@
 
 /* Authentic Quran.com Mus'haf and Surah Names Font Faces */
 .mushaf-page-container {
-  background-color: #ffffff;
+  background-color: transparent;
 }
 
 .dark .mushaf-page-container {
-  background-color: #121619;
+  background-color: transparent;
 }
 
 .surah-header-ornament {

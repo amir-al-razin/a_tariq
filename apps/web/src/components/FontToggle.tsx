@@ -39,7 +39,7 @@ export const FontToggle: React.FC<FontToggleProps> = ({ variant = 'pill', classN
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-english-semibold transition-colors cursor-pointer bg-neutral-100 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-200 dark:hover:bg-neutral-800 ${className}`}
           aria-label="Change Arabic font settings"
         >
-          <Type className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+          <Type className="w-3.5 h-3.5 text-neutral-600 dark:text-neutral-400" />
           <span className="font-english">{currentFontConfig.name}</span>
           <span className={`text-sm leading-none ml-1 ${currentFontConfig.className}`} dir="rtl">
             أ
@@ -59,7 +59,7 @@ export const FontToggle: React.FC<FontToggleProps> = ({ variant = 'pill', classN
         className={`flex items-center gap-2 px-3 py-2 rounded-full text-xs font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 bg-neutral-100/80 dark:bg-neutral-800/80 hover:bg-neutral-200/80 dark:hover:bg-neutral-700/80 transition-colors cursor-pointer outline-none ${className}`}
         aria-label="Change Arabic font settings"
       >
-        <Type size={16} className="text-emerald-600 dark:text-emerald-400" />
+        <Type size={16} className="text-neutral-600 dark:text-neutral-400" />
         <span className="hidden sm:inline font-english">{currentFontConfig.name}</span>
         <span className={`text-base leading-none ${currentFontConfig.className}`} dir="rtl">
           خط

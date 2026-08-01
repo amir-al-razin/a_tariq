@@ -40,20 +40,20 @@ export const FontSettingsModal: React.FC<FontSettingsModalProps> = ({ isOpen, on
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 12 }}
             transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-            className="relative z-10 w-full max-w-lg overflow-hidden rounded-3xl bg-white dark:bg-neutral-900 p-6 md:p-8 space-y-6 transition-colors shadow-2xl"
+            className="relative z-10 w-full max-w-lg overflow-hidden rounded-3xl bg-neutral-50 dark:bg-neutral-900 p-6 md:p-8 space-y-6 transition-colors"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header Section */}
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-emerald-500/15 dark:bg-emerald-500/25 text-emerald-700 dark:text-emerald-400">
+                <div className="p-3 rounded-2xl bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
                   <Type className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="font-english-semibold text-lg md:text-xl text-neutral-950 dark:text-white tracking-tight">
+                  <h2 className="font-english-semibold text-lg md:text-xl text-neutral-900 dark:text-neutral-100 tracking-tight">
                     Arabic Pedagogical Font
                   </h2>
-                  <p className="font-english text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+                  <p className="font-english text-xs text-neutral-600 dark:text-neutral-400 mt-0.5">
                     Select your preferred font script for Arabic lessons & reading.
                   </p>
                 </div>
@@ -62,7 +62,7 @@ export const FontSettingsModal: React.FC<FontSettingsModalProps> = ({ isOpen, on
               <button
                 type="button"
                 onClick={onClose}
-                className="p-2.5 rounded-full bg-neutral-100 hover:bg-neutral-200/80 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-600 dark:text-neutral-300 transition-colors cursor-pointer outline-none"
+                className="p-2.5 rounded-2xl bg-neutral-100 hover:bg-neutral-200/60 dark:bg-neutral-800 dark:hover:bg-neutral-800/90 text-neutral-600 dark:text-neutral-300 transition-colors cursor-pointer outline-none"
                 aria-label="Close modal"
               >
                 <X className="w-4 h-4" />
@@ -82,7 +82,7 @@ export const FontSettingsModal: React.FC<FontSettingsModalProps> = ({ isOpen, on
                     }}
                     className={`w-full text-left p-4 rounded-2xl transition-all cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${
                       isSelected
-                        ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900'
+                        ? 'bg-neutral-900 text-neutral-100 dark:bg-neutral-100 dark:text-neutral-900'
                         : 'bg-neutral-100/90 dark:bg-neutral-800/60 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-200/80 dark:hover:bg-neutral-800'
                     }`}
                   >
@@ -95,7 +95,7 @@ export const FontSettingsModal: React.FC<FontSettingsModalProps> = ({ isOpen, on
                           <span
                             className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase ${
                               isSelected
-                                ? 'bg-emerald-500 text-white dark:bg-emerald-600 dark:text-white'
+                                ? 'bg-neutral-200 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100'
                                 : ''
                             }`}
                           >
