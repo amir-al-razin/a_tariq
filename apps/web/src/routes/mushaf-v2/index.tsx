@@ -482,21 +482,7 @@ function MushafV2Page() {
                       </div>
                     )}
 
-                    {/* Bismillah Header Banner */}
-                    {showBismillah && (
-                      <div className="my-6 text-center" dir="ltr">
-                        <div className="inline-flex items-center justify-center gap-4 w-full">
-                          <span className="text-neutral-400 dark:text-neutral-600 text-xs">❖ ❖ ❖</span>
-                          <span
-                            className="font-mushaf text-3xl sm:text-4xl text-neutral-900 dark:text-neutral-100 inline-block px-4"
-                            dir="rtl"
-                          >
-                            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-                          </span>
-                          <span className="text-neutral-400 dark:text-neutral-600 text-xs">❖ ❖ ❖</span>
-                        </div>
-                      </div>
-                    )}
+
 
                     {/*
                       Physical line block - Quran.com architecture:
@@ -521,7 +507,7 @@ function MushafV2Page() {
                             }}
                             className={
                               isEndMarker
-                                ? 'font-mushaf text-neutral-500 dark:text-neutral-500 select-none'
+                                ? 'font-mushaf text-neutral-500 dark:text-neutral-500 select-none mx-1'
                                 : 'font-mushaf text-neutral-900 dark:text-neutral-100 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors cursor-pointer'
                             }
                           >
