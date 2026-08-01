@@ -11,10 +11,16 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MushafV2IndexRouteImport } from './routes/mushaf-v2/index'
+import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
+import { Route as DemoIndexRouteImport } from './routes/demo/index'
+import { Route as DemoV2IndexRouteImport } from './routes/demo-v2/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoI18nRouteImport } from './routes/demo.i18n'
 import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
 import { Route as VolumeVolumeIdIndexRouteImport } from './routes/volume/$volumeId/index'
+import { Route as CurriculumVol1Lesson2IndexRouteImport } from './routes/curriculum/vol1/lesson2/index'
+import { Route as CurriculumVol1Lesson1IndexRouteImport } from './routes/curriculum/vol1/lesson1/index'
 import { Route as VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRouteImport } from './routes/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/index'
 import { Route as VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRouteImport } from './routes/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
 
@@ -26,6 +32,26 @@ const AboutRoute = AboutRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MushafV2IndexRoute = MushafV2IndexRouteImport.update({
+  id: '/mushaf-v2/',
+  path: '/mushaf-v2/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesignSystemIndexRoute = DesignSystemIndexRouteImport.update({
+  id: '/design-system/',
+  path: '/design-system/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoIndexRoute = DemoIndexRouteImport.update({
+  id: '/demo/',
+  path: '/demo/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoV2IndexRoute = DemoV2IndexRouteImport.update({
+  id: '/demo-v2/',
+  path: '/demo-v2/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
@@ -48,6 +74,18 @@ const VolumeVolumeIdIndexRoute = VolumeVolumeIdIndexRouteImport.update({
   path: '/volume/$volumeId/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CurriculumVol1Lesson2IndexRoute =
+  CurriculumVol1Lesson2IndexRouteImport.update({
+    id: '/curriculum/vol1/lesson2/',
+    path: '/curriculum/vol1/lesson2/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const CurriculumVol1Lesson1IndexRoute =
+  CurriculumVol1Lesson1IndexRouteImport.update({
+    id: '/curriculum/vol1/lesson1/',
+    path: '/curriculum/vol1/lesson1/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute =
   VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRouteImport.update({
     id: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/',
@@ -67,7 +105,13 @@ export interface FileRoutesByFullPath {
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/demo-v2/': typeof DemoV2IndexRoute
+  '/demo/': typeof DemoIndexRoute
+  '/design-system/': typeof DesignSystemIndexRoute
+  '/mushaf-v2/': typeof MushafV2IndexRoute
   '/volume/$volumeId/': typeof VolumeVolumeIdIndexRoute
+  '/curriculum/vol1/lesson1/': typeof CurriculumVol1Lesson1IndexRoute
+  '/curriculum/vol1/lesson2/': typeof CurriculumVol1Lesson2IndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
 }
@@ -77,7 +121,13 @@ export interface FileRoutesByTo {
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/demo-v2': typeof DemoV2IndexRoute
+  '/demo': typeof DemoIndexRoute
+  '/design-system': typeof DesignSystemIndexRoute
+  '/mushaf-v2': typeof MushafV2IndexRoute
   '/volume/$volumeId': typeof VolumeVolumeIdIndexRoute
+  '/curriculum/vol1/lesson1': typeof CurriculumVol1Lesson1IndexRoute
+  '/curriculum/vol1/lesson2': typeof CurriculumVol1Lesson2IndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
 }
@@ -88,7 +138,13 @@ export interface FileRoutesById {
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/demo-v2/': typeof DemoV2IndexRoute
+  '/demo/': typeof DemoIndexRoute
+  '/design-system/': typeof DesignSystemIndexRoute
+  '/mushaf-v2/': typeof MushafV2IndexRoute
   '/volume/$volumeId/': typeof VolumeVolumeIdIndexRoute
+  '/curriculum/vol1/lesson1/': typeof CurriculumVol1Lesson1IndexRoute
+  '/curriculum/vol1/lesson2/': typeof CurriculumVol1Lesson2IndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
 }
@@ -100,7 +156,13 @@ export interface FileRouteTypes {
     | '/demo/drizzle'
     | '/demo/i18n'
     | '/demo/tanstack-query'
+    | '/demo-v2/'
+    | '/demo/'
+    | '/design-system/'
+    | '/mushaf-v2/'
     | '/volume/$volumeId/'
+    | '/curriculum/vol1/lesson1/'
+    | '/curriculum/vol1/lesson2/'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
   fileRoutesByTo: FileRoutesByTo
@@ -110,7 +172,13 @@ export interface FileRouteTypes {
     | '/demo/drizzle'
     | '/demo/i18n'
     | '/demo/tanstack-query'
+    | '/demo-v2'
+    | '/demo'
+    | '/design-system'
+    | '/mushaf-v2'
     | '/volume/$volumeId'
+    | '/curriculum/vol1/lesson1'
+    | '/curriculum/vol1/lesson2'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
   id:
@@ -120,7 +188,13 @@ export interface FileRouteTypes {
     | '/demo/drizzle'
     | '/demo/i18n'
     | '/demo/tanstack-query'
+    | '/demo-v2/'
+    | '/demo/'
+    | '/design-system/'
+    | '/mushaf-v2/'
     | '/volume/$volumeId/'
+    | '/curriculum/vol1/lesson1/'
+    | '/curriculum/vol1/lesson2/'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
   fileRoutesById: FileRoutesById
@@ -131,7 +205,13 @@ export interface RootRouteChildren {
   DemoDrizzleRoute: typeof DemoDrizzleRoute
   DemoI18nRoute: typeof DemoI18nRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  DemoV2IndexRoute: typeof DemoV2IndexRoute
+  DemoIndexRoute: typeof DemoIndexRoute
+  DesignSystemIndexRoute: typeof DesignSystemIndexRoute
+  MushafV2IndexRoute: typeof MushafV2IndexRoute
   VolumeVolumeIdIndexRoute: typeof VolumeVolumeIdIndexRoute
+  CurriculumVol1Lesson1IndexRoute: typeof CurriculumVol1Lesson1IndexRoute
+  CurriculumVol1Lesson2IndexRoute: typeof CurriculumVol1Lesson2IndexRoute
   VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute: typeof VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute
   VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute: typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
 }
@@ -150,6 +230,34 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mushaf-v2/': {
+      id: '/mushaf-v2/'
+      path: '/mushaf-v2'
+      fullPath: '/mushaf-v2/'
+      preLoaderRoute: typeof MushafV2IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/design-system/': {
+      id: '/design-system/'
+      path: '/design-system'
+      fullPath: '/design-system/'
+      preLoaderRoute: typeof DesignSystemIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/': {
+      id: '/demo/'
+      path: '/demo'
+      fullPath: '/demo/'
+      preLoaderRoute: typeof DemoIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo-v2/': {
+      id: '/demo-v2/'
+      path: '/demo-v2'
+      fullPath: '/demo-v2/'
+      preLoaderRoute: typeof DemoV2IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/tanstack-query': {
@@ -180,6 +288,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VolumeVolumeIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/curriculum/vol1/lesson2/': {
+      id: '/curriculum/vol1/lesson2/'
+      path: '/curriculum/vol1/lesson2'
+      fullPath: '/curriculum/vol1/lesson2/'
+      preLoaderRoute: typeof CurriculumVol1Lesson2IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/curriculum/vol1/lesson1/': {
+      id: '/curriculum/vol1/lesson1/'
+      path: '/curriculum/vol1/lesson1'
+      fullPath: '/curriculum/vol1/lesson1/'
+      preLoaderRoute: typeof CurriculumVol1Lesson1IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/': {
       id: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/'
       path: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum'
@@ -203,7 +325,13 @@ const rootRouteChildren: RootRouteChildren = {
   DemoDrizzleRoute: DemoDrizzleRoute,
   DemoI18nRoute: DemoI18nRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  DemoV2IndexRoute: DemoV2IndexRoute,
+  DemoIndexRoute: DemoIndexRoute,
+  DesignSystemIndexRoute: DesignSystemIndexRoute,
+  MushafV2IndexRoute: MushafV2IndexRoute,
   VolumeVolumeIdIndexRoute: VolumeVolumeIdIndexRoute,
+  CurriculumVol1Lesson1IndexRoute: CurriculumVol1Lesson1IndexRoute,
+  CurriculumVol1Lesson2IndexRoute: CurriculumVol1Lesson2IndexRoute,
   VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute:
     VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute,
   VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute:

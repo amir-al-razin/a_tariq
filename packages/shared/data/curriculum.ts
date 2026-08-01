@@ -136,6 +136,7 @@ export interface ChunkPayload {
     /** tense label shown above verb table: 'past' | 'present' | 'imperative' */
     verbTense?: 'past' | 'present' | 'imperative';
     isPlural?: boolean;
+    isDual?: boolean;
     masdarRows?: MasdarRow[];
     masdarColumnOverrides?: {
         imperativeAr?: string;
@@ -191,6 +192,9 @@ import { lesson06 } from './vol1/ch1/lesson06';
 import { lesson07 } from './vol1/ch1/lesson07';
 import { lesson08 } from './vol1/ch1/lesson08';
 import { lesson09 } from './vol1/ch1/lesson09';
+
+export { lesson01, lesson02, lesson03, lesson04, lesson05, lesson06, lesson07, lesson08, lesson09 };
+
 
 export const CHAPTERS: ChapterData[] = [
     {

@@ -4,18 +4,20 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, ArrowDown } from 'lucide-react'
 
 import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
-import { SCROLL_COMPLETE_TYPES, VOLUME_ACCENT } from '../../lib/pedagogy'
+import { SCROLL_COMPLETE_TYPES } from '../../lib/pedagogy'
 import * as m from '#/paraglide/messages.js'
 
-import { VocabularyView } from '../pedagogy/VocabularyView'
-import { GrammarRuleView } from '../pedagogy/GrammarRuleView'
-import { ApplicationView } from '../pedagogy/ApplicationView'
-import { QAndAView } from '../pedagogy/QAndAView'
-import { TarkeebView } from '../pedagogy/TarkeebView'
-import { VerbTableView } from '../pedagogy/VerbTableView'
-import { IdafahDrillView } from '../pedagogy/IdafahDrillView'
-import { ParagraphView } from '../pedagogy/ParagraphView'
-import { MasdarFactoryView } from '../pedagogy/MasdarFactoryView'
+import {
+  VocabularyView,
+  GrammarRuleView,
+  ApplicationView,
+  QAndAView,
+  TarkeebView,
+  VerbTableView,
+  IdafahView,
+  ParagraphView,
+  MasdarFactoryView
+} from '../pedagogy-v2'
 import { setChunkProgress } from '../../state/progressStore'
 
 type Props = {
@@ -44,8 +46,6 @@ export const ChunkEngineScreen: React.FC<Props> = ({
     setIsComplete(false)
     completeFiredRef.current = false
   }, [chunkId])
-
-  const accent = VOLUME_ACCENT[volumeId] || VOLUME_ACCENT[1]
 
   useEffect(() => {
     const checkDark = () => {
@@ -155,7 +155,7 @@ export const ChunkEngineScreen: React.FC<Props> = ({
 
   if (!chunk) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 min-h-screen">
+      <div className="flex-1 flex items-center justify-center bg-white dark:bg-neutral-950 min-h-screen">
         <p className="text-neutral-800 dark:text-neutral-100 font-english">
           Chunk not found
         </p>
@@ -167,24 +167,24 @@ export const ChunkEngineScreen: React.FC<Props> = ({
     switch (chunk.type.toUpperCase()) {
       case 'VOCABULARY':
       case 'MIXED':
-        return <VocabularyView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+        return <VocabularyView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} />
       case 'GRAMMAR_RULE':
-        return <GrammarRuleView key={chunk.id} payload={chunk.payload} accent400={accent.accent400} accent700={accent.accent700} />
+        return <GrammarRuleView key={chunk.id} payload={chunk.payload} />
       case 'APPLICATION':
-        return <ApplicationView key={chunk.id} payload={chunk.payload} accent700={accent.accent700} />
+        return <ApplicationView key={chunk.id} payload={chunk.payload} />
       case 'Q_AND_A':
       case 'ASSESSMENT':
-        return <QAndAView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} />
+        return <QAndAView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} />
       case 'TARKEEB':
-        return <TarkeebView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent700={accent.accent700} />
+        return <TarkeebView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} />
       case 'VERB_TABLE':
-        return <VerbTableView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+        return <VerbTableView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} />
       case 'IDAFAH_DRILL':
-        return <IdafahDrillView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+        return <IdafahView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} />
       case 'PARAGRAPH':
-        return <ParagraphView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+        return <ParagraphView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} />
       case 'MASDAR_FACTORY':
-        return <MasdarFactoryView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} accent400={accent.accent400} accent700={accent.accent700} />
+        return <MasdarFactoryView key={chunk.id} payload={chunk.payload} onProgress={setProgress} onComplete={handleComplete} />
       default:
         return (
           <div className="flex flex-col items-center justify-center p-12 text-center">
@@ -207,9 +207,9 @@ export const ChunkEngineScreen: React.FC<Props> = ({
   const barWidth = `${Math.round(progress * 100)}%`
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900 flex flex-col font-english">
+    <div className="min-h-screen bg-white dark:bg-neutral-950 flex flex-col font-english">
       {/* Header */}
-      <div className="sticky top-0 z-50 bg-neutral-50 dark:bg-neutral-900 flex flex-row items-center px-4 pt-6 pb-4 gap-3 border-b border-neutral-200 dark:border-neutral-800">
+      <div className="sticky top-0 z-50 bg-white dark:bg-neutral-950 flex flex-row items-center px-4 pt-6 pb-4 gap-3">
         <button
           onClick={goBack}
           className="p-2 -ml-2 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors"
@@ -219,8 +219,7 @@ export const ChunkEngineScreen: React.FC<Props> = ({
 
         <div className="flex-1 h-3 bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
           <motion.div
-            className="h-full rounded-full"
-            style={{ backgroundColor: accent.accent400 }}
+            className="h-full rounded-full bg-neutral-900 dark:bg-white"
             initial={{ width: 0 }}
             animate={{ width: barWidth }}
             transition={{ type: 'spring', stiffness: 50, damping: 15 }}
@@ -228,8 +227,7 @@ export const ChunkEngineScreen: React.FC<Props> = ({
         </div>
 
         <span
-          className="font-english-semibold text-sm min-w-[36px] text-right"
-          style={{ color: isDark ? accent.accent400 : accent.accent700 }}
+          className="font-english-semibold text-sm min-w-[36px] text-right text-neutral-900 dark:text-neutral-100"
         >
           {Math.round(progress * 100)}%
         </span>
@@ -241,14 +239,12 @@ export const ChunkEngineScreen: React.FC<Props> = ({
         ref={contentRef}
       >
         <h2
-          className="font-english-semibold text-base mb-1.5 text-center"
-          style={{ color: isDark ? accent.accent400 : accent.accent700 }}
+          className="font-english-semibold text-base mb-1.5 text-center text-neutral-900 dark:text-neutral-100"
         >
           {chunk.titleEn}
         </h2>
         <h1
-          className="font-arabic-semibold text-2xl mb-7 text-center"
-          style={{ color: isDark ? '#F0EEE8' : accent.accent800 }}
+          className="font-arabic-semibold text-2xl mb-7 text-center text-neutral-950 dark:text-white"
           dir="rtl"
         >
           {chunk.titleAr}
@@ -270,7 +266,7 @@ export const ChunkEngineScreen: React.FC<Props> = ({
           </div>
         )}
 
-        <div className="w-full max-w-2xl p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800 flex flex-col items-center">
+        <div className="w-full max-w-2xl p-6 rounded-3xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center">
           {renderContent()}
         </div>
       </div>
@@ -282,14 +278,13 @@ export const ChunkEngineScreen: React.FC<Props> = ({
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
-            className="fixed bottom-0 left-0 right-0 p-6 pb-12 bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 z-40 flex justify-center"
+            className="fixed bottom-0 left-0 right-0 p-6 pb-12 bg-white dark:bg-neutral-950 z-40 flex justify-center"
           >
             <button
               onClick={handleContinue}
-              className="w-full max-w-md h-14 rounded-2xl flex items-center justify-center transition-transform active:scale-95"
-              style={{ backgroundColor: accent.accent400 }}
+              className="w-full max-w-md h-14 rounded-3xl flex items-center justify-center transition-transform active:scale-95 bg-neutral-900 dark:bg-white"
             >
-              <span className="font-english-semibold text-base text-white">
+              <span className="font-english-semibold text-base text-white dark:text-black">
                 {/* @ts-ignore */}
                 {m['chunk.continue'] ? m['chunk.continue']() : 'CONTINUE ✓'}
               </span>

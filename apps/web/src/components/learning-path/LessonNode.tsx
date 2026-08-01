@@ -62,38 +62,28 @@ export const LessonNode: React.FC<Props> = ({
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerLeave}
         disabled={isLocked}
-        className={`relative outline-none cursor-${isLocked ? 'default' : 'pointer'}`}
-        style={{ width: SIZE, height: SIZE + 6 }}
+        className={`flex items-center justify-center rounded-full outline-none transition-transform duration-75 ${
+          !isLocked ? 'cursor-pointer hover:scale-105 active:scale-95' : 'cursor-default'
+        }`}
+        style={{
+          width: SIZE,
+          height: SIZE,
+          backgroundColor: faceColor,
+        }}
         aria-label={`Lesson ${number}`}
       >
-        <div
-          className="absolute bottom-0 w-full rounded-full transition-all duration-75"
-          style={{
-            height: SIZE + (isPressed && !isLocked ? 0 : 6),
-            backgroundColor: shadowColor,
-          }}
-        />
-        <div
-          className="absolute bottom-0 w-full rounded-full flex items-center justify-center transition-transform duration-75"
-          style={{
-            height: SIZE,
-            backgroundColor: faceColor,
-            transform: `translateY(${pushDepth}px)`,
-          }}
-        >
-          {isLocked ? (
-            <Lock size={24} color={textColor} />
-          ) : isCompleted ? (
-            <Check size={30} color={textColor} strokeWidth={3} />
-          ) : (
-            <span
-              className="font-english-semibold text-[24px] leading-[30px]"
-              style={{ color: textColor }}
-            >
-              {number}
-            </span>
-          )}
-        </div>
+        {isLocked ? (
+          <Lock size={24} color={textColor} />
+        ) : isCompleted ? (
+          <Check size={30} color={textColor} strokeWidth={3} />
+        ) : (
+          <span
+            className="font-english-semibold text-[24px] leading-[30px]"
+            style={{ color: textColor }}
+          >
+            {number}
+          </span>
+        )}
       </button>
     </motion.div>
   )

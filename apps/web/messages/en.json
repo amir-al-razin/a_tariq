@@ -84,7 +84,8 @@
     "correct": "✓ Correct!",
     "notQuite": "✗ Not quite",
     "nextQuestion": "Next →",
-    "noQuestions": "No questions yet."
+    "noQuestions": "No questions yet.",
+    "hint": "Hint:"
   },
   "idafah": {
     "basePhrase": "Base Phrase",
@@ -109,9 +110,14 @@
     "pronoun": {
       "he": "He",
       "she": "She",
+      "theyM": "They (m)",
+      "theyF": "They (f)",
       "youM": "You (m)",
       "youF": "You (f)",
-      "i": "I"
+      "youPluralM": "You all (m)",
+      "youPluralF": "You all (f)",
+      "i": "I",
+      "we": "We"
     }
   },
   "masdar": {
@@ -135,5 +141,41 @@
     "translation": "Translation",
     "example": "Example",
     "examples": "Examples"
+  },
+  "mushaf": {
+    "title": "Living Mus'haf",
+    "subtitle": "King Fahd KFGQPC script powered by Quran.com architecture with 3-Tier Pedagogy.",
+    "selectSurah": "Select Surah",
+    "surahFatihah": "1. Al-Fatihah (The Opener)",
+    "surahMulk": "67. Al-Mulk (The Sovereignty)",
+    "fatihahTitle": "Surah Al-Fatihah",
+    "fatihahSub": "Meccan · 7 Verses · Juz 1",
+    "mulkTitle": "Surah Al-Mulk",
+    "mulkSub": "Meccan · 30 Verses (1-5 Featured) · Juz 29",
+    "typography": "Typography",
+    "fontScript": "Mus'haf Script",
+    "fontCairo": "Cairo",
+    "fontTajawal": "Tajawal",
+    "fontVazir": "Vazirmatn",
+    "fontNoto": "Noto Sans Arabic",
+    "readingMode": "Reading Mode",
+    "modeVerseByVerse": "Verse by Verse",
+    "modeContinuous": "Continuous Mus'haf",
+    "wordByWord": "Word by Word Translation",
+    "showTranslation": "Verse Translations",
+    "legendTitle": "3-Tier Comprehension Guide",
+    "tier1Label": "Tier 1: Mastered Phrases",
+    "tier1Desc": "Tone-on-tone squircle pills with subtle emerald touch. Click to open syntax Tarkeeb tree.",
+    "tier2Label": "Tier 2: Known Roots / Words",
+    "tier2Desc": "Subtle monochrome underline without fill. Click to open vocabulary lemma flashcard.",
+    "tier3Label": "Tier 3: Unexplored Text",
+    "tier3Desc": "Peaceful, muted script tone. Continue learning to unlock.",
+    "modalTarkeebTitle": "Syntax Tarkeeb Analysis",
+    "modalVocabTitle": "Vocabulary Lemma Flashcard",
+    "closeModal": "Close Window",
+    "bismillah": "In the name of Allah, the Entirely Merciful, the Especially Merciful.",
+    "verseCount": "Verses",
+    "meccan": "Meccan Revelation",
+    "madini": "Medinan Revelation"
   }
 }

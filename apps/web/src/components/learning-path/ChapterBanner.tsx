@@ -22,13 +22,13 @@ export const ChapterBanner: React.FC<Props> = ({
     return m[key] ? m[key]() : key
   }
 
-  const bg = 'bg-neutral-100 dark:bg-neutral-800'
+  const bg = 'bg-neutral-100 dark:bg-neutral-900'
   const text = 'text-neutral-900 dark:text-neutral-100'
   const sub = 'text-neutral-600 dark:text-neutral-400'
 
   return (
     <div
-      className={`mx-4 mt-5 mb-3 rounded-2xl ${bg} border border-neutral-200 dark:border-neutral-700`}
+      className={`mx-4 mt-5 mb-3 rounded-3xl ${bg}`}
     >
       <div className="flex flex-row items-center justify-between px-5 py-5">
         <div className="flex-1 pr-3">

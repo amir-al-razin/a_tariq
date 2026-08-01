@@ -26,7 +26,7 @@ export const HomeScreen = () => {
   ]
 
   return (
-    <div className="flex-1 bg-neutral-50 px-6 py-8 dark:bg-neutral-900 min-h-screen">
+    <div className="flex-1 bg-white px-6 py-8 dark:bg-neutral-950 min-h-screen">
       <div className="max-w-[1024px] mx-auto w-full flex flex-col gap-5">
         <div className="flex flex-col gap-2 mb-2">
           <h1 className="font-english-semibold text-[34px] leading-[40px] tracking-[-0.4px] text-neutral-900 dark:text-neutral-100">
@@ -43,7 +43,7 @@ export const HomeScreen = () => {
               return (
                 <div
                   key={vol.id}
-                  className="w-full flex flex-row items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-100 p-5 dark:border-neutral-700 dark:bg-neutral-800"
+                  className="w-full flex flex-row items-center justify-between rounded-3xl bg-neutral-100 p-6 dark:bg-neutral-900"
                 >
                   <div className="flex flex-col gap-1">
                     <h2 className="font-english-semibold text-[22px] leading-[28px] tracking-[-0.1px] text-neutral-400 dark:text-neutral-500">
@@ -68,7 +68,7 @@ export const HomeScreen = () => {
                 <Link
                   to="/volume/$volumeId"
                   params={{ volumeId: vol.id }}
-                  className="block w-full rounded-2xl border border-neutral-200 bg-neutral-100 p-5 dark:border-neutral-700 dark:bg-neutral-800"
+                  className="block w-full rounded-3xl bg-neutral-100 p-6 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 transition-colors"
                 >
                   <h2 className="font-english-semibold text-[22px] leading-[28px] tracking-[-0.1px] text-neutral-900 dark:text-neutral-100">
                     {vol.title}
