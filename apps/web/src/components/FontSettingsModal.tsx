@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Type, X, Check } from 'lucide-react';
 import { useFontStore, ARABIC_FONT_LIST, type ArabicFontId } from '../state/fontStore';
@@ -31,10 +32,14 @@ export const FontSettingsModal: React.FC<FontSettingsModalProps> = ({ isOpen, on
     };
   }, [isOpen, onClose]);
 
-  return (
+  if (typeof document === 'undefined') {
+    return null;
+  }
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           {/* Backdrop with Backdrop Blur & Zero Shadows */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -151,6 +156,7 @@ export const FontSettingsModal: React.FC<FontSettingsModalProps> = ({ isOpen, on
           </motion.div>
         </div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
