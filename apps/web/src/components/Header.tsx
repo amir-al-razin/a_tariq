@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, Code2 } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
 import FontToggle from './FontToggle'
+import TariqLogo from './TariqLogo'
 
 export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -31,19 +32,19 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 w-full border-b transition-all duration-200 ${
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-200 ${
         isScrolled
-          ? 'border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md'
-          : 'border-transparent bg-white/0 dark:bg-neutral-950/0'
+          ? 'bg-neutral-100/80 dark:bg-neutral-900/80 backdrop-blur-md'
+          : 'bg-transparent'
       }`}
     >
       <div className="w-full max-w-[1024px] mx-auto px-6 h-16 flex items-center justify-between">
         
         <Link
           to="/"
-          className="font-english-bold text-[22px] tracking-tight text-emerald-600 dark:text-emerald-500 no-underline hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
+          className="no-underline group focus:outline-none"
         >
-          Tariq
+          <TariqLogo />
         </Link>
 
         <div className="flex items-center gap-4">
@@ -64,7 +65,7 @@ export default function Header() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-neutral-900 rounded-3xl overflow-hidden flex flex-col p-2 border border-neutral-200 dark:border-neutral-800"
+                  className="absolute right-0 top-full mt-2 w-48 bg-neutral-100 dark:bg-neutral-900 rounded-3xl overflow-hidden flex flex-col p-2 backdrop-blur-md"
                 >
                   <Link
                     to="/design-system"
