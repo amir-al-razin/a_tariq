@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import ThemeToggle from '../../components/ThemeToggle';
-import FontToggle from '../../components/FontToggle';
 import {
   ChevronLeft,
   ChevronRight,
@@ -83,16 +81,16 @@ function MushafV2Page() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   // Font scale follows Quran.com's code_v2 scale: 1=smallest ... 5=default ... 10=largest
-  // Scale 3 = 3.2vh font / 56vh line-width (default reading size)
-  // These are the exact values from Quran.com's _utility.scss code_v2 map
+  // Scale 3 = 3.2vh font / 56vh line-width on desktop, and proportional vw units on mobile.
+  // These are derived from Quran.com's _utility.scss code_v2 map for seamless mobile reading.
   const FONT_SCALES = [
-    { scale: 1, fontVh: 2.9, lineVh: 52 },
-    { scale: 2, fontVh: 3.0, lineVh: 54 },
-    { scale: 3, fontVh: 3.2, lineVh: 56 },
-    { scale: 4, fontVh: 3.5, lineVh: 61 },
-    { scale: 5, fontVh: 3.7, lineVh: 64.5 },
-    { scale: 6, fontVh: 5.16, lineVh: 90.4 },
-    { scale: 7, fontVh: 6.62, lineVh: 116.3 },
+    { scale: 1, fontVh: 2.9, lineVh: 52, fontVw: 4.5 },
+    { scale: 2, fontVh: 3.0, lineVh: 54, fontVw: 5.2 },
+    { scale: 3, fontVh: 3.2, lineVh: 56, fontVw: 6.0 },
+    { scale: 4, fontVh: 3.5, lineVh: 61, fontVw: 7.2 },
+    { scale: 5, fontVh: 3.7, lineVh: 64.5, fontVw: 8.5 },
+    { scale: 6, fontVh: 5.16, lineVh: 90.4, fontVw: 10.2 },
+    { scale: 7, fontVh: 6.62, lineVh: 116.3, fontVw: 12.0 },
   ];
 
   const [fontScaleIndex, setFontScaleIndex] = useState<number>(() => {
@@ -288,60 +286,64 @@ function MushafV2Page() {
               src: local('QCF2${String(pageNumber).padStart(3, '0')}'), url('/fonts/quran/hafs/v2/woff2/p${pageNumber}.woff2') format('woff2');
               font-display: block;
             }
+            :root {
+              --mushaf-font-size: ${currentScale.fontVw}vw;
+              --mushaf-line-height: ${currentScale.fontVw * 1.85}vw;
+              --mushaf-container-width: 100%;
+            }
+            @media (min-width: 768px) {
+              :root {
+                --mushaf-font-size: ${currentScale.fontVh}vh;
+                --mushaf-line-height: ${currentScale.fontVh * 2.2}vh;
+                --mushaf-container-width: ${currentScale.lineVh}vh;
+              }
+            }
           `,
         }}
       />
       {/* Quran.com Replica Sticky Top Bar - Two-Tier Responsive Layout */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-md px-4 sm:px-6 py-3 md:py-3.5 transition-all">
         <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5 md:gap-3">
-          {/* Top Tier on Mobile / Left Section on Desktop: Surah & Page Selectors + General Toggles */}
-          <div className="flex items-center justify-between gap-2 flex-wrap sm:flex-nowrap">
-            <div className="flex items-center gap-2 flex-1 sm:flex-initial">
-              {/* Surah Dropdown */}
-              <div className="relative flex-1 sm:flex-initial min-w-[140px] sm:min-w-0">
-                <select
-                  value={primaryChapter?.pages[0] ?? 1}
-                  onChange={handleSurahSelect}
-                  className="w-full appearance-none bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-english-semibold text-xs md:text-sm font-semibold py-2 pl-3.5 pr-8 rounded-2xl cursor-pointer outline-none transition-colors max-w-[200px] sm:max-w-[260px] truncate"
-                >
-                  {chapters.map((ch) => (
-                    <option key={ch.id} value={ch.pages[0]}>
-                      {ch.id}. {ch.name_simple} ({ch.translated_name.name})
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-500">
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Page Jump Selector */}
-              <div className="relative">
-                <select
-                  value={pageNumber}
-                  onChange={handlePageSelect}
-                  className="appearance-none bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-english-semibold text-xs md:text-sm font-semibold py-2 pl-3 pr-7 rounded-2xl cursor-pointer outline-none transition-colors"
-                >
-                  {Array.from({ length: 604 }, (_, i) => i + 1).map((pg) => (
-                    <option key={pg} value={pg}>
-                      Page {pg}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500">
-                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
-                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                  </svg>
-                </div>
+          {/* Top Tier on Mobile / Left Section on Desktop: Surah & Page Selectors */}
+          <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap flex-1 lg:flex-initial">
+            {/* Surah Dropdown */}
+            <div className="relative flex-1 sm:flex-initial min-w-[140px] sm:min-w-0">
+              <select
+                value={primaryChapter?.pages[0] ?? 1}
+                onChange={handleSurahSelect}
+                className="w-full appearance-none bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-english-semibold text-xs md:text-sm font-semibold py-2 pl-3.5 pr-8 rounded-2xl cursor-pointer outline-none transition-colors max-w-[200px] sm:max-w-[260px] truncate"
+              >
+                {chapters.map((ch) => (
+                  <option key={ch.id} value={ch.pages[0]}>
+                    {ch.id}. {ch.name_simple} ({ch.translated_name.name})
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-500">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                  <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                </svg>
               </div>
             </div>
 
-            {/* General Toggles positioned on top tier for effortless accessibility */}
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <FontToggle variant="toolbar" />
-              <ThemeToggle />
+            {/* Page Jump Selector */}
+            <div className="relative">
+              <select
+                value={pageNumber}
+                onChange={handlePageSelect}
+                className="appearance-none bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-english-semibold text-xs md:text-sm font-semibold py-2 pl-3 pr-7 rounded-2xl cursor-pointer outline-none transition-colors"
+              >
+                {Array.from({ length: 604 }, (_, i) => i + 1).map((pg) => (
+                  <option key={pg} value={pg}>
+                    Page {pg}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500">
+                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
+                  <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                </svg>
+              </div>
             </div>
           </div>
 
@@ -447,14 +449,12 @@ function MushafV2Page() {
               </div>
             </div>
           ) : (
-            /* PHYSICAL MUSHAF - Quran.com architecture: fixed vh-based line-width, text-align center */
+            /* PHYSICAL MUSHAF - Quran.com architecture: responsive vw/inline on mobile, fixed vh/block on desktop */
             <div
-              className="my-4 select-none"
+              className="my-4 md:my-6 select-none text-center px-1.5 md:px-0"
               dir="rtl"
               style={{
-                // The line container is centered and sized in vh units - exactly like Quran.com.
-                // This couples line width to font size proportionally so lines NEVER overflow.
-                width: `${currentScale.lineVh}vh`,
+                width: 'var(--mushaf-container-width)',
                 maxWidth: '100%',
                 margin: '0 auto',
               }}
@@ -472,7 +472,7 @@ function MushafV2Page() {
                     {/* Surah Calligraphic Header Emblem Banner */}
                     {chapter && (
                       <div
-                        className="bg-neutral-100 dark:bg-neutral-900 rounded-3xl py-5 px-6 my-6 text-center"
+                        className="block w-full bg-neutral-100 dark:bg-neutral-900 rounded-3xl py-5 px-6 my-6 text-center"
                         dir="ltr"
                       >
                         <span className="font-surah text-5xl sm:text-6xl text-neutral-900 dark:text-neutral-100 select-none block my-1">
@@ -494,33 +494,34 @@ function MushafV2Page() {
 
                     {/*
                       Physical line block - Quran.com architecture:
-                      - text-align: center so all inline words cluster naturally
-                      - NO flex stretching - words are inline spans, not flex items
-                      - font size in vh units, line-height proportional
-                      - The parent container's vh-based width is what keeps lines bounded
+                      - On mobile (< md): display: inline so lines flow continuously without forced broken wraps
+                      - On desktop (>= md): display: block with fixed vh width & center alignment for exact 15-line layout
+                      - Responsive font size and line height via CSS custom variables
                     */}
                     <div
-                      className="w-full text-center my-1"
+                      className="inline md:block w-full text-center md:my-1"
                       dir="rtl"
-                      style={{ lineHeight: `${currentScale.fontVh * 2.2}vh` }}
+                      style={{ lineHeight: 'var(--mushaf-line-height)' }}
                     >
-                      {lineGroup.words.map((word) => {
+                      {lineGroup.words.map((word, wordIdx) => {
                         const isEndMarker = word.char_type_name === 'end';
                         return (
-                          <span
-                            key={word.id}
-                            style={{
-                              fontFamily: `p${pageNumber}-v2, 'UthmanicHafs', serif`,
-                              fontSize: `${currentScale.fontVh}vh`,
-                            }}
-                            className={
-                              isEndMarker
-                                ? 'font-mushaf text-neutral-500 dark:text-neutral-500 select-none mx-1'
-                                : 'font-mushaf text-neutral-900 dark:text-neutral-100 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors cursor-pointer'
-                            }
-                          >
-                            {word.code_v2 || word.text_uthmani}
-                          </span>
+                          <React.Fragment key={word.id}>
+                            <span
+                              style={{
+                                fontFamily: `p${pageNumber}-v2, 'UthmanicHafs', serif`,
+                                fontSize: 'var(--mushaf-font-size)',
+                              }}
+                              className={
+                                isEndMarker
+                                  ? 'font-mushaf text-neutral-500 dark:text-neutral-500 select-none mx-1 sm:mx-1.5 inline-block'
+                                  : 'font-mushaf text-neutral-900 dark:text-neutral-100 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors cursor-pointer inline'
+                              }
+                            >
+                              {word.code_v2 || word.text_uthmani}
+                            </span>
+                            {wordIdx < lineGroup.words.length - 1 ? ' ' : ''}
+                          </React.Fragment>
                         );
                       })}
                     </div>
