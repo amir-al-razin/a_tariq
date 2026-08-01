@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, ArrowDown } from 'lucide-react'
+import { X, ChevronDown, Check } from 'lucide-react'
 
 import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
 import { SCROLL_COMPLETE_TYPES } from '../../lib/pedagogy'
@@ -19,6 +19,7 @@ import {
   MasdarFactoryView
 } from '../pedagogy-v2'
 import { setChunkProgress } from '../../state/progressStore'
+import FontToggle from '../FontToggle'
 
 type Props = {
   volumeId: 1 | 2 | 3
@@ -89,7 +90,6 @@ export const ChunkEngineScreen: React.FC<Props> = ({
       return
 
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement
-    // Also check the specific container if it scrolls, but typically web uses window scroll
     const remaining = scrollHeight - scrollTop - clientHeight
 
     if (remaining < 80) {
@@ -194,7 +194,7 @@ export const ChunkEngineScreen: React.FC<Props> = ({
             {!isScrollCompletionType && !isComplete && (
               <button
                 onClick={handleComplete}
-                className="mt-4 px-4 py-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg"
+                className="mt-4 px-5 py-2.5 bg-neutral-900 text-white dark:bg-white dark:text-black rounded-full font-english-medium text-sm"
               >
                 Mark Complete
               </button>
@@ -208,16 +208,17 @@ export const ChunkEngineScreen: React.FC<Props> = ({
 
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-950 flex flex-col font-english">
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-white dark:bg-neutral-950 flex flex-row items-center px-4 pt-6 pb-4 gap-3">
+      {/* Raw Neutral Header */}
+      <div className="sticky top-0 z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md flex flex-row items-center px-6 py-4 gap-4 transition-colors">
         <button
           onClick={goBack}
-          className="p-2 -ml-2 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors"
+          className="w-10 h-10 rounded-full bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200 dark:hover:bg-neutral-800 text-neutral-800 dark:text-neutral-200 flex items-center justify-center transition-colors cursor-pointer outline-none shrink-0"
+          aria-label="Back to lesson"
         >
-          <X size={24} className="text-neutral-800 dark:text-neutral-200" />
+          <X size={20} />
         </button>
 
-        <div className="flex-1 h-3 bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+        <div className="flex-1 h-2.5 bg-neutral-100 dark:bg-neutral-900 rounded-full overflow-hidden">
           <motion.div
             className="h-full rounded-full bg-neutral-900 dark:bg-white"
             initial={{ width: 0 }}
@@ -226,44 +227,42 @@ export const ChunkEngineScreen: React.FC<Props> = ({
           />
         </div>
 
-        <span
-          className="font-english-semibold text-sm min-w-[36px] text-right text-neutral-900 dark:text-neutral-100"
-        >
+        <div className="px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-900 font-english-semibold text-xs text-neutral-900 dark:text-neutral-100 min-w-[48px] text-center shrink-0">
           {Math.round(progress * 100)}%
-        </span>
+        </div>
       </div>
 
       {/* Body */}
       <div
-        className="flex-1 flex flex-col items-center p-6 pb-24"
+        className="flex-1 flex flex-col items-center p-6 pb-28"
         ref={contentRef}
       >
-        <h2
-          className="font-english-semibold text-base mb-1.5 text-center text-neutral-900 dark:text-neutral-100"
-        >
+        <h2 className="font-english-semibold text-base mb-1.5 text-center text-neutral-900 dark:text-neutral-100">
           {chunk.titleEn}
         </h2>
         <h1
-          className="font-arabic-semibold text-2xl mb-7 text-center text-neutral-950 dark:text-white"
+          className="font-arabic-semibold text-2xl mb-6 text-center text-neutral-950 dark:text-white"
           dir="rtl"
         >
           {chunk.titleAr}
         </h1>
 
+        {/* Scroll Indicator Pill */}
         {isScrollCompletionType && !isComplete && (
-          <div className="flex flex-row items-center gap-1.5 mb-4 opacity-60">
-            <ArrowDown
-              size={14}
-              className="text-neutral-500 dark:text-neutral-400"
-            />
-            <span className="font-english text-xs text-neutral-500 dark:text-neutral-400">
-              {/* Using optional chaining / bracket notation for paraglide to handle missing key errors */}
+          <motion.div
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: [0, 4, 0] }}
+            transition={{ y: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' } }}
+            className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-neutral-100 dark:bg-neutral-900 mb-6 text-neutral-600 dark:text-neutral-400"
+          >
+            <ChevronDown size={14} className="text-neutral-500 dark:text-neutral-400 stroke-[2.5]" />
+            <span className="font-english-medium text-xs tracking-wide">
               {/* @ts-ignore */}
               {m['chunk.scrollToContinue']
                 ? m['chunk.scrollToContinue']()
                 : 'Scroll to continue'}
             </span>
-          </div>
+          </motion.div>
         )}
 
         <div className="w-full max-w-2xl p-6 rounded-3xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center">
@@ -271,23 +270,24 @@ export const ChunkEngineScreen: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* CONTINUE Button */}
+      {/* CONTINUE Button Pill */}
       <AnimatePresence>
         {isComplete && (
           <motion.div
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
-            className="fixed bottom-0 left-0 right-0 p-6 pb-12 bg-white dark:bg-neutral-950 z-40 flex justify-center"
+            className="fixed bottom-0 left-0 right-0 p-6 pb-8 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md z-40 flex justify-center border-0"
           >
             <button
               onClick={handleContinue}
-              className="w-full max-w-md h-14 rounded-3xl flex items-center justify-center transition-transform active:scale-95 bg-neutral-900 dark:bg-white"
+              className="w-full max-w-md h-14 rounded-full flex items-center justify-center gap-2 transition-all active:scale-95 bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-black cursor-pointer shadow-none border-0"
             >
-              <span className="font-english-semibold text-base text-white dark:text-black">
+              <span className="font-english-semibold text-base tracking-wide">
                 {/* @ts-ignore */}
-                {m['chunk.continue'] ? m['chunk.continue']() : 'CONTINUE ✓'}
+                {m['chunk.continue'] ? m['chunk.continue']() : 'CONTINUE'}
               </span>
+              <Check size={18} strokeWidth={2.5} />
             </button>
           </motion.div>
         )}

@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, Code2 } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
+import FontToggle from './FontToggle'
 
 export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -93,7 +94,8 @@ export default function Header() {
               )}
             </AnimatePresence>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
+            <FontToggle />
             <ThemeToggle />
           </div>
         </div>
