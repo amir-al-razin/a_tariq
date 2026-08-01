@@ -438,9 +438,13 @@ function MushafV2Page() {
                   const showBismillah = chapter && chapter.bismillah_pre && chapter.id !== 1 && chapter.id !== 9;
 
                   const isCenteredPage = pageNumber === 1 || pageNumber === 2;
-                  const isShortLine = lineGroup.words.length <= 5;
+                  // A line with fewer than 10 words is almost certainly a short concluding
+                  // line or a special ornamental line - center it so words stay tight.
+                  // Only apply justify-between on dense full-width standard lines (10+ words)
+                  // on pages 3-604 to replicate the crisp flush-justified physical page look.
+                  const isShortLine = lineGroup.words.length < 10;
                   const justifyClass = (isCenteredPage || isShortLine)
-                    ? 'justify-center gap-2 sm:gap-3 md:gap-4'
+                    ? 'justify-center gap-1.5 sm:gap-2'
                     : 'justify-between';
 
                   return (

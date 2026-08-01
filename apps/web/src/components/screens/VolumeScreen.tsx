@@ -214,9 +214,16 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                             {isComplete ? <Check size={20} strokeWidth={2.5} /> : <span className="font-english-bold text-[16px]">{lesson.darsNumber}</span>}
                           </div>
                           <div className="flex flex-col items-start text-left">
-                            <span className={`font-english-semibold text-[17px] ${isComplete ? 'text-neutral-500 dark:text-neutral-400' : 'text-neutral-900 dark:text-neutral-100'}`}>
-                              Lesson {lesson.darsNumber}
-                            </span>
+                            <div className="flex items-center gap-2">
+                              <span className={`font-english-semibold text-[17px] ${isComplete ? 'text-neutral-500 dark:text-neutral-400' : 'text-neutral-900 dark:text-neutral-100'}`}>
+                                Lesson {lesson.darsNumber}
+                              </span>
+                              {isNext && !isComplete && (
+                                <span className="px-2 py-0.5 rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 font-english-bold text-[10px] uppercase tracking-wider leading-none">
+                                  CURRENT
+                                </span>
+                              )}
+                            </div>
                             <span className="font-english text-[13px] text-neutral-500 dark:text-neutral-500 mt-0.5">
                               {completedCount} / {total} sections completed
                             </span>

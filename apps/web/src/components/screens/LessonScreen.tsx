@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Lock, Check, ArrowDown } from 'lucide-react'
+import { ArrowLeft, Lock, Check, ArrowDown, ChevronDown } from 'lucide-react'
 
 import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
 import { getLastVisitedChunk, setLastVisitedChunk } from '../../lib/progress'
@@ -149,7 +149,6 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
           {chunks.map((chunk, idx) => {
             const isCompleted = progressStore[`progress.v${volumeId}.c${chapterId}.d${darsNum}.${chunk.id}`] === 'completed'
             const status = isCompleted ? 'completed' : 'open'
-
             const isLastVisited = lastVisited === idx
             const isInteractive = true
 
@@ -157,15 +156,6 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
             const angle = -Math.PI / 2 + (idx * 2 * Math.PI) / numChunks
             const x = dynamicRadius * Math.cos(angle)
             const y = dynamicRadius * Math.sin(angle)
-
-            const circleBg = isLastVisited
-              ? (isDark ? '#e5e5e5' : '#171717')
-              : isCompleted ? (isDark ? '#262626' : '#e5e5e5')
-                : (isDark ? '#171717' : '#f5f5f5')
-
-            const iconColor = isLastVisited || isCompleted 
-              ? (isDark ? '#171717' : '#ffffff')
-              : (isDark ? '#a3a3a3' : '#525252')
 
             return (
               <div
@@ -189,9 +179,6 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
                     idx={idx}
                     status={status}
                     isLastVisited={isLastVisited}
-                    circleBg={circleBg}
-                    iconColor={iconColor}
-                    isDark={isDark}
                     onPress={() => isInteractive && handleChunkPress(chunk.id, idx)}
                   />
                 </motion.div>
@@ -205,18 +192,8 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
           {chunks.map((chunk, idx) => {
              const isCompleted = progressStore[`progress.v${volumeId}.c${chapterId}.d${darsNum}.${chunk.id}`] === 'completed'
              const status = isCompleted ? 'completed' : 'open'
-
              const isLastVisited = lastVisited === idx
              const isInteractive = true
-
-             const circleBg = isLastVisited
-               ? (isDark ? '#e5e5e5' : '#171717')
-               : isCompleted ? (isDark ? '#262626' : '#e5e5e5')
-                 : (isDark ? '#171717' : '#f5f5f5')
-
-             const iconColor = isLastVisited || isCompleted 
-               ? (isDark ? '#171717' : '#ffffff')
-               : (isDark ? '#a3a3a3' : '#525252')
 
              return (
               <motion.div
@@ -229,15 +206,12 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
                   height: CHUNK_SIZE,
                   zIndex: (isLastVisited || (lastVisited === null && idx === 0)) ? 100 : 5,
                 }}
-                className="flex items-center justify-center"
+                className="flex items-center justify-center relative"
               >
                 <ChunkNode
                   idx={idx}
                   status={status}
                   isLastVisited={isLastVisited}
-                  circleBg={circleBg}
-                  iconColor={iconColor}
-                  isDark={isDark}
                   onPress={() => isInteractive && handleChunkPress(chunk.id, idx)}
                 />
               </motion.div>
@@ -253,85 +227,67 @@ const ChunkNode = ({
   idx,
   status,
   isLastVisited,
-  circleBg,
-  iconColor,
-  isDark,
   onPress,
 }: {
   idx: number
   status: string
   isLastVisited: boolean
-  circleBg: string
-  iconColor: string
-  isDark: boolean
   onPress: () => void
 }) => {
   const isLocked = status === 'locked'
   const isCompleted = status === 'completed'
-  
-  const arrowBg = isLastVisited 
-    ? (isDark ? '#e5e5e5' : '#171717')
-    : (isDark ? '#262626' : '#f5f5f5')
-    
-  const arrowColor = isLastVisited 
-    ? (isDark ? '#171717' : '#ffffff')
-    : (isDark ? '#a3a3a3' : '#525252')
+  const isTarget = isLastVisited || (status === 'open' && !isLastVisited && idx === 0)
 
   return (
-    <motion.button
-      disabled={isLocked}
-      whileTap={isLocked ? {} : { scale: 0.95 }}
-      whileHover={isLocked ? {} : { scale: 1.05 }}
-      onClick={onPress}
-      className="relative focus:outline-none rounded-full flex items-center justify-center transition-colors"
-      style={{
-        width: CHUNK_SIZE,
-        height: CHUNK_SIZE,
-        backgroundColor: circleBg,
-      }}
-    >
+    <div className="relative flex items-center justify-center">
+      {/* Sleek Raw Neutral Pointing Indicator Badge */}
+      {isTarget && (
+        <motion.div
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: [0, -4, 0] }}
+          transition={{
+            opacity: { duration: 0.2 },
+            y: { duration: 1.6, repeat: Infinity, ease: 'easeInOut' },
+          }}
+          className="absolute -top-[42px] z-30 flex flex-col items-center pointer-events-none select-none"
+        >
+          <div className="px-3 py-1 rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 font-english-bold text-[10px] uppercase tracking-widest flex items-center gap-1.5 shadow-none border-0 leading-none whitespace-nowrap">
+            <span>{isLastVisited ? 'CURRENT' : 'START'}</span>
+            <ChevronDown size={11} className="stroke-[3] shrink-0" />
+          </div>
+          <div className="w-0 h-0 border-x-[5px] border-x-transparent border-t-[5px] border-t-neutral-900 dark:border-t-white -mt-[1px]" />
+        </motion.div>
+      )}
+
+      <motion.button
+        disabled={isLocked}
+        whileTap={isLocked ? {} : { scale: 0.94 }}
+        whileHover={isLocked ? {} : { scale: 1.06 }}
+        onClick={onPress}
+        className={`relative focus:outline-none rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer ${
+          isTarget
+            ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 ring-4 ring-neutral-200 dark:ring-neutral-800'
+            : isCompleted
+            ? 'bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100'
+            : isLocked
+            ? 'bg-neutral-100/50 dark:bg-neutral-900/50 text-neutral-300 dark:text-neutral-700 cursor-not-allowed'
+            : 'bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300'
+        }`}
+        style={{
+          width: CHUNK_SIZE,
+          height: CHUNK_SIZE,
+        }}
+      >
         {isLocked ? (
-          <Lock size={24} color={iconColor} />
+          <Lock size={22} className="opacity-60" />
         ) : isCompleted ? (
-          <Check size={28} color={iconColor} strokeWidth={3} />
+          <Check size={26} strokeWidth={3} />
         ) : (
-          <span
-            className="font-english-semibold mt-1"
-            style={{ fontSize: 28, color: iconColor }}
-          >
+          <span className="font-english-bold text-2xl">
             {idx + 1}
           </span>
         )}
-
-        {(isLastVisited || (status === 'open' && !isLastVisited && idx === 0)) && (
-          <motion.div
-            initial={{ scale: 1, y: 0 }}
-            animate={{ scale: 1.03, y: -3 }}
-            transition={{
-              type: 'tween',
-              duration: 1,
-              repeat: Infinity,
-              repeatType: 'reverse',
-            }}
-            className="absolute -top-[30px] flex items-center justify-center rounded-full w-7 h-7"
-            style={{
-              backgroundColor: arrowBg,
-            }}
-          >
-            <ArrowDown
-              size={16}
-              color={arrowColor}
-              strokeWidth={2.5}
-            />
-            <div
-              className="absolute -bottom-[4px] w-[8px] h-[8px] rounded-sm"
-              style={{
-                backgroundColor: arrowBg,
-                transform: 'rotate(45deg)',
-              }}
-            />
-          </motion.div>
-        )}
-    </motion.button>
+      </motion.button>
+    </div>
   )
 }
