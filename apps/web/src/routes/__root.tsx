@@ -102,7 +102,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
         <Header />
-        {children}
+        <main className="min-h-screen pt-16">
+          {children}
+        </main>
         <ScrollRestoration />
         <TanStackDevtools
           config={{
