@@ -12,13 +12,23 @@ export const FontSettingsModal: React.FC<FontSettingsModalProps> = ({ isOpen, on
   const { arabicFont, setArabicFont } = useFontStore();
 
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === 'Escape') {
         onClose();
       }
     };
+
+    // Lock body scroll to prevent background scrolling and layout glitches
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [isOpen, onClose]);
 
   return (
@@ -70,7 +80,7 @@ export const FontSettingsModal: React.FC<FontSettingsModalProps> = ({ isOpen, on
             </div>
 
             {/* Font Selector Cards List */}
-            <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-1">
+            <div className="space-y-3 max-h-[60vh] overflow-y-auto overscroll-contain pr-1">
               {ARABIC_FONT_LIST.map((font) => {
                 const isSelected = arabicFont === font.id;
                 return (
