@@ -23,9 +23,34 @@
   font-display: swap;
 }
 
+/* Authentic Quran.com Physical Mushaf Styles */
+.mushaf-page-container {
+  background-color: #fdfbf7;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(212, 197, 169, 0.5);
+}
+
+.dark .mushaf-page-container {
+  background-color: #121619;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.surah-header-ornament {
+  background: linear-gradient(135deg, rgba(234, 224, 203, 0.4) 0%, rgba(245, 238, 222, 0.7) 50%, rgba(234, 224, 203, 0.4) 100%);
+  border: 2px solid #c9b48c;
+  position: relative;
+}
+
+.dark .surah-header-ornament {
+  background: linear-gradient(135deg, rgba(35, 45, 52, 0.6) 0%, rgba(25, 33, 38, 0.8) 50%, rgba(35, 45, 52, 0.6) 100%);
+  border: 2px solid #3d4c55;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --font-arabic-family: 'Cairo', sans-serif;
   --sea-ink: #173a40;
   --sea-ink-soft: #416166;
   --lagoon: #4fb8b2;
@@ -332,3 +357,15 @@ a {
     color: var(--foreground);
   }
 }
+
+/* Dynamic Arabic Pedagogical Font Classes */
+.font-arabic,
+.font-arabic-medium,
+.font-arabic-semibold {
+  font-family: var(--font-arabic-family, 'Cairo', sans-serif);
+}
+
+.font-amiri {
+  font-family: 'Amiri', serif;
+}
+
