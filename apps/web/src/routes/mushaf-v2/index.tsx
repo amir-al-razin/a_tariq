@@ -70,6 +70,33 @@ function getSurahGlyph(chapterId: number): string {
   return String(chapterId).padStart(3, '0');
 }
 
+// Pages where all text is center aligned in Madani Mushaf (King Fahd Complex QCF v2)
+const CENTER_ALIGNED_PAGES = [1, 2];
+
+// Specific concluding lines on pages that must be center-aligned to prevent word scattering (from Quran.com pageUtils.ts)
+const CENTER_ALIGNED_PAGE_LINES: Record<number, number[]> = {
+  255: [2], // 13(Ar-Ra'd), last ayah
+  528: [9], // 67 (Al Qalam) last ayah
+  534: [6], // 55(Ar-Rahman) last ayah
+  545: [6], // 58(Al-Mujadila) last ayah
+  586: [1], // 80('Abasa) last ayah
+  593: [2], // 88(Al-Ghashiyah) last 2 ayah
+  594: [5], // 89(Al-Fajr) last 2 ayah
+  600: [10], // 100(Al-'Adiyat) last 2 ayah
+  602: [5, 15], // 106(Quraysh) last ayah, 108(Al-Kawthar) last ayah
+  603: [10, 15], // 110(An-Nasr) last ayah, 111(Al-Masad) last ayah
+  604: [4, 9, 14, 15], // 112(Al-Ikhlas) last ayah, 113(Al-Falaq) last ayah, 114(An-Nas) last 2 ayah
+};
+
+function isCenterAlignedLine(pageNumber: number, lineNumber: number, wordCount: number): boolean {
+  if (CENTER_ALIGNED_PAGES.includes(pageNumber)) return true;
+  const centerLines = CENTER_ALIGNED_PAGE_LINES[pageNumber];
+  if (centerLines && centerLines.includes(lineNumber)) return true;
+  // Fallback safeguard against word scattering on very short concluding lines
+  if (wordCount <= 4) return true;
+  return false;
+}
+
 // In-memory cache for fetched pages to make pagination instantaneous
 const pageCache = new Map<number, VerseAPI[]>();
 let chaptersCache: Chapter[] | null = null;
@@ -495,36 +522,43 @@ function MushafV2Page() {
                     {/*
                       Physical line block - Quran.com architecture:
                       - On mobile (< md): display: inline so lines flow continuously without forced broken wraps
-                      - On desktop (>= md): display: block with fixed vh width & center alignment for exact 15-line layout
-                      - Responsive font size and line height via CSS custom variables
+                      - On desktop (>= md): display: flex without flex-wrap so word breaks (like isolated single words on new lines) are mathematically impossible!
+                      - Standard full lines use justify-between for authentic Madani book alignment; short ending lines and Pages 1-2 use justify-center to prevent scattering.
                     */}
-                    <div
-                      className="inline md:block w-full text-center md:my-1"
-                      dir="rtl"
-                      style={{ lineHeight: 'var(--mushaf-line-height)' }}
-                    >
-                      {lineGroup.words.map((word, wordIdx) => {
-                        const isEndMarker = word.char_type_name === 'end';
-                        return (
-                          <React.Fragment key={word.id}>
-                            <span
-                              style={{
-                                fontFamily: `p${pageNumber}-v2, 'UthmanicHafs', serif`,
-                                fontSize: 'var(--mushaf-font-size)',
-                              }}
-                              className={
-                                isEndMarker
-                                  ? 'font-mushaf text-neutral-500 dark:text-neutral-500 select-none mx-1 sm:mx-1.5 inline-block'
-                                  : 'font-mushaf text-neutral-900 dark:text-neutral-100 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors cursor-pointer inline'
-                              }
-                            >
-                              {word.code_v2 || word.text_uthmani}
-                            </span>
-                            {wordIdx < lineGroup.words.length - 1 ? ' ' : ''}
-                          </React.Fragment>
-                        );
-                      })}
-                    </div>
+                    {(() => {
+                      const isCenterAligned = isCenterAlignedLine(pageNumber, lineGroup.lineNumber, lineGroup.words.length);
+                      return (
+                        <div
+                          className={`inline w-full text-center md:flex md:flex-row md:flex-nowrap md:items-center md:my-1 ${
+                            isCenterAligned ? 'md:justify-center md:gap-3.5' : 'md:justify-between'
+                          }`}
+                          dir="rtl"
+                          style={{ lineHeight: 'var(--mushaf-line-height)' }}
+                        >
+                          {lineGroup.words.map((word, wordIdx) => {
+                            const isEndMarker = word.char_type_name === 'end';
+                            return (
+                              <React.Fragment key={word.id}>
+                                <span
+                                  style={{
+                                    fontFamily: `p${pageNumber}-v2, 'UthmanicHafs', serif`,
+                                    fontSize: 'var(--mushaf-font-size)',
+                                  }}
+                                  className={
+                                    isEndMarker
+                                      ? 'font-mushaf text-neutral-500 dark:text-neutral-500 select-none mx-1 sm:mx-1.5 md:mx-2 inline-block md:flex-shrink-0'
+                                      : 'font-mushaf text-neutral-900 dark:text-neutral-100 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors cursor-pointer inline md:inline-block md:flex-shrink-0'
+                                  }
+                                >
+                                  {word.code_v2 || word.text_uthmani}
+                                </span>
+                                {wordIdx < lineGroup.words.length - 1 ? ' ' : ''}
+                              </React.Fragment>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
                   </React.Fragment>
                 );
               })}
