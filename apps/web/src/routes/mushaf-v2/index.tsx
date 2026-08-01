@@ -82,31 +82,44 @@ function MushafV2Page() {
   const [verses, setVerses] = useState<VerseAPI[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [fontSize, setFontSize] = useState<number>(() => {
+  // Font scale follows Quran.com's code_v2 scale: 1=smallest ... 5=default ... 10=largest
+  // Scale 3 = 3.2vh font / 56vh line-width (default reading size)
+  // These are the exact values from Quran.com's _utility.scss code_v2 map
+  const FONT_SCALES = [
+    { scale: 1, fontVh: 2.9, lineVh: 52 },
+    { scale: 2, fontVh: 3.0, lineVh: 54 },
+    { scale: 3, fontVh: 3.2, lineVh: 56 },
+    { scale: 4, fontVh: 3.5, lineVh: 61 },
+    { scale: 5, fontVh: 3.7, lineVh: 64.5 },
+    { scale: 6, fontVh: 5.16, lineVh: 90.4 },
+    { scale: 7, fontVh: 6.62, lineVh: 116.3 },
+  ];
+
+  const [fontScaleIndex, setFontScaleIndex] = useState<number>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('mushaf_font_size');
+      const saved = localStorage.getItem('mushaf_font_scale');
       if (saved) {
         const parsed = parseInt(saved, 10);
-        if (!isNaN(parsed) && parsed >= 24 && parsed <= 50) {
-          return parsed;
-        }
+        if (!isNaN(parsed) && parsed >= 0 && parsed < 7) return parsed;
       }
     }
-    return 34;
+    return 2; // default scale 3 (index 2)
   });
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem('mushaf_font_size', fontSize.toString());
+      localStorage.setItem('mushaf_font_scale', fontScaleIndex.toString());
     }
-  }, [fontSize]);
+  }, [fontScaleIndex]);
+
+  const currentScale = FONT_SCALES[fontScaleIndex];
 
   const handleIncreaseFontSize = () => {
-    setFontSize((prev) => Math.min(50, prev + 2));
+    setFontScaleIndex((prev) => Math.min(FONT_SCALES.length - 1, prev + 1));
   };
 
   const handleDecreaseFontSize = () => {
-    setFontSize((prev) => Math.max(24, prev - 2));
+    setFontScaleIndex((prev) => Math.max(0, prev - 1));
   };
 
   // Load QCF2 page font dynamically
@@ -363,19 +376,19 @@ function MushafV2Page() {
               <button
                 type="button"
                 onClick={handleDecreaseFontSize}
-                disabled={fontSize <= 24}
+                disabled={fontScaleIndex <= 0}
                 className="px-2.5 py-1.5 bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100 rounded-2xl text-xs font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                 title="Decrease Font Size"
               >
                 -
               </button>
-              <span className="bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-2.5 py-1.5 rounded-2xl text-xs font-semibold select-none min-w-[36px] text-center">
-                A {fontSize}px
+              <span className="bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-2.5 py-1.5 rounded-2xl text-xs font-semibold select-none min-w-[40px] text-center">
+                A{currentScale.scale}
               </span>
               <button
                 type="button"
                 onClick={handleIncreaseFontSize}
-                disabled={fontSize >= 50}
+                disabled={fontScaleIndex >= FONT_SCALES.length - 1}
                 className="px-2.5 py-1.5 bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100 rounded-2xl text-xs font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                 title="Increase Font Size"
               >
@@ -389,10 +402,10 @@ function MushafV2Page() {
         </div>
       </header>
 
-      {/* Main Container */}
-      <main className="max-w-[920px] mx-auto px-4 sm:px-6 pt-6 md:pt-10 space-y-6">
+      {/* Main Container - width is uncapped so the vh-based line-width controls the book column */}
+      <main className="w-full px-4 sm:px-6 pt-6 md:pt-10 space-y-6">
         {/* PHYSICAL MUSHAF MANUSCRIPT CONTAINER */}
-        <div className="mushaf-page-container bg-white dark:bg-neutral-950 rounded-3xl p-4 sm:p-8 md:p-10 relative overflow-hidden transition-all">
+        <div className="mushaf-page-container bg-white dark:bg-neutral-950 rounded-3xl p-4 sm:p-6 md:p-8 relative overflow-hidden transition-all max-w-4xl mx-auto">
           {/* Top Page Metadata Header Bar */}
           <div className="flex items-center justify-between pb-4 mb-6 text-xs font-semibold text-neutral-600 dark:text-neutral-400">
             <span className="font-english text-xs font-medium text-neutral-600 dark:text-neutral-400">
@@ -426,113 +439,100 @@ function MushafV2Page() {
               </div>
             </div>
           ) : (
-            /* CONTINUOUS PHYSICAL MUSHAF MANUSCRIPT BODY (LINE-BY-LINE 15-LINE FORMAT) */
-            <div className="my-4" dir="rtl">
-              <div className="space-y-2 sm:space-y-3 select-none">
-                {lineGroups.map((lineGroup) => {
-                  // Check if any word in this line is verse 1, position 1 of a chapter
-                  const surahStartWord = lineGroup.words.find(
-                    (w) => w.verse_key?.endsWith(':1') && w.position === 1 && w.char_type_name === 'word'
-                  );
-                  const chapter = surahStartWord ? chaptersMap.get(surahStartWord.chapter_id) : null;
-                  const showBismillah = chapter && chapter.bismillah_pre && chapter.id !== 1 && chapter.id !== 9;
+            /* PHYSICAL MUSHAF - Quran.com architecture: fixed vh-based line-width, text-align center */
+            <div
+              className="my-4 select-none"
+              dir="rtl"
+              style={{
+                // The line container is centered and sized in vh units - exactly like Quran.com.
+                // This couples line width to font size proportionally so lines NEVER overflow.
+                width: `${currentScale.lineVh}vh`,
+                maxWidth: '100%',
+                margin: '0 auto',
+              }}
+            >
+              {lineGroups.map((lineGroup) => {
+                // Check if any word in this line is verse 1, position 1 of a chapter
+                const surahStartWord = lineGroup.words.find(
+                  (w) => w.verse_key?.endsWith(':1') && w.position === 1 && w.char_type_name === 'word'
+                );
+                const chapter = surahStartWord ? chaptersMap.get(surahStartWord.chapter_id) : null;
+                const showBismillah = chapter && chapter.bismillah_pre && chapter.id !== 1 && chapter.id !== 9;
 
-                  const isCenteredPage = pageNumber === 1 || pageNumber === 2;
-                  // A line with fewer than 10 words is almost certainly a short concluding
-                  // line or a special ornamental line - center it so words stay tight.
-                  // Only apply justify-between on dense full-width standard lines (10+ words)
-                  // on pages 3-604 to replicate the crisp flush-justified physical page look.
-                  const isShortLine = lineGroup.words.length < 10;
-                  const justifyClass = (isCenteredPage || isShortLine)
-                    ? 'justify-center gap-1.5 sm:gap-2'
-                    : 'justify-between';
-
-                  return (
-                    <React.Fragment key={lineGroup.lineNumber}>
-                      {/* Surah Calligraphic Header Emblem Banner */}
-                      {chapter && (
-                        <div
-                          className="bg-neutral-100 dark:bg-neutral-900 rounded-3xl py-5 px-6 my-6 text-center"
-                          dir="ltr"
-                        >
-                          <span className="font-surah text-5xl sm:text-6xl text-neutral-900 dark:text-neutral-100 select-none block my-1">
-                            {getSurahGlyph(chapter.id)}
-                          </span>
-                          <div className="flex items-center justify-center gap-4 text-xs font-english text-neutral-600 dark:text-neutral-400 mt-2">
-                            <span>{chapter.verses_count} Verses</span>
-                            <span>·</span>
-                            <span className="capitalize">
-                              {chapter.revelation_place === 'makkah'
-                                ? 'Meccan Revelation'
-                                : 'Medinan Revelation'}
-                            </span>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Bismillah Header Banner */}
-                      {showBismillah && (
-                        <div className="my-6 text-center" dir="ltr">
-                          <div className="inline-flex items-center justify-center gap-4 w-full">
-                            <span className="text-neutral-400 dark:text-neutral-600 text-xs">
-                              ❖ ❖ ❖
-                            </span>
-                            <span
-                              className="font-mushaf text-3xl sm:text-4xl text-neutral-900 dark:text-neutral-100 inline-block px-4"
-                              dir="rtl"
-                            >
-                              بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-                            </span>
-                            <span className="text-neutral-400 dark:text-neutral-600 text-xs">
-                              ❖ ❖ ❖
-                            </span>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* 15-Line Physical Line Block */}
+                return (
+                  <React.Fragment key={lineGroup.lineNumber}>
+                    {/* Surah Calligraphic Header Emblem Banner */}
+                    {chapter && (
                       <div
-                        className={`w-full flex flex-wrap ${justifyClass} items-center my-1 sm:my-1.5 px-1 direction-rtl text-center`}
-                        dir="rtl"
+                        className="bg-neutral-100 dark:bg-neutral-900 rounded-3xl py-5 px-6 my-6 text-center"
+                        dir="ltr"
                       >
-                        {lineGroup.words.map((word) => {
-                          const isEndMarker = word.char_type_name === 'end';
-
-                          if (isEndMarker) {
-                            return (
-                              <span
-                                key={word.id}
-                                style={{
-                                  fontFamily: `p${pageNumber}-v2, 'UthmanicHafs', serif`,
-                                  fontSize: `${fontSize}px`,
-                                  lineHeight: `${fontSize * 1.8}px`,
-                                }}
-                                className="inline-flex items-center justify-center font-mushaf text-neutral-600 dark:text-neutral-400 select-none mx-0"
-                              >
-                                {word.code_v2 || `﴿${toArabicNumeral(word.verse_number)}﴾`}
-                              </span>
-                            );
-                          }
-
-                          return (
-                            <span
-                              key={word.id}
-                              style={{
-                                fontFamily: `p${pageNumber}-v2, 'UthmanicHafs', serif`,
-                                fontSize: `${fontSize}px`,
-                                lineHeight: `${fontSize * 1.8}px`,
-                              }}
-                              className="font-mushaf text-neutral-900 dark:text-neutral-100 hover:text-neutral-600 dark:hover:text-neutral-400 transition-colors cursor-pointer mx-0"
-                            >
-                              {word.code_v2 || word.text_uthmani}
-                            </span>
-                          );
-                        })}
+                        <span className="font-surah text-5xl sm:text-6xl text-neutral-900 dark:text-neutral-100 select-none block my-1">
+                          {getSurahGlyph(chapter.id)}
+                        </span>
+                        <div className="flex items-center justify-center gap-4 text-xs font-english text-neutral-600 dark:text-neutral-400 mt-2">
+                          <span>{chapter.verses_count} Verses</span>
+                          <span>·</span>
+                          <span className="capitalize">
+                            {chapter.revelation_place === 'makkah'
+                              ? 'Meccan Revelation'
+                              : 'Medinan Revelation'}
+                          </span>
+                        </div>
                       </div>
-                    </React.Fragment>
-                  );
-                })}
-              </div>
+                    )}
+
+                    {/* Bismillah Header Banner */}
+                    {showBismillah && (
+                      <div className="my-6 text-center" dir="ltr">
+                        <div className="inline-flex items-center justify-center gap-4 w-full">
+                          <span className="text-neutral-400 dark:text-neutral-600 text-xs">❖ ❖ ❖</span>
+                          <span
+                            className="font-mushaf text-3xl sm:text-4xl text-neutral-900 dark:text-neutral-100 inline-block px-4"
+                            dir="rtl"
+                          >
+                            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                          </span>
+                          <span className="text-neutral-400 dark:text-neutral-600 text-xs">❖ ❖ ❖</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/*
+                      Physical line block - Quran.com architecture:
+                      - text-align: center so all inline words cluster naturally
+                      - NO flex stretching - words are inline spans, not flex items
+                      - font size in vh units, line-height proportional
+                      - The parent container's vh-based width is what keeps lines bounded
+                    */}
+                    <div
+                      className="w-full text-center my-1"
+                      dir="rtl"
+                      style={{ lineHeight: `${currentScale.fontVh * 2.2}vh` }}
+                    >
+                      {lineGroup.words.map((word) => {
+                        const isEndMarker = word.char_type_name === 'end';
+                        return (
+                          <span
+                            key={word.id}
+                            style={{
+                              fontFamily: `p${pageNumber}-v2, 'UthmanicHafs', serif`,
+                              fontSize: `${currentScale.fontVh}vh`,
+                            }}
+                            className={
+                              isEndMarker
+                                ? 'font-mushaf text-neutral-500 dark:text-neutral-500 select-none'
+                                : 'font-mushaf text-neutral-900 dark:text-neutral-100 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors cursor-pointer'
+                            }
+                          >
+                            {word.code_v2 || word.text_uthmani}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </React.Fragment>
+                );
+              })}
             </div>
           )}
 
