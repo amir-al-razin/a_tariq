@@ -4,12 +4,18 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        english: ['Lexend', 'sans-serif'],
-        'english-medium': ['Lexend', 'sans-serif'],
-        'english-semibold': ['Lexend', 'sans-serif'],
-        arabic: ['Noto Sans Arabic', 'sans-serif'],
-        'arabic-medium': ['Noto Sans Arabic', 'sans-serif'],
-        'arabic-semibold': ['Noto Sans Arabic', 'sans-serif'],
+        english: ['Quicksand', 'sans-serif'],
+        'english-medium': ['Quicksand', 'sans-serif'],
+        'english-semibold': ['Quicksand', 'sans-serif'],
+        arabic: ['Cairo', 'sans-serif'],
+        'arabic-medium': ['Cairo', 'sans-serif'],
+        'arabic-semibold': ['Cairo', 'sans-serif'],
+        cairo: ['Cairo', 'sans-serif'],
+        tajawal: ['Tajawal', 'sans-serif'],
+        vazirmatn: ['Vazirmatn', 'sans-serif'],
+        noto: ['"Noto Sans Arabic"', 'sans-serif'],
+        mushaf: ['UthmanicHafs', '"KFGQPC Uthmanic Script HAFS"', '"Amiri Quran"', 'Amiri', 'serif'],
+        surah: ['surahnames', 'sans-serif'],
         bengali: ['Noto Sans Bengali', 'sans-serif'], // Added Noto Sans Bengali font for Bangla text
       },
       fontSize: {
@@ -35,19 +41,7 @@ export default {
           800: '#0F5F4D',
           900: '#124E41',
         },
-        neutral: {
-          50: '#F8F7F4',
-          100: '#F0EEE8',
-          200: '#E5E1D8',
-          300: '#D5CEBF',
-          400: '#B9AF9C',
-          500: '#9A8F7B',
-          600: '#7D7463',
-          700: '#4F4A40',
-          800: '#22201B',
-          900: '#1A1815',
-          950: '#0D0C0A',
-        },
+
         status: {
           success: '#2E7D32',
           warning: '#C77D00',
