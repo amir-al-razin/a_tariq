@@ -6,8 +6,8 @@ export const lesson20: LessonData = {
         {
             id: '2-20-1',
             type: 'vocabulary',
-            titleEn: 'Masdar Review — All Forms',
-            titleAr: 'مُرَاجَعَة الْمَصَادِر — جَمِيع الأَبْوَاب',
+            titleEn: 'Masdar Review - All Forms',
+            titleAr: 'مُرَاجَعَة الْمَصَادِر - جَمِيع الأَبْوَاب',
             payload: {
                 words: [
                     { id: 1, ar: 'الْفَهْمُ', romanized: 'al-fahm', en: 'Understanding', emoji: '💡' },
@@ -54,8 +54,8 @@ export const lesson20: LessonData = {
         {
             id: '2-20-3',
             type: 'assessment',
-            titleEn: 'Exercise — Fill in the لِـ + Verb',
-            titleAr: 'تَمْرِين — أَكْمِلْ بِـ لِـ + الْفِعْل',
+            titleEn: 'Exercise - Fill in the لِـ + Verb',
+            titleAr: 'تَمْرِين - أَكْمِلْ بِـ لِـ + الْفِعْل',
             payload: {
                 instruction: 'Choose the correct لِـ + subjunctive verb to complete each sentence.',
                 questions: [
@@ -69,8 +69,8 @@ export const lesson20: LessonData = {
         {
             id: '2-20-4',
             type: 'paragraph',
-            titleEn: 'Reading — Purpose and Creation',
-            titleAr: 'قِرَاءَة — الْغَرَض وَالْخَلْق',
+            titleEn: 'Reading - Purpose and Creation',
+            titleAr: 'قِرَاءَة - الْغَرَض وَالْخَلْق',
             payload: {
                 paragraphs: [
                     {
@@ -111,7 +111,7 @@ export const lesson20: LessonData = {
         {
             id: '2-20-5',
             type: 'q_and_a',
-            titleEn: 'Comprehension Q&A — لِمَاذَا Questions',
+            titleEn: 'Comprehension Q&A - لِمَاذَا Questions',
             titleAr: 'أَسْئِلَة الفَهْم',
             payload: {
                 questions: [

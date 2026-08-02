@@ -119,41 +119,41 @@ export const lesson22: LessonData = {
         {
             id: '2-22-6',
             type: 'assessment',
-            titleEn: 'Exercise 1 — Fill in the Adjective (Singular → Plural)',
-            titleAr: 'تَمْرِين ١ — أَكْمِلْ الصِّفَة',
+            titleEn: 'Exercise 1 - Fill in the Adjective (Singular → Plural)',
+            titleAr: 'تَمْرِين ١ - أَكْمِلْ الصِّفَة',
             payload: {
                 instruction: 'Choose the correct adjective form for the plural noun.',
                 questions: [
-                    { emoji: '🖊️', question_ar: 'هَذَا قَلَمٌ جَيِّدٌ — هَذِهِ أَقْلَامٌ ___', question_en: 'This is a good pen — These are ___ pens', correct_ar: 'جَيِّدَةٌ', correct_en: 'good (f)', options_ar: ['جَيِّدَةٌ', 'جَيِّدٌ', 'جَيِّدُونَ'] },
-                    { emoji: '⌚', question_ar: 'تِلْكَ سَاعَةٌ ثَمِينَةٌ — تِلْكَ سَاعَاتٌ ___', question_en: 'That is a precious watch — Those are ___ watches', correct_ar: 'ثَمِينَةٌ', correct_en: 'precious (f)', options_ar: ['ثَمِينَةٌ', 'ثَمِينٌ', 'ثَمِينُونَ'] },
-                    { emoji: '🏠', question_ar: 'ذَلِكَ بَيْتٌ جَمِيلٌ — تِلْكَ بُيُوتٌ ___', question_en: 'That is a beautiful house — Those are ___ houses', correct_ar: 'جَمِيلَةٌ', correct_en: 'beautiful (f)', options_ar: ['جَمِيلَةٌ', 'جَمِيلٌ', 'جَمِيلُونَ'] },
+                    { emoji: '🖊️', question_ar: 'هَذَا قَلَمٌ جَيِّدٌ - هَذِهِ أَقْلَامٌ ___', question_en: 'This is a good pen - These are ___ pens', correct_ar: 'جَيِّدَةٌ', correct_en: 'good (f)', options_ar: ['جَيِّدَةٌ', 'جَيِّدٌ', 'جَيِّدُونَ'] },
+                    { emoji: '⌚', question_ar: 'تِلْكَ سَاعَةٌ ثَمِينَةٌ - تِلْكَ سَاعَاتٌ ___', question_en: 'That is a precious watch - Those are ___ watches', correct_ar: 'ثَمِينَةٌ', correct_en: 'precious (f)', options_ar: ['ثَمِينَةٌ', 'ثَمِينٌ', 'ثَمِينُونَ'] },
+                    { emoji: '🏠', question_ar: 'ذَلِكَ بَيْتٌ جَمِيلٌ - تِلْكَ بُيُوتٌ ___', question_en: 'That is a beautiful house - Those are ___ houses', correct_ar: 'جَمِيلَةٌ', correct_en: 'beautiful (f)', options_ar: ['جَمِيلَةٌ', 'جَمِيلٌ', 'جَمِيلُونَ'] },
                 ],
             },
         },
         {
             id: '2-22-7',
             type: 'assessment',
-            titleEn: 'Exercise 2 — Definite Noun + Adjective',
-            titleAr: 'تَمْرِين ٢ — الاِسْم الْمَعْرِفَة + الصِّفَة',
+            titleEn: 'Exercise 2 - Definite Noun + Adjective',
+            titleAr: 'تَمْرِين ٢ - الاِسْم الْمَعْرِفَة + الصِّفَة',
             payload: {
                 instruction: 'Choose the correct adjective for the definite plural noun.',
                 questions: [
-                    { emoji: '📚', question_ar: 'الْكِتَابُ جَدِيدٌ — الْكُتُبُ ___', question_en: 'The book is new — The books are ___', correct_ar: 'جَدِيدَةٌ', correct_en: 'new (f)', options_ar: ['جَدِيدَةٌ', 'جَدِيدٌ', 'جُدُدٌ'] },
-                    { emoji: '⌚', question_ar: 'السَّاعَةُ ثَمِينَةٌ — السَّاعَاتُ ___', question_en: 'The watch is precious — The watches are ___', correct_ar: 'ثَمِينَةٌ', correct_en: 'precious (f)', options_ar: ['ثَمِينَةٌ', 'ثَمِينٌ', 'ثَمِينَاتٌ'] },
-                    { emoji: '🖊️', question_ar: 'الْقَلَمُ جَيِّدٌ — الْأَقْلَامُ ___', question_en: 'The pen is good — The pens are ___', correct_ar: 'جَيِّدَةٌ', correct_en: 'good (f)', options_ar: ['جَيِّدَةٌ', 'جَيِّدٌ', 'جَيِّدُونَ'] },
+                    { emoji: '📚', question_ar: 'الْكِتَابُ جَدِيدٌ - الْكُتُبُ ___', question_en: 'The book is new - The books are ___', correct_ar: 'جَدِيدَةٌ', correct_en: 'new (f)', options_ar: ['جَدِيدَةٌ', 'جَدِيدٌ', 'جُدُدٌ'] },
+                    { emoji: '⌚', question_ar: 'السَّاعَةُ ثَمِينَةٌ - السَّاعَاتُ ___', question_en: 'The watch is precious - The watches are ___', correct_ar: 'ثَمِينَةٌ', correct_en: 'precious (f)', options_ar: ['ثَمِينَةٌ', 'ثَمِينٌ', 'ثَمِينَاتٌ'] },
+                    { emoji: '🖊️', question_ar: 'الْقَلَمُ جَيِّدٌ - الْأَقْلَامُ ___', question_en: 'The pen is good - The pens are ___', correct_ar: 'جَيِّدَةٌ', correct_en: 'good (f)', options_ar: ['جَيِّدَةٌ', 'جَيِّدٌ', 'جَيِّدُونَ'] },
                 ],
             },
         },
         {
             id: '2-22-8',
             type: 'assessment',
-            titleEn: 'Exercise 3 — Idafah + Plural',
-            titleAr: 'تَمْرِين ٣ — الإِضَافَة مَعَ الْجَمْع',
+            titleEn: 'Exercise 3 - Idafah + Plural',
+            titleAr: 'تَمْرِين ٣ - الإِضَافَة مَعَ الْجَمْع',
             payload: {
                 instruction: 'Choose the correct adjective for the plural noun in an Idafah construction.',
                 questions: [
-                    { emoji: '📚', question_ar: 'كِتَابُ رَاشِدٍ جَدِيدٌ — كُتُبُ رَاشِدٍ ___', question_en: "Rashid's book is new — Rashid's books are ___", correct_ar: 'جَدِيدَةٌ', correct_en: 'new (f)', options_ar: ['جَدِيدَةٌ', 'جَدِيدٌ', 'جُدُدٌ'] },
-                    { emoji: '🚪', question_ar: 'بَابُ الْمَسْجِدِ مَفْتُوحٌ — أَبْوَابُ الْمَسْجِدِ ___', question_en: 'The door of the mosque is open — The doors of the mosque are ___', correct_ar: 'مَفْتُوحَةٌ', correct_en: 'open (f)', options_ar: ['مَفْتُوحَةٌ', 'مَفْتُوحٌ', 'مَفْتُوحُونَ'] },
+                    { emoji: '📚', question_ar: 'كِتَابُ رَاشِدٍ جَدِيدٌ - كُتُبُ رَاشِدٍ ___', question_en: "Rashid's book is new - Rashid's books are ___", correct_ar: 'جَدِيدَةٌ', correct_en: 'new (f)', options_ar: ['جَدِيدَةٌ', 'جَدِيدٌ', 'جُدُدٌ'] },
+                    { emoji: '🚪', question_ar: 'بَابُ الْمَسْجِدِ مَفْتُوحٌ - أَبْوَابُ الْمَسْجِدِ ___', question_en: 'The door of the mosque is open - The doors of the mosque are ___', correct_ar: 'مَفْتُوحَةٌ', correct_en: 'open (f)', options_ar: ['مَفْتُوحَةٌ', 'مَفْتُوحٌ', 'مَفْتُوحُونَ'] },
                     { emoji: '🛣️', question_ar: 'طُرُقُ هَذِهِ الْمَدِينَةِ ___', question_en: 'The roads of this city are ___', correct_ar: 'وَاسِعَةٌ', correct_en: 'wide (f)', options_ar: ['وَاسِعَةٌ', 'وَاسِعٌ', 'وَاسِعُونَ'] },
                 ],
             },
@@ -161,13 +161,13 @@ export const lesson22: LessonData = {
         {
             id: '2-22-9',
             type: 'assessment',
-            titleEn: 'Exercise 4 — Verb Agreement with Irrational Plurals',
-            titleAr: 'تَمْرِين ٤ — مُطَابَقَة الْفِعْل مَعَ الْجَمْع',
+            titleEn: 'Exercise 4 - Verb Agreement with Irrational Plurals',
+            titleAr: 'تَمْرِين ٤ - مُطَابَقَة الْفِعْل مَعَ الْجَمْع',
             payload: {
                 instruction: 'Choose the correct verb form for the irrational plural subject.',
                 questions: [
-                    { emoji: '🚢', question_ar: 'غَرِقَتِ السَّفِينَةُ — ___ السُّفُنُ', question_en: 'The ship sank — The ships ___', correct_ar: 'غَرِقَتِ', correct_en: 'sank (f.sg.)', options_ar: ['غَرِقَتِ', 'غَرِقُوا', 'غَرِقَ'] },
-                    { emoji: '🐦', question_ar: 'خَرَجَ الطَّائِرُ مِنْ قَفَصِهِ — ___ الطُّيُورُ مِنْ أَقْفَاصِهَا', question_en: 'The bird went out of its cage — The birds ___ from their cages', correct_ar: 'خَرَجَتِ', correct_en: 'went out (f.sg.)', options_ar: ['خَرَجَتِ', 'خَرَجُوا', 'خَرَجَ'] },
+                    { emoji: '🚢', question_ar: 'غَرِقَتِ السَّفِينَةُ - ___ السُّفُنُ', question_en: 'The ship sank - The ships ___', correct_ar: 'غَرِقَتِ', correct_en: 'sank (f.sg.)', options_ar: ['غَرِقَتِ', 'غَرِقُوا', 'غَرِقَ'] },
+                    { emoji: '🐦', question_ar: 'خَرَجَ الطَّائِرُ مِنْ قَفَصِهِ - ___ الطُّيُورُ مِنْ أَقْفَاصِهَا', question_en: 'The bird went out of its cage - The birds ___ from their cages', correct_ar: 'خَرَجَتِ', correct_en: 'went out (f.sg.)', options_ar: ['خَرَجَتِ', 'خَرَجُوا', 'خَرَجَ'] },
                 ],
             },
         },

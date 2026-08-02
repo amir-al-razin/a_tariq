@@ -6,7 +6,7 @@ export const lesson01: LessonData = {
         {
             id: '2-2-1-1',
             type: 'masdar_factory',
-            titleEn: 'Masdar Factory — Core Verbs',
+            titleEn: 'Masdar Factory - Core Verbs',
             titleAr: 'الْمَصَادِرُ وَالأَفْعَالُ',
             payload: {
                 baabLabel: 'أَبْوَابٌ مُخْتَلِفَة',
@@ -59,8 +59,8 @@ export const lesson01: LessonData = {
         {
             id: '2-2-1-3',
             type: 'grammar_rule',
-            titleEn: 'Grammar — Correct Use of غَفَرَ and أَذِنَ with لَـ',
-            titleAr: 'قَاعِدَة — اِسْتِخْدَام غَفَرَ وَأَذِنَ مَعَ لَـ',
+            titleEn: 'Grammar - Correct Use of غَفَرَ and أَذِنَ with لَـ',
+            titleAr: 'قَاعِدَة - اِسْتِخْدَام غَفَرَ وَأَذِنَ مَعَ لَـ',
             payload: {
                 rules: [
                     {
@@ -91,7 +91,7 @@ export const lesson01: LessonData = {
                         lines: [
                             'قَالَ الْعَالِمُ فِي وَعْظِهِ : أَيُّهَا الْعَامِلُ، اِعْمَلْ لِآخِرَتِكَ وَلَا تَعْمَلْ لِدُنْيَاكَ - اُعْبُدْ رَبَّكَ وَاشْكُرْهُ، فَإِنَّهُ خَلَقَكَ وَهُوَ يَرْزُقُكَ.',
                         ],
-                        translationEn: 'The scholar said in his sermon: "O worker, work for your Hereafter and do not work for your worldly life — worship your Lord and thank Him, for indeed He created you and He provides for you."',
+                        translationEn: 'The scholar said in his sermon: "O worker, work for your Hereafter and do not work for your worldly life - worship your Lord and thank Him, for indeed He created you and He provides for you."',
                     },
                     {
                         title: 'أُمُّ فَاطِمَةَ',
@@ -209,8 +209,8 @@ export const lesson01: LessonData = {
         {
             id: '2-2-1-6',
             type: 'assessment',
-            titleEn: 'Exercise — Sentence Variations',
-            titleAr: 'تَمْرِين — قِرَاءَةُ الْجُمَل',
+            titleEn: 'Exercise - Sentence Variations',
+            titleAr: 'تَمْرِين - قِرَاءَةُ الْجُمَل',
             payload: {
                 instruction: 'Choose the correct meaning for each Arabic sentence.',
                 questions: [

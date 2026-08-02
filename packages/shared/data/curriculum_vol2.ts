@@ -35,7 +35,7 @@ import { lesson02 as ch3lesson02 } from './vol2/ch3/lesson02';
 import { lesson03 as ch3lesson03 } from './vol2/ch3/lesson03';
 
 // ─────────────────────────────────────────────
-// Volume 2 — Pedagogical Data
+// Volume 2 - Pedagogical Data
 // Source: "Esho Arbi Shikhi" Vol 2
 // Language: English-primary, Bangla optional (bn? fields)
 // ─────────────────────────────────────────────

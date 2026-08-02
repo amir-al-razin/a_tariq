@@ -27,7 +27,7 @@ export const lesson16: LessonData = {
             id: '2-16-2',
             type: 'masdar_factory',
             titleEn: 'Form VIII Verb: اِبْتَسَمَ (to smile)',
-            titleAr: 'بَابُ الإِفْتِعَال — اِبْتَسَمَ يَبْتَسِمُ',
+            titleAr: 'بَابُ الإِفْتِعَال - اِبْتَسَمَ يَبْتَسِمُ',
             payload: {
                 baabLabel: 'بَابُ الإِفْتِعَالِ (Form VIII)',
                 instruction: 'Form VIII inserts تَ after the first root letter. Present tense uses يَفْتَعِلُ pattern.',
@@ -42,8 +42,8 @@ export const lesson16: LessonData = {
         {
             id: '2-16-3',
             type: 'paragraph',
-            titleEn: 'Reading — Form VIII Verbs in Context',
-            titleAr: 'قِرَاءَة — بَابُ الإِفْتِعَال فِي الْجُمَل',
+            titleEn: 'Reading - Form VIII Verbs in Context',
+            titleAr: 'قِرَاءَة - بَابُ الإِفْتِعَال فِي الْجُمَل',
             payload: {
                 paragraphs: [
                     {

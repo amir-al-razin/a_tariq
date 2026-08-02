@@ -6,8 +6,8 @@ export const lesson03: LessonData = {
         {
             id: '2-3-3-1',
             type: 'vocabulary',
-            titleEn: 'Vocabulary — Dual, Plural & Comparative',
-            titleAr: 'الْمُفْرَدَاتُ — الْمُثَنَّى وَالْجَمْعُ وَاسْمُ التَّفْضِيل',
+            titleEn: 'Vocabulary - Dual, Plural & Comparative',
+            titleAr: 'الْمُفْرَدَاتُ - الْمُثَنَّى وَالْجَمْعُ وَاسْمُ التَّفْضِيل',
             payload: {
                 words: [
                     { id: 1, ar: 'كِتَابَانِ', romanized: 'kitābāni', en: 'Two books (dual)', emoji: '📚' },
@@ -31,12 +31,12 @@ export const lesson03: LessonData = {
         {
             id: '2-3-3-2',
             type: 'grammar_rule',
-            titleEn: 'Grammar — The Dual Form (الْمُثَنَّى)',
-            titleAr: 'قَاعِدَة — الْمُثَنَّى',
+            titleEn: 'Grammar - The Dual Form (الْمُثَنَّى)',
+            titleAr: 'قَاعِدَة - الْمُثَنَّى',
             payload: {
                 rules: [
                     {
-                        label: 'الْمُثَنَّى — Dual Form',
+                        label: 'الْمُثَنَّى - Dual Form',
                         arabic: 'مُعَلِّمٌ → مُعَلِّمَانِ',
                         romanized: "mu'allimun → mu'allimāni",
                         meaning: 'Nouns and adjectives are made dual by adding the suffix ـَانِ (aan) to the singular form. The dual pronouns are هُمَا (they two), أَنْتُمَا (you two), and نَحْنُ (we two).',
@@ -47,7 +47,7 @@ export const lesson03: LessonData = {
                         ],
                     },
                     {
-                        label: 'الْجَمْعُ وَالْإِشَارَة — Plurals and Demonstratives',
+                        label: 'الْجَمْعُ وَالْإِشَارَة - Plurals and Demonstratives',
                         arabic: 'هَؤُلَاءِ الرِّجَالُ / أُولَئِكَ النِّسَاءُ',
                         romanized: "hāʾulāʾi r-rijālu / ūlāʾika n-nisāʾu",
                         meaning: 'هَؤُلَاءِ (These) and أُولَئِكَ (Those) are used with plural human nouns. Non-human plurals are treated as feminine singular.',
@@ -58,8 +58,8 @@ export const lesson03: LessonData = {
                         ],
                     },
                     {
-                        label: 'اسْمُ التَّفْضِيل — Comparative Adjective',
-                        arabic: 'أَكْبَرُ مِنْ — pattern أَفْعَلُ',
+                        label: 'اسْمُ التَّفْضِيل - Comparative Adjective',
+                        arabic: 'أَكْبَرُ مِنْ - pattern أَفْعَلُ',
                         romanized: 'akbaru min',
                         meaning: "The comparative adjective is formed on the pattern أَفْعَلُ (Af'alu), often followed by مِنْ (than).",
                         examples: [
@@ -69,7 +69,7 @@ export const lesson03: LessonData = {
                         ],
                     },
                     {
-                        label: 'لَا النَّافِيَةُ لِلْجِنْس — Absolute Negation',
+                        label: 'لَا النَّافِيَةُ لِلْجِنْس - Absolute Negation',
                         arabic: 'لَا شَكَّ / لَا رَيْبَ / لَا نُورَ',
                         romanized: 'lā shakka / lā rayba / lā nūra',
                         meaning: "Using لَا followed by a noun ending in a single fathah means 'Absolutely no...' (negation of the entire category).",
@@ -112,7 +112,7 @@ export const lesson03: LessonData = {
                             'فَاطِمَةُ وَعَائِشَةُ تِلْمِيذَتَانِ ذَكِيَّتَانِ - هُمَا تِلْمِيذَتَانِ ذَكِيَّتَانِ.',
                             'أَنَا وَأَنْتَ مُعَلِّمَانِ - نَحْنُ مُعَلِّمَانِ مَاهِرَانِ.',
                         ],
-                        translationEn: 'Rashid and Khalid are two smart students — they are two smart students. Fatima and Aisha are two smart female students — they are two smart female students. You and I are two male teachers — we are two skilled male teachers.',
+                        translationEn: 'Rashid and Khalid are two smart students - they are two smart students. Fatima and Aisha are two smart female students - they are two smart female students. You and I are two male teachers - we are two skilled male teachers.',
                     },
                     {
                         title: 'الْجَمْعُ وَالْمُفْرَد',
@@ -123,7 +123,7 @@ export const lesson03: LessonData = {
                             'الْوَلَدُ مُجْتَهِدٌ - الْوَلَدَانِ مُجْتَهِدَانِ - الْأَوْلَادُ مُجْتَهِدُونَ.',
                             'الْبِنْتُ مُجْتَهِدَةٌ - الْبِنْتَانِ مُجْتَهِدَتَانِ - الْبَنَاتُ مُجْتَهِدَاتٌ.',
                         ],
-                        translationEn: 'The book is new — the two books are new — the books are new. The mosque is beautiful — the two mosques are beautiful — the mosques are beautiful. The boy is hardworking — the two boys are hardworking — the boys are hardworking. The girl is hardworking — the two girls are hardworking — the girls are hardworking.',
+                        translationEn: 'The book is new - the two books are new - the books are new. The mosque is beautiful - the two mosques are beautiful - the mosques are beautiful. The boy is hardworking - the two boys are hardworking - the boys are hardworking. The girl is hardworking - the two girls are hardworking - the girls are hardworking.',
                     },
                     {
                         title: 'اسْمُ التَّفْضِيل',
@@ -134,7 +134,7 @@ export const lesson03: LessonData = {
                             'سُوقُ الْقَرْيَةِ أَصْغَرُ مِنْ سُوقِ الْمَدِينَةِ.',
                             'أَنَا أَطْوَلُ مِنْكَ وَأَنْتَ أَقْصَرُ مِنِّي.',
                         ],
-                        translationEn: 'Khalid is older than Rashid — Fatima is older than Aisha — Allah is the Greatest. This medicine is beneficial and that medicine is more beneficial than it. The village market is smaller than the city market. I am taller than you and you are shorter than me.',
+                        translationEn: 'Khalid is older than Rashid - Fatima is older than Aisha - Allah is the Greatest. This medicine is beneficial and that medicine is more beneficial than it. The village market is smaller than the city market. I am taller than you and you are shorter than me.',
                     },
                     {
                         title: 'لَا النَّافِيَةُ لِلْجِنْس',
@@ -144,19 +144,19 @@ export const lesson03: LessonData = {
                             'لَا نُورَ فِي قَلْبِ الْمُنَافِقِ - لَا بَرَكَةَ فِي مَالِ الْبَخِيلِ.',
                             'قَالَ رَسُولُ اللهِ (صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ) : لَا نَبِيَّ بَعْدِي.',
                         ],
-                        translationEn: "There is no doubt in your speech — that book, there is no doubt in it. There is no light in the hypocrite's heart — there is no blessing in the miser's wealth. The Messenger of Allah (peace be upon him) said: 'There is no prophet after me.'",
+                        translationEn: "There is no doubt in your speech - that book, there is no doubt in it. There is no light in the hypocrite's heart - there is no blessing in the miser's wealth. The Messenger of Allah (peace be upon him) said: 'There is no prophet after me.'",
                     },
                     {
                         title: 'أَنْ بِمَعْنَى الْمَصْدَر',
                         titleEn: 'أَنْ as a Verbal Noun',
                         lines: [
-                            'أَنْ تَصُومَ خَيْرٌ لَكَ — صَوْمُكَ خَيْرٌ لَكَ.',
-                            'أَنْ تَسْعَى خَيْرٌ لَكَ — سَعْيُكَ خَيْرٌ لَكَ.',
-                            'أَنْ تَعْمَلَ خَيْرٌ لَكَ — عَمَلُكَ خَيْرٌ لَكَ.',
+                            'أَنْ تَصُومَ خَيْرٌ لَكَ - صَوْمُكَ خَيْرٌ لَكَ.',
+                            'أَنْ تَسْعَى خَيْرٌ لَكَ - سَعْيُكَ خَيْرٌ لَكَ.',
+                            'أَنْ تَعْمَلَ خَيْرٌ لَكَ - عَمَلُكَ خَيْرٌ لَكَ.',
                             'يَفْتَحُ لَكَ بَابَ السَّعَادَةِ سَعْيُكَ وَاجْتِهَادُكَ.',
                             'سَيُضَيِّعُ مُسْتَقْبَلَكَ كَسَلُكَ وَقُعُودُكَ عَنِ الْعَمَلِ.',
                         ],
-                        translationEn: 'To fast is better for you — your fasting is better for you. To strive is better for you — your striving is better for you. To work is better for you — your working is better for you. Your striving and diligence open the door of happiness for you. Your laziness and sitting back from work will ruin your future.',
+                        translationEn: 'To fast is better for you - your fasting is better for you. To strive is better for you - your striving is better for you. To work is better for you - your working is better for you. Your striving and diligence open the door of happiness for you. Your laziness and sitting back from work will ruin your future.',
                     },
                 ],
             },
@@ -184,8 +184,8 @@ export const lesson03: LessonData = {
                     },
                     {
                         emoji: '📏',
-                        question_ar: 'أَيُّهُمَا أَكْبَرُ — سُوقُ الْقَرْيَةِ أَمْ سُوقُ الْمَدِينَةِ ؟',
-                        question_en: 'Which is bigger — the village market or the city market?',
+                        question_ar: 'أَيُّهُمَا أَكْبَرُ - سُوقُ الْقَرْيَةِ أَمْ سُوقُ الْمَدِينَةِ ؟',
+                        question_en: 'Which is bigger - the village market or the city market?',
                         correct_ar: 'سُوقُ الْمَدِينَةِ أَكْبَرُ',
                         correct_en: 'The city market is bigger.',
                         options_ar: [
@@ -214,15 +214,15 @@ export const lesson03: LessonData = {
         {
             id: '2-3-3-6',
             type: 'assessment',
-            titleEn: 'Exercise — Fill in the Blanks (Dual & Comparative)',
-            titleAr: 'تَمْرِين — أَمْلَأِ الْفَرَاغَ',
+            titleEn: 'Exercise - Fill in the Blanks (Dual & Comparative)',
+            titleAr: 'تَمْرِين - أَمْلَأِ الْفَرَاغَ',
             payload: {
                 instruction: 'Choose the correct form to complete each sentence.',
                 questions: [
                     {
                         emoji: '👨‍🌾',
                         question_ar: 'أَنَا فَلَّاحٌ وَأَنْتَ فَلَّاحٌ - نَحْنُ ___',
-                        question_en: 'I am a farmer and you are a farmer — we are ___',
+                        question_en: 'I am a farmer and you are a farmer - we are ___',
                         correct_ar: 'فَلَّاحَانِ',
                         correct_en: 'two farmers (dual)',
                         options_ar: ['فَلَّاحَانِ', 'فَلَّاحُونَ', 'فَلَّاحٌ'],
@@ -238,7 +238,7 @@ export const lesson03: LessonData = {
                     {
                         emoji: '🕌',
                         question_ar: 'الْمَسْجِدُ جَمِيلٌ - الْمَسْجِدَانِ ___ - الْمَسَاجِدُ ___',
-                        question_en: 'The mosque is beautiful — the two mosques are ___ — the mosques are ___',
+                        question_en: 'The mosque is beautiful - the two mosques are ___ - the mosques are ___',
                         correct_ar: 'جَمِيلَانِ / جَمِيلَةٌ',
                         correct_en: 'beautiful (dual) / beautiful (non-human plural)',
                         options_ar: [

@@ -35,10 +35,10 @@ export const lesson07: LessonData = {
         {
             id: '2-2-7-2',
             type: 'masdar_factory',
-            titleEn: "Masdar Factory — Naqis Verbs in Bab At-Taf\'il",
+            titleEn: "Masdar Factory - Naqis Verbs in Bab At-Taf\'il",
             titleAr: 'مَصَادِرُ الأَفْعَالِ النَّاقِصَة فِي بَابِ التَّفْعِيل',
             payload: {
-                baabLabel: 'بَابُ التَّفْعِيل — فَعَّلَ يُفَعِّلُ',
+                baabLabel: 'بَابُ التَّفْعِيل - فَعَّلَ يُفَعِّلُ',
                 instruction: "Naqis verbs in Bab At-Taf\'il have masdar pattern تَفْعِلَة instead of تَفْعِيل",
                 masdarRows: [
                     { masdar: 'التَّسْمِيَةُ', masdarEn: 'naming', past: 'سَمَّى', present: 'يُسَمِّي', imperative: 'سَمِّ', prohibitive: 'لَا تُسَمِّ' },
@@ -51,8 +51,8 @@ export const lesson07: LessonData = {
         {
             id: '2-2-7-3',
             type: 'verb_table',
-            titleEn: 'Verb Table — صَلَّى (to pray)',
-            titleAr: 'جَدْوَلُ الْفِعْل — صَلَّى',
+            titleEn: 'Verb Table - صَلَّى (to pray)',
+            titleAr: 'جَدْوَلُ الْفِعْل - صَلَّى',
             payload: {
                 verbTense: 'past',
                 verbTable: [
@@ -63,8 +63,8 @@ export const lesson07: LessonData = {
         {
             id: '2-2-7-4',
             type: 'verb_table',
-            titleEn: 'Present & Imperative — صَلَّى',
-            titleAr: 'الْمُضَارِعُ وَالْأَمْر — صَلَّى',
+            titleEn: 'Present & Imperative - صَلَّى',
+            titleAr: 'الْمُضَارِعُ وَالْأَمْر - صَلَّى',
             payload: {
                 verbTense: 'present',
                 verbTable: [
@@ -75,14 +75,14 @@ export const lesson07: LessonData = {
         {
             id: '2-2-7-5',
             type: 'grammar_rule',
-            titleEn: 'Grammar — Transitive vs Reflexive (بَابُ التَّفْعِيل vs بَابُ التَّفَعُّل)',
-            titleAr: 'قَاعِدَة — الْفَرْقُ بَيْنَ التَّفْعِيل وَالتَّفَعُّل',
+            titleEn: 'Grammar - Transitive vs Reflexive (بَابُ التَّفْعِيل vs بَابُ التَّفَعُّل)',
+            titleAr: 'قَاعِدَة - الْفَرْقُ بَيْنَ التَّفْعِيل وَالتَّفَعُّل',
             payload: {
                 rules: [
                     {
                         label: 'بَابُ التَّفْعِيل (transitive) vs بَابُ التَّفَعُّل (reflexive)',
-                        arabic: 'زَيَّنَ الْمَلِكُ الْمَدِينَةَ — تَزَيَّنَتِ الْمَدِينَةُ',
-                        romanized: 'zayyana l-maliku l-madīnata — tazayyanati l-madīnatu',
+                        arabic: 'زَيَّنَ الْمَلِكُ الْمَدِينَةَ - تَزَيَّنَتِ الْمَدِينَةُ',
+                        romanized: 'zayyana l-maliku l-madīnata - tazayyanati l-madīnatu',
                         meaning: "Bab At-Taf\'il verbs are transitive/causative (acting on something else). Bab At-Tafa\'ul verbs are reflexive/intransitive (the subject acts on itself).",
                         examples: [
                             { ar: 'زَيَّنَ الْمَلِكُ الْمَدِينَةَ بِالْأَنْوَارِ', en: 'The king decorated the city with lights.' },
@@ -187,14 +187,14 @@ export const lesson07: LessonData = {
         {
             id: '2-2-7-8',
             type: 'assessment',
-            titleEn: 'Exercise — Transitive vs Reflexive',
-            titleAr: 'تَمْرِين — الْفَرْقُ بَيْنَ التَّفْعِيل وَالتَّفَعُّل',
+            titleEn: 'Exercise - Transitive vs Reflexive',
+            titleAr: 'تَمْرِين - الْفَرْقُ بَيْنَ التَّفْعِيل وَالتَّفَعُّل',
             payload: {
                 instruction: 'Choose the correct reflexive form.',
                 questions: [
                     {
                         emoji: '✨',
-                        question_ar: 'طَهَّرَ اللهُ قُلُوبَهُمْ — (الشَّكْلُ الْمُطَاوِع)',
+                        question_ar: 'طَهَّرَ اللهُ قُلُوبَهُمْ - (الشَّكْلُ الْمُطَاوِع)',
                         question_en: 'What is the reflexive form?',
                         correct_ar: 'تَطَهَّرَتْ قُلُوبُهُمْ',
                         correct_en: 'Their hearts became pure.',
@@ -206,7 +206,7 @@ export const lesson07: LessonData = {
                     },
                     {
                         emoji: '💬',
-                        question_ar: 'حَدَّثْتُهُ — (الشَّكْلُ الْمُطَاوِع)',
+                        question_ar: 'حَدَّثْتُهُ - (الشَّكْلُ الْمُطَاوِع)',
                         question_en: 'What is the reflexive form?',
                         correct_ar: 'تَحَدَّثْتُ مَعَهُ',
                         correct_en: 'I conversed with him.',

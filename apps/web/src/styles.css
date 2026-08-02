@@ -362,3 +362,15 @@ a {
   font-family: 'Amiri', serif;
 }
 
+/* RTL Price Tag Badge Shape (Rightmost start) */
+.price-tag-rtl {
+  position: relative;
+  clip-path: polygon(0% 50%, 15px 0%, 100% 0%, 100% 100%, 15px 100%);
+}
+
+.price-tag-ltr {
+  position: relative;
+  clip-path: polygon(0% 0%, calc(100% - 15px) 0%, 100% 50%, calc(100% - 15px) 100%, 0% 100%);
+}
+
+

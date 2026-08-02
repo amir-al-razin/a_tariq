@@ -100,7 +100,7 @@ export const IdafahView: React.FC<Props> = ({payload, onProgress, onComplete}) =
  </span>
  </div>
 
-{/* Possession Phrase Card — tap to reveal */}
+{/* Possession Phrase Card - tap to reveal */}
  <div
  className={`flex-1 rounded-3xl p-6 flex flex-col items-center justify-center space-y-2 transition-colors ${
  revealed[i]

@@ -43,7 +43,7 @@ export const lesson01: LessonData = {
         {
             id: '2-1-3',
             type: 'verb_table',
-            titleEn: 'Past Tense — 8 Core Verbs',
+            titleEn: 'Past Tense - 8 Core Verbs',
             titleAr: 'الفِعْلُ المَاضِي',
             payload: {
                 verbTense: 'past',
@@ -87,22 +87,22 @@ export const lesson01: LessonData = {
                 verbTense: 'imperative',
                 instruction: 'Command (m/f) and Prohibition (m/f)',
                 verbTable: [
-                    { root: 'اِفْعَلْ', meaning: 'do', he: 'اِفْعَلْ', she: 'اِفْعَلِيْ', youM: 'لَا تَفْعَلْ', youF: 'لَا تَفْعَلِيْ', i: '—' },
-                    { root: 'اُخْرُجْ', meaning: 'exit', he: 'اُخْرُجْ', she: 'اُخْرُجِيْ', youM: 'لَا تَخْرُجْ', youF: 'لَا تَخْرُجِيْ', i: '—' },
-                    { root: 'اِذْهَبْ', meaning: 'go', he: 'اِذْهَبْ', she: 'اِذْهَبِيْ', youM: 'لَا تَذْهَبْ', youF: 'لَا تَذْهَبِيْ', i: '—' },
-                    { root: 'اِجْلِسْ', meaning: 'sit', he: 'اِجْلِسْ', she: 'اِجْلِسِيْ', youM: 'لَا تَجْلِسْ', youF: 'لَا تَجْلِسِيْ', i: '—' },
-                    { root: 'اِقْرَأْ', meaning: 'read', he: 'اِقْرَأْ', she: 'اِقْرَئِيْ', youM: 'لَا تَقْرَأْ', youF: 'لَا تَقْرَئِيْ', i: '—' },
-                    { root: 'اُكْتُبْ', meaning: 'write', he: 'اُكْتُبْ', she: 'اُكْتُبِيْ', youM: 'لَا تَكْتُبْ', youF: 'لَا تَكْتُبِيْ', i: '—' },
-                    { root: 'اِرْجِعْ', meaning: 'return', he: 'اِرْجِعْ', she: 'اِرْجِعِيْ', youM: 'لَا تَرْجِعْ', youF: 'لَا تَرْجِعِيْ', i: '—' },
-                    { root: 'اِلْعَبْ', meaning: 'play', he: 'اِلْعَبْ', she: 'اِلْعَبِيْ', youM: 'لَا تَلْعَبْ', youF: 'لَا تَلْعَبِيْ', i: '—' },
+                    { root: 'اِفْعَلْ', meaning: 'do', he: 'اِفْعَلْ', she: 'اِفْعَلِيْ', youM: 'لَا تَفْعَلْ', youF: 'لَا تَفْعَلِيْ', i: '-' },
+                    { root: 'اُخْرُجْ', meaning: 'exit', he: 'اُخْرُجْ', she: 'اُخْرُجِيْ', youM: 'لَا تَخْرُجْ', youF: 'لَا تَخْرُجِيْ', i: '-' },
+                    { root: 'اِذْهَبْ', meaning: 'go', he: 'اِذْهَبْ', she: 'اِذْهَبِيْ', youM: 'لَا تَذْهَبْ', youF: 'لَا تَذْهَبِيْ', i: '-' },
+                    { root: 'اِجْلِسْ', meaning: 'sit', he: 'اِجْلِسْ', she: 'اِجْلِسِيْ', youM: 'لَا تَجْلِسْ', youF: 'لَا تَجْلِسِيْ', i: '-' },
+                    { root: 'اِقْرَأْ', meaning: 'read', he: 'اِقْرَأْ', she: 'اِقْرَئِيْ', youM: 'لَا تَقْرَأْ', youF: 'لَا تَقْرَئِيْ', i: '-' },
+                    { root: 'اُكْتُبْ', meaning: 'write', he: 'اُكْتُبْ', she: 'اُكْتُبِيْ', youM: 'لَا تَكْتُبْ', youF: 'لَا تَكْتُبِيْ', i: '-' },
+                    { root: 'اِرْجِعْ', meaning: 'return', he: 'اِرْجِعْ', she: 'اِرْجِعِيْ', youM: 'لَا تَرْجِعْ', youF: 'لَا تَرْجِعِيْ', i: '-' },
+                    { root: 'اِلْعَبْ', meaning: 'play', he: 'اِلْعَبْ', she: 'اِلْعَبِيْ', youM: 'لَا تَلْعَبْ', youF: 'لَا تَلْعَبِيْ', i: '-' },
                 ],
             },
         },
         {
             id: '2-1-6',
             type: 'paragraph',
-            titleEn: 'Reading — Past Tense Narrative',
-            titleAr: 'قِرَاءَة — الفِعْلُ المَاضِي',
+            titleEn: 'Reading - Past Tense Narrative',
+            titleAr: 'قِرَاءَة - الفِعْلُ المَاضِي',
             payload: {
                 paragraphs: [
                     {
@@ -126,8 +126,8 @@ export const lesson01: LessonData = {
         {
             id: '2-1-7',
             type: 'paragraph',
-            titleEn: 'Reading — Present Tense Narrative',
-            titleAr: 'قِرَاءَة — الفِعْلُ المُضَارِع',
+            titleEn: 'Reading - Present Tense Narrative',
+            titleAr: 'قِرَاءَة - الفِعْلُ المُضَارِع',
             payload: {
                 paragraphs: [
                     {
@@ -169,8 +169,8 @@ export const lesson01: LessonData = {
         {
             id: '2-1-9',
             type: 'assessment',
-            titleEn: 'Exercise — Fill in the Preposition',
-            titleAr: 'تَمْرِين — اِخْتَرِ الحَرْفَ المُنَاسِب',
+            titleEn: 'Exercise - Fill in the Preposition',
+            titleAr: 'تَمْرِين - اِخْتَرِ الحَرْفَ المُنَاسِب',
             payload: {
                 instruction: 'Choose the correct preposition to complete each sentence.',
                 questions: [

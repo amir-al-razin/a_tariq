@@ -11,8 +11,8 @@ export const lesson05: LessonData = {
                         payload: {
                             rules: [
                                 { label: 'My (ـِي)', arabic: 'كِتَابِي', romanized: 'kitābī', meaning: 'My book', examples: [{ ar: 'قَلَمِي', en: 'My pen' }, { ar: 'مُعَلِّمِي', en: 'My teacher' }] },
-                                { label: 'Your — male (ـُكَ)', arabic: 'كِتَابُكَ', romanized: 'kitābuka', meaning: 'Your book (m)', examples: [{ ar: 'قَلَمُكَ', en: 'Your pen (m)' }] },
-                                { label: 'Your — female (ـُكِ)', arabic: 'كِتَابُكِ', romanized: 'kitābuki', meaning: 'Your book (f)', examples: [{ ar: 'سَاعَتُكِ', en: 'Your watch (f)' }] },
+                                { label: 'Your - male (ـُكَ)', arabic: 'كِتَابُكَ', romanized: 'kitābuka', meaning: 'Your book (m)', examples: [{ ar: 'قَلَمُكَ', en: 'Your pen (m)' }] },
+                                { label: 'Your - female (ـُكِ)', arabic: 'كِتَابُكِ', romanized: 'kitābuki', meaning: 'Your book (f)', examples: [{ ar: 'سَاعَتُكِ', en: 'Your watch (f)' }] },
                                 { label: 'His (ـُهُ)', arabic: 'كِتَابُهُ', romanized: 'kitābuhu', meaning: 'His book', examples: [{ ar: 'مُعَلِّمُهُ', en: 'His teacher' }] },
                                 { label: 'Her (ـُهَا)', arabic: 'كِتَابُهَا', romanized: 'kitābuhā', meaning: 'Her book', examples: [{ ar: 'سَاعَتُهَا', en: 'Her watch' }] },
                             ],
@@ -53,9 +53,9 @@ export const lesson05: LessonData = {
                                     romanized: 'abūka',
                                     meaning: 'Your father (م adds و for non-my forms)',
                                     examples: [
-                                        { ar: 'أَبِي (my father)', en: 'abī — My father' },
-                                        { ar: 'أَبُوكَ (your father)', en: 'abūka — Your father (m)' },
-                                        { ar: 'أَبُوهُ (his father)', en: 'abūhu — His father' },
+                                        { ar: 'أَبِي (my father)', en: 'abī - My father' },
+                                        { ar: 'أَبُوكَ (your father)', en: 'abūka - Your father (m)' },
+                                        { ar: 'أَبُوهُ (his father)', en: 'abūhu - His father' },
                                     ],
                                 },
                                 {
@@ -64,9 +64,9 @@ export const lesson05: LessonData = {
                                     romanized: 'akhūka',
                                     meaning: 'Your brother (adds و for non-my forms)',
                                     examples: [
-                                        { ar: 'أَخِي (my brother)', en: 'akhī — My brother' },
-                                        { ar: 'أَخُوكَ (your brother)', en: 'akhūka — Your brother (m)' },
-                                        { ar: 'أَخُوهَا (her brother)', en: 'akhūhā — Her brother' },
+                                        { ar: 'أَخِي (my brother)', en: 'akhī - My brother' },
+                                        { ar: 'أَخُوكَ (your brother)', en: 'akhūka - Your brother (m)' },
+                                        { ar: 'أَخُوهَا (her brother)', en: 'akhūhā - Her brother' },
                                     ],
                                 },
                             ],
@@ -94,8 +94,8 @@ export const lesson05: LessonData = {
                         payload: {
                             rules: [
                                 { label: 'Our (ـُنَا)', arabic: 'كِتَابُنَا', romanized: 'kitābunā', meaning: 'Our book', examples: [{ ar: 'اللهُ رَبُّنَا', en: 'Allah is our Lord' }, { ar: 'الْإِسْلَامُ دِيْنُنَا', en: 'Islam is our religion' }] },
-                                { label: 'Your plural — male (ـُكُمْ)', arabic: 'كِتَابُكُمْ', romanized: 'kitābukum', meaning: 'Your book (pl. m)', examples: [{ ar: 'رَبُّكُمْ', en: 'Your Lord (pl)' }] },
-                                { label: 'Their — male (ـُهُمْ)', arabic: 'كِتَابُهُمْ', romanized: 'kitābuhum', meaning: 'Their book (m)', examples: [{ ar: 'مُعَلِّمُهُمْ', en: 'Their teacher (m)' }] },
+                                { label: 'Your plural - male (ـُكُمْ)', arabic: 'كِتَابُكُمْ', romanized: 'kitābukum', meaning: 'Your book (pl. m)', examples: [{ ar: 'رَبُّكُمْ', en: 'Your Lord (pl)' }] },
+                                { label: 'Their - male (ـُهُمْ)', arabic: 'كِتَابُهُمْ', romanized: 'kitābuhum', meaning: 'Their book (m)', examples: [{ ar: 'مُعَلِّمُهُمْ', en: 'Their teacher (m)' }] },
                             ],
                         },
                     },
@@ -106,13 +106,13 @@ export const lesson05: LessonData = {
                         titleAr: 'قِرَاءَة تَطْبِيقِيَّة لِلْمِلْكِيَّة',
                         payload: {
                             items: [
-                                { emoji: '🏷️', ar: 'اِسْمِي شَاهِدٌ - هٰذَا كِتَابِي وَذٰلِكَ قَلَمِي', en: 'My name is Shahid — this is my book and that is my pen.' },
+                                { emoji: '🏷️', ar: 'اِسْمِي شَاهِدٌ - هٰذَا كِتَابِي وَذٰلِكَ قَلَمِي', en: 'My name is Shahid - this is my book and that is my pen.' },
                                 { emoji: '🎒', ar: 'هٰذِهِ حَقِيبَتِي وَتِلْكَ كُرَّاسَتِي', en: 'This is my bag and that is my notebook.' },
                                 { emoji: '👧', ar: 'فَاطِمَةُ أُخْتِي وَأَنَا أَخُوهَا', en: 'Fatima is my sister and I am her brother.' },
                                 { emoji: '🚪', ar: 'غُرْفَتِي نَظِيفَةٌ وَبَابُهَا مَفْتُوحٌ', en: 'My room is clean and its door is open.' },
                                 { emoji: '👨‍🏫', ar: 'بَشِيرٌ مُعَلِّمِي وَأَنَا تِلْمِيذُهُ', en: 'Bashir is my teacher and I am his student.' },
                                 { emoji: '👨‍👩‍👧', ar: 'أَبُونَا رَجُلٌ طَيِّبٌ وَأُمُّنَا امْرَأَةٌ طَيِّبَةٌ', en: 'Our father is a good man and our mother is a good woman.' },
-                                { emoji: '🕌', ar: 'اللهُ رَبُّنَا وَرَبُّكُمْ - الإِسْلَامُ دِينُنَا وَدِينُكُمْ', en: 'Allah is our Lord and your Lord — Islam is our religion and your religion.' },
+                                { emoji: '🕌', ar: 'اللهُ رَبُّنَا وَرَبُّكُمْ - الإِسْلَامُ دِينُنَا وَدِينُكُمْ', en: 'Allah is our Lord and your Lord - Islam is our religion and your religion.' },
                             ],
                         },
                     },

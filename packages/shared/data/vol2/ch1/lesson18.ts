@@ -9,7 +9,7 @@ export const lesson18: LessonData = {
         {
             id: '2-18-1',
             type: 'vocabulary',
-            titleEn: 'Vocabulary — Lesson 18',
+            titleEn: 'Vocabulary - Lesson 18',
             titleAr: 'الْمُفْرَدَات',
             payload: {
                 words: [
@@ -25,8 +25,8 @@ export const lesson18: LessonData = {
         {
             id: '2-18-2',
             type: 'paragraph',
-            titleEn: 'Reading — Form X Review + لَعَلَّ',
-            titleAr: 'قِرَاءَة — مُرَاجَعَة الإِسْتِفْعَال وَلَعَلَّ',
+            titleEn: 'Reading - Form X Review + لَعَلَّ',
+            titleAr: 'قِرَاءَة - مُرَاجَعَة الإِسْتِفْعَال وَلَعَلَّ',
             payload: {
                 paragraphs: [
                     {
@@ -68,8 +68,8 @@ export const lesson18: LessonData = {
         {
             id: '2-18-3',
             type: 'grammar_rule',
-            titleEn: 'لَعَلَّ — Perhaps / Maybe',
-            titleAr: 'لَعَلَّ — التَّرَجِّي',
+            titleEn: 'لَعَلَّ - Perhaps / Maybe',
+            titleAr: 'لَعَلَّ - التَّرَجِّي',
             payload: {
                 rules: [
                     {
@@ -79,8 +79,8 @@ export const lesson18: LessonData = {
                         meaning: "لَعَلَّ = 'perhaps / maybe'. Like إِنَّ, it puts the following noun into the accusative (fatha/fathatayn).",
                         examples: [
                             { ar: 'لَعَلَّ أَمَامَكِ عَمَلًا كَثِيرًا', en: 'Perhaps you have a lot of work ahead of you' },
-                            { ar: 'كَانَ أَمَامَكِ عَمَلٌ كَثِيرٌ', en: 'You had a lot of work ahead of you (كَانَ — past)' },
-                            { ar: 'لَعَلَّ أَمَامَكِ عَمَلًا كَثِيرًا', en: 'Perhaps you have a lot of work ahead of you (لَعَلَّ — accusative)' },
+                            { ar: 'كَانَ أَمَامَكِ عَمَلٌ كَثِيرٌ', en: 'You had a lot of work ahead of you (كَانَ - past)' },
+                            { ar: 'لَعَلَّ أَمَامَكِ عَمَلًا كَثِيرًا', en: 'Perhaps you have a lot of work ahead of you (لَعَلَّ - accusative)' },
                         ],
                     },
                 ],

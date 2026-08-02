@@ -6,8 +6,8 @@ export const lesson12: LessonData = {
         {
             id: '2-12-1',
             type: 'vocabulary',
-            titleEn: 'Vocabulary — Adjectives & Nouns',
-            titleAr: 'الْمُفْرَدَات — صِفَات وَأَسْمَاء',
+            titleEn: 'Vocabulary - Adjectives & Nouns',
+            titleAr: 'الْمُفْرَدَات - صِفَات وَأَسْمَاء',
             payload: {
                 words: [
                     { id: 1, ar: 'تِلْمِيذٌ / تِلْمِيذَةٌ', romanized: 'tilmīdh / tilmīdhah', en: 'Student (m/f)', emoji: '🎒' },
@@ -35,7 +35,7 @@ export const lesson12: LessonData = {
         {
             id: '2-12-2',
             type: 'verb_table',
-            titleEn: 'كَانَ / صَارَ / لَيْسَ — Conjugation',
+            titleEn: 'كَانَ / صَارَ / لَيْسَ - Conjugation',
             titleAr: 'كَانَ وَصَارَ وَلَيْسَ',
             payload: {
                 verbTense: 'past',
@@ -50,8 +50,8 @@ export const lesson12: LessonData = {
         {
             id: '2-12-3',
             type: 'paragraph',
-            titleEn: 'Reading — Transformation Sentences',
-            titleAr: 'قِرَاءَة — جُمَل التَّحْوِيل',
+            titleEn: 'Reading - Transformation Sentences',
+            titleAr: 'قِرَاءَة - جُمَل التَّحْوِيل',
             payload: {
                 paragraphs: [
                     {
@@ -100,8 +100,8 @@ export const lesson12: LessonData = {
         {
             id: '2-12-4',
             type: 'grammar_rule',
-            titleEn: 'لَيْسَ + بِـ — Emphatic Negation',
-            titleAr: 'لَيْسَ + بِـ — النَّفْيُ الْمُؤَكَّد',
+            titleEn: 'لَيْسَ + بِـ - Emphatic Negation',
+            titleAr: 'لَيْسَ + بِـ - النَّفْيُ الْمُؤَكَّد',
             payload: {
                 rules: [
                     {

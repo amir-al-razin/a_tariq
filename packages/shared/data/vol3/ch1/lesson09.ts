@@ -6,9 +6,9 @@ export const lesson09: LessonData = {
     {
       id: '1',
       type: 'grammar_rule',
-      titleEn: 'Active Participle (Ism Al-Fael) — Doer of Action',
-      titleAr: 'اِسْمُ الفَاعِلِ — صِيغَة دالَّة عَلَى الفَاعِل',
-      titleBn: 'সক্রিয় কর্তৃপদ — কর্ম সম্পাদনকারী',
+      titleEn: 'Active Participle (Ism Al-Fael) - Doer of Action',
+      titleAr: 'اِسْمُ الفَاعِلِ - صِيغَة دالَّة عَلَى الفَاعِل',
+      titleBn: 'সক্রিয় কর্তৃপদ - কর্ম সম্পাদনকারী',
       payload: {
         rules: [
           {

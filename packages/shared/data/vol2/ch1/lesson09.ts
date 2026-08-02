@@ -6,7 +6,7 @@ export const lesson09: LessonData = {
         {
             id: '2-9-1',
             type: 'vocabulary',
-            titleEn: 'Vocabulary — Lesson 9',
+            titleEn: 'Vocabulary - Lesson 9',
             titleAr: 'الْمُفْرَدَات',
             payload: {
                 words: [
@@ -26,8 +26,8 @@ export const lesson09: LessonData = {
         {
             id: '2-9-2',
             type: 'grammar_rule',
-            titleEn: 'لِـ — Lam of Purpose (in order to)',
-            titleAr: 'لَامُ التَّعْلِيل — لِـ',
+            titleEn: 'لِـ - Lam of Purpose (in order to)',
+            titleAr: 'لَامُ التَّعْلِيل - لِـ',
             payload: {
                 rules: [
                     {
@@ -49,8 +49,8 @@ export const lesson09: LessonData = {
         {
             id: '2-9-3',
             type: 'paragraph',
-            titleEn: 'Reading — Purpose Clauses with لِـ',
-            titleAr: 'قِرَاءَة — جُمَل الْغَرَض بِـ لِـ',
+            titleEn: 'Reading - Purpose Clauses with لِـ',
+            titleAr: 'قِرَاءَة - جُمَل الْغَرَض بِـ لِـ',
             payload: {
                 paragraphs: [
                     {
@@ -89,8 +89,8 @@ export const lesson09: LessonData = {
         {
             id: '2-9-4',
             type: 'q_and_a',
-            titleEn: 'Comprehension Q&A — لِمَاذَا Questions',
-            titleAr: 'أَسْئِلَة الفَهْم — لِمَاذَا',
+            titleEn: 'Comprehension Q&A - لِمَاذَا Questions',
+            titleAr: 'أَسْئِلَة الفَهْم - لِمَاذَا',
             payload: {
                 questions: [
                     { emoji: '🏫', question_ar: 'لِمَاذَا خَرَجَ رَاشِدٌ مِنَ الْبَيْتِ؟', question_en: 'Why did Rashid exit the house?', correct_ar: 'خَرَجَ لِيَذْهَبَ إِلَى الْمَدْرَسَةِ', correct_en: 'He exited to go to the madrasa.', options_ar: ['خَرَجَ لِيَذْهَبَ إِلَى الْمَدْرَسَةِ', 'خَرَجَ لِيَلْعَبَ', 'خَرَجَ لِيَذْهَبَ إِلَى السُّوقِ'], questionType: 'general' },
@@ -104,8 +104,8 @@ export const lesson09: LessonData = {
         {
             id: '2-9-5',
             type: 'assessment',
-            titleEn: 'Exercise — Add لِـ to Masdars',
-            titleAr: 'تَمْرِين — أَضِفْ لِـ إِلَى الْمَصَادِر',
+            titleEn: 'Exercise - Add لِـ to Masdars',
+            titleAr: 'تَمْرِين - أَضِفْ لِـ إِلَى الْمَصَادِر',
             payload: {
                 instruction: 'Choose the correct لِـ + verb form for each masdar.',
                 questions: [

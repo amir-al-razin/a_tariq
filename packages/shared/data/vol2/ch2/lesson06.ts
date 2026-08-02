@@ -23,7 +23,7 @@ export const lesson06: LessonData = {
         {
             id: '2-2-6-2',
             type: 'masdar_factory',
-            titleEn: 'Masdar — أَتَى (to come)',
+            titleEn: 'Masdar - أَتَى (to come)',
             titleAr: 'مَصْدَرُ أَتَى',
             payload: {
                 baabLabel: 'بَابُ أَتَى يَأْتِي',
@@ -35,8 +35,8 @@ export const lesson06: LessonData = {
         {
             id: '2-2-6-3',
             type: 'grammar_rule',
-            titleEn: 'Grammar — Interpreted Verbal Noun (الْمَصْدَرُ الْمُؤَوَّل)',
-            titleAr: 'قَاعِدَة — الْمَصْدَرُ الْمُؤَوَّل بِأَنْ',
+            titleEn: 'Grammar - Interpreted Verbal Noun (الْمَصْدَرُ الْمُؤَوَّل)',
+            titleAr: 'قَاعِدَة - الْمَصْدَرُ الْمُؤَوَّل بِأَنْ',
             payload: {
                 rules: [
                     {
@@ -75,8 +75,8 @@ export const lesson06: LessonData = {
         {
             id: '2-2-6-4',
             type: 'paragraph',
-            titleEn: 'Reading — أَنْ + Verb Constructions',
-            titleAr: 'قِرَاءَة — تَرَاكِيبُ أَنْ مَعَ الْفِعْل',
+            titleEn: 'Reading - أَنْ + Verb Constructions',
+            titleAr: 'قِرَاءَة - تَرَاكِيبُ أَنْ مَعَ الْفِعْل',
             payload: {
                 paragraphs: [
                     {
@@ -164,14 +164,14 @@ export const lesson06: LessonData = {
         {
             id: '2-2-6-6',
             type: 'assessment',
-            titleEn: 'Exercise — Pronoun Substitution',
-            titleAr: 'تَمْرِين — تَغْيِيرُ الضَّمَائِر',
+            titleEn: 'Exercise - Pronoun Substitution',
+            titleAr: 'تَمْرِين - تَغْيِيرُ الضَّمَائِر',
             payload: {
                 instruction: 'Choose the correct form when changing the pronoun.',
                 questions: [
                     {
                         emoji: '🚪',
-                        question_ar: 'يَفْتَحُ لَهُ بَابَ السَّعَادَةِ أَنْ يُطِيعَ أَبَاهُ — (لَهَا)',
+                        question_ar: 'يَفْتَحُ لَهُ بَابَ السَّعَادَةِ أَنْ يُطِيعَ أَبَاهُ - (لَهَا)',
                         question_en: 'Change to feminine singular:',
                         correct_ar: 'يَفْتَحُ لَهَا بَابَ السَّعَادَةِ أَنْ تُطِيعَ أَبَاهَا',
                         correct_en: 'It opens the door of happiness for her that she obeys her father.',
@@ -183,7 +183,7 @@ export const lesson06: LessonData = {
                     },
                     {
                         emoji: '🌟',
-                        question_ar: 'فَلَاحُكُمْ فِي أَنْ تَسْعَوْا لِآخِرَتِكُمْ — (فَلَاحُنَا)',
+                        question_ar: 'فَلَاحُكُمْ فِي أَنْ تَسْعَوْا لِآخِرَتِكُمْ - (فَلَاحُنَا)',
                         question_en: 'Change to first person plural:',
                         correct_ar: 'فَلَاحُنَا فِي أَنْ نَسْعَى لِآخِرَتِنَا',
                         correct_en: 'Our success is in that we strive for our Hereafter.',

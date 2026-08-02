@@ -48,8 +48,8 @@ export const lesson07: LessonData = {
         {
             id: '2-7-3',
             type: 'masdar_factory',
-            titleEn: 'Form IV — Sound Verb: أَخْرَجَ',
-            titleAr: 'بَابُ الإِفْعَال — الصَّحِيح: أَخْرَجَ',
+            titleEn: 'Form IV - Sound Verb: أَخْرَجَ',
+            titleAr: 'بَابُ الإِفْعَال - الصَّحِيح: أَخْرَجَ',
             payload: {
                 baabLabel: 'بَابُ الإِفْعَالِ (Sound)',
                 instruction: 'Form IV adds أَ prefix to the root. Present tense uses يُفْعِلُ pattern.',
@@ -66,11 +66,11 @@ export const lesson07: LessonData = {
         {
             id: '2-7-4',
             type: 'masdar_factory',
-            titleEn: 'Form IV — Hollow Verb: أَجَابَ',
-            titleAr: 'بَابُ الإِفْعَال — الأَجْوَف: أَجَابَ',
+            titleEn: 'Form IV - Hollow Verb: أَجَابَ',
+            titleAr: 'بَابُ الإِفْعَال - الأَجْوَف: أَجَابَ',
             payload: {
                 baabLabel: 'بَابُ الإِفْعَالِ (Hollow)',
-                instruction: 'Hollow Form IV verbs — the middle letter changes in conjugation',
+                instruction: 'Hollow Form IV verbs - the middle letter changes in conjugation',
                 masdarRows: [
                     { masdar: 'الإِجَابَةُ', masdarEn: 'to answer', past: 'أَجَابَ', present: 'يُجِيبُ', imperative: 'أَجِبْ', prohibitive: 'لَا تُجِبْ' },
                     { masdar: 'الإِطَاعَةُ', masdarEn: 'to obey', past: 'أَطَاعَ', present: 'يُطِيعُ', imperative: 'أَطِعْ', prohibitive: 'لَا تُطِعْ' },
@@ -81,8 +81,8 @@ export const lesson07: LessonData = {
         {
             id: '2-7-5',
             type: 'paragraph',
-            titleEn: 'Reading — Form I vs Form IV Contrast',
-            titleAr: 'قِرَاءَة — مُقَارَنَة بَابِ فَعَلَ وَبَابِ الإِفْعَال',
+            titleEn: 'Reading - Form I vs Form IV Contrast',
+            titleAr: 'قِرَاءَة - مُقَارَنَة بَابِ فَعَلَ وَبَابِ الإِفْعَال',
             payload: {
                 paragraphs: [
                     {
@@ -128,8 +128,8 @@ export const lesson07: LessonData = {
         {
             id: '2-7-6',
             type: 'assessment',
-            titleEn: 'Exercise — Form I vs Form IV',
-            titleAr: 'تَمْرِين — مُقَارَنَة بَابَيْن',
+            titleEn: 'Exercise - Form I vs Form IV',
+            titleAr: 'تَمْرِين - مُقَارَنَة بَابَيْن',
             payload: {
                 instruction: 'Choose the correct Form IV verb that corresponds to the given Form I verb.',
                 questions: [

@@ -40,7 +40,7 @@ export const lesson14: LessonData = {
             id: '2-14-3',
             type: 'masdar_factory',
             titleEn: 'Form II Verb: عَلَّمَ (to teach)',
-            titleAr: 'بَابُ التَّفْعِيل — عَلَّمَ يُعَلِّمُ',
+            titleAr: 'بَابُ التَّفْعِيل - عَلَّمَ يُعَلِّمُ',
             payload: {
                 baabLabel: 'بَابُ التَّفْعِيلِ (Form II)',
                 instruction: 'Form II doubles the middle root letter. Present tense uses يُفَعِّلُ pattern.',
@@ -57,8 +57,8 @@ export const lesson14: LessonData = {
         {
             id: '2-14-4',
             type: 'paragraph',
-            titleEn: 'Reading — Form II Verbs in Context',
-            titleAr: 'قِرَاءَة — بَابُ التَّفْعِيل فِي الْجُمَل',
+            titleEn: 'Reading - Form II Verbs in Context',
+            titleAr: 'قِرَاءَة - بَابُ التَّفْعِيل فِي الْجُمَل',
             payload: {
                 paragraphs: [
                     {

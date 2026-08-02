@@ -6,7 +6,7 @@ export const lesson03: LessonData = {
         {
             id: '2-1-3-1',
             type: 'vocabulary',
-            titleEn: 'Masdars (Verbal Nouns) — Core 8',
+            titleEn: 'Masdars (Verbal Nouns) - Core 8',
             titleAr: 'المَصَادِر الأَسَاسِيَّة',
             payload: {
                 words: [
@@ -24,7 +24,7 @@ export const lesson03: LessonData = {
         {
             id: '2-1-3-2',
             type: 'vocabulary',
-            titleEn: 'More Masdars — Extended Set',
+            titleEn: 'More Masdars - Extended Set',
             titleAr: 'مَصَادِر إِضَافِيَّة',
             payload: {
                 words: [
@@ -58,7 +58,7 @@ export const lesson03: LessonData = {
         {
             id: '2-1-3-4',
             type: 'masdar_factory',
-            titleEn: 'Verb Patterns — Bāb Fataha (بَابُ فَتَحَ)',
+            titleEn: 'Verb Patterns - Bāb Fataha (بَابُ فَتَحَ)',
             titleAr: 'بَابُ فَتَحَ يَفْتَحُ',
             payload: {
                 baabLabel: 'بَابُ فَتَحَ يَفْتَحُ',
@@ -75,7 +75,7 @@ export const lesson03: LessonData = {
         {
             id: '2-1-3-5',
             type: 'masdar_factory',
-            titleEn: 'Verb Patterns — Bāb Nasara (بَابُ نَصَرَ)',
+            titleEn: 'Verb Patterns - Bāb Nasara (بَابُ نَصَرَ)',
             titleAr: 'بَابُ نَصَرَ يَنْصُرُ',
             payload: {
                 baabLabel: 'بَابُ نَصَرَ يَنْصُرُ',
@@ -90,7 +90,7 @@ export const lesson03: LessonData = {
         {
             id: '2-1-3-6',
             type: 'masdar_factory',
-            titleEn: 'Verb Patterns — Bāb Daraba (بَابُ ضَرَبَ)',
+            titleEn: 'Verb Patterns - Bāb Daraba (بَابُ ضَرَبَ)',
             titleAr: 'بَابُ ضَرَبَ يَضْرِبُ',
             payload: {
                 baabLabel: 'بَابُ ضَرَبَ يَضْرِبُ',
@@ -105,7 +105,7 @@ export const lesson03: LessonData = {
         {
             id: '2-1-3-7',
             type: 'masdar_factory',
-            titleEn: "Verb Patterns — Bāb Sami\'a (بَابُ سَمِعَ)",
+            titleEn: "Verb Patterns - Bāb Sami\'a (بَابُ سَمِعَ)",
             titleAr: 'بَابُ سَمِعَ يَسْمَعُ',
             payload: {
                 baabLabel: 'بَابُ سَمِعَ يَسْمَعُ',
@@ -120,7 +120,7 @@ export const lesson03: LessonData = {
         {
             id: '2-1-3-8',
             type: 'masdar_factory',
-            titleEn: 'Special Cases — Irregular Forms',
+            titleEn: 'Special Cases - Irregular Forms',
             titleAr: 'أَفْعَال خَاصَّة',
             payload: {
                 instruction: 'These verbs have irregular imperative forms.',
@@ -132,8 +132,8 @@ export const lesson03: LessonData = {
         {
             id: '2-1-3-9',
             type: 'paragraph',
-            titleEn: 'Reading — Ramadan Passage',
-            titleAr: 'قِرَاءَة — شَهْرُ رَمَضَان',
+            titleEn: 'Reading - Ramadan Passage',
+            titleAr: 'قِرَاءَة - شَهْرُ رَمَضَان',
             payload: {
                 paragraphs: [
                     {
@@ -178,8 +178,8 @@ export const lesson03: LessonData = {
         {
             id: '2-1-3-11',
             type: 'tarkeeb',
-            titleEn: 'Sentence Structure — Verb + Qualified Subject',
-            titleAr: 'تَرْكِيب — فِعْل + فَاعِل مَوْصُوف',
+            titleEn: 'Sentence Structure - Verb + Qualified Subject',
+            titleAr: 'تَرْكِيب - فِعْل + فَاعِل مَوْصُوف',
             payload: {
                 tarkeeb: [
                     {

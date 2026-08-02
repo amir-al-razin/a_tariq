@@ -33,12 +33,12 @@ export const lesson09: LessonData = {
         {
             id: '2-2-9-2',
             type: 'grammar_rule',
-            titleEn: 'Grammar — Pluralizing Non-Human Nouns',
-            titleAr: 'قَاعِدَة — جَمْعُ غَيْرِ الْعَاقِل',
+            titleEn: 'Grammar - Pluralizing Non-Human Nouns',
+            titleAr: 'قَاعِدَة - جَمْعُ غَيْرِ الْعَاقِل',
             payload: {
                 rules: [
                     {
-                        label: 'جَمْعُ غَيْرِ الْعَاقِل — Non-Human Plural',
+                        label: 'جَمْعُ غَيْرِ الْعَاقِل - Non-Human Plural',
                         arabic: 'هَذَا كِتَابٌ جَدِيدٌ → هَذِهِ كُتُبٌ جَدِيدَةٌ',
                         romanized: 'hādhā kitābun jadīdun → hādhihi kutubun jadīdatun',
                         meaning: 'When a non-human noun is pluralized, its adjectives and demonstrative pronouns change to singular feminine form.',
@@ -50,7 +50,7 @@ export const lesson09: LessonData = {
                         ],
                     },
                     {
-                        label: 'أَلْوَانٌ مَعَ أَلْ — Colors with Definite Article',
+                        label: 'أَلْوَانٌ مَعَ أَلْ - Colors with Definite Article',
                         arabic: 'يَطِيرُ فِي سَمَاءٍ زَرْقَاءَ → يَطِيرُ فِي السَّمَاءِ الزَّرْقَاءِ',
                         romanized: 'yaṭīru fī samāʾin zarqāʾa → yaṭīru fī s-samāʾi z-zarqāʾi',
                         meaning: 'Color adjectives (diptotes) normally take fathah in the genitive. However, when prefixed with the definite article ال, they accept a standard kasrah.',
@@ -67,12 +67,12 @@ export const lesson09: LessonData = {
         {
             id: '2-2-9-3',
             type: 'verb_table',
-            titleEn: 'Verb Table — Past Plural (نَصَرَ)',
-            titleAr: 'الْمَاضِي — صِيَغُ الْجَمْع',
+            titleEn: 'Verb Table - Past Plural (نَصَرَ)',
+            titleAr: 'الْمَاضِي - صِيَغُ الْجَمْع',
             payload: {
                 isPlural: true,
                 verbTense: 'past',
-                instruction: 'Past tense plural conjugations for memorization — apply the same pattern to فَتَحَ, ضَرَبَ, سَمِعَ',
+                instruction: 'Past tense plural conjugations for memorization - apply the same pattern to فَتَحَ, ضَرَبَ, سَمِعَ',
                 verbTable: [
                     { 
                         root: 'نَصَرَ', 
@@ -89,12 +89,12 @@ export const lesson09: LessonData = {
         {
             id: '2-2-9-3b',
             type: 'verb_table',
-            titleEn: 'Verb Table — Present Plural (نَصَرَ)',
-            titleAr: 'الْمُضَارِع — صِيَغُ الْجَمْع',
+            titleEn: 'Verb Table - Present Plural (نَصَرَ)',
+            titleAr: 'الْمُضَارِع - صِيَغُ الْجَمْع',
             payload: {
                 isPlural: true,
                 verbTense: 'present',
-                instruction: 'Present tense plural conjugations for memorization — apply the same pattern to يَفْتَحُ, يَضْرِبُ, يَسْمَعُ',
+                instruction: 'Present tense plural conjugations for memorization - apply the same pattern to يَفْتَحُ, يَضْرِبُ, يَسْمَعُ',
                 verbTable: [
                     { 
                         root: 'يَنْصُرُ', 
@@ -123,7 +123,7 @@ export const lesson09: LessonData = {
                             'مَضَتْ أَيَّامُ الْعُطْلَةِ - انْتَهَتِ الْعُطْلَةُ.',
                             'عُدْتُ إِلَى الْمَدْرَسَةِ بَعْدَ أَنْ قَضَيْتُ أَيَّامَ الْعُطْلَةِ الْجَمِيلَةَ بَيْنَ أَبِي وَأُمِّي وَبَيْنَ إِخْوَتِي وَأَخَوَاتِي.',
                         ],
-                        translationEn: 'The past day will never return — the past days will never return. The vacation days have passed — the vacation has ended. I returned to school after spending the beautiful vacation days between my father and mother and between my brothers and sisters.',
+                        translationEn: 'The past day will never return - the past days will never return. The vacation days have passed - the vacation has ended. I returned to school after spending the beautiful vacation days between my father and mother and between my brothers and sisters.',
                     },
                     {
                         title: 'الطُّيُورُ وَالسَّمَاء',
@@ -132,7 +132,7 @@ export const lesson09: LessonData = {
                             'يَطِيرُ الطَّائِرُ - تَطِيرُ الطُّيُورُ.',
                             'كَانَتِ الطُّيُورُ تَطِيرُ فِي السَّمَاءِ الزَّرْقَاءِ.',
                         ],
-                        translationEn: 'The bird flies — the birds fly. The birds were flying in the blue sky.',
+                        translationEn: 'The bird flies - the birds fly. The birds were flying in the blue sky.',
                     },
                     {
                         title: 'الزَّوَارِقُ وَالْأَمْوَاج',
@@ -141,7 +141,7 @@ export const lesson09: LessonData = {
                             'غَرِقَ الزَّوْرَقُ - غَرِقَتِ الزَّوَارِقُ فِي النَّهْرِ.',
                             'أَغْرَقَتْهَا الْأَمْوَاجُ الْعَالِيَةُ.',
                         ],
-                        translationEn: 'The boat sank — the boats sank in the river. The high waves sank them.',
+                        translationEn: 'The boat sank - the boats sank in the river. The high waves sank them.',
                     },
                     {
                         title: 'فَاطِمَةُ وَالْأَزْهَار',
@@ -208,14 +208,14 @@ export const lesson09: LessonData = {
         {
             id: '2-2-9-6',
             type: 'assessment',
-            titleEn: 'Exercise — Pluralize Non-Human Nouns',
-            titleAr: 'تَمْرِين — جَمْعُ غَيْرِ الْعَاقِل',
+            titleEn: 'Exercise - Pluralize Non-Human Nouns',
+            titleAr: 'تَمْرِين - جَمْعُ غَيْرِ الْعَاقِل',
             payload: {
                 instruction: 'Choose the correct plural transformation.',
                 questions: [
                     {
                         emoji: '🚪',
-                        question_ar: 'بَابُ هَذَا الْمَسْجِدِ مَفْتُوحٌ — (الْجَمْع)',
+                        question_ar: 'بَابُ هَذَا الْمَسْجِدِ مَفْتُوحٌ - (الْجَمْع)',
                         question_en: 'Pluralize the underlined noun:',
                         correct_ar: 'أَبْوَابُ هَذِهِ الْمَسَاجِدِ مَفْتُوحَةٌ',
                         correct_en: 'The doors of these mosques are open.',
@@ -227,7 +227,7 @@ export const lesson09: LessonData = {
                     },
                     {
                         emoji: '🐦',
-                        question_ar: 'يَجْلِسُ الطَّائِرُ عَلَى غُصْنِ الشَّجَرِ — (الْجَمْع)',
+                        question_ar: 'يَجْلِسُ الطَّائِرُ عَلَى غُصْنِ الشَّجَرِ - (الْجَمْع)',
                         question_en: 'Pluralize the underlined noun:',
                         correct_ar: 'تَجْلِسُ الطُّيُورُ عَلَى غُصْنِ الشَّجَرِ',
                         correct_en: 'The birds sit on the branch of the tree.',

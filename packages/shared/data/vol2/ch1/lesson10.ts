@@ -6,7 +6,7 @@ export const lesson10: LessonData = {
         {
             id: '2-10-1',
             type: 'vocabulary',
-            titleEn: 'Vocabulary — Lesson 10',
+            titleEn: 'Vocabulary - Lesson 10',
             titleAr: 'الْمُفْرَدَات',
             payload: {
                 words: [
@@ -23,15 +23,15 @@ export const lesson10: LessonData = {
         {
             id: '2-10-2',
             type: 'grammar_rule',
-            titleEn: 'يُرِيدُ أَنْ — Wants to do (Present)',
-            titleAr: 'يُرِيدُ أَنْ — الْمُضَارِع',
+            titleEn: 'يُرِيدُ أَنْ - Wants to do (Present)',
+            titleAr: 'يُرِيدُ أَنْ - الْمُضَارِع',
             payload: {
                 rules: [
                     {
                         label: 'يُرِيدُ / تُرِيدُ / أُرِيدُ + أَنْ + مُضَارِع مَنْصُوب',
                         arabic: 'يُرِيدُ أَنْ يَفْعَلَ',
                         romanized: "yurīdu an yaf\'ala",
-                        meaning: "'Wants to do' — أَنْ puts the following verb in the subjunctive (fatha ending)",
+                        meaning: "'Wants to do' - أَنْ puts the following verb in the subjunctive (fatha ending)",
                         examples: [
                             { ar: 'يُرِيدُ أَنْ يَفْعَلَ', en: 'He wants to do' },
                             { ar: 'تُرِيدُ أَنْ تَفْعَلَ', en: 'She wants to do' },
@@ -46,15 +46,15 @@ export const lesson10: LessonData = {
         {
             id: '2-10-3',
             type: 'grammar_rule',
-            titleEn: 'أَرَادَ أَنْ — Wanted to do (Past)',
-            titleAr: 'أَرَادَ أَنْ — الْمَاضِي',
+            titleEn: 'أَرَادَ أَنْ - Wanted to do (Past)',
+            titleAr: 'أَرَادَ أَنْ - الْمَاضِي',
             payload: {
                 rules: [
                     {
                         label: 'أَرَادَ / أَرَادَتْ / أَرَدْتَ + أَنْ + مُضَارِع مَنْصُوب',
                         arabic: 'أَرَادَ أَنْ يَفْعَلَ',
                         romanized: "arāda an yaf\'ala",
-                        meaning: "'Wanted to do' — past tense of يُرِيدُ, still followed by أَنْ + subjunctive",
+                        meaning: "'Wanted to do' - past tense of يُرِيدُ, still followed by أَنْ + subjunctive",
                         examples: [
                             { ar: 'أَرَادَ أَنْ يَفْعَلَ', en: 'He wanted to do' },
                             { ar: 'أَرَادَتْ أَنْ تَفْعَلَ', en: 'She wanted to do' },
@@ -69,8 +69,8 @@ export const lesson10: LessonData = {
         {
             id: '2-10-4',
             type: 'paragraph',
-            titleEn: 'Reading — يُرِيدُ أَنْ in Context',
-            titleAr: 'قِرَاءَة — يُرِيدُ أَنْ',
+            titleEn: 'Reading - يُرِيدُ أَنْ in Context',
+            titleAr: 'قِرَاءَة - يُرِيدُ أَنْ',
             payload: {
                 paragraphs: [
                     {

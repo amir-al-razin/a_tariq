@@ -44,22 +44,22 @@ export const lesson03: LessonData = {
                         payload: {
                             rules: [
                                 {
-                                    label: 'هَلْ — Yes/No question',
+                                    label: 'هَلْ - Yes/No question',
                                     arabic: 'هَلْ ؟',
                                     romanized: "hal?",
                                     meaning: 'Are you / Is he…?',
                                     examples: [
-                                        { ar: 'هَلْ أَنْتَ تِلْمِيذٌ ؟ — نَعَمْ', en: 'Are you a student? — Yes.' },
-                                        { ar: 'هَلْ هُوَ مُعَلِّمٌ ؟ — لَا، بَلْ هُوَ تِلْمِيذٌ', en: 'Is he a teacher? — No, rather he is a student.' },
+                                        { ar: 'هَلْ أَنْتَ تِلْمِيذٌ ؟ - نَعَمْ', en: 'Are you a student? - Yes.' },
+                                        { ar: 'هَلْ هُوَ مُعَلِّمٌ ؟ - لَا، بَلْ هُوَ تِلْمِيذٌ', en: 'Is he a teacher? - No, rather he is a student.' },
                                     ],
                                 },
                                 {
-                                    label: 'مَنْ — Who question',
+                                    label: 'مَنْ - Who question',
                                     arabic: 'مَنْ ؟',
                                     romanized: 'man?',
                                     meaning: 'Who?',
                                     examples: [
-                                        { ar: 'مَنْ أَنْتَ يَا وَلَدُ ؟ — أَنَا بِلَالٌ', en: 'Who are you, O boy? — I am Bilal.' },
+                                        { ar: 'مَنْ أَنْتَ يَا وَلَدُ ؟ - أَنَا بِلَالٌ', en: 'Who are you, O boy? - I am Bilal.' },
                                     ],
                                 },
                             ],
@@ -125,10 +125,10 @@ export const lesson03: LessonData = {
                         titleAr: 'قِرَاءَة التَّعْرِيف بِالنَّفْس وَالوَصْف',
                         payload: {
                             items: [
-                                { emoji: '👦', ar: 'أَنَا بِلَالٌ - أَنَا تِلْمِيذٌ جَدِيدٌ - أَنَا وَلَدٌ مُؤَدَّبٌ', en: 'I am Bilal — I am a new student — I am a polite boy.' },
-                                { emoji: '👧', ar: 'أَنَا عَائِشَةُ - أَنَا تِلْمِيذَةٌ جَدِيدَةٌ - أَنَا بِنْتٌ مُؤَدَّبَةٌ', en: 'I am Aisha — I am a new female student — I am a polite girl.' },
-                                { emoji: '🧍', ar: 'هُوَ بِلَالٌ - هُوَ تِلْمِيذٌ جَدِيدٌ', en: 'He is Bilal — he is a new student.' },
-                                { emoji: '🧍‍♀️', ar: 'هِيَ عَائِشَةُ - هِيَ تِلْمِيذَةٌ جَدِيدَةٌ', en: 'She is Aisha — she is a new female student.' },
+                                { emoji: '👦', ar: 'أَنَا بِلَالٌ - أَنَا تِلْمِيذٌ جَدِيدٌ - أَنَا وَلَدٌ مُؤَدَّبٌ', en: 'I am Bilal - I am a new student - I am a polite boy.' },
+                                { emoji: '👧', ar: 'أَنَا عَائِشَةُ - أَنَا تِلْمِيذَةٌ جَدِيدَةٌ - أَنَا بِنْتٌ مُؤَدَّبَةٌ', en: 'I am Aisha - I am a new female student - I am a polite girl.' },
+                                { emoji: '🧍', ar: 'هُوَ بِلَالٌ - هُوَ تِلْمِيذٌ جَدِيدٌ', en: 'He is Bilal - he is a new student.' },
+                                { emoji: '🧍‍♀️', ar: 'هِيَ عَائِشَةُ - هِيَ تِلْمِيذَةٌ جَدِيدَةٌ', en: 'She is Aisha - she is a new female student.' },
                                 { emoji: '🛒', ar: 'مَحْمُودٌ تَاجِرٌ غَنِيٌّ وَأَنَا فَلَّاحٌ فَقِيرٌ', en: 'Mahmud is a rich merchant and I am a poor farmer.' },
                                 { emoji: '🧠', ar: 'بِلَالٌ تِلْمِيذٌ ذَكِيٌّ وَزَيْنَبُ تِلْمِيذَةٌ ذَكِيَّةٌ', en: 'Bilal is an intelligent student and Zainab is an intelligent female student.' },
                                 { emoji: '👩', ar: 'عَائِشَةُ امْرَأَةٌ ذَكِيَّةٌ جِدًّا', en: 'Aisha is a very intelligent woman.' },

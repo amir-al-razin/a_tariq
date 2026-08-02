@@ -32,11 +32,11 @@ export const lesson08: LessonData = {
         {
             id: '2-2-8-2',
             type: 'masdar_factory',
-            titleEn: 'Masdar Factory — Form VIII Defective Verbs (بَابُ الِافْتِعَال)',
+            titleEn: 'Masdar Factory - Form VIII Defective Verbs (بَابُ الِافْتِعَال)',
             titleAr: 'مَصَادِرُ بَابِ الِافْتِعَال (نَاقِص)',
             payload: {
-                baabLabel: 'بَابُ الِافْتِعَال — اِفْتَعَلَ يَفْتَعِلُ',
-                instruction: 'Form VIII defective verbs — conjugation model: اِشْتَرَى',
+                baabLabel: 'بَابُ الِافْتِعَال - اِفْتَعَلَ يَفْتَعِلُ',
+                instruction: 'Form VIII defective verbs - conjugation model: اِشْتَرَى',
                 masdarRows: [
                     { masdar: 'الِاشْتِرَاءُ', masdarEn: 'to buy / purchase', past: 'اِشْتَرَى', present: 'يَشْتَرِي', imperative: 'اِشْتَرِ', prohibitive: 'لَا تَشْتَرِ' },
                     { masdar: 'الِاخْتِفَاءُ', masdarEn: 'to hide / conceal oneself', past: 'اِخْتَفَى', present: 'يَخْتَفِي', imperative: 'اِخْتَفِ', prohibitive: 'لَا تَخْتَفِ' },
@@ -49,19 +49,19 @@ export const lesson08: LessonData = {
         {
             id: '2-2-8-3',
             type: 'grammar_rule',
-            titleEn: 'Grammar — Colors as Diptotes (مَمْنُوعٌ مِنَ الصَّرْف)',
-            titleAr: 'قَاعِدَة — أَلْوَانٌ مَمْنُوعَةٌ مِنَ الصَّرْف',
+            titleEn: 'Grammar - Colors as Diptotes (مَمْنُوعٌ مِنَ الصَّرْف)',
+            titleAr: 'قَاعِدَة - أَلْوَانٌ مَمْنُوعَةٌ مِنَ الصَّرْف',
             payload: {
                 rules: [
                     {
                         label: 'أَلْوَانٌ مَمْنُوعَةٌ مِنَ الصَّرْف',
-                        arabic: 'أَحْمَرُ / حَمْرَاءُ — pattern أَفْعَلُ / فَعْلَاءُ',
+                        arabic: 'أَحْمَرُ / حَمْرَاءُ - pattern أَفْعَلُ / فَعْلَاءُ',
                         romanized: 'aḥmaru / ḥamrāʾu',
                         meaning: 'Color adjectives follow the pattern أَفْعَلُ (m) and فَعْلَاءُ (f). They are diptotes: no tanween, and take fathah instead of kasrah in the genitive state.',
                         examples: [
                             { ar: 'جَاءَتْ عَائِشَةُ', en: 'Aisha came. (nominative)' },
                             { ar: 'دَعَوْتُ عَائِشَةَ', en: 'I called Aisha. (accusative)' },
-                            { ar: 'سَلَّمْتُ عَلَى عَائِشَةَ', en: 'I greeted Aisha. (genitive — takes fathah, not kasrah)' },
+                            { ar: 'سَلَّمْتُ عَلَى عَائِشَةَ', en: 'I greeted Aisha. (genitive - takes fathah, not kasrah)' },
                             { ar: 'لَبِسْتُ ثَوْبًا أَبْيَضَ', en: 'I wore a white garment.' },
                             { ar: 'دَخَلْتُ حَدِيقَةً خَضْرَاءَ', en: 'I entered a green garden.' },
                         ],
@@ -160,8 +160,8 @@ export const lesson08: LessonData = {
         {
             id: '2-2-8-6',
             type: 'assessment',
-            titleEn: 'Exercise — Color Adjectives (Diptotes)',
-            titleAr: 'تَمْرِين — أَلْوَانٌ مَمْنُوعَةٌ مِنَ الصَّرْف',
+            titleEn: 'Exercise - Color Adjectives (Diptotes)',
+            titleAr: 'تَمْرِين - أَلْوَانٌ مَمْنُوعَةٌ مِنَ الصَّرْف',
             payload: {
                 instruction: 'Choose the correct color adjective form.',
                 questions: [

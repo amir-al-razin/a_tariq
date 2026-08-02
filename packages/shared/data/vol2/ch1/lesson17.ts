@@ -31,10 +31,10 @@ export const lesson17: LessonData = {
         {
             id: '2-17-2',
             type: 'masdar_factory',
-            titleEn: 'Form X — Sound Verb: اِسْتَعْمَلَ (to use)',
-            titleAr: 'بَابُ الإِسْتِفْعَال — الصَّحِيح: اِسْتَعْمَلَ',
+            titleEn: 'Form X - Sound Verb: اِسْتَعْمَلَ (to use)',
+            titleAr: 'بَابُ الإِسْتِفْعَال - الصَّحِيح: اِسْتَعْمَلَ',
             payload: {
-                baabLabel: 'بَابُ الإِسْتِفْعَالِ — Sound (Form X)',
+                baabLabel: 'بَابُ الإِسْتِفْعَالِ - Sound (Form X)',
                 instruction: 'Form X adds اِسْتَـ prefix. Present tense uses يَسْتَفْعِلُ pattern.',
                 masdarRows: [
                     { masdar: 'الإِسْتِعْمَالُ', masdarEn: 'to use', past: 'اِسْتَعْمَلَ', present: 'يَسْتَعْمِلُ', imperative: 'اِسْتَعْمِلْ', prohibitive: 'لَا تَسْتَعْمِلْ' },
@@ -47,11 +47,11 @@ export const lesson17: LessonData = {
         {
             id: '2-17-3',
             type: 'masdar_factory',
-            titleEn: 'Form X — Hollow Verb: اِسْتَرَاحَ (to rest)',
-            titleAr: 'بَابُ الإِسْتِفْعَال — الأَجْوَف: اِسْتَرَاحَ',
+            titleEn: 'Form X - Hollow Verb: اِسْتَرَاحَ (to rest)',
+            titleAr: 'بَابُ الإِسْتِفْعَال - الأَجْوَف: اِسْتَرَاحَ',
             payload: {
-                baabLabel: 'بَابُ الإِسْتِفْعَالِ — Hollow (Form X)',
-                instruction: 'Hollow Form X verbs — the middle letter changes in conjugation',
+                baabLabel: 'بَابُ الإِسْتِفْعَالِ - Hollow (Form X)',
+                instruction: 'Hollow Form X verbs - the middle letter changes in conjugation',
                 masdarRows: [
                     { masdar: 'الإِسْتِرَاحَةُ', masdarEn: 'to rest', past: 'اِسْتَرَاحَ', present: 'يَسْتَرِيحُ', imperative: 'اِسْتَرِحْ', prohibitive: 'لَا تَسْتَرِحْ' },
                     { masdar: 'الإِسْتِعَانَةُ', masdarEn: 'to seek help', past: 'اِسْتَعَانَ', present: 'يَسْتَعِينُ', imperative: 'اِسْتَعِنْ', prohibitive: 'لَا تَسْتَعِنْ' },
@@ -63,8 +63,8 @@ export const lesson17: LessonData = {
         {
             id: '2-17-4',
             type: 'paragraph',
-            titleEn: 'Reading — Sound Form X Verbs',
-            titleAr: 'قِرَاءَة — الإِسْتِفْعَال الصَّحِيح',
+            titleEn: 'Reading - Sound Form X Verbs',
+            titleAr: 'قِرَاءَة - الإِسْتِفْعَال الصَّحِيح',
             payload: {
                 paragraphs: [
                     {
@@ -92,8 +92,8 @@ export const lesson17: LessonData = {
         {
             id: '2-17-5',
             type: 'paragraph',
-            titleEn: 'Reading — Hollow Form X Verbs',
-            titleAr: 'قِرَاءَة — الإِسْتِفْعَال الأَجْوَف',
+            titleEn: 'Reading - Hollow Form X Verbs',
+            titleAr: 'قِرَاءَة - الإِسْتِفْعَال الأَجْوَف',
             payload: {
                 paragraphs: [
                     {

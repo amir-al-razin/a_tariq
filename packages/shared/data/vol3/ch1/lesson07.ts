@@ -49,12 +49,12 @@ export const lesson07: LessonData = {
     {
       id: '3',
       type: 'verb_table',
-      titleEn: 'Regular Verbs — Measure I (فعل)',
+      titleEn: 'Regular Verbs - Measure I (فعل)',
       titleAr: 'الأفعال القياسية - الباب الأول',
       titleBn: 'নিয়মিত ক্রিয়া - ফর্ম I',
       payload: {
         verbTense: 'past',
-        baabLabel: 'Measure I — Regular dual forms',
+        baabLabel: 'Measure I - Regular dual forms',
         verbTable: [
           { root: 'ذَهَبَ', meaning: 'to go', meaningBn: 'যাওয়া', he: 'ذَهَبَا', she: 'ذَهَبَتَا', youM: 'ذَهَبْتُمَا', youF: 'ذَهَبْتُمَا', i: 'ذَهَبْنَا' },
           { root: 'قَالَ', meaning: 'to say', meaningBn: 'কওয়া', he: 'قَالَا', she: 'قَالَتَا', youM: 'قُلْتُمَا', youF: 'قُلْتُمَا', i: 'قُلْنَا' },
@@ -65,7 +65,7 @@ export const lesson07: LessonData = {
     {
       id: '4',
       type: 'verb_table',
-      titleEn: 'Derived Verbs — Measures II, IV, V, VIII, X',
+      titleEn: 'Derived Verbs - Measures II, IV, V, VIII, X',
       titleAr: 'الأفعال المشتقة - الأبواب المختلفة',
       titleBn: 'উৎপন্ন ক্রিয়া - ফর্মগুলো',
       payload: {
@@ -82,9 +82,9 @@ export const lesson07: LessonData = {
     {
       id: '5',
       type: 'verb_table',
-      titleEn: 'Hollow Verbs — Middle Vowel Changes',
+      titleEn: 'Hollow Verbs - Middle Vowel Changes',
       titleAr: 'الأجوف - تغيرات الحرف الأوسط',
-      titleBn: 'অজওফ (হলো) — মধ্যবর্তী স্বর পরিবর্তন',
+      titleBn: 'অজওফ (হলো) - মধ্যবর্তী স্বর পরিবর্তন',
       payload: {
         verbTense: 'past',
         baabLabel: 'Hollow verbs dual patterns',
@@ -98,9 +98,9 @@ export const lesson07: LessonData = {
     {
       id: '6',
       type: 'verb_table',
-      titleEn: 'Defective Verbs — Ending Vowel Patterns',
+      titleEn: 'Defective Verbs - Ending Vowel Patterns',
       titleAr: 'النقص - تغيرات نهاية الحرف',
-      titleBn: 'খুঁতিপূর্ণ ক্রিয়া — শেষ স্বরবর্ণ প্যাটার্ন',
+      titleBn: 'খুঁতিপূর্ণ ক্রিয়া - শেষ স্বরবর্ণ প্যাটার্ন',
       payload: {
         verbTense: 'past',
         baabLabel: 'Defective dual paradigms',

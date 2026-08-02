@@ -31,7 +31,7 @@ export const lesson19: LessonData = {
             id: '2-19-2',
             type: 'masdar_factory',
             titleEn: 'Form III Verb: سَاعَدَ (to help)',
-            titleAr: 'بَابُ الْمُفَاعَلَة — سَاعَدَ يُسَاعِدُ',
+            titleAr: 'بَابُ الْمُفَاعَلَة - سَاعَدَ يُسَاعِدُ',
             payload: {
                 baabLabel: 'بَابُ الْمُفَاعَلَةِ (Form III)',
                 instruction: 'Form III adds a long vowel after the first root letter. Present tense uses يُفَاعِلُ pattern.',
@@ -48,8 +48,8 @@ export const lesson19: LessonData = {
         {
             id: '2-19-3',
             type: 'paragraph',
-            titleEn: 'Reading — Form III Verbs in Context',
-            titleAr: 'قِرَاءَة — بَابُ الْمُفَاعَلَة فِي الْجُمَل',
+            titleEn: 'Reading - Form III Verbs in Context',
+            titleAr: 'قِرَاءَة - بَابُ الْمُفَاعَلَة فِي الْجُمَل',
             payload: {
                 paragraphs: [
                     {

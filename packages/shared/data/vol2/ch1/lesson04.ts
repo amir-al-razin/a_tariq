@@ -6,7 +6,7 @@ export const lesson04: LessonData = {
         {
             id: '2-4-1',
             type: 'vocabulary',
-            titleEn: 'Vocabulary — Lesson 4',
+            titleEn: 'Vocabulary - Lesson 4',
             titleAr: 'الْمُفْرَدَات',
             payload: {
                 words: [
@@ -29,11 +29,11 @@ export const lesson04: LessonData = {
         {
             id: '2-4-2',
             type: 'verb_table',
-            titleEn: 'Verb: قَالَ — Present & Imperative',
-            titleAr: 'فِعْل قَالَ — المُضَارِع وَالأَمْر',
+            titleEn: 'Verb: قَالَ - Present & Imperative',
+            titleAr: 'فِعْل قَالَ - المُضَارِع وَالأَمْر',
             payload: {
                 verbTense: 'present',
-                instruction: 'The hollow verb قَالَ (to say) — present tense and imperative forms',
+                instruction: 'The hollow verb قَالَ (to say) - present tense and imperative forms',
                 verbTable: [
                     { root: 'يَقُولُ', meaning: 'to say', he: 'يَقُولُ', she: 'تَقُولُ', youM: 'تَقُولُ', youF: 'تَقُولِينَ', i: 'أَقُولُ' },
                 ],
@@ -42,8 +42,8 @@ export const lesson04: LessonData = {
         {
             id: '2-4-3',
             type: 'paragraph',
-            titleEn: 'Reading — Transitive Verbs in Context',
-            titleAr: 'قِرَاءَة — الأَفْعَال المُتَعَدِّيَة',
+            titleEn: 'Reading - Transitive Verbs in Context',
+            titleAr: 'قِرَاءَة - الأَفْعَال المُتَعَدِّيَة',
             payload: {
                 paragraphs: [
                     {
@@ -84,7 +84,7 @@ export const lesson04: LessonData = {
                             'تَخْلَعُ فَاطِمَةُ الْآنَ لِبَاسَ الْمَدْرَسَةِ وَتَلْبَسُ لِبَاسَ الْمَنْزِلِ، ثُمَّ تَذْهَبُ إِلَى حَدِيقَتِهَا وَتَلْعَبُ مَعَ زَيْنَبَ.',
                             'تَجْلِسُ فَاطِمَةُ بَعْدَ الْمَغْرِبِ فِي غُرْفَتِهَا، وَتَفْتَحُ الْكِتَابَ وَتَقْرَأُ الدَّرْسَ، هِيَ تَحْفَظُ دَرْسَهَا جَيِّدًا.',
                         ],
-                        translationEn: 'Fatima is now taking off her school clothes and putting on her home clothes, then going to her garden and playing with Zainab. Fatima sits in her room after Maghrib, opens the book and reads the lesson — she memorizes her lesson well.',
+                        translationEn: 'Fatima is now taking off her school clothes and putting on her home clothes, then going to her garden and playing with Zainab. Fatima sits in her room after Maghrib, opens the book and reads the lesson - she memorizes her lesson well.',
                     },
                     {
                         lines: [
@@ -116,8 +116,8 @@ export const lesson04: LessonData = {
         {
             id: '2-4-5',
             type: 'assessment',
-            titleEn: 'Exercise — Fill in the Object',
-            titleAr: 'تَمْرِين — اِخْتَرِ الْمَفْعُولَ الصَّحِيح',
+            titleEn: 'Exercise - Fill in the Object',
+            titleAr: 'تَمْرِين - اِخْتَرِ الْمَفْعُولَ الصَّحِيح',
             payload: {
                 instruction: 'Choose the correct object (accusative form) to complete each sentence.',
                 questions: [
@@ -131,8 +131,8 @@ export const lesson04: LessonData = {
         {
             id: '2-4-6',
             type: 'assessment',
-            titleEn: 'Exercise — Nominative to Accusative',
-            titleAr: 'تَمْرِين — تَحْوِيل الرَّفْع إِلَى النَّصْب',
+            titleEn: 'Exercise - Nominative to Accusative',
+            titleAr: 'تَمْرِين - تَحْوِيل الرَّفْع إِلَى النَّصْب',
             payload: {
                 instruction: "The word in brackets is nominative. Choose its correct accusative (maf\'ul bihi) form.",
                 questions: [
@@ -145,8 +145,8 @@ export const lesson04: LessonData = {
         {
             id: '2-4-7',
             type: 'assessment',
-            titleEn: 'Exercise — Answer Particles (نَعَمْ / بَلَى)',
-            titleAr: 'تَمْرِين — حُرُوفُ الجَوَاب',
+            titleEn: 'Exercise - Answer Particles (نَعَمْ / بَلَى)',
+            titleAr: 'تَمْرِين - حُرُوفُ الجَوَاب',
             payload: {
                 instruction: 'Choose the correct answer particle.',
                 questions: [

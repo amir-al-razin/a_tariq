@@ -33,7 +33,7 @@ export const lesson06: LessonData = {
             titleAr: 'بَابُ قَالَ يَقُولُ',
             payload: {
                 baabLabel: 'بَابُ قَالَ يَقُولُ',
-                instruction: 'Hollow verb — the middle root letter changes across forms',
+                instruction: 'Hollow verb - the middle root letter changes across forms',
                 masdarRows: [
                     {
                         masdar: 'الْقَوْلُ',
@@ -115,7 +115,7 @@ export const lesson06: LessonData = {
             payload: {
                 rules: [
                     {
-                        label: 'دَخَلَ — direct or with فِي',
+                        label: 'دَخَلَ - direct or with فِي',
                         arabic: 'دَخَلَ الْمَسْجِدَ / دَخَلَ فِي دِينِ اللهِ',
                         romanized: 'dakhala l-masjida / dakhala fī dīni llāh',
                         meaning: 'دَخَلَ can take a direct object (place) or use فِي for abstract entry',
@@ -131,8 +131,8 @@ export const lesson06: LessonData = {
         {
             id: '2-6-7',
             type: 'paragraph',
-            titleEn: 'Reading — Hollow Verbs in Context',
-            titleAr: 'قِرَاءَة — الأَفْعَال الجَوْفَاء',
+            titleEn: 'Reading - Hollow Verbs in Context',
+            titleAr: 'قِرَاءَة - الأَفْعَال الجَوْفَاء',
             payload: {
                 paragraphs: [
                     {
@@ -192,8 +192,8 @@ export const lesson06: LessonData = {
         {
             id: '2-6-9',
             type: 'assessment',
-            titleEn: 'Exercise — Read and Translate Hollow Verb Forms',
-            titleAr: 'تَمْرِين — اِقْرَأْ وَتَرْجِمْ',
+            titleEn: 'Exercise - Read and Translate Hollow Verb Forms',
+            titleAr: 'تَمْرِين - اِقْرَأْ وَتَرْجِمْ',
             payload: {
                 instruction: 'Choose the correct English meaning for each Arabic verb form.',
                 questions: [
@@ -207,8 +207,8 @@ export const lesson06: LessonData = {
         {
             id: '2-6-10',
             type: 'assessment',
-            titleEn: 'Exercise — Translate to Arabic',
-            titleAr: 'تَمْرِين — تَرْجِمْ إِلَى الْعَرَبِيَّة',
+            titleEn: 'Exercise - Translate to Arabic',
+            titleAr: 'تَمْرِين - تَرْجِمْ إِلَى الْعَرَبِيَّة',
             payload: {
                 instruction: 'Choose the correct Arabic translation.',
                 questions: [

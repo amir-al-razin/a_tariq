@@ -6,7 +6,7 @@ export const lesson04: LessonData = {
         {
             id: '2-2-4-1',
             type: 'vocabulary',
-            titleEn: 'Vocabulary — قَالَ Verb Forms',
+            titleEn: 'Vocabulary - قَالَ Verb Forms',
             titleAr: 'مُفْرَدَاتُ الدَّرْس',
             payload: {
                 words: [
@@ -39,8 +39,8 @@ export const lesson04: LessonData = {
         {
             id: '2-2-4-2',
             type: 'verb_table',
-            titleEn: 'Verb Table — قَالَ (to say)',
-            titleAr: 'جَدْوَلُ الْفِعْل — قَالَ',
+            titleEn: 'Verb Table - قَالَ (to say)',
+            titleAr: 'جَدْوَلُ الْفِعْل - قَالَ',
             payload: {
                 verbTense: 'past',
                 verbTable: [
@@ -51,8 +51,8 @@ export const lesson04: LessonData = {
         {
             id: '2-2-4-3',
             type: 'verb_table',
-            titleEn: 'Present & Imperative — قَالَ',
-            titleAr: 'الْمُضَارِعُ وَالْأَمْر — قَالَ',
+            titleEn: 'Present & Imperative - قَالَ',
+            titleAr: 'الْمُضَارِعُ وَالْأَمْر - قَالَ',
             payload: {
                 verbTense: 'present',
                 verbTable: [
@@ -63,12 +63,12 @@ export const lesson04: LessonData = {
         {
             id: '2-2-4-4',
             type: 'grammar_rule',
-            titleEn: 'Grammar — Object (الْمَفْعُولُ بِهِ) and بَلَى vs نَعَمْ',
-            titleAr: 'قَاعِدَة — الْمَفْعُولُ بِهِ وَبَلَى وَنَعَمْ',
+            titleEn: 'Grammar - Object (الْمَفْعُولُ بِهِ) and بَلَى vs نَعَمْ',
+            titleAr: 'قَاعِدَة - الْمَفْعُولُ بِهِ وَبَلَى وَنَعَمْ',
             payload: {
                 rules: [
                     {
-                        label: 'الْمَفْعُولُ بِهِ — The Direct Object',
+                        label: 'الْمَفْعُولُ بِهِ - The Direct Object',
                         arabic: 'نَصَرَ رَاشِدٌ شَاهِدًا',
                         romanized: 'naṣara rāshidun shāhidan',
                         meaning: 'The noun receiving the action of a transitive verb takes a fathah or fathatain (mansub state).',
@@ -78,9 +78,9 @@ export const lesson04: LessonData = {
                         ],
                     },
                     {
-                        label: 'بَلَى vs نَعَمْ — Answering Negative Questions',
-                        arabic: 'أَلَا تَفْهَمُ كَلَامَ اللهِ ؟ — بَلَى / نَعَمْ',
-                        romanized: "alā tafhamu kalāma llāh? — balā / na'am",
+                        label: 'بَلَى vs نَعَمْ - Answering Negative Questions',
+                        arabic: 'أَلَا تَفْهَمُ كَلَامَ اللهِ ؟ - بَلَى / نَعَمْ',
+                        romanized: "alā tafhamu kalāma llāh? - balā / na'am",
                         meaning: 'When answering a negative question: بَلَى affirms the positive (Yes, I DO), while نَعَمْ agrees with the negative (Yes, I do NOT).',
                         examples: [
                             { ar: 'أَلَا تَفْهَمُ كَلَامَ اللهِ ؟ بَلَى، أَفْهَمُ', en: 'Do you not understand the words of Allah? Yes, I DO understand.' },
@@ -184,8 +184,8 @@ export const lesson04: LessonData = {
         {
             id: '2-2-4-7',
             type: 'assessment',
-            titleEn: 'Exercise — Object Case (Mansub)',
-            titleAr: 'تَمْرِين — الْمَفْعُولُ بِهِ',
+            titleEn: 'Exercise - Object Case (Mansub)',
+            titleAr: 'تَمْرِين - الْمَفْعُولُ بِهِ',
             payload: {
                 instruction: 'Choose the correct form of the object noun.',
                 questions: [

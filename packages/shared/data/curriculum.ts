@@ -9,7 +9,15 @@ export type ChunkType =
     | 'verb_table'
     | 'idafah_drill'
     | 'paragraph'
-    | 'masdar_factory';
+    | 'masdar_factory'
+    | 'distance_intuition'
+    | 'phrase_building';
+
+export type PedagogicalStage =
+    | 'stage_1_vocabulary'
+    | 'stage_2_distance_intuition'
+    | 'stage_3_phrase_building'
+    | 'stage_4_conversational_drills';
 
 // ─────────────────────────────────────────────
 // Payload types (typed for engine templates)
@@ -17,16 +25,22 @@ export type ChunkType =
 
 export interface VocabWord {
     id: number;
-    /** Arabic with full diacritics (harakat) — exactly as in the book */
+    /** Arabic with full diacritics (harakat) - exactly as in the book */
     ar: string;
     /** Transliteration */
     romanized: string;
     /** English meaning */
     en: string;
-    /** Secondary language translation — stored but not rendered (multilingual future use) */
+    /** Secondary language translation - stored but not rendered (multilingual future use) */
     bn?: string;
     emoji?: string;
     imageUrl?: string;
+    /** Grammatical gender intuited from phonetics and form (e.g. masculine vs feminine ta-marbuta) */
+    gender?: 'masculine' | 'feminine' | 'neutral' | 'pair';
+    /** Vocabulary classification Category (e.g. 'noun', 'adjective', 'demonstrative_pronoun', 'household', 'academic') */
+    category?: string;
+    /** Visual cue representing object or concept directly to avoid reliance on English translation */
+    visualCue?: string;
 }
 
 export interface GrammarRule {
@@ -57,9 +71,39 @@ export interface QAItem {
     correct_en: string;
     correct_bn?: string;
     options_ar: string[];
-    /** 'hal' = yes/no (هَلْ), 'a_am' = either/or (أَ...أَمْ), 'general' = open */
-    questionType?: 'hal' | 'a_am' | 'general';
+    /** 'hal' = yes/no (هَلْ), 'a_am' = either/or (أَ...أَمْ), 'general' = open, 'ma' = what (مَا), 'confirmation' = confirmation question */
+    questionType?: 'hal' | 'a_am' | 'general' | 'ma' | 'confirmation';
     explanation?: string;
+    gender?: 'masculine' | 'feminine';
+}
+
+/** Stage 2: Distance & Pronoun Intuition pairing (near vs far spatial pointing) */
+export interface DistancePairingItem {
+    id?: number;
+    pronounAr: string;        // e.g. 'هَذَا' or 'ذَلِكَ' / 'هَذِهِ' or 'تِلْكَ'
+    pronounRomanized: string; // e.g. 'hādhā', 'dhālika'
+    distance: 'near' | 'far'; // Spatial relationship
+    gender: 'masculine' | 'feminine'; // Intuitive matching without formal jargon
+    nounAr?: string;          // Optional paired concrete noun (e.g. 'كِتَابٌ')
+    exampleAr: string;        // Full intuitive demonstration (e.g. 'هَذَا كِتَابٌ')
+    exampleEn: string;        // English translation
+    exampleBn?: string;
+    emoji?: string;
+    imageUrl?: string;
+}
+
+/** Stage 3: Instinctive Phrase Building item (combining demonstrative + noun + optional adjective) */
+export interface PhraseBuilderItem {
+    id?: number;
+    demonstrativeAr?: string; // e.g. 'هَذَا', 'ذَلِكَ'
+    nounAr: string;           // Concrete noun (e.g. 'مَسْجِدٌ', 'كُرَّاسَةٌ')
+    adjectiveAr?: string;     // Optional matching adjective (e.g. 'جَدِيدٌ', 'صَغِيرَةٌ')
+    completePhraseAr: string; // Combined full statement (e.g. 'هَذَا مَسْجِدٌ جَدِيدٌ')
+    translationEn: string;    // English translation
+    translationBn?: string;
+    gender: 'masculine' | 'feminine';
+    emoji?: string;
+    imageUrl?: string;
 }
 
 /** A single node in a Tarkeeb (sentence-diagram) tree */
@@ -74,7 +118,7 @@ export interface TarkeebNode {
 export interface TarkeebItem {
     sentence: string;            // full Arabic sentence
     sentenceEn: string;          // English translation
-    sentenceBn?: string;         // secondary translation (not rendered — future use)
+    sentenceBn?: string;         // secondary translation - future use
     type: 'complete' | 'incomplete';
     tree: TarkeebNode[];
 }
@@ -106,14 +150,14 @@ export interface MasdarRow {
     baab?: string;
 }
 
-/** A phrase-pair for Idafah drill: base phrase → expanded possession phrase */
+/** A phrase-pair for Idafah drill: base phrase -> expanded possession phrase */
 export interface IdafahPair {
     baseAr: string;      // Arabic base (e.g. "هَذِهِ الغُرْفَةُ")
     baseEn: string;      // English base (e.g. "This room")
     expandedAr: string;  // Arabic answer (e.g. "بَابُ هَذِهِ الغُرْفَةِ")
     expandedEn: string;  // English expanded (e.g. "The door of this room")
-    baseBn?: string;     // secondary translation (not rendered — future use)
-    expandedBn?: string; // secondary translation (not rendered — future use)
+    baseBn?: string;     // secondary translation - future use
+    expandedBn?: string; // secondary translation - future use
 }
 
 /** A paragraph block for reading comprehension */
@@ -131,6 +175,8 @@ export interface ChunkPayload {
     rules?: GrammarRule[];
     items?: ApplicationItem[];
     questions?: QAItem[];
+    distancePairings?: DistancePairingItem[];
+    phraseBuilderItems?: PhraseBuilderItem[];
     tarkeeb?: TarkeebItem[];
     verbTable?: VerbTableRow[];
     /** tense label shown above verb table: 'past' | 'present' | 'imperative' */
@@ -157,6 +203,7 @@ export interface ChunkPayload {
 export interface CurriculumChunk {
     id: string;
     type: ChunkType;
+    stage?: PedagogicalStage;
     titleEn: string;
     titleBn?: string;
     titleAr: string;
@@ -179,7 +226,7 @@ export interface ChapterData {
 }
 
 // ─────────────────────────────────────────────
-// Real Pedagogical Data — Let's Learn Arabic
+// Real Pedagogical Data - Let's Learn Arabic
 // Diacritics strategy: full tashkeel in early lessons,
 // gradually fading per the author's teaching method.
 // ─────────────────────────────────────────────
@@ -287,17 +334,17 @@ export const CHAPTERS: ChapterData[] = [
                         titleEn: 'General Questions (هَلْ)',
                         titleAr: 'سُؤَالٌ عَامٌ',
                         payload: {
-                            instruction: 'شُدُهُ বোঝার জন্য — Yes/No questions using هَلْ. Answer with نَعَمْ (yes) or لَا (no).',
+                            instruction: 'شُدُهُ বোঝার জন্য - Yes/No questions using هَلْ. Answer with نَعَمْ (yes) or لَا (no).',
                             rules: [
                                 {
-                                    label: 'سُؤَالٌ عَامٌ — General Question',
+                                    label: 'سُؤَالٌ عَامٌ - General Question',
                                     arabic: 'هَلْ',
                                     romanized: 'hal',
                                     meaning: 'Is / Are? (Yes/No question particle)',
                                     examples: [
-                                        { ar: 'هَلْ هَذَا قَلَمٌ ؟ — نَعَمْ .. هَذَا قَلَمٌ', en: 'Is this a pen? — Yes, this is a pen.' },
-                                        { ar: 'هَلْ هَذَا مِفْتَاحٌ ؟ — لَا .. هَذَا قُفْلٌ', en: 'Is this a key? — No, this is a lock.' },
-                                        { ar: 'هَلْ هَذَا إِبْرِيْقٌ ؟ — نَعَمْ .. هَذَا إِبْرِيْقٌ', en: 'Is this a jug? — Yes, this is a jug.' },
+                                        { ar: 'هَلْ هَذَا قَلَمٌ ؟ - نَعَمْ .. هَذَا قَلَمٌ', en: 'Is this a pen? - Yes, this is a pen.' },
+                                        { ar: 'هَلْ هَذَا مِفْتَاحٌ ؟ - لَا .. هَذَا قُفْلٌ', en: 'Is this a key? - No, this is a lock.' },
+                                        { ar: 'هَلْ هَذَا إِبْرِيْقٌ ؟ - نَعَمْ .. هَذَا إِبْرِيْقٌ', en: 'Is this a jug? - Yes, this is a jug.' },
                                     ],
                                 },
                             ],
@@ -312,15 +359,15 @@ export const CHAPTERS: ChapterData[] = [
                             instruction: 'Either/Or questions using أَ...أَمْ. Answer by stating the correct choice directly.',
                             rules: [
                                 {
-                                    label: 'سُؤَالٌ خَاصٌّ — Special Question',
+                                    label: 'سُؤَالٌ خَاصٌّ - Special Question',
                                     arabic: 'أَ ... أَمْ',
                                     romanized: 'a ... am',
                                     meaning: 'Is it X or Y? (Choice question)',
                                     examples: [
-                                        { ar: 'أَ قَلَمٌ هَذَا أَمْ مِفْتَاحٌ ؟ — قَلَمٌ', en: 'Is this a pen or a key? — A pen.' },
-                                        { ar: 'أَ مِفْتَاحٌ هَذَا أَمْ قَلَمٌ ؟ — قَلَمٌ', en: 'Is this a key or a pen? — A pen.' },
-                                        { ar: 'أَ مِسْطَرَةٌ هَذِهِ أَمْ قَلَمٌ ؟ — قَلَمٌ', en: 'Is this a ruler or a pen? — A pen.' },
-                                        { ar: 'أَ هَذَا قَلَمٌ أَمْ ذَلِكَ ؟ — ذَلِكَ', en: 'Is this a pen or that? — That.' },
+                                        { ar: 'أَ قَلَمٌ هَذَا أَمْ مِفْتَاحٌ ؟ - قَلَمٌ', en: 'Is this a pen or a key? - A pen.' },
+                                        { ar: 'أَ مِفْتَاحٌ هَذَا أَمْ قَلَمٌ ؟ - قَلَمٌ', en: 'Is this a key or a pen? - A pen.' },
+                                        { ar: 'أَ مِسْطَرَةٌ هَذِهِ أَمْ قَلَمٌ ؟ - قَلَمٌ', en: 'Is this a ruler or a pen? - A pen.' },
+                                        { ar: 'أَ هَذَا قَلَمٌ أَمْ ذَلِكَ ؟ - ذَلِكَ', en: 'Is this a pen or that? - That.' },
                                     ],
                                 },
                             ],
@@ -416,10 +463,10 @@ export const CHAPTERS: ChapterData[] = [
                         payload: {
                             items: [
                                 { emoji: '🥄', ar: 'هَذِهِ مِلْعَقَةٌ صَغِيرَةٌ', en: 'This is a small spoon.' },
-                                { emoji: '🥛', ar: 'ذَلِكَ كُوبٌ كَبِيرٌ — فِيهِ مَاءٌ بَارِدٌ', en: 'That is a big glass — in it is cold water.' },
+                                { emoji: '🥛', ar: 'ذَلِكَ كُوبٌ كَبِيرٌ - فِيهِ مَاءٌ بَارِدٌ', en: 'That is a big glass - in it is cold water.' },
                                 { emoji: '🌸', ar: 'تِلْكَ زَهْرَةٌ جَمِيلَةٌ', en: 'That is a beautiful flower.' },
                                 { emoji: '🔑', ar: 'ذَلِكَ مِفْتَاحٌ صَغِيرٌ', en: 'That is a small key.' },
-                                { emoji: '🍽️', ar: 'ذَلِكَ طَعَامٌ حَارٌّ — ذَلِكَ طَعَامٌ لَذِيذٌ', en: 'That is hot food — that is delicious food.' },
+                                { emoji: '🍽️', ar: 'ذَلِكَ طَعَامٌ حَارٌّ - ذَلِكَ طَعَامٌ لَذِيذٌ', en: 'That is hot food - that is delicious food.' },
                                 { emoji: '🐟', ar: 'هَذِهِ السَّمَكَةُ طَازَجَةٌ', en: 'This fish is fresh.' },
                                 { emoji: '🕌', ar: 'هَذَا الْمَسْجِدُ كَبِيرٌ وَ جَمِيلٌ', en: 'This mosque is big and beautiful.' },
                             ],
@@ -494,9 +541,9 @@ export const CHAPTERS: ChapterData[] = [
                         titleAr: 'قِرَاءَة: وَصْف الأَشْخَاص',
                         payload: {
                             items: [
-                                { emoji: '👨‍💼', ar: 'مَاجِدٌ تَاجِرٌ كَبِيرٌ — هُوَ تَاجِرٌ أَمِينٌ', en: 'Majid is a big merchant — he is a trustworthy merchant.' },
-                                { emoji: '👩‍⚕️', ar: 'فَاطِمَةُ طَبِيبَةٌ — هِيَ طَبِيبَةٌ مَشْهُورَةٌ', en: 'Fatima is a doctor — she is a famous doctor.' },
-                                { emoji: '👨', ar: 'يَا مَحْمُودُ! أَنْتَ رَجُلٌ سَخِيٌّ — قَلْبُكَ وَاسِعٌ', en: 'O Mahmud! You are a generous man — your heart is broad.' },
+                                { emoji: '👨‍💼', ar: 'مَاجِدٌ تَاجِرٌ كَبِيرٌ - هُوَ تَاجِرٌ أَمِينٌ', en: 'Majid is a big merchant - he is a trustworthy merchant.' },
+                                { emoji: '👩‍⚕️', ar: 'فَاطِمَةُ طَبِيبَةٌ - هِيَ طَبِيبَةٌ مَشْهُورَةٌ', en: 'Fatima is a doctor - she is a famous doctor.' },
+                                { emoji: '👨', ar: 'يَا مَحْمُودُ! أَنْتَ رَجُلٌ سَخِيٌّ - قَلْبُكَ وَاسِعٌ', en: 'O Mahmud! You are a generous man - your heart is broad.' },
                                 { emoji: '👦', ar: 'هَذَا الوَلَدُ صَادِقٌ وَ ذَلِكَ الوَلَدُ كَاذِبٌ', en: 'This boy is truthful and that boy is a liar.' },
                             ],
                         },
@@ -675,8 +722,8 @@ export const CHAPTERS: ChapterData[] = [
                                     romanized: 'noun + attached pronoun',
                                     meaning: 'Attach pronoun suffixes to nouns to show possession.',
                                     examples: [
-                                        { ar: 'بَيْتِي — بَيْتُكَ — بَيْتُكِ — بَيْتُهُ — بَيْتُهَا', en: 'My house — Your house (m) — Your house (f) — His house — Her house' },
-                                        { ar: 'سَاعَتِي — سَاعَتُكَ — سَاعَتُهُ — سَاعَتُهَا', en: 'My watch — Your watch — His watch — Her watch' },
+                                        { ar: 'بَيْتِي - بَيْتُكَ - بَيْتُكِ - بَيْتُهُ - بَيْتُهَا', en: 'My house - Your house (m) - Your house (f) - His house - Her house' },
+                                        { ar: 'سَاعَتِي - سَاعَتُكَ - سَاعَتُهُ - سَاعَتُهَا', en: 'My watch - Your watch - His watch - Her watch' },
                                         { ar: 'اللهُ رَبِّي وَ رَبُّكَ', en: 'Allah is my Lord and your Lord (m).' },
                                         { ar: 'اللهُ رَبِّي وَ رَبُّكِ', en: 'Allah is my Lord and your Lord (f).' },
                                         { ar: 'اللهُ رَبِّي وَ رَبُّهُ', en: 'Allah is my Lord and his Lord.' },
@@ -692,10 +739,10 @@ export const CHAPTERS: ChapterData[] = [
                         titleAr: 'الضَّمَائِر فِي الحِوَار',
                         payload: {
                             items: [
-                                { emoji: '🏠', ar: 'هَذَا بَيْتِي وَ ذَلِكَ بَيْتُكَ — بَيْتِي قَدِيمٌ وَ بَيْتُكَ جَدِيدٌ', en: 'This is my house and that is your house — my house is old and your house is new.' },
-                                { emoji: '⌚', ar: 'هَذِهِ سَاعَتِي وَ تِلْكَ سَاعَتُكَ — سَاعَتِي رَخِيصَةٌ وَ سَاعَتُكَ غَالِيَةٌ', en: 'This is my watch and that is your watch — my watch is cheap and your watch is expensive.' },
-                                { emoji: '🚗', ar: 'تِلْكَ سَيَّارَةُ خَالِدٍ — سَيَّارَتُهُ جَمِيلَةٌ — لَوْنُهَا جَمِيلٌ', en: "That is Khalid's car — his car is beautiful — its color is beautiful." },
-                                { emoji: '👧', ar: 'فَاطِمَةُ صَدِيقَتِي — شَعْرُهَا طَوِيلٌ وَ لَوْنُهُ جَمِيلٌ', en: 'Fatima is my friend — her hair is long and its color is beautiful.' },
+                                { emoji: '🏠', ar: 'هَذَا بَيْتِي وَ ذَلِكَ بَيْتُكَ - بَيْتِي قَدِيمٌ وَ بَيْتُكَ جَدِيدٌ', en: 'This is my house and that is your house - my house is old and your house is new.' },
+                                { emoji: '⌚', ar: 'هَذِهِ سَاعَتِي وَ تِلْكَ سَاعَتُكَ - سَاعَتِي رَخِيصَةٌ وَ سَاعَتُكَ غَالِيَةٌ', en: 'This is my watch and that is your watch - my watch is cheap and your watch is expensive.' },
+                                { emoji: '🚗', ar: 'تِلْكَ سَيَّارَةُ خَالِدٍ - سَيَّارَتُهُ جَمِيلَةٌ - لَوْنُهَا جَمِيلٌ', en: "That is Khalid's car - his car is beautiful - its color is beautiful." },
+                                { emoji: '👧', ar: 'فَاطِمَةُ صَدِيقَتِي - شَعْرُهَا طَوِيلٌ وَ لَوْنُهُ جَمِيلٌ', en: 'Fatima is my friend - her hair is long and its color is beautiful.' },
                             ],
                         },
                     },
@@ -718,7 +765,7 @@ export const CHAPTERS: ChapterData[] = [
                         titleEn: 'Verb Conjugation: Past Tense (Memorization)',
                         titleAr: 'تَصْرِيف الفِعْل المَاضِي',
                         payload: {
-                            instruction: 'شُدُهُ মুখস্থ করার জন্য, ব্যবহার করার জন্য নয় — For memorization only, not for use yet.',
+                            instruction: 'شُدُهُ মুখস্থ করার জন্য, ব্যবহার করার জন্য নয় - For memorization only, not for use yet.',
                             verbTense: 'past',
                             verbTable: [
                                 { root: 'فَعَلَ', meaning: 'করা', he: 'فَعَلَ', she: 'فَعَلَتْ', youM: 'فَعَلْتَ', youF: 'فَعَلْتِ', i: 'فَعَلْتُ' },
@@ -762,11 +809,11 @@ export const CHAPTERS: ChapterData[] = [
                         titleAr: 'قِرَاءَة: المَسْجِد وَالمَدْرَسَة وَالبَيْت',
                         payload: {
                             items: [
-                                { emoji: '🕌', ar: 'ذَلِكَ مَسْجِدُ الْعَاصِمَةِ — مَسْجِدُ الْعَاصِمَةِ كَبِيرٌ وَ جَمِيلٌ', en: 'That is the capital mosque — the capital mosque is big and beautiful.' },
-                                { emoji: '🕌', ar: 'الْمَسْجِدُ بَيْتُ اللهِ — فِي الْمَسْجِدِ خَيْرٌ وَ فِي السُّوقِ شَرٌّ', en: 'The mosque is the house of Allah — in the mosque is good and in the market is evil.' },
-                                { emoji: '🏫', ar: 'تِلْكَ مَدْرَسَةُ الْقَرْيَةِ — فِي هَذِهِ الْمَدْرَسَةِ مَكْتَبَةٌ صَغِيرَةٌ', en: 'That is the village madrasa — in this madrasa there is a small library.' },
-                                { emoji: '🏠', ar: 'هَذَا بَيْتُ مَاجِدٍ — بَيْتُهُ جَدِيدٌ — مَنْظَرُ الْبَيْتِ جَمِيلٌ جِدًّا', en: "This is Majid's house — his house is new — the view of the house is very beautiful." },
-                                { emoji: '📖', ar: 'هَذَا كِتَابُ الْقِصَّةِ — إِسْمُ الْقِصَّةِ الْفَأْرُ وَ الْأَسَدُ', en: 'This is the story book — the name of the story is The Mouse and the Lion.' },
+                                { emoji: '🕌', ar: 'ذَلِكَ مَسْجِدُ الْعَاصِمَةِ - مَسْجِدُ الْعَاصِمَةِ كَبِيرٌ وَ جَمِيلٌ', en: 'That is the capital mosque - the capital mosque is big and beautiful.' },
+                                { emoji: '🕌', ar: 'الْمَسْجِدُ بَيْتُ اللهِ - فِي الْمَسْجِدِ خَيْرٌ وَ فِي السُّوقِ شَرٌّ', en: 'The mosque is the house of Allah - in the mosque is good and in the market is evil.' },
+                                { emoji: '🏫', ar: 'تِلْكَ مَدْرَسَةُ الْقَرْيَةِ - فِي هَذِهِ الْمَدْرَسَةِ مَكْتَبَةٌ صَغِيرَةٌ', en: 'That is the village madrasa - in this madrasa there is a small library.' },
+                                { emoji: '🏠', ar: 'هَذَا بَيْتُ مَاجِدٍ - بَيْتُهُ جَدِيدٌ - مَنْظَرُ الْبَيْتِ جَمِيلٌ جِدًّا', en: "This is Majid's house - his house is new - the view of the house is very beautiful." },
+                                { emoji: '📖', ar: 'هَذَا كِتَابُ الْقِصَّةِ - إِسْمُ الْقِصَّةِ الْفَأْرُ وَ الْأَسَدُ', en: 'This is the story book - the name of the story is The Mouse and the Lion.' },
                             ],
                         },
                     },
@@ -790,7 +837,7 @@ export const CHAPTERS: ChapterData[] = [
                         titleEn: 'Verb Conjugation: Present/Future Tense',
                         titleAr: 'تَصْرِيف الفِعْل المُضَارِع',
                         payload: {
-                            instruction: 'শুধু মুখস্থ করার জন্য, ব্যবহার করার জন্য নয় — For memorization only.',
+                            instruction: 'শুধু মুখস্থ করার জন্য, ব্যবহার করার জন্য নয় - For memorization only.',
                             verbTense: 'present',
                             verbTable: [
                                 { root: 'يَفْعَلُ', meaning: 'করা', he: 'يَفْعَلُ', she: 'تَفْعَلُ', youM: 'تَفْعَلُ', youF: 'تَفْعَلِينَ', i: 'أَفْعَلُ' },
@@ -843,7 +890,7 @@ export const CHAPTERS: ChapterData[] = [
                                         { ar: 'فَوْقَ الطَّاوِلَةِ كِتَابٌ وَ قَلَمٌ', en: 'On top of the table (there is) a book and a pen.' },
                                         { ar: 'تَحْتَ الطَّاوِلَةِ حَقِيبَةٌ', en: 'Under the table (there is) a bag.' },
                                         { ar: 'أَمَامَ الْمُعَلِّمِ سَبُّورَةٌ', en: 'In front of the teacher (there is) a blackboard.' },
-                                        { ar: 'فَوْقَ النَّهْرِ جِسْرٌ — تَحْتَ الْجِسْرِ زَوْرَقٌ', en: 'Above the river (there is) a bridge — under the bridge (there is) a boat.' },
+                                        { ar: 'فَوْقَ النَّهْرِ جِسْرٌ - تَحْتَ الْجِسْرِ زَوْرَقٌ', en: 'Above the river (there is) a bridge - under the bridge (there is) a boat.' },
                                     ],
                                 },
                             ],
@@ -856,11 +903,11 @@ export const CHAPTERS: ChapterData[] = [
                         titleAr: 'قِرَاءَة: المَوَاضِع وَالأَمَاكِن',
                         payload: {
                             items: [
-                                { emoji: '📚', ar: 'فَوْقَ الطَّاوِلَةِ كِتَابٌ وَ قَلَمٌ — اَلْكِتَابُ وَ الْقَلَمُ فَوْقَ الطَّاوِلَةِ', en: 'On the table (there is) a book and a pen — the book and pen are on the table.' },
+                                { emoji: '📚', ar: 'فَوْقَ الطَّاوِلَةِ كِتَابٌ وَ قَلَمٌ - اَلْكِتَابُ وَ الْقَلَمُ فَوْقَ الطَّاوِلَةِ', en: 'On the table (there is) a book and a pen - the book and pen are on the table.' },
                                 { emoji: '👜', ar: 'تَحْتَ الطَّاوِلَةِ حَقِيبَةٌ وَ مِظَلَّةٌ', en: 'Under the table (there is) a bag and an umbrella.' },
-                                { emoji: '🖥️', ar: 'أَمَامَ الْمُعَلِّمِ سَبُّورَةٌ — اَلسَّبُّورَةُ أَمَامَ الْمُعَلِّمِ', en: 'In front of the teacher (there is) a blackboard — the blackboard is in front of the teacher.' },
-                                { emoji: '🌉', ar: 'فَوْقَ النَّهْرِ جِسْرٌ — هَذَا الْجِسْرُ طَوِيلٌ جِدًّا', en: 'Above the river (there is) a bridge — this bridge is very long.' },
-                                { emoji: '🚣', ar: 'تَحْتَ الْجِسْرِ زَوْرَقٌ — هَذَا الزَّوْرَقُ صَغِيرٌ', en: 'Under the bridge (there is) a boat — this boat is small.' },
+                                { emoji: '🖥️', ar: 'أَمَامَ الْمُعَلِّمِ سَبُّورَةٌ - اَلسَّبُّورَةُ أَمَامَ الْمُعَلِّمِ', en: 'In front of the teacher (there is) a blackboard - the blackboard is in front of the teacher.' },
+                                { emoji: '🌉', ar: 'فَوْقَ النَّهْرِ جِسْرٌ - هَذَا الْجِسْرُ طَوِيلٌ جِدًّا', en: 'Above the river (there is) a bridge - this bridge is very long.' },
+                                { emoji: '🚣', ar: 'تَحْتَ الْجِسْرِ زَوْرَقٌ - هَذَا الزَّوْرَقُ صَغِيرٌ', en: 'Under the bridge (there is) a boat - this boat is small.' },
                             ],
                         },
                     },
@@ -905,9 +952,9 @@ export const CHAPTERS: ChapterData[] = [
                         titleAr: 'قِرَاءَة: حَرْف فِي',
                         payload: {
                             items: [
-                                { emoji: '🏫', ar: 'هَذَا فَصْلُ الصَّفِّ الْخَامِسِ — فِي هَذَا الْفَصْلِ سَبُّورَةٌ وَ كُرْسِيٌّ وَ طَاوِلَةٌ', en: 'This is the 5th grade classroom — in this classroom there is a blackboard, a chair, and a table.' },
+                                { emoji: '🏫', ar: 'هَذَا فَصْلُ الصَّفِّ الْخَامِسِ - فِي هَذَا الْفَصْلِ سَبُّورَةٌ وَ كُرْسِيٌّ وَ طَاوِلَةٌ', en: 'This is the 5th grade classroom - in this classroom there is a blackboard, a chair, and a table.' },
                                 { emoji: '🥛', ar: 'فِي هَذَا الْكُوبِ مَاءٌ وَ فِي ذَلِكَ الْكُوبِ لَبَنٌ', en: 'In this glass there is water and in that glass there is milk.' },
-                                { emoji: '🛏️', ar: 'فَاطِمَةُ فِي غُرْفَتِهَا — فِي غُرْفَتِهَا سَرِيرٌ وَ مِصْبَاحٌ وَ مِرْوَحَةٌ', en: 'Fatima is in her room — in her room there is a bed, a lamp, and a fan.' },
+                                { emoji: '🛏️', ar: 'فَاطِمَةُ فِي غُرْفَتِهَا - فِي غُرْفَتِهَا سَرِيرٌ وَ مِصْبَاحٌ وَ مِرْوَحَةٌ', en: 'Fatima is in her room - in her room there is a bed, a lamp, and a fan.' },
                                 { emoji: '⚔️', ar: 'فِي يَدِ الْمُجَاهِدِ سَيْفٌ وَ فِي يَدِ الْعَالِمِ قَلَمٌ', en: 'In the hand of the warrior (there is) a sword and in the hand of the scholar (there is) a pen.' },
                                 { emoji: '💡', ar: 'فِي قَلْبِ الْمُسْلِمِ نُورٌ وَ فِي قَلْبِ الْكَافِرِ ظُلْمَةٌ', en: 'In the heart of the Muslim (there is) light and in the heart of the disbeliever (there is) darkness.' },
                                 { emoji: '🕌', ar: 'اَلْخَيْرُ فِي الْمَسْجِدِ وَ الشَّرُّ فِي السُّوقِ', en: 'Good is in the mosque and evil is in the market.' },
@@ -934,17 +981,17 @@ export const CHAPTERS: ChapterData[] = [
                         titleEn: 'Verb Conjugation: Commands & Prohibitions',
                         titleAr: 'الأَمْر وَالنَّهْي',
                         payload: {
-                            instruction: 'শুধু মুখস্থ করার জন্য — For memorization only. Command (m/f) and Prohibition (m/f).',
+                            instruction: 'শুধু মুখস্থ করার জন্য - For memorization only. Command (m/f) and Prohibition (m/f).',
                             verbTense: 'imperative',
                             verbTable: [
-                                { root: 'اِفْعَلْ', meaning: 'করো', he: 'اِفْعَلْ', she: 'اِفْعِلِي', youM: 'لَا تَفْعَلْ', youF: 'لَا تَفْعِلِي', i: '—' },
-                                { root: 'اُخْرُجْ', meaning: 'বের হও', he: 'اُخْرُجْ', she: 'اُخْرُجِي', youM: 'لَا تَخْرُجْ', youF: 'لَا تَخْرُجِي', i: '—' },
-                                { root: 'اِذْهَبْ', meaning: 'যাও', he: 'اِذْهَبْ', she: 'اِذْهَبِي', youM: 'لَا تَذْهَبْ', youF: 'لَا تَذْهَبِي', i: '—' },
-                                { root: 'اِجْلِسْ', meaning: 'বসো', he: 'اِجْلِسْ', she: 'اِجْلِسِي', youM: 'لَا تَجْلِسْ', youF: 'لَا تَجْلِسِي', i: '—' },
-                                { root: 'اِقْرَأْ', meaning: 'পড়ো', he: 'اِقْرَأْ', she: 'اِقْرَئِي', youM: 'لَا تَقْرَأْ', youF: 'لَا تَقْرَئِي', i: '—' },
-                                { root: 'اُكْتُبْ', meaning: 'লেখো', he: 'اُكْتُبْ', she: 'اُكْتُبِي', youM: 'لَا تَكْتُبْ', youF: 'لَا تَكْتُبِي', i: '—' },
-                                { root: 'اِرْجِعْ', meaning: 'ফিরো', he: 'اِرْجِعْ', she: 'اِرْجِعِي', youM: 'لَا تَرْجِعْ', youF: 'لَا تَرْجِعِي', i: '—' },
-                                { root: 'اِلْعَبْ', meaning: 'খেলো', he: 'اِلْعَبْ', she: 'اِلْعَبِي', youM: 'لَا تَلْعَبْ', youF: 'لَا تَلْعَبِي', i: '—' },
+                                { root: 'اِفْعَلْ', meaning: 'করো', he: 'اِفْعَلْ', she: 'اِفْعِلِي', youM: 'لَا تَفْعَلْ', youF: 'لَا تَفْعِلِي', i: '-' },
+                                { root: 'اُخْرُجْ', meaning: 'বের হও', he: 'اُخْرُجْ', she: 'اُخْرُجِي', youM: 'لَا تَخْرُجْ', youF: 'لَا تَخْرُجِي', i: '-' },
+                                { root: 'اِذْهَبْ', meaning: 'যাও', he: 'اِذْهَبْ', she: 'اِذْهَبِي', youM: 'لَا تَذْهَبْ', youF: 'لَا تَذْهَبِي', i: '-' },
+                                { root: 'اِجْلِسْ', meaning: 'বসো', he: 'اِجْلِسْ', she: 'اِجْلِسِي', youM: 'لَا تَجْلِسْ', youF: 'لَا تَجْلِسِي', i: '-' },
+                                { root: 'اِقْرَأْ', meaning: 'পড়ো', he: 'اِقْرَأْ', she: 'اِقْرَئِي', youM: 'لَا تَقْرَأْ', youF: 'لَا تَقْرَئِي', i: '-' },
+                                { root: 'اُكْتُبْ', meaning: 'লেখো', he: 'اُكْتُبْ', she: 'اُكْتُبِي', youM: 'لَا تَكْتُبْ', youF: 'لَا تَكْتُبِي', i: '-' },
+                                { root: 'اِرْجِعْ', meaning: 'ফিরো', he: 'اِرْجِعْ', she: 'اِرْجِعِي', youM: 'لَا تَرْجِعْ', youF: 'لَا تَرْجِعِي', i: '-' },
+                                { root: 'اِلْعَبْ', meaning: 'খেলো', he: 'اِلْعَبْ', she: 'اِلْعَبِي', youM: 'لَا تَلْعَبْ', youF: 'لَا تَلْعَبِي', i: '-' },
                             ],
                         },
                     },
@@ -1043,7 +1090,7 @@ export const CHAPTERS: ChapterData[] = [
                                         'سَقْفُ هَذَا البَيْتِ مَفْتُوحٌ - بَابُ هَذَا البَيْتِ جَمِيْلٌ .',
                                         'صُوْرَةُ هَذَا البَيْتِ جَمِيْلَةٌ - هَذَا بَيْتُ اللهِ .',
                                     ],
-                                    translationEn: 'The Lord of this house — Allah is the Lord of this house. This house — the name of this house is Al-Kaaba. The cover of this house is beautiful. The king is the servant of this house. The key to this house is with a pious man. The shade of this house is comfortable — in its shade is peace. The roof is open, the door is beautiful. The picture of this house is beautiful — this is the house of Allah.',
+                                    translationEn: 'The Lord of this house - Allah is the Lord of this house. This house - the name of this house is Al-Kaaba. The cover of this house is beautiful. The king is the servant of this house. The key to this house is with a pious man. The shade of this house is comfortable - in its shade is peace. The roof is open, the door is beautiful. The picture of this house is beautiful - this is the house of Allah.',
                                 },
                             ],
                         },
@@ -1051,7 +1098,7 @@ export const CHAPTERS: ChapterData[] = [
                     {
                         id: '3-1-5',
                         type: 'q_and_a',
-                        titleEn: 'Q&A: Comprehension — Al-Kaaba',
+                        titleEn: 'Q&A: Comprehension - Al-Kaaba',
                         titleAr: 'أَسْئِلَة الفَهْم',
                         payload: {
                             questions: [
@@ -1097,9 +1144,9 @@ export const CHAPTERS: ChapterData[] = [
                                     romanized: 'wardatun → wardatun kabīratun → al-wardatu kabīratun → al-wardatu al-kabīratu jamīlatun',
                                     meaning: 'Adding Al to BOTH noun and adjective creates a definite phrase (incomplete). Adding a predicate makes it a complete sentence.',
                                     examples: [
-                                        { ar: 'وَرْدَةٌ كَبِيرَةٌ', en: 'A big rose (indefinite phrase — incomplete)' },
+                                        { ar: 'وَرْدَةٌ كَبِيرَةٌ', en: 'A big rose (indefinite phrase - incomplete)' },
                                         { ar: 'الوَرْدَةُ كَبِيرَةٌ', en: 'The rose is big (complete sentence: Mubtada + Khabar)' },
-                                        { ar: 'الوَرْدَةُ الكَبِيرَةُ', en: 'The big rose (definite phrase — still incomplete)' },
+                                        { ar: 'الوَرْدَةُ الكَبِيرَةُ', en: 'The big rose (definite phrase - still incomplete)' },
                                         { ar: 'الوَرْدَةُ الكَبِيرَةُ جَمِيلَةٌ', en: 'The big rose is beautiful (complete: definite Mawsuf-Sifah as Mubtada + Khabar)' },
                                     ],
                                 },

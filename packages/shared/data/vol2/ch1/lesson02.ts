@@ -27,7 +27,7 @@ export const lesson02: LessonData = {
             payload: {
                 rules: [
                     {
-                        label: 'Negative Past — مَا + past verb',
+                        label: 'Negative Past - مَا + past verb',
                         arabic: 'مَا فَعَلَ',
                         romanized: "mā fa'ala",
                         meaning: 'He did not do',
@@ -38,7 +38,7 @@ export const lesson02: LessonData = {
                         ],
                     },
                     {
-                        label: 'Negative Present/Future — لَا + present verb',
+                        label: 'Negative Present/Future - لَا + present verb',
                         arabic: 'لَا يَفْعَلُ',
                         romanized: "lā yaf'alu",
                         meaning: 'He does not do / will not do',
@@ -49,13 +49,13 @@ export const lesson02: LessonData = {
                         ],
                     },
                     {
-                        label: 'Answer particles — نَعَمْ / لَا / بَلَى',
-                        arabic: 'نَعَمْ — لَا — بَلَى',
-                        romanized: "na'am — lā — balā",
-                        meaning: 'Yes — No — Yes (contradicting a negative question)',
+                        label: 'Answer particles - نَعَمْ / لَا / بَلَى',
+                        arabic: 'نَعَمْ - لَا - بَلَى',
+                        romanized: "na'am - lā - balā",
+                        meaning: 'Yes - No - Yes (contradicting a negative question)',
                         examples: [
-                            { ar: 'هَلْ ذَهَبْتَ ؟ — نَعَمْ / لَا', en: 'Did you go? — Yes / No.' },
-                            { ar: 'أَمَا ذَهَبْتَ ؟ — نَعَمْ (مَا ذَهَبْتُ) / بَلَى (ذَهَبْتُ)', en: "Didn't you go? — Right, I didn't / Yes I did." },
+                            { ar: 'هَلْ ذَهَبْتَ ؟ - نَعَمْ / لَا', en: 'Did you go? - Yes / No.' },
+                            { ar: 'أَمَا ذَهَبْتَ ؟ - نَعَمْ (مَا ذَهَبْتُ) / بَلَى (ذَهَبْتُ)', en: "Didn't you go? - Right, I didn't / Yes I did." },
                         ],
                     },
                 ],
@@ -64,8 +64,8 @@ export const lesson02: LessonData = {
         {
             id: '2-1-2-3',
             type: 'verb_table',
-            titleEn: 'Negative Past — مَا + Verb',
-            titleAr: 'النَّفْي بِمَا — الفِعْلُ المَاضِي',
+            titleEn: 'Negative Past - مَا + Verb',
+            titleAr: 'النَّفْي بِمَا - الفِعْلُ المَاضِي',
             payload: {
                 verbTense: 'past',
                 instruction: 'Add مَا before each past verb to negate it.',
@@ -80,8 +80,8 @@ export const lesson02: LessonData = {
         {
             id: '2-1-2-4',
             type: 'verb_table',
-            titleEn: 'Negative Present — لَا + Verb',
-            titleAr: 'النَّفْي بِلَا — الفِعْلُ المُضَارِع',
+            titleEn: 'Negative Present - لَا + Verb',
+            titleAr: 'النَّفْي بِلَا - الفِعْلُ المُضَارِع',
             payload: {
                 verbTense: 'present',
                 instruction: 'Add لَا before each present verb to negate it.',
@@ -96,8 +96,8 @@ export const lesson02: LessonData = {
         {
             id: '2-1-2-5',
             type: 'paragraph',
-            titleEn: 'Reading — Negation in Context',
-            titleAr: 'قِرَاءَة — النَّفْي فِي السِّيَاق',
+            titleEn: 'Reading - Negation in Context',
+            titleAr: 'قِرَاءَة - النَّفْي فِي السِّيَاق',
             payload: {
                 paragraphs: [
                     {
@@ -137,8 +137,8 @@ export const lesson02: LessonData = {
         {
             id: '2-1-2-7',
             type: 'assessment',
-            titleEn: 'Exercise — Negate the Verb',
-            titleAr: 'تَمْرِين — اِنْفِ الفِعْل',
+            titleEn: 'Exercise - Negate the Verb',
+            titleAr: 'تَمْرِين - اِنْفِ الفِعْل',
             payload: {
                 instruction: 'Choose the correct negation for each sentence.',
                 questions: [

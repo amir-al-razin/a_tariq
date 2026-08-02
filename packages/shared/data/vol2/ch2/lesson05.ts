@@ -6,11 +6,11 @@ export const lesson05: LessonData = {
         {
             id: '2-2-5-1',
             type: 'masdar_factory',
-            titleEn: 'Masdar Factory — Form IV Defective Verbs (بَابُ الْإِفْعَال)',
-            titleAr: 'الْمَصَادِرُ — بَابُ الْإِفْعَال (نَاقِص)',
+            titleEn: 'Masdar Factory - Form IV Defective Verbs (بَابُ الْإِفْعَال)',
+            titleAr: 'الْمَصَادِرُ - بَابُ الْإِفْعَال (نَاقِص)',
             payload: {
-                baabLabel: 'بَابُ الْإِفْعَال — أَفْعَلَ يُفْعِلُ',
-                instruction: 'Form IV defective verbs — the masdar follows the pattern إِفْعَال',
+                baabLabel: 'بَابُ الْإِفْعَال - أَفْعَلَ يُفْعِلُ',
+                instruction: 'Form IV defective verbs - the masdar follows the pattern إِفْعَال',
                 masdarRows: [
                     { masdar: 'الْإِلْقَاءُ', masdarEn: 'throwing / casting', past: 'أَلْقَى', present: 'يُلْقِي', imperative: 'أَلْقِ', prohibitive: 'لَا تُلْقِ' },
                     { masdar: 'الْإِعْطَاءُ', masdarEn: 'giving', past: 'أَعْطَى', present: 'يُعْطِي', imperative: 'أَعْطِ', prohibitive: 'لَا تُعْطِ' },
@@ -44,12 +44,12 @@ export const lesson05: LessonData = {
         {
             id: '2-2-5-3',
             type: 'grammar_rule',
-            titleEn: 'Grammar — Form IV Defective Verbs (بَابُ الْإِفْعَال)',
-            titleAr: 'قَاعِدَة — بَابُ الْإِفْعَال مَعَ الأَفْعَالِ النَّاقِصَة',
+            titleEn: 'Grammar - Form IV Defective Verbs (بَابُ الْإِفْعَال)',
+            titleAr: 'قَاعِدَة - بَابُ الْإِفْعَال مَعَ الأَفْعَالِ النَّاقِصَة',
             payload: {
                 rules: [
                     {
-                        label: 'بَابُ الْإِفْعَال — Pattern أَفْعَلَ يُفْعِلُ',
+                        label: 'بَابُ الْإِفْعَال - Pattern أَفْعَلَ يُفْعِلُ',
                         arabic: 'أَلْقَى - يُلْقِي - أَلْقِ - لَا تُلْقِ',
                         romanized: 'alqā - yulqī - alqi - lā tulqi',
                         meaning: 'Form IV defective verbs follow the pattern أَفْعَلَ يُفْعِلُ. The masdar follows إِفْعَال. Apply the same conjugation pattern to all verbs in this group.',
@@ -155,8 +155,8 @@ export const lesson05: LessonData = {
         {
             id: '2-2-5-6',
             type: 'assessment',
-            titleEn: 'Exercise — Translate Form IV Verb Forms',
-            titleAr: 'تَمْرِين — تَرْجِمَةُ أَفْعَالِ بَابِ الْإِفْعَال',
+            titleEn: 'Exercise - Translate Form IV Verb Forms',
+            titleAr: 'تَمْرِين - تَرْجِمَةُ أَفْعَالِ بَابِ الْإِفْعَال',
             payload: {
                 instruction: 'Choose the correct English meaning for each Arabic verb form.',
                 questions: [

@@ -6,8 +6,8 @@ export const lesson03: LessonData = {
         {
             id: '2-2-3-1',
             type: 'masdar_factory',
-            titleEn: 'Masdar Factory — Defective Verbs (نَاقِص)',
-            titleAr: 'الْمَصَادِرُ — الأَفْعَالُ النَّاقِصَة',
+            titleEn: 'Masdar Factory - Defective Verbs (نَاقِص)',
+            titleAr: 'الْمَصَادِرُ - الأَفْعَالُ النَّاقِصَة',
             payload: {
                 baabLabel: 'أَبْوَابٌ مُخْتَلِفَة',
                 instruction: 'ن = نَصَرَ, ض = ضَرَبَ, س = سَمِعَ, ف = فَتَحَ',
@@ -55,8 +55,8 @@ export const lesson03: LessonData = {
         {
             id: '2-2-3-3',
             type: 'grammar_rule',
-            titleEn: 'Grammar — أَيُّ / أَيَّةُ (Which) and كُلُّ (Every)',
-            titleAr: 'قَاعِدَة — أَيُّ وَأَيَّةُ وَكُلُّ',
+            titleEn: 'Grammar - أَيُّ / أَيَّةُ (Which) and كُلُّ (Every)',
+            titleAr: 'قَاعِدَة - أَيُّ وَأَيَّةُ وَكُلُّ',
             payload: {
                 rules: [
                     {
@@ -102,7 +102,7 @@ export const lesson03: LessonData = {
                             'كَانَ الطِّفْلُ الصَّغِيرُ لَا يَسْتَطِيعُ أَنْ يَمْشِيَ، فَكَانَ يَمْشِي وَيَسْقُطُ، ثُمَّ يَقُومُ وَيَمْشِي وَيَسْقُطُ، هَكَذَا تَعَلَّمَ الْمَشْيَ.',
                             'مَنْ عَلَّمَ الطِّفْلَ الصَّغِيرَ أَنْ يَمْشِيَ ؟ اللهُ عَلَّمَهُ.',
                         ],
-                        translationEn: 'The small child was not able to walk, so he would walk and fall, then get up and walk and fall — this is how he learned to walk. Who taught the small child to walk? Allah taught him.',
+                        translationEn: 'The small child was not able to walk, so he would walk and fall, then get up and walk and fall - this is how he learned to walk. Who taught the small child to walk? Allah taught him.',
                     },
                     {
                         title: 'يَوْمُ الْقِيَامَة',
@@ -113,7 +113,7 @@ export const lesson03: LessonData = {
                             'لَا يَبْقَى شَيْءٌ وَيَبْقَى وَجْهُ رَبِّكَ.',
                             'ثُمَّ يَجْمَعُ اللهُ عِبَادَهُ فِي الْمَحْشَرِ وَيُحَاسِبُهُمْ وَيَجْزِيهِمْ.',
                         ],
-                        translationEn: 'The scholar said in his sermon: "The Resurrection will come and the world will perish. Everything will perish — the earth will perish and the sky will perish. Nothing will remain except the Face of your Lord. Then Allah will gather His servants in the assembly and hold them accountable and recompense them."',
+                        translationEn: 'The scholar said in his sermon: "The Resurrection will come and the world will perish. Everything will perish - the earth will perish and the sky will perish. Nothing will remain except the Face of your Lord. Then Allah will gather His servants in the assembly and hold them accountable and recompense them."',
                     },
                     {
                         title: 'الصَّلَاةُ وَالنَّهْيُ عَنِ الْفَحْشَاء',
@@ -181,8 +181,8 @@ export const lesson03: LessonData = {
         {
             id: '2-2-3-6',
             type: 'assessment',
-            titleEn: "Exercise — Du\'a Phrases",
-            titleAr: 'تَمْرِين — عِبَارَاتُ الدُّعَاء',
+            titleEn: "Exercise - Du\'a Phrases",
+            titleAr: 'تَمْرِين - عِبَارَاتُ الدُّعَاء',
             payload: {
                 instruction: "Choose the correct English meaning for each du\'a phrase.",
                 questions: [

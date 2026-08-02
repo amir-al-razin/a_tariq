@@ -6,12 +6,12 @@ export const lesson04: LessonData = {
                     {
                         id: '1-4-1',
                         type: 'grammar_rule',
-                        titleEn: 'The Definite Article (ال) — Moon Letters',
-                        titleAr: 'أَل التَّعْرِيف — حُرُوف القَمَرِيَّة',
+                        titleEn: 'The Definite Article (ال) - Moon Letters',
+                        titleAr: 'أَل التَّعْرِيف - حُرُوف القَمَرِيَّة',
                         payload: {
                             rules: [
                                 {
-                                    label: 'Moon letters — ل is pronounced',
+                                    label: 'Moon letters - ل is pronounced',
                                     arabic: 'الْكِتَابُ',
                                     romanized: 'al-kitābu',
                                     meaning: 'The book (ل is clearly pronounced)',
@@ -27,12 +27,12 @@ export const lesson04: LessonData = {
                     {
                         id: '1-4-2',
                         type: 'grammar_rule',
-                        titleEn: 'The Definite Article (ال) — Sun Letters',
-                        titleAr: 'أَل التَّعْرِيف — حُرُوف الشَّمْسِيَّة',
+                        titleEn: 'The Definite Article (ال) - Sun Letters',
+                        titleAr: 'أَل التَّعْرِيف - حُرُوف الشَّمْسِيَّة',
                         payload: {
                             rules: [
                                 {
-                                    label: 'Sun letters — ل is assimilated (shaddah)',
+                                    label: 'Sun letters - ل is assimilated (shaddah)',
                                     arabic: 'الرَّجُلُ',
                                     romanized: 'ar-rajulu',
                                     meaning: 'The man (ل is silent, next letter doubles)',

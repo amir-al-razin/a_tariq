@@ -67,8 +67,8 @@ export const lesson05: LessonData = {
         {
             id: '2-5-4',
             type: 'paragraph',
-            titleEn: 'Reading — Attached Pronouns in Context',
-            titleAr: 'قِرَاءَة — الضَّمَائِر الْمُتَّصِلَة',
+            titleEn: 'Reading - Attached Pronouns in Context',
+            titleAr: 'قِرَاءَة - الضَّمَائِر الْمُتَّصِلَة',
             payload: {
                 paragraphs: [
                     {

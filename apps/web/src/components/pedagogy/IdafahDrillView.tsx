@@ -99,7 +99,7 @@ export const IdafahDrillView: React.FC<Props> = ({payload, onProgress, onComplet
 {pair.baseEn}
  </span>
  </div>
-{/* Expanded — tap to reveal */}
+{/* Expanded - tap to reveal */}
  <div
  className={`flex-1 rounded-3xl p-3 flex flex-col items-center justify-center gap-1 transition-colors ${
  revealed[i]

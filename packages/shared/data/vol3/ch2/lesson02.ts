@@ -87,10 +87,10 @@ export const lesson02: LessonData = {
       titleBn: 'নকিস ক্রিয়ার ধারা',
       payload: {
         items: [
-          { emoji: '🗣️', ar: 'دَعَا / يَدْعُو — دَعَوْا، يَدْعُونَ، اُدْعُوا', en: 'He called / He calls — They called, They call, Call!', bn: 'সে ডাকল / ডাকে — তারা ডাকল, ডাকে, ডাকো!' },
-          { emoji: '😢', ar: 'بَكَى / يَبْكِي — بَكَوْا، يَبْكُونَ، اِبْكُوا', en: 'He cried / He cries — They cried, They cry, Cry!', bn: 'সে কাঁদল / কাঁদে — তারা কাঁদল, কাঁদে, কাঁদো!' },
-          { emoji: '🤷', ar: 'نَسِيَ / يَنْسَى — نَسُوا، يَنْسَوْنَ، اِنْسَوْا', en: 'He forgot / He forgets — They forgot, They forget, Forget!', bn: 'সে ভুলে গেল / ভুলে যায় — তারা ভুলে গেল, ভুলে যায়, ভুলে যাও!' },
-          { emoji: '🏃', ar: 'سَعَى / يَسْعَى — سَعَوْا، يَسْعَوْنَ، اِسْعَوْا', en: 'He strove / He strives — They strove, They strive, Strive!', bn: 'সে চেষ্টা করল / চেষ্টা করে — তারা চেষ্টা করল, চেষ্টা করে, চেষ্টা করো!' }
+          { emoji: '🗣️', ar: 'دَعَا / يَدْعُو - دَعَوْا، يَدْعُونَ، اُدْعُوا', en: 'He called / He calls - They called, They call, Call!', bn: 'সে ডাকল / ডাকে - তারা ডাকল, ডাকে, ডাকো!' },
+          { emoji: '😢', ar: 'بَكَى / يَبْكِي - بَكَوْا، يَبْكُونَ، اِبْكُوا', en: 'He cried / He cries - They cried, They cry, Cry!', bn: 'সে কাঁদল / কাঁদে - তারা কাঁদল, কাঁদে, কাঁদো!' },
+          { emoji: '🤷', ar: 'نَسِيَ / يَنْسَى - نَسُوا، يَنْسَوْنَ، اِنْسَوْا', en: 'He forgot / He forgets - They forgot, They forget, Forget!', bn: 'সে ভুলে গেল / ভুলে যায় - তারা ভুলে গেল, ভুলে যায়, ভুলে যাও!' },
+          { emoji: '🏃', ar: 'سَعَى / يَسْعَى - سَعَوْا، يَسْعَوْنَ، اِسْعَوْا', en: 'He strove / He strives - They strove, They strive, Strive!', bn: 'সে চেষ্টা করল / চেষ্টা করে - তারা চেষ্টা করল, চেষ্টা করে, চেষ্টা করো!' }
         ]
       },
     },

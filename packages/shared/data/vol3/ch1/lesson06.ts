@@ -23,9 +23,9 @@ export const lesson06: LessonData = {
     {
       id: '2',
       type: 'verb_table',
-      titleEn: 'Plural Verb Series — Common Patterns',
-      titleAr: 'سلاسل الأفعال الجماعية — أنماط شائعة',
-      titleBn: 'বহুবচন ক্রিয়া সিরিজ — প্রচলিত প্যাটার্ন',
+      titleEn: 'Plural Verb Series - Common Patterns',
+      titleAr: 'سلاسل الأفعال الجماعية - أنماط شائعة',
+      titleBn: 'বহুবচন ক্রিয়া সিরিজ - প্রচলিত প্যাটার্ন',
       payload: {
         verbTense: 'past',
         baabLabel: 'Various derived and simple plural verbs',
@@ -139,8 +139,8 @@ export const lesson06: LessonData = {
       payload: {
         rules: [
           {
-            label: 'Three to Six — Dual & Plural Usage',
-            labelBn: 'তিন থেকে ছয় — দ্বৈত ও বহুবচন ব্যবহার',
+            label: 'Three to Six - Dual & Plural Usage',
+            labelBn: 'তিন থেকে ছয় - দ্বৈত ও বহুবচন ব্যবহার',
             arabic: 'ثَلَاثَةٌ - ثَلَاثُ ، أَرْبَعَةٌ - أَرْبَعُ ، خَمْسَةٌ - خَمْسُ ، سِتَّةٌ - سِتُّ',
             romanized: "thalāthah - thalāthu, arba'ah - arba'u, khamsah - khamsu, sittah - sittu",
             meaning: 'Different syntactic forms exist for numbers depending on the grammatical role (nominative, accusative/genitive, etc.). Practice example phrases to see the pattern.',

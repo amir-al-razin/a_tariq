@@ -18,8 +18,8 @@ export const lesson11: LessonData = {
         {
             id: '2-11-2',
             type: 'grammar_rule',
-            titleEn: 'إِنَّ — Puts Subject into Accusative',
-            titleAr: 'إِنَّ — تَنْصِبُ الاِسْمَ',
+            titleEn: 'إِنَّ - Puts Subject into Accusative',
+            titleAr: 'إِنَّ - تَنْصِبُ الاِسْمَ',
             payload: {
                 rules: [
                     {
@@ -47,7 +47,7 @@ export const lesson11: LessonData = {
                         label: 'إِنَّ + اسم مَنْصُوب + جُمْلَة فِعْلِيَّة',
                         arabic: 'مَاجِدٌ يَفْهَمُ → إِنَّ مَاجِدًا يَفْهَمُ',
                         romanized: 'Mājidun yafhamu → inna Mājidan yafhamu',
-                        meaning: 'إِنَّ can also precede a verbal sentence — the subject still takes fatha',
+                        meaning: 'إِنَّ can also precede a verbal sentence - the subject still takes fatha',
                         examples: [
                             { ar: 'مَاجِدٌ يَفْهَمُ اللُّغَةَ الْعَرَبِيَّةَ → إِنَّ مَاجِدًا يَفْهَمُ اللُّغَةَ الْعَرَبِيَّةَ', en: 'Majid understands Arabic → Indeed, Majid understands Arabic' },
                             { ar: 'أَخُونَا يَصْدُقُ دَائِمًا → إِنَّ أَخَانَا يَصْدُقُ دَائِمًا', en: 'Our brother always tells the truth → Indeed, our brother always tells the truth' },
@@ -59,8 +59,8 @@ export const lesson11: LessonData = {
         {
             id: '2-11-4',
             type: 'paragraph',
-            titleEn: 'Reading — إِنَّ in Context',
-            titleAr: 'قِرَاءَة — إِنَّ فِي الْجُمَل',
+            titleEn: 'Reading - إِنَّ in Context',
+            titleAr: 'قِرَاءَة - إِنَّ فِي الْجُمَل',
             payload: {
                 paragraphs: [
                     {

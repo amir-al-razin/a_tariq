@@ -24,7 +24,7 @@ export const lesson15: LessonData = {
             id: '2-15-2',
             type: 'masdar_factory',
             titleEn: 'Form V Verb: تَعَلَّمَ (to learn)',
-            titleAr: 'بَابُ التَّفَعُّل — تَعَلَّمَ يَتَعَلَّمُ',
+            titleAr: 'بَابُ التَّفَعُّل - تَعَلَّمَ يَتَعَلَّمُ',
             payload: {
                 baabLabel: 'بَابُ التَّفَعُّلِ (Form V)',
                 instruction: 'Form V adds تَـ prefix to Form II root. Present tense uses يَتَفَعَّلُ pattern.',
@@ -40,8 +40,8 @@ export const lesson15: LessonData = {
         {
             id: '2-15-3',
             type: 'paragraph',
-            titleEn: 'Reading — Form V Verbs in Context',
-            titleAr: 'قِرَاءَة — بَابُ التَّفَعُّل فِي الْجُمَل',
+            titleEn: 'Reading - Form V Verbs in Context',
+            titleAr: 'قِرَاءَة - بَابُ التَّفَعُّل فِي الْجُمَل',
             payload: {
                 paragraphs: [
                     {
@@ -79,7 +79,7 @@ export const lesson15: LessonData = {
         {
             id: '2-15-5',
             type: 'grammar_rule',
-            titleEn: 'كَلَّمَ vs تَكَلَّمَ مَعَ — Usage Difference',
+            titleEn: 'كَلَّمَ vs تَكَلَّمَ مَعَ - Usage Difference',
             titleAr: 'الْفَرْق بَيْنَ كَلَّمَ وَتَكَلَّمَ مَعَ',
             payload: {
                 rules: [

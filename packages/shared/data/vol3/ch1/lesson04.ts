@@ -67,7 +67,7 @@ export const lesson04: LessonData = {
     {
       id: '2',
       type: 'verb_table',
-      titleEn: 'Form II (Taf\'eel) — Teaching & Purifying Verbs',
+      titleEn: 'Form II (Taf\'eel) - Teaching & Purifying Verbs',
       titleAr: 'الباب الثاني (التفعيل)',
       titleBn: 'ফর্ম ২ (তাফইল)',
       payload: {
@@ -131,7 +131,7 @@ export const lesson04: LessonData = {
     {
       id: '3',
       type: 'verb_table',
-      titleEn: 'Form IV (Ifaal) — Causative Verbs',
+      titleEn: 'Form IV (Ifaal) - Causative Verbs',
       titleAr: 'الباب الرابع (الإفعال)',
       titleBn: 'ফর্ম ৪ (ইফাআল)',
       payload: {
@@ -195,7 +195,7 @@ export const lesson04: LessonData = {
     {
       id: '4',
       type: 'verb_table',
-      titleEn: 'Form V (Tafa\'al) — Reflexive Learning Verbs',
+      titleEn: 'Form V (Tafa\'al) - Reflexive Learning Verbs',
       titleAr: 'الباب الخامس (التفعّل)',
       titleBn: 'ফর্ম ৫ (তাফাল)',
       payload: {

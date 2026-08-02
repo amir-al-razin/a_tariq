@@ -6,8 +6,8 @@ export const lesson01: LessonData = {
         {
             id: '3-1-1-1',
             type: 'verb_table',
-            titleEn: 'Plural Verb Forms — Past, Present, Imperative',
-            titleAr: 'أَفْعَالُ الجَمْعِ — الماضي وَ المُضَارِع وَ الأمر',
+            titleEn: 'Plural Verb Forms - Past, Present, Imperative',
+            titleAr: 'أَفْعَالُ الجَمْعِ - الماضي وَ المُضَارِع وَ الأمر',
             payload: {
                 verbTense: 'past',
                 verbTable: [
@@ -157,8 +157,8 @@ export const lesson01: LessonData = {
         {
             id: '3-1-1-8',
             type: 'paragraph',
-            titleEn: 'Reading — Fasting & Daily Life',
-            titleAr: 'قِرَاءَة — الصِّيَام وَ الْحَيَاة الْيَوْمِيَّة',
+            titleEn: 'Reading - Fasting & Daily Life',
+            titleAr: 'قِرَاءَة - الصِّيَام وَ الْحَيَاة الْيَوْمِيَّة',
             payload: {
                 paragraphs: [
                     {

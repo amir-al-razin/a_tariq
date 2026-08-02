@@ -6,8 +6,8 @@ export const lesson02: LessonData = {
         {
             id: '2-3-2-1',
             type: 'masdar_factory',
-            titleEn: 'Masdar Factory — Hollow & Defective Verbs Review',
-            titleAr: 'مُرَاجَعَةُ الْمَصَادِر — الأَفْعَالُ الْجَوْفَاءُ وَالنَّاقِصَة',
+            titleEn: 'Masdar Factory - Hollow & Defective Verbs Review',
+            titleAr: 'مُرَاجَعَةُ الْمَصَادِر - الأَفْعَالُ الْجَوْفَاءُ وَالنَّاقِصَة',
             payload: {
                 baabLabel: 'أَبْوَابٌ مُخْتَلِفَة',
                 instruction: 'ن = نَصَرَ, ض = ضَرَبَ, س = سَمِعَ',
@@ -50,12 +50,12 @@ export const lesson02: LessonData = {
         {
             id: '2-3-2-3',
             type: 'grammar_rule',
-            titleEn: 'Grammar — Various Uses of سَالَ (to flow)',
-            titleAr: 'قَاعِدَة — اِسْتِخْدَامَاتُ سَالَ',
+            titleEn: 'Grammar - Various Uses of سَالَ (to flow)',
+            titleAr: 'قَاعِدَة - اِسْتِخْدَامَاتُ سَالَ',
             payload: {
                 rules: [
                     {
-                        label: 'سَالَ مِنْ — Flowing from different sources',
+                        label: 'سَالَ مِنْ - Flowing from different sources',
                         arabic: 'سَالَ مِنْ عَيْنِهِ الدَّمْعُ',
                         romanized: "sāla min 'aynihi d-dam'u",
                         meaning: 'The verb سَالَ (to flow) is used with مِنْ to indicate the source of the flow.',
@@ -68,7 +68,7 @@ export const lesson02: LessonData = {
                         ],
                     },
                     {
-                        label: 'الْجُمَلُ بَعْدَ النَّكِرَاتِ صِفَاتٌ — Adjectival Sentence',
+                        label: 'الْجُمَلُ بَعْدَ النَّكِرَاتِ صِفَاتٌ - Adjectival Sentence',
                         arabic: 'جَاءَنِي رَجُلٌ يَعْرِفُ اللُّغَةَ الْعَرَبِيَّةَ',
                         romanized: "jā'anī rajulun ya'rifu l-lughata l-'arabiyyah",
                         meaning: 'When a complete sentence follows an indefinite noun, the sentence functions as an adjective for that noun.',
@@ -177,8 +177,8 @@ export const lesson02: LessonData = {
         {
             id: '2-3-2-6',
             type: 'assessment',
-            titleEn: 'Exercise — Verb Forms Review',
-            titleAr: 'تَمْرِين — مُرَاجَعَةُ أَشْكَالِ الأَفْعَال',
+            titleEn: 'Exercise - Verb Forms Review',
+            titleAr: 'تَمْرِين - مُرَاجَعَةُ أَشْكَالِ الأَفْعَال',
             payload: {
                 instruction: 'Choose the correct meaning for each Arabic verb form.',
                 questions: [

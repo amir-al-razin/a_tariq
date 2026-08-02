@@ -29,8 +29,8 @@ export const lesson08: LessonData = {
         {
             id: '2-8-2',
             type: 'grammar_rule',
-            titleEn: 'لَنْ — Definite Future Negation',
-            titleAr: 'لَنْ — نَفْيُ الْمُسْتَقْبَل الْقَطْعِي',
+            titleEn: 'لَنْ - Definite Future Negation',
+            titleAr: 'لَنْ - نَفْيُ الْمُسْتَقْبَل الْقَطْعِي',
             payload: {
                 rules: [
                     {
@@ -52,8 +52,8 @@ export const lesson08: LessonData = {
         {
             id: '2-8-3',
             type: 'paragraph',
-            titleEn: 'Reading — لَنْ in Context',
-            titleAr: 'قِرَاءَة — لَنْ فِي الْجُمَل',
+            titleEn: 'Reading - لَنْ in Context',
+            titleAr: 'قِرَاءَة - لَنْ فِي الْجُمَل',
             payload: {
                 paragraphs: [
                     {
@@ -81,8 +81,8 @@ export const lesson08: LessonData = {
         {
             id: '2-8-4',
             type: 'q_and_a',
-            titleEn: 'Q&A — لَنْ Dialogues',
-            titleAr: 'أَسْئِلَة — حِوَارَات لَنْ',
+            titleEn: 'Q&A - لَنْ Dialogues',
+            titleAr: 'أَسْئِلَة - حِوَارَات لَنْ',
             payload: {
                 questions: [
                     { emoji: '🚪', question_ar: 'يَا فَرْحَانَةُ! أَلَنْ تَدْخُلِي غُرْفَتَكِ الْآنَ؟', question_en: 'O Farhana! Will you definitely not enter your room now?', correct_ar: 'نَعَمْ .. لَنْ أَدْخُلَ الْآنَ غُرْفَتِي', correct_en: 'Yes, I will definitely not enter my room now.', options_ar: ['نَعَمْ .. لَنْ أَدْخُلَ الْآنَ غُرْفَتِي', 'بَلَى .. سَأَدْخُلُ', 'لَا أَعْرِفُ'], questionType: 'hal' },
@@ -94,8 +94,8 @@ export const lesson08: LessonData = {
         {
             id: '2-8-5',
             type: 'grammar_rule',
-            titleEn: 'Mudaf & Mudaf Ilayhi — Vocative Form',
-            titleAr: 'الْمُضَاف وَالْمُضَاف إِلَيْهِ — الْمُنَادَى',
+            titleEn: 'Mudaf & Mudaf Ilayhi - Vocative Form',
+            titleAr: 'الْمُضَاف وَالْمُضَاف إِلَيْهِ - الْمُنَادَى',
             payload: {
                 rules: [
                     {
@@ -116,8 +116,8 @@ export const lesson08: LessonData = {
         {
             id: '2-8-6',
             type: 'assessment',
-            titleEn: 'Exercise — Vocative with Mudaf',
-            titleAr: 'تَمْرِين — الْمُنَادَى الْمُضَاف',
+            titleEn: 'Exercise - Vocative with Mudaf',
+            titleAr: 'تَمْرِين - الْمُنَادَى الْمُضَاف',
             payload: {
                 instruction: 'Choose the correct vocative form (with يَا).',
                 questions: [

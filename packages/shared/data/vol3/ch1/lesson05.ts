@@ -23,9 +23,9 @@ export const lesson05: LessonData = {
     {
       id: '2',
       type: 'grammar_rule',
-      titleEn: 'Conditional Particle إِنْ — Forms & Effects',
-      titleAr: 'حرف الشرط إِنْ — الصيغ والأثر',
-      titleBn: 'শর্ত কণিকা إِنْ — রূপ ও প্রভাব',
+      titleEn: 'Conditional Particle إِنْ - Forms & Effects',
+      titleAr: 'حرف الشرط إِنْ - الصيغ والأثر',
+      titleBn: 'শর্ত কণিকা إِنْ - রূপ ও প্রভাব',
       payload: {
         rules: [
           {
@@ -44,7 +44,7 @@ export const lesson05: LessonData = {
           },
           {
             label: 'إِنْ with Past (Future Meaning)',
-            labelBn: 'অতীতের সাথে إِنْ — ভবিষ্যত অর্থ',
+            labelBn: 'অতীতের সাথে إِنْ - ভবিষ্যত অর্থ',
             arabic: 'إِنْ تَدْخُلُ عَلَى الْمَاضِي فَتَجْعَلُهُ مُسْتَقْبَلًا',
             romanized: "in tadkhul ʿalā al-māḍī fa tajʿaluhu mustaqbalan",
             meaning:
@@ -198,8 +198,8 @@ export const lesson05: LessonData = {
             question_en: 'Does إِنْ change meaning when attached to a past form?',
             question_bn: 'إِنْ কি অতীত রূপে লাগলে তার অর্থ বদলায়?',
             correct_ar: 'نَعَمْ ، أَحْيَانًا يُحَوِّلُهُ إِلَى مَعْنًى مُسْتَقْبَلِيًّا',
-            correct_en: 'Yes — sometimes it gives a future/hypothetical meaning.',
-            correct_bn: 'হ্যাঁ — কখনও কখনও এটি ভবিষ্যত/কল্পিত অর্থ দেয়।',
+            correct_en: 'Yes - sometimes it gives a future/hypothetical meaning.',
+            correct_bn: 'হ্যাঁ - কখনও কখনও এটি ভবিষ্যত/কল্পিত অর্থ দেয়।',
             options_ar: [
               'نَعَمْ ، أَحْيَانًا يُحَوِّلُهُ إِلَى مَعْنًى مُسْتَقْبَلِيًّا',
               'لَا ، لَا يُغَيِّرُ الْمَعْنَى',

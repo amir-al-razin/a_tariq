@@ -6,8 +6,8 @@ export const lesson01: LessonData = {
         {
             id: '2-3-1-1',
             type: 'vocabulary',
-            titleEn: 'Vocabulary — Numbers & Counted Nouns',
-            titleAr: 'الْمُفْرَدَاتُ — الْأَعْدَادُ وَالْمَعْدُودَات',
+            titleEn: 'Vocabulary - Numbers & Counted Nouns',
+            titleAr: 'الْمُفْرَدَاتُ - الْأَعْدَادُ وَالْمَعْدُودَات',
             payload: {
                 words: [
                     { id: 1, ar: 'تَذْكِرَةٌ', romanized: 'tadhkiratun', en: 'Ticket', emoji: '🎫' },
@@ -27,12 +27,12 @@ export const lesson01: LessonData = {
         {
             id: '2-3-1-2',
             type: 'grammar_rule',
-            titleEn: 'Grammar — Arabic Numbers and Counted Nouns (التَّمْيِيز)',
-            titleAr: 'قَاعِدَة — الْعَدَدُ وَالْمَعْدُود',
+            titleEn: 'Grammar - Arabic Numbers and Counted Nouns (التَّمْيِيز)',
+            titleAr: 'قَاعِدَة - الْعَدَدُ وَالْمَعْدُود',
             payload: {
                 rules: [
                     {
-                        label: 'الْعُقُود (20, 30 ... 90) — Decades',
+                        label: 'الْعُقُود (20, 30 ... 90) - Decades',
                         arabic: 'عِشْرُونَ رَجُلًا / عِشْرُونَ امْرَأَةً',
                         romanized: "'ishrūna rajulan / 'ishrūna mra'atan",
                         meaning: 'For decades (20, 30, ... 90), the counted noun is always singular accusative (مُفْرَد مَنْصُوب). The number form does not change based on gender.',
@@ -43,7 +43,7 @@ export const lesson01: LessonData = {
                         ],
                     },
                     {
-                        label: 'الْأَعْدَادُ 13-19 — Numbers 13 to 19',
+                        label: 'الْأَعْدَادُ 13-19 - Numbers 13 to 19',
                         arabic: 'ثَلَاثَةَ عَشَرَ رَجُلًا / ثَلَاثَ عَشْرَةَ امْرَأَةً',
                         romanized: "thalāthata 'ashara rajulan / thalātha 'ashrata mra'atan",
                         meaning: 'For 13-19, the first part opposes the gender of the counted noun, while the second part (عَشَرَ/عَشْرَةَ) matches it. The noun is singular accusative.',
@@ -55,7 +55,7 @@ export const lesson01: LessonData = {
                         ],
                     },
                     {
-                        label: 'الْأَعْدَادُ الْمُرَكَّبَة (21-29) — Mixed Numbers',
+                        label: 'الْأَعْدَادُ الْمُرَكَّبَة (21-29) - Mixed Numbers',
                         arabic: 'أَحَدٌ وَعِشْرُونَ كِتَابًا / إِحْدَى وَعِشْرُونَ كُرَّاسَةً',
                         romanized: "aḥadun wa'ishrūna kitāban / iḥdā wa'ishrūna kurrāsatan",
                         meaning: 'For mixed numbers (21-29, etc.): numbers ending in 1 and 2 match the gender; numbers ending in 3-9 oppose the gender. The noun is singular accusative.',
@@ -67,7 +67,7 @@ export const lesson01: LessonData = {
                         ],
                     },
                     {
-                        label: 'الْأَعْدَادُ 3-10 — Numbers 3 to 10',
+                        label: 'الْأَعْدَادُ 3-10 - Numbers 3 to 10',
                         arabic: 'ثَلَاثَةُ رِجَالٍ / ثَلَاثُ نِسْوَةٍ',
                         romanized: 'thalāthatu rijālin / thalāthu niswatin',
                         meaning: 'For 3-10, the counted noun is plural genitive (جَمْع مَجْرُور). The number always opposes the gender of the singular form of the noun.',
@@ -86,8 +86,8 @@ export const lesson01: LessonData = {
         {
             id: '2-3-1-3',
             type: 'paragraph',
-            titleEn: 'Reading — Numbers in Context',
-            titleAr: 'قِرَاءَة — الْأَعْدَادُ فِي السِّيَاق',
+            titleEn: 'Reading - Numbers in Context',
+            titleAr: 'قِرَاءَة - الْأَعْدَادُ فِي السِّيَاق',
             payload: {
                 paragraphs: [
                     {
@@ -194,8 +194,8 @@ export const lesson01: LessonData = {
         {
             id: '2-3-1-5',
             type: 'assessment',
-            titleEn: 'Exercise — Fill in the Number',
-            titleAr: 'تَمْرِين — أَمْلَأِ الْفَرَاغَ بِالْعَدَدِ الْمُنَاسِب',
+            titleEn: 'Exercise - Fill in the Number',
+            titleAr: 'تَمْرِين - أَمْلَأِ الْفَرَاغَ بِالْعَدَدِ الْمُنَاسِب',
             payload: {
                 instruction: 'Choose the correct number form to complete each sentence.',
                 questions: [

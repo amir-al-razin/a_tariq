@@ -69,7 +69,7 @@ export const lesson03: LessonData = {
             arabic: 'مَنْ صَلَّى فِي الْمَسْجِدِ؟',
             romanized: 'man ṣallā fī al-masjidi?',
             meaning: '“Who prayed in the mosque?” can take singular masculine verb form.',
-            meaningBn: '“কে মসজিদে সালাত পড়েছে?”—এখানে একবচন পুংলিঙ্গ ক্রিয়া ব্যবহার করা যায়।',
+            meaningBn: '“কে মসজিদে সালাত পড়েছে?”-এখানে একবচন পুংলিঙ্গ ক্রিয়া ব্যবহার করা যায়।',
             examples: [{ ar: 'مَنْ صَلَّى فِي الْمَسْجِدِ؟', en: 'Who prayed in the mosque?', bn: 'কে মসজিদে সালাত পড়েছে?' }],
           },
           {

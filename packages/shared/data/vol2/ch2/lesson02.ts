@@ -6,7 +6,7 @@ export const lesson02: LessonData = {
         {
             id: '2-2-2-1',
             type: 'masdar_factory',
-            titleEn: 'Masdar Factory — Hollow & Defective Verbs',
+            titleEn: 'Masdar Factory - Hollow & Defective Verbs',
             titleAr: 'الْمَصَادِرُ وَالأَفْعَالُ',
             payload: {
                 baabLabel: 'أَبْوَابٌ مُخْتَلِفَة',
@@ -53,8 +53,8 @@ export const lesson02: LessonData = {
         {
             id: '2-2-2-3',
             type: 'grammar_rule',
-            titleEn: 'Grammar — Sentence as Adjective (جُمْلَة صِفَة)',
-            titleAr: 'قَاعِدَة — الْجُمْلَةُ بَعْدَ النَّكِرَاتِ صِفَاتٌ',
+            titleEn: 'Grammar - Sentence as Adjective (جُمْلَة صِفَة)',
+            titleAr: 'قَاعِدَة - الْجُمْلَةُ بَعْدَ النَّكِرَاتِ صِفَاتٌ',
             payload: {
                 rules: [
                     {
@@ -168,8 +168,8 @@ export const lesson02: LessonData = {
         {
             id: '2-2-2-6',
             type: 'assessment',
-            titleEn: 'Exercise — Verb Forms',
-            titleAr: 'تَمْرِين — أَشْكَالُ الْأَفْعَال',
+            titleEn: 'Exercise - Verb Forms',
+            titleAr: 'تَمْرِين - أَشْكَالُ الْأَفْعَال',
             payload: {
                 instruction: 'Choose the correct meaning for each Arabic verb form.',
                 questions: [

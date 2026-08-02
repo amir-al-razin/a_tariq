@@ -6,7 +6,7 @@ export const lesson21: LessonData = {
         {
             id: '2-21-1',
             type: 'vocabulary',
-            titleEn: 'Vocabulary — Lesson 21',
+            titleEn: 'Vocabulary - Lesson 21',
             titleAr: 'الْمُفْرَدَات',
             payload: {
                 words: [
@@ -21,8 +21,8 @@ export const lesson21: LessonData = {
         {
             id: '2-21-2',
             type: 'grammar_rule',
-            titleEn: 'أَنْ — Same vs Different Subject',
-            titleAr: 'أَنْ — نَفْسُ الْفَاعِل أَوْ فَاعِل مُخْتَلِف',
+            titleEn: 'أَنْ - Same vs Different Subject',
+            titleAr: 'أَنْ - نَفْسُ الْفَاعِل أَوْ فَاعِل مُخْتَلِف',
             payload: {
                 rules: [
                     {
@@ -43,7 +43,7 @@ export const lesson21: LessonData = {
         {
             id: '2-21-3',
             type: 'grammar_rule',
-            titleEn: 'بَعْدَ أَنْ / قَبْلَ أَنْ — Before and After',
+            titleEn: 'بَعْدَ أَنْ / قَبْلَ أَنْ - Before and After',
             titleAr: 'بَعْدَ أَنْ وَقَبْلَ أَنْ',
             payload: {
                 rules: [
@@ -65,8 +65,8 @@ export const lesson21: LessonData = {
         {
             id: '2-21-4',
             type: 'assessment',
-            titleEn: 'Exercise — Read and Translate أَنْ Constructions',
-            titleAr: 'تَمْرِين — اِقْرَأْ وَتَرْجِمْ',
+            titleEn: 'Exercise - Read and Translate أَنْ Constructions',
+            titleAr: 'تَمْرِين - اِقْرَأْ وَتَرْجِمْ',
             payload: {
                 instruction: 'Choose the correct English translation.',
                 questions: [
@@ -80,8 +80,8 @@ export const lesson21: LessonData = {
         {
             id: '2-21-5',
             type: 'paragraph',
-            titleEn: 'Reading — أَنْ Constructions in Context',
-            titleAr: 'قِرَاءَة — أَنْ فِي الْجُمَل',
+            titleEn: 'Reading - أَنْ Constructions in Context',
+            titleAr: 'قِرَاءَة - أَنْ فِي الْجُمَل',
             payload: {
                 paragraphs: [
                     {
