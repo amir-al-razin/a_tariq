@@ -272,6 +272,7 @@ A successful Jules PR:
 ## Resources
 
 - **Design System**: `docs/design-system.md`
+- **Pedagogical Implementation Principles**: `docs/engine-design-guidelines.md`
 - **Theming Guide**: `docs/theming.md`
 - **Mobile Reference**: `apps/mobile/` (working implementation)
 - **Shared Data**: `packages/shared/data/`
