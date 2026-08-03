@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-neutral-50 text-neutral-900">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volume 1 • Lesson 3 Engine - Lavish Review Surface</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    .font-arabic { font-family: 'Cairo', sans-serif; }
+    .step-card { transition: all 0.2s ease; }
+    .step-card:hover { transform: translateY(-2px); }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            arabic: ['Cairo', 'sans-serif'],
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-screen pb-20">
+
+  <!-- Header / Navbar -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-neutral-200 px-6 py-4 shadow-sm">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-full bg-neutral-900 text-white text-xs font-semibold uppercase tracking-wider">V2 Protocol</span>
+          <h1 class="text-xl font-bold tracking-tight">Esho Arbi Shikhi • Volume 1 Lesson 3 Engine</h1>
+        </div>
+        <p class="text-sm text-neutral-500 mt-1">Reviewing 13 standalone pedagogical steps (Vocabulary, Grammar & Interactive Drills)</p>
+      </div>
+      
+      <div class="flex items-center gap-3">
+        <!-- Mode Switcher -->
+        <div class="bg-neutral-100 p-1 rounded-xl flex border border-neutral-200">
+          <button id="btn-mode-interactive" onclick="switchMode('interactive')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white shadow-sm text-neutral-900 transition-all">
+            Interactive Mode (Step-by-Step)
+          </button>
+          <button id="btn-mode-audit" onclick="switchMode('audit')" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-neutral-600 hover:text-neutral-900 transition-all">
+            Audit Sheet (View All 13 Steps)
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="max-w-6xl mx-auto px-6 pt-8">
+    
+    <!-- Top Instructional Note for Reviewer -->
+    <div role="alert" class="mb-8 p-5 rounded-2xl bg-neutral-900 text-white shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="space-y-1">
+        <h2 class="font-bold text-base">How to conduct this visual review:</h2>
+        <p class="text-xs sm:text-sm text-neutral-300 leading-relaxed">
+          1. Use the <strong class="text-white underline">Audit Sheet</strong> mode to see all 13 lesson steps stacked simultaneously.<br>
+          2. Click on any Arabic text, translation card, grammar explanation, or drill to annotate directly in Lavish.<br>
+          3. Or use the structured feedback submission forms below each section to queue specific fixes or design corrections.
+        </p>
+      </div>
+      <div class="shrink-0 flex items-center gap-2">
+        <button onclick="switchMode('audit')" class="px-4 py-2 bg-white text-neutral-900 font-semibold text-xs rounded-xl hover:bg-neutral-100 transition shadow-sm">
+          Open Audit Sheet Mode
+        </button>
+      </div>
+    </div>
+
+    <!-- Interactive Navigation Sidebar/Pill Bar (only shown in interactive mode) -->
+    <div id="interactive-nav" class="mb-8">
+      <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-3">Select Learning Stage (1 of 13):</label>
+      <div class="flex flex-wrap gap-2" id="step-buttons-container">
+        <!-- Populate via JS -->
+      </div>
+    </div>
+
+    <!-- Container for All Steps -->
+    <div id="steps-wrapper" class="space-y-12">
+
+      <!-- STEP 0: Vocabulary - People & Traits -->
+      <section id="step-0" class="step-container bg-white border border-neutral-200 rounded-3xl p-6 md:p-8 shadow-sm">
+        <header class="border-b border-neutral-100 pb-4 mb-6 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-600 font-mono">Step 00 • VOCAB_GRID</span>
+            <h3 class="text-xl font-bold mt-1">People & Traits (Vocabulary)</h3>
+          </div>
+          <span class="text-xs font-semibold text-neutral-400 bg-neutral-100 px-3 py-1 rounded-full">5 Cards</span>
+        </header>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+          <div class="border border-neutral-200 rounded-2xl p-5 text-center flex flex-col justify-between hover:border-neutral-400 transition bg-neutral-50/50">
+            <span class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase text-left">Card 01</span>
+            <div class="py-4 text-3xl font-bold font-arabic text-neutral-900" dir="rtl">تِلْمِيْذٌ - تِلْمِيْذَةٌ</div>
+            <div class="text-sm font-semibold text-neutral-600 border-t border-neutral-200/60 pt-3">A student (m. / f.)</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-5 text-center flex flex-col justify-between hover:border-neutral-400 transition bg-neutral-50/50">
+            <span class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase text-left">Card 02</span>
+            <div class="py-4 text-3xl font-bold font-arabic text-neutral-900" dir="rtl">مُعَلِّمٌ - مُعَلِّمَةٌ</div>
+            <div class="text-sm font-semibold text-neutral-600 border-t border-neutral-200/60 pt-3">A teacher (m. / f.)</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-5 text-center flex flex-col justify-between hover:border-neutral-400 transition bg-neutral-50/50">
+            <span class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase text-left">Card 03</span>
+            <div class="py-4 text-3xl font-bold font-arabic text-neutral-900" dir="rtl">وَلَدٌ - بِنْتٌ</div>
+            <div class="text-sm font-semibold text-neutral-600 border-t border-neutral-200/60 pt-3">A boy - A girl</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-5 text-center flex flex-col justify-between hover:border-neutral-400 transition bg-neutral-50/50">
+            <span class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase text-left">Card 04</span>
+            <div class="py-4 text-3xl font-bold font-arabic text-neutral-900" dir="rtl">طِفْلٌ - طِفْلَةٌ</div>
+            <div class="text-sm font-semibold text-neutral-600 border-t border-neutral-200/60 pt-3">A child (m. / f.)</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-5 text-center flex flex-col justify-between hover:border-neutral-400 transition bg-neutral-50/50">
+            <span class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase text-left">Card 05</span>
+            <div class="py-4 text-3xl font-bold font-arabic text-neutral-900" dir="rtl">مُؤَدَّبٌ - مُؤَدَّبَةٌ</div>
+            <div class="text-sm font-semibold text-neutral-600 border-t border-neutral-200/60 pt-3">Polite / Well-mannered</div>
+          </div>
+        </div>
+
+        <!-- Lavish Structured Feedback Control -->
+        <div class="bg-neutral-100 rounded-2xl p-4 border border-neutral-200">
+          <form data-lavish-question="step0_feedback" onsubmit="submitFeedback(event, 'Step 0: People & Traits')">
+            <label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Queue Specific Fix for Step 0 (People & Traits):</label>
+            <div class="flex gap-2">
+              <input type="text" name="feedback_text" placeholder="e.g., Change font weight, adjust card padding, modify translation..." class="flex-1 bg-white border border-neutral-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900" required>
+              <button type="submit" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl text-xs font-semibold transition">Queue Answer</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- STEP 1: Vocabulary - Pronouns -->
+      <section id="step-1" class="step-container bg-white border border-neutral-200 rounded-3xl p-6 md:p-8 shadow-sm">
+        <header class="border-b border-neutral-100 pb-4 mb-6 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-600 font-mono">Step 01 • VOCAB_GRID</span>
+            <h3 class="text-xl font-bold mt-1">Pronouns (Vocabulary)</h3>
+          </div>
+          <span class="text-xs font-semibold text-neutral-400 bg-neutral-100 px-3 py-1 rounded-full">5 Cards</span>
+        </header>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+          <div class="border border-neutral-200 rounded-2xl p-5 text-center flex flex-col justify-between bg-neutral-50/50">
+            <span class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase text-left">Card 01</span>
+            <div class="py-4 text-3xl font-bold font-arabic text-neutral-900" dir="rtl">أَنَا</div>
+            <div class="text-sm font-semibold text-neutral-600 border-t border-neutral-200/60 pt-3">I</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-5 text-center flex flex-col justify-between bg-neutral-50/50">
+            <span class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase text-left">Card 02</span>
+            <div class="py-4 text-3xl font-bold font-arabic text-neutral-900" dir="rtl">أَنْتَ</div>
+            <div class="text-sm font-semibold text-neutral-600 border-t border-neutral-200/60 pt-3">You (m.)</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-5 text-center flex flex-col justify-between bg-neutral-50/50">
+            <span class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase text-left">Card 03</span>
+            <div class="py-4 text-3xl font-bold font-arabic text-neutral-900" dir="rtl">أَنْتِ</div>
+            <div class="text-sm font-semibold text-neutral-600 border-t border-neutral-200/60 pt-3">You (f.)</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-5 text-center flex flex-col justify-between bg-neutral-50/50">
+            <span class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase text-left">Card 04</span>
+            <div class="py-4 text-3xl font-bold font-arabic text-neutral-900" dir="rtl">هُوَ</div>
+            <div class="text-sm font-semibold text-neutral-600 border-t border-neutral-200/60 pt-3">He</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-5 text-center flex flex-col justify-between bg-neutral-50/50">
+            <span class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase text-left">Card 05</span>
+            <div class="py-4 text-3xl font-bold font-arabic text-neutral-900" dir="rtl">هِيَ</div>
+            <div class="text-sm font-semibold text-neutral-600 border-t border-neutral-200/60 pt-3">She</div>
+          </div>
+        </div>
+
+        <div class="bg-neutral-100 rounded-2xl p-4 border border-neutral-200">
+          <form data-lavish-question="step1_feedback" onsubmit="submitFeedback(event, 'Step 1: Pronouns')">
+            <label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Queue Specific Fix for Step 1 (Pronouns):</label>
+            <div class="flex gap-2">
+              <input type="text" name="feedback_text" placeholder="Tell agent what to change here..." class="flex-1 bg-white border border-neutral-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900" required>
+              <button type="submit" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl text-xs font-semibold transition">Queue Answer</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- STEP 2: Grammar Rule - Tanween on Names -->
+      <section id="step-2" class="step-container bg-white border border-neutral-200 rounded-3xl p-6 md:p-8 shadow-sm">
+        <header class="border-b border-neutral-100 pb-4 mb-6 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 font-mono">Step 02 • GRAMMAR_RULE</span>
+            <h3 class="text-xl font-bold mt-1">Tanween on Names</h3>
+          </div>
+          <span class="text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full">Comparison Card</span>
+        </header>
+        
+        <div class="bg-neutral-50 border border-neutral-200 rounded-3xl p-6 mb-8 space-y-6">
+          <div class="bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm text-center">
+            <p class="text-sm md:text-base font-medium leading-relaxed">
+              Usually, masculine proper names take <strong class="text-neutral-900 underline">Tanween</strong> (double vowel ending), whereas feminine proper names <strong class="text-rose-600">do not take Tanween</strong>.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Masculine Names -->
+            <div class="space-y-3">
+              <h4 class="text-xs font-bold text-neutral-500 tracking-wider uppercase text-center">Masculine Names (With Tanween)</h4>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="bg-white border border-neutral-200 p-4 rounded-xl text-center text-2xl font-bold font-arabic shadow-sm" dir="rtl">مَحْمُوْدٌ</div>
+                <div class="bg-white border border-neutral-200 p-4 rounded-xl text-center text-2xl font-bold font-arabic shadow-sm" dir="rtl">رَاشِدٌ</div>
+                <div class="bg-white border border-neutral-200 p-4 rounded-xl text-center text-2xl font-bold font-arabic shadow-sm" dir="rtl">خَالِدٌ</div>
+                <div class="bg-white border border-neutral-200 p-4 rounded-xl text-center text-2xl font-bold font-arabic shadow-sm" dir="rtl">سَعِيْدٌ</div>
+              </div>
+            </div>
+            <!-- Feminine Names -->
+            <div class="space-y-3">
+              <h4 class="text-xs font-bold text-neutral-500 tracking-wider uppercase text-center">Feminine Names (No Tanween)</h4>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="bg-white border border-neutral-200 p-4 rounded-xl text-center text-2xl font-bold font-arabic shadow-sm" dir="rtl">خَدِيْجَةُ</div>
+                <div class="bg-white border border-neutral-200 p-4 rounded-xl text-center text-2xl font-bold font-arabic shadow-sm" dir="rtl">فَرْحَانَةُ</div>
+                <div class="bg-white border border-neutral-200 p-4 rounded-xl text-center text-2xl font-bold font-arabic shadow-sm" dir="rtl">فَاطِمَةُ</div>
+                <div class="bg-white border border-neutral-200 p-4 rounded-xl text-center text-2xl font-bold font-arabic shadow-sm" dir="rtl">عَائِشَةُ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-neutral-100 rounded-2xl p-4 border border-neutral-200">
+          <form data-lavish-question="step2_feedback" onsubmit="submitFeedback(event, 'Step 2: Tanween on Names')">
+            <label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Queue Specific Fix for Step 2 (Grammar):</label>
+            <div class="flex gap-2">
+              <input type="text" name="feedback_text" placeholder="What structural or design changes are needed here?" class="flex-1 bg-white border border-neutral-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900" required>
+              <button type="submit" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl text-xs font-semibold transition">Queue Answer</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- STEP 3 & 4: Self Introductions & Descriptive Sentences (Interactive Drill) -->
+      <section id="step-3" class="step-container bg-white border border-neutral-200 rounded-3xl p-6 md:p-8 shadow-sm">
+        <header class="border-b border-neutral-100 pb-4 mb-6 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-purple-600 font-mono">Step 03 & 04 • INTERACTIVE_DRILL (Reading & Sentence Assembly)</span>
+            <h3 class="text-xl font-bold mt-1">Self Introductions & Descriptive Sentences</h3>
+          </div>
+          <span class="text-xs font-semibold text-purple-600 bg-purple-50 border border-purple-200 px-3 py-1 rounded-full">Interactive Word Chips</span>
+        </header>
+
+        <div class="space-y-6 mb-8">
+          <p class="text-sm text-neutral-500"> Below is a fully functional simulator of our sentence assembly interactive drill. Click word chips below to assemble the sentence:</p>
+          
+          <div class="bg-neutral-100/80 border border-neutral-200/80 rounded-3xl p-6 space-y-6">
+            <!-- Target prompt -->
+            <div class="bg-white rounded-2xl p-6 text-center shadow-sm border border-neutral-100">
+              <span class="text-[11px] font-bold uppercase tracking-widest text-neutral-400 block mb-2">Target Translation</span>
+              <div class="text-lg font-bold text-neutral-800">You are a good teacher (m.)</div>
+            </div>
+
+            <!-- Assembly area -->
+            <div id="assembly-area-1" class="min-h-[70px] bg-white rounded-2xl border-2 border-dashed border-neutral-300 flex items-center justify-center gap-2 p-4 text-2xl font-bold font-arabic" dir="rtl">
+              <span class="text-xs text-neutral-400 font-normal font-sans" id="assembly-placeholder-1">Tap word chips below in sequence to assemble your answer</span>
+            </div>
+
+            <!-- Chips bank -->
+            <div class="flex flex-wrap justify-center items-center gap-3" dir="rtl" id="chips-bank-1">
+              <button type="button" onclick="addChip(1, 'جَيِّدٌ', this)" class="px-5 py-3 bg-white hover:bg-neutral-50 rounded-2xl border border-neutral-200 text-2xl font-bold font-arabic shadow-sm transition transform active:scale-95">جَيِّدٌ</button>
+              <button type="button" onclick="addChip(1, 'مُعَلِّمٌ', this)" class="px-5 py-3 bg-white hover:bg-neutral-50 rounded-2xl border border-neutral-200 text-2xl font-bold font-arabic shadow-sm transition transform active:scale-95">مُعَلِّمٌ</button>
+              <button type="button" onclick="addChip(1, 'أَنْتَ', this)" class="px-5 py-3 bg-white hover:bg-neutral-50 rounded-2xl border border-neutral-200 text-2xl font-bold font-arabic shadow-sm transition transform active:scale-95">أَنْتَ</button>
+              <button type="button" onclick="addChip(1, 'طِفْلَةٌ', this)" class="px-5 py-3 bg-white hover:bg-neutral-50 rounded-2xl border border-neutral-200 text-2xl font-bold font-arabic shadow-sm transition transform active:scale-95">طِفْلَةٌ</button>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex justify-end gap-3 pt-2">
+              <button type="button" onclick="resetChips(1)" class="px-4 py-2 bg-white text-neutral-600 rounded-xl text-xs font-bold border border-neutral-200 shadow-sm hover:bg-neutral-50">Reset</button>
+              <button type="button" onclick="verifyChipAnswer(1, ['أَنْتَ', 'مُعَلِّمٌ', 'جَيِّدٌ'])" class="px-6 py-2 bg-neutral-900 text-white rounded-xl text-xs font-bold shadow-sm hover:bg-neutral-800">Verify Answer</button>
+            </div>
+            <div id="feedback-msg-1" class="text-center font-semibold text-sm hidden"></div>
+          </div>
+        </div>
+
+        <div class="bg-neutral-100 rounded-2xl p-4 border border-neutral-200">
+          <form data-lavish-question="step3_feedback" onsubmit="submitFeedback(event, 'Step 3 & 4: Sentence Drills')">
+            <label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Queue Specific Fix for Sentence Drill Components:</label>
+            <div class="flex gap-2">
+              <input type="text" name="feedback_text" placeholder="Point out any UI, chip spacing, or drill behavior issues..." class="flex-1 bg-white border border-neutral-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900" required>
+              <button type="submit" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl text-xs font-semibold transition">Queue Answer</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- STEP 5: Grammar - Vocative Particle (Ya / يَـا) -->
+      <section id="step-5" class="step-container bg-white border border-neutral-200 rounded-3xl p-6 md:p-8 shadow-sm">
+        <header class="border-b border-neutral-100 pb-4 mb-6 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 font-mono">Step 05 • GRAMMAR_RULE</span>
+            <h3 class="text-xl font-bold mt-1">Vocative Particle (Ya / يَـا)</h3>
+          </div>
+          <span class="text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full">Grammar Rule</span>
+        </header>
+        
+        <div class="bg-neutral-50 border border-neutral-200 rounded-3xl p-6 mb-8 space-y-6">
+          <div class="bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm text-center">
+            <p class="text-sm md:text-base font-medium leading-relaxed">
+              When addressing someone directly using <strong class="text-amber-600 font-arabic text-lg px-1">يَـا</strong> (O... / Calling Particle), a proper name loses its Tanween and takes only a <strong class="text-emerald-600 font-bold">single Damma (ُ )</strong>.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white border border-neutral-200 p-5 rounded-2xl text-center space-y-2 shadow-sm">
+              <div class="text-2xl font-bold font-arabic text-neutral-900" dir="rtl">رَاشِدٌ ← يَـا رَاشِدُ</div>
+              <div class="text-xs font-semibold text-neutral-500">Rashidun becomes <span class="text-neutral-900">Ya Rashidu</span></div>
+            </div>
+            <div class="bg-white border border-neutral-200 p-5 rounded-2xl text-center space-y-2 shadow-sm">
+              <div class="text-2xl font-bold font-arabic text-neutral-900" dir="rtl">وَلَدٌ ← يَـا وَلَدُ</div>
+              <div class="text-xs font-semibold text-neutral-500">Waladun becomes <span class="text-neutral-900">Ya Waladu</span></div>
+            </div>
+            <div class="bg-white border border-neutral-200 p-5 rounded-2xl text-center space-y-2 shadow-sm">
+              <div class="text-2xl font-bold font-arabic text-neutral-900" dir="rtl">مُعَلِّمٌ ← يَـا مُعَلِّمُ</div>
+              <div class="text-xs font-semibold text-neutral-500">Mu'allimun becomes <span class="text-neutral-900">Ya Mu'allimu</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-neutral-100 rounded-2xl p-4 border border-neutral-200">
+          <form data-lavish-question="step5_feedback" onsubmit="submitFeedback(event, 'Step 5: Vocative Particle')">
+            <label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Queue Specific Fix for Step 5 (Vocative Ya):</label>
+            <div class="flex gap-2">
+              <input type="text" name="feedback_text" placeholder="Annotate or describe any desired alterations..." class="flex-1 bg-white border border-neutral-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900" required>
+              <button type="submit" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl text-xs font-semibold transition">Queue Answer</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- STEP 6 & 8: Direct & Third Person Q&A -->
+      <section id="step-6" class="step-container bg-white border border-neutral-200 rounded-3xl p-6 md:p-8 shadow-sm">
+        <header class="border-b border-neutral-100 pb-4 mb-6 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-teal-600 font-mono">Step 06 & 08 • INTERACTIVE_DRILL (Q&A Assembly)</span>
+            <h3 class="text-xl font-bold mt-1">Direct & Third Person Q&A Drills</h3>
+          </div>
+          <span class="text-xs font-semibold text-teal-600 bg-teal-50 border border-teal-200 px-3 py-1 rounded-full">Dialogue Practice</span>
+        </header>
+
+        <div class="space-y-6 mb-8">
+          <div class="bg-neutral-100/80 border border-neutral-200/80 rounded-3xl p-6 space-y-6">
+            <div class="bg-white rounded-2xl p-6 text-center shadow-sm border border-neutral-100">
+              <span class="text-[11px] font-bold uppercase tracking-widest text-teal-600 block mb-2">Question (Ar & En)</span>
+              <div class="text-3xl font-bold font-arabic text-neutral-900 mb-1" dir="rtl">هَلْ أَنْتَ مُعَلِّمٌ ؟</div>
+              <div class="text-sm font-medium text-neutral-500">Are you a teacher? (m.)</div>
+            </div>
+
+            <!-- Assembly area 2 -->
+            <div id="assembly-area-2" class="min-h-[70px] bg-white rounded-2xl border-2 border-dashed border-neutral-300 flex items-center justify-center gap-2 p-4 text-2xl font-bold font-arabic" dir="rtl">
+              <span class="text-xs text-neutral-400 font-normal font-sans" id="assembly-placeholder-2">Assemble: No, rather I am a student.</span>
+            </div>
+
+            <!-- Chips bank 2 -->
+            <div class="flex flex-wrap justify-center items-center gap-3" dir="rtl" id="chips-bank-2">
+              <button type="button" onclick="addChip(2, 'لَا،', this)" class="px-5 py-3 bg-white hover:bg-neutral-50 rounded-2xl border border-neutral-200 text-2xl font-bold font-arabic shadow-sm transition transform active:scale-95">لَا،</button>
+              <button type="button" onclick="addChip(2, 'تِلْمِيْذٌ', this)" class="px-5 py-3 bg-white hover:bg-neutral-50 rounded-2xl border border-neutral-200 text-2xl font-bold font-arabic shadow-sm transition transform active:scale-95">تِلْمِيْذٌ</button>
+              <button type="button" onclick="addChip(2, 'بَلْ', this)" class="px-5 py-3 bg-white hover:bg-neutral-50 rounded-2xl border border-neutral-200 text-2xl font-bold font-arabic shadow-sm transition transform active:scale-95">بَلْ</button>
+              <button type="button" onclick="addChip(2, 'أَنَا', this)" class="px-5 py-3 bg-white hover:bg-neutral-50 rounded-2xl border border-neutral-200 text-2xl font-bold font-arabic shadow-sm transition transform active:scale-95">أَنَا</button>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-2">
+              <button type="button" onclick="resetChips(2)" class="px-4 py-2 bg-white text-neutral-600 rounded-xl text-xs font-bold border border-neutral-200 shadow-sm hover:bg-neutral-50">Reset</button>
+              <button type="button" onclick="verifyChipAnswer(2, ['لَا،', 'بَلْ', 'أَنَا', 'تِلْمِيْذٌ'])" class="px-6 py-2 bg-neutral-900 text-white rounded-xl text-xs font-bold shadow-sm hover:bg-neutral-800">Verify Answer</button>
+            </div>
+            <div id="feedback-msg-2" class="text-center font-semibold text-sm hidden"></div>
+          </div>
+        </div>
+
+        <div class="bg-neutral-100 rounded-2xl p-4 border border-neutral-200">
+          <form data-lavish-question="step6_feedback" onsubmit="submitFeedback(event, 'Step 6 & 8: Q&A Drills')">
+            <label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Queue Specific Fix for Q&A Dialogue Drills:</label>
+            <div class="flex gap-2">
+              <input type="text" name="feedback_text" placeholder="Point out any improvements to the Q&A visual display..." class="flex-1 bg-white border border-neutral-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900" required>
+              <button type="submit" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl text-xs font-semibold transition">Queue Answer</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- STEP 7 & 9: Vocabulary - Questions & Occupations -->
+      <section id="step-7" class="step-container bg-white border border-neutral-200 rounded-3xl p-6 md:p-8 shadow-sm">
+        <header class="border-b border-neutral-100 pb-4 mb-6 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-600 font-mono">Step 07 & 09 • VOCAB_GRID (Questions & Occupations)</span>
+            <h3 class="text-xl font-bold mt-1">Questions, Conjunctions & Occupations</h3>
+          </div>
+          <span class="text-xs font-semibold text-neutral-400 bg-neutral-100 px-3 py-1 rounded-full">12 Words</span>
+        </header>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-2 text-2xl font-bold font-arabic text-neutral-900" dir="rtl">مَنْ ؟</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">Who?</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-2 text-2xl font-bold font-arabic text-neutral-900" dir="rtl">هَلْ ... ؟</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">Is / Are...?</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-2 text-2xl font-bold font-arabic text-neutral-900" dir="rtl">أَ ... ؟</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">Is...? (prefix)</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-2 text-2xl font-bold font-arabic text-neutral-900" dir="rtl">أَمْ</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">Or (in Qs)</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-2 text-2xl font-bold font-arabic text-neutral-900" dir="rtl">نَعَمْ</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">Yes</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-2 text-2xl font-bold font-arabic text-neutral-900" dir="rtl">لَا</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">No</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-2 text-2xl font-bold font-arabic text-neutral-900" dir="rtl">بَلْ</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">Rather / Nay</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-2 text-2xl font-bold font-arabic text-neutral-900" dir="rtl">تَاجِرٌ - تَاجِرَةٌ</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">Merchant (m./f.)</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-2 text-2xl font-bold font-arabic text-neutral-900" dir="rtl">فَلَّاحٌ - فَلَّاحَةٌ</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">Farmer (m./f.)</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-2 text-2xl font-bold font-arabic text-neutral-900" dir="rtl">غَنِيٌّ - غَنِيَّةٌ</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">Rich</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-2 text-2xl font-bold font-arabic text-neutral-900" dir="rtl">فَقِيْرٌ - فَقِيْرَةٌ</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">Poor</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-2 text-2xl font-bold font-arabic text-neutral-900" dir="rtl">رَجُلٌ - اِمْرَأَةٌ</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">A man - A woman</div>
+          </div>
+        </div>
+
+        <div class="bg-neutral-100 rounded-2xl p-4 border border-neutral-200">
+          <form data-lavish-question="step7_feedback" onsubmit="submitFeedback(event, 'Step 7 & 9: Vocab')">
+            <label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Queue Specific Fix for Questions & Occupations Vocabulary:</label>
+            <div class="flex gap-2">
+              <input type="text" name="feedback_text" placeholder="Point out any vocabulary spacing or presentation issues..." class="flex-1 bg-white border border-neutral-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900" required>
+              <button type="submit" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl text-xs font-semibold transition">Queue Answer</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- STEP 10: Grammar - Alif in Imra'atun -->
+      <section id="step-10" class="step-container bg-white border border-neutral-200 rounded-3xl p-6 md:p-8 shadow-sm">
+        <header class="border-b border-neutral-100 pb-4 mb-6 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 font-mono">Step 10 • GRAMMAR_RULE</span>
+            <h3 class="text-xl font-bold mt-1">Alif in Imra'atun (اِمْرَأَةٌ)</h3>
+          </div>
+          <span class="text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full">Phonetics & Pronunciation</span>
+        </header>
+        
+        <div class="bg-neutral-50 border border-neutral-200 rounded-3xl p-6 mb-8 space-y-6">
+          <div class="bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm text-center">
+            <p class="text-sm md:text-base font-medium leading-relaxed">
+              The starting Alif in <strong class="text-neutral-900 font-arabic text-lg px-1">اِمْرَأَةٌ</strong> (woman) is a **Hamzat ul-Wasl** (silent connecting Alif). When preceded by another word like <strong class="text-neutral-900 font-arabic text-lg px-1">هِيَ</strong>, it merges in speech: <strong class="text-emerald-600 font-bold font-arabic text-lg px-1">هِيَ مْرَأَةٌ</strong> (Hiya-mra'atun).
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="bg-white border border-neutral-200 p-6 rounded-2xl text-center space-y-3 shadow-sm">
+              <div class="text-3xl font-bold font-arabic text-neutral-900" dir="rtl">اِمْرَأَةٌ غَنِيَّةٌ</div>
+              <div class="text-xs font-bold uppercase tracking-wider text-neutral-400">Isolated (Alif Pronounced)</div>
+              <p class="text-sm text-neutral-600">"Imra'atun ghaniyyatun" — A rich woman</p>
+            </div>
+            <div class="bg-white border-2 border-emerald-500/30 p-6 rounded-2xl text-center space-y-3 shadow-sm bg-emerald-50/10">
+              <div class="text-3xl font-bold font-arabic text-emerald-700" dir="rtl">هِيَ مْرَأَةٌ فَقِيْرَةٌ</div>
+              <div class="text-xs font-bold uppercase tracking-wider text-emerald-600">Connected in Speech (Alif Silent)</div>
+              <p class="text-sm text-neutral-600">"Hiya-mra'atun faqiratun" — She is a poor woman</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-neutral-100 rounded-2xl p-4 border border-neutral-200">
+          <form data-lavish-question="step10_feedback" onsubmit="submitFeedback(event, 'Step 10: Alif in Imra-atun')">
+            <label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Queue Specific Fix for Step 10 (Imra'atun Phonetics):</label>
+            <div class="flex gap-2">
+              <input type="text" name="feedback_text" placeholder="Annotate or report any formatting preferences..." class="flex-1 bg-white border border-neutral-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900" required>
+              <button type="submit" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl text-xs font-semibold transition">Queue Answer</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- STEP 11 & 12: Reading Pairs & Final Vocabulary -->
+      <section id="step-11" class="step-container bg-white border border-neutral-200 rounded-3xl p-6 md:p-8 shadow-sm">
+        <header class="border-b border-neutral-100 pb-4 mb-6 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-neutral-600 font-mono">Step 11 & 12 • READING PAIRS & INTENSIFIERS</span>
+            <h3 class="text-xl font-bold mt-1">Reading Pairs & Final Vocabulary</h3>
+          </div>
+          <span class="text-xs font-semibold text-neutral-600 bg-neutral-100 px-3 py-1 rounded-full">Final Stages</span>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-3 text-3xl font-bold font-arabic text-neutral-900" dir="rtl">أَيْنَ ؟</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">Where?</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-3 text-3xl font-bold font-arabic text-neutral-900" dir="rtl">جِدًّا</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">Very / Extremely</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-3 text-3xl font-bold font-arabic text-neutral-900" dir="rtl">عَالِمٌ - عَالِمَةٌ</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">Scholar / Learned</div>
+          </div>
+          <div class="border border-neutral-200 rounded-2xl p-4 text-center bg-neutral-50/50">
+            <div class="py-3 text-3xl font-bold font-arabic text-neutral-900" dir="rtl">جَاهِلٌ - جَاهِلَةٌ</div>
+            <div class="text-xs font-semibold text-neutral-600 border-t border-neutral-200/60 pt-2 mt-2">Ignorant / Uneducated</div>
+          </div>
+        </div>
+
+        <div class="bg-neutral-100 rounded-2xl p-4 border border-neutral-200">
+          <form data-lavish-question="step11_feedback" onsubmit="submitFeedback(event, 'Step 11 & 12: Final Stages')">
+            <label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Queue Specific Fix for Final Stages:</label>
+            <div class="flex gap-2">
+              <input type="text" name="feedback_text" placeholder="Queue any overall lesson flow or content feedback here..." class="flex-1 bg-white border border-neutral-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900" required>
+              <button type="submit" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl text-xs font-semibold transition">Queue Answer</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Overall Lesson Assessment Scorecard & Global Action -->
+      <section class="bg-neutral-900 text-white rounded-3xl p-6 md:p-8 shadow-md">
+        <h3 class="text-lg font-bold mb-2">General Architectural & Pedagogical Feedback</h3>
+        <p class="text-sm text-neutral-400 mb-6">If there is a structural design system issue or a pattern problem across all steps, describe it below and submit to queue a global instruction for Antigravity:</p>
+        
+        <form data-lavish-question="global_feedback" onsubmit="submitFeedback(event, 'Global Engine Architecture')">
+          <textarea name="feedback_text" rows="3" placeholder="Describe what needs to be redesigned or restructured across Lesson 3..." class="w-full bg-neutral-800 border border-neutral-700 rounded-2xl p-4 text-sm text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-white mb-4" required></textarea>
+          <div class="flex justify-end">
+            <button type="submit" class="px-6 py-3 bg-white text-neutral-950 font-bold rounded-xl text-sm hover:bg-neutral-100 transition shadow-sm">
+              Queue Global Fix Instruction
+            </button>
+          </div>
+        </form>
+      </section>
+
+    </div>
+
+    <!-- Interactive Mode Footer (Next/Prev controls) -->
+    <footer id="interactive-footer" class="mt-12 py-6 border-t border-neutral-200 flex items-center justify-between gap-4">
+      <button id="btn-prev" onclick="changeStep(-1)" class="px-6 py-3 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-semibold text-sm rounded-full disabled:opacity-30 disabled:cursor-not-allowed transition-all">
+        ← Previous Step
+      </button>
+      <span id="step-counter" class="text-sm font-bold text-neutral-500 font-mono">Step 1 of 8 shown</span>
+      <button id="btn-next" onclick="changeStep(1)" class="px-6 py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-semibold text-sm rounded-full disabled:opacity-30 disabled:cursor-not-allowed transition-all">
+        Next Step →
+      </button>
+    </footer>
+
+  </main>
+
+  <script>
+    // Step navigation metadata
+    const STEPS = [
+      { id: 'step-0', title: 'Step 0: People & Traits' },
+      { id: 'step-1', title: 'Step 1: Pronouns' },
+      { id: 'step-2', title: 'Step 2: Tanween Rule' },
+      { id: 'step-3', title: 'Step 3-4: Sentence Drills' },
+      { id: 'step-5', title: 'Step 5: Vocative (Ya)' },
+      { id: 'step-6', title: 'Step 6-8: Q&A Dialogue' },
+      { id: 'step-7', title: 'Step 7-9: Questions & Vocab' },
+      { id: 'step-10', title: 'Step 10: Alif in Imra-atun' },
+      { id: 'step-11', title: 'Step 11-12: Reading & Final Vocab' }
+    ];
+
+    let currentMode = 'audit'; // start in audit mode by default so reviewer sees everything!
+    let activeStepIndex = 0;
+
+    function init() {
+      // Build step buttons
+      const container = document.getElementById('step-buttons-container');
+      container.innerHTML = STEPS.map((s, idx) => `
+        <button onclick="goToStep(${idx})" id="nav-pill-${idx}" class="px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all ${idx === activeStepIndex ? 'bg-neutral-900 text-white border-neutral-900' : 'bg-white text-neutral-600 border-neutral-300 hover:border-neutral-400'}">
+          ${s.title}
+        </button>
+      `).join('');
+      renderMode();
+    }
+
+    function switchMode(mode) {
+      currentMode = mode;
+      document.getElementById('btn-mode-interactive').className = mode === 'interactive' 
+        ? 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-white shadow-sm text-neutral-900 transition-all'
+        : 'px-3 py-1.5 rounded-lg text-xs font-semibold text-neutral-600 hover:text-neutral-900 transition-all';
+      document.getElementById('btn-mode-audit').className = mode === 'audit'
+        ? 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-white shadow-sm text-neutral-900 transition-all'
+        : 'px-3 py-1.5 rounded-lg text-xs font-semibold text-neutral-600 hover:text-neutral-900 transition-all';
+      renderMode();
+    }
+
+    function renderMode() {
+      const nav = document.getElementById('interactive-nav');
+      const footer = document.getElementById('interactive-footer');
+      const sections = document.querySelectorAll('.step-container');
+
+      if (currentMode === 'audit') {
+        nav.style.display = 'none';
+        footer.style.display = 'none';
+        sections.forEach(s => s.style.display = 'block');
+      } else {
+        nav.style.display = 'block';
+        footer.style.display = 'flex';
+        sections.forEach((s, idx) => {
+          s.style.display = idx === activeStepIndex ? 'block' : 'none';
+        });
+        updateNavPills();
+        updateFooter();
+      }
+    }
+
+    function goToStep(idx) {
+      activeStepIndex = idx;
+      if (currentMode === 'audit') switchMode('interactive');
+      renderMode();
+    }
+
+    function changeStep(dir) {
+      const next = activeStepIndex + dir;
+      if (next >= 0 && next < STEPS.length) {
+        activeStepIndex = next;
+        renderMode();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function updateNavPills() {
+      STEPS.forEach((_, idx) => {
+        const pill = document.getElementById(`nav-pill-${idx}`);
+        if (pill) {
+          pill.className = idx === activeStepIndex
+            ? 'px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all bg-neutral-900 text-white border-neutral-900'
+            : 'px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all bg-white text-neutral-600 border-neutral-300 hover:border-neutral-400';
+        }
+      });
+    }
+
+    function updateFooter() {
+      document.getElementById('btn-prev').disabled = activeStepIndex === 0;
+      document.getElementById('btn-next').disabled = activeStepIndex === STEPS.length - 1;
+      document.getElementById('step-counter').innerText = `Step ${activeStepIndex + 1} of ${STEPS.length}`;
+    }
+
+    // --- Interactive Word Assembly Drill Logic ---
+    const assembledAnswers = { 1: [], 2: [] };
+
+    function addChip(drillId, word, btnEl) {
+      const placeholder = document.getElementById(`assembly-placeholder-${drillId}`);
+      if (placeholder) placeholder.style.display = 'none';
+
+      assembledAnswers[drillId].push({ word, el: btnEl });
+      btnEl.style.opacity = '0.3';
+      btnEl.style.pointerEvents = 'none';
+
+      const area = document.getElementById(`assembly-area-${drillId}`);
+      const chipSpan = document.createElement('span');
+      chipSpan.className = 'px-3 py-1 bg-neutral-900 text-white rounded-xl text-xl shadow-sm animate-pulse';
+      chipSpan.innerText = word;
+      area.appendChild(chipSpan);
+    }
+
+    function resetChips(drillId) {
+      assembledAnswers[drillId].forEach(item => {
+        item.el.style.opacity = '1';
+        item.el.style.pointerEvents = 'auto';
+      });
+      assembledAnswers[drillId] = [];
+      const area = document.getElementById(`assembly-area-${drillId}`);
+      area.innerHTML = `<span class="text-xs text-neutral-400 font-normal font-sans" id="assembly-placeholder-${drillId}">Tap word chips below in sequence to assemble your answer</span>`;
+      const msg = document.getElementById(`feedback-msg-${drillId}`);
+      if (msg) msg.style.display = 'none';
+    }
+
+    function verifyChipAnswer(drillId, expected) {
+      const current = assembledAnswers[drillId].map(i => i.word);
+      const msg = document.getElementById(`feedback-msg-${drillId}`);
+      msg.style.display = 'block';
+      if (JSON.stringify(current) === JSON.stringify(expected)) {
+        msg.className = 'text-center font-bold text-sm text-emerald-600 bg-emerald-50 py-2 rounded-xl border border-emerald-200';
+        msg.innerText = '✓ Perfect! Correct Arabic Word Order!';
+      } else {
+        msg.className = 'text-center font-bold text-sm text-rose-600 bg-rose-50 py-2 rounded-xl border border-rose-200';
+        msg.innerText = '✕ Incorrect word order or missing chips. Click Reset and try again.';
+      }
+    }
+
+    // --- Lavish Feedback Handler ---
+    function submitFeedback(event, sectionName) {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const formData = new FormData(form);
+      const text = formData.get('feedback_text');
+      if (!text) return;
+
+      const fullMessage = `[${sectionName}] Fix instruction: ${text}`;
+      if (window.lavish && typeof window.lavish.queuePrompt === 'function') {
+        window.lavish.queuePrompt(fullMessage, {
+          tag: 'fix',
+          text: fullMessage,
+          element: form,
+          data: { section: sectionName, instruction: text }
+        });
+        alert(`✓ Queued feedback for ${sectionName}: "${text}". When ready, send your queued feedback in Lavish!`);
+        form.reset();
+      } else {
+        console.log('Lavish SDK not connected in direct view:', fullMessage);
+        alert(`Feedback noted for ${sectionName}: "${text}". (Note: Open via lavish-axi to transmit directly to agent!)`);
+      }
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>

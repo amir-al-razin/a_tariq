@@ -1,0 +1,57 @@
+﻿Slide 1: Title Slide
+* Project Title: Tariq - An Interactive Quranic Arabic Immersion App
+* Course: CSE 4402: Visual Programming Lab
+* Team Members:
+* Vision: A Sadaqah Jariyah project designed to help non-native learners understand Quranic Arabic natively, bypassing translation-heavy barriers.
+Slide 2: Motivation & Problem Statement
+* The Problem: Current Quranic apps focus heavily on isolated vocabulary and rote flashcards, leaving a massive gap in grammatical and syntactic understanding.
+* The Translation Trap: Existing platforms force continuous translation to English or Bengali, preventing learners from thinking directly in Arabic.
+* Why Esho Arbi Shikhi? Maulana Abu Taher Misbah’s book is a proven, highly structured masterpiece in Bangladesh that uses the "Direct Method" to transition learners to direct comprehension.
+* SDG Alignment: Aligns with UN SDG Goal 4: Quality Education by democratizing high-quality classical Arabic learning.
+Slide 3: Goals & Objectives
+* Primary Goal: To digitize the complete learning journey of Esho Arbi Shikhi, making it an interactive, self-paced mobile application.
+* Objective 1 (Curriculum Integrity): Implement the book’s exact sequential lessons and exercise patterns without altering its successful pedagogical flow.
+* Objective 2 (Pronunciation & Reading): Build a solid foundation of correct pronunciation and unvoweled reading fluency.
+* Objective 3 (Project Feasibility): Deliver a tested, high-quality Android prototype within the 8-week course timeline, while maintaining a long-term roadmap for post-course development.
+Slide 4: Differentiation from Existing Solutions
+* Traditional Apps (Duolingo, Kalaam, Quran Progress):
+   * Rely on standard Modern Standard Arabic (MSA), translation drills, or isolated vocabulary lists.
+   * Keep vowel marks (harakat) permanently turned on, creating an "illusion of fluency."
+* Our Solution:
+   * The Perfect Hybrid: We merge the proven, structured curriculum of a classical Madrasa textbook with the highly engaging, interactive UI mechanics of modern language apps.
+   * Curriculum-Based Harakat Fading: Pre-programmed, sequential fading of vowels taken directly from the textbook as lessons progress.
+   * Contextual Audio & Pronunciation Testing: Continuous learning loops backed by full audio reference and voice feedback.
+Slide 5: Core Features & Pedagogy
+* Duolingo-Inspired Gamified Exercises: Interactive learning through drag-and-drop sentence building, matching pairs, multiple-choice questions (MCQs), and bidirectional translation during the foundational lessons.
+* Sequential Harakat Fading: Gradually hides vowel marks exactly as the author does in the book to transition users to reading unvoweled text.
+* Interactive Comprehension Checks: Post-lesson prompts asking "Did you understand?" (hal fahimta?). If the user answers "No" (ma fahimtu), the app asks "Which part?" (ayyu juz'in) and uses AI to provide targeted explanations and redirects.
+* Pronunciation Evaluator: A speech-to-text practice tool that allows users to recite specified phrases and receive immediate feedback on their pronunciation.
+* AI Teacher Assistant & Lesson Redirect: A helper AI that analyzes mistakes and redirects the user to the exact previous lesson that resolves the issue instead of giving away answers.
+* Quran Progress Integration: A visual Quran viewer where verses are highlighted only when the user has mastered both the vocabulary and syntax rules present in them.
+Slide 6: Technical Tools
+* Backend System: Java & Spring Boot for robust database schema, state management, and orchestration.
+* Quranic Data & APIs:
+   * Quran.com API: Utilized for fetching verified Quranic text, translations, tafsir, word-for-word morphology, and authentic audio recitations.
+   * JQuranTree Java API: Used to natively parse and handle precise Arabic orthography, letters, and pre-programmed textbook diacritics.
+* Frontend Mobile Client: Kotlin (Native Android) to achieve precise, pixel-perfect control over RTL (Right-to-Left) Arabic text rendering and interactive drag-and-drop mechanics.
+* Web Portal: TanStack Start (or Next.js) for the desktop study interface and seamless state management.
+* AI & Microservices (Python):
+   * A lightweight Python microservice handling speech-to-text (STT) for pronunciation tests.
+   * A RAG (Retrieval-Augmented Generation) pipeline in Python powering the AI Teacher Assistant for contextual explanations and accurate lesson redirections.
+Slide 7: Project Timeline (8-Week Plan)
+* Weeks 1–2: Requirements, Assets & UI/UX
+   * Map out Volume 1 textbook data, compile audio materials, and finalize curriculum flow.
+   * Design UI/UX wireframes and set up the Java/Spring Boot database architecture.
+* Weeks 3–6: Core Implementation
+   * Build Java/Spring Boot API and integrate the Quran.com API and JQuranTree.
+   * Develop Kotlin frontend UI, interactive games, and harakat fading logic.
+   * Implement Python microservices for the RAG-based AI assistant and STT pronunciation tests.
+* Weeks 7–8: Refinement, Iteration & Feedback
+   * Test app-wide logic, iterate based on user feedback, and fix UI/UX bugs.
+   * Prepare final project report and final presentation slide deck for the lab submission.
+* Post-Week 8: Continuous Development
+   * The project will not stop after grading; we will continue to expand the app to include Volumes 2 and 3 for a full, public release.
+Slide 8: Conclusion
+* Our app transforms a legendary, paper-based Bangladeshi curriculum (Esho Arbi Shikhi) into an interactive, digital classroom.
+* By combining native Kotlin text controls, Java backend architecture, the Quran.com API, and modern gamified pedagogy, we create an effective pathway to independent Quranic comprehension.
+* Thank you. We are open to your questions!

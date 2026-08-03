@@ -1,0 +1,112 @@
+@use 'src/styles/shades';
+
+@mixin mode {
+  --color-primary-faded: #fff;
+  --color-primary-faint: #fff;
+  --color-primary-medium: #fff;
+  --color-primary-deep: #fff;
+
+  --color-secondary-faded: #333;
+  --color-secondary-faint: #444;
+  --color-secondary-medium: var(--shade-7);
+  --color-secondary-deep: #eaeaea;
+
+  --color-success-faded: #272f33;
+  --color-success-faint: #3d474d;
+  --color-success-medium: #2ca4ab;
+  --color-success-deep: #f1feff;
+
+  --color-error-faded: #e60000;
+  --color-error-faint: #f00;
+  --color-error-medium: #f00;
+  --color-error-deep: #f33;
+
+  --color-warning-faded: #fef3dc;
+  --color-warning-faint: #ffdfaa;
+  --color-warning-medium: #ffb300;
+  --color-warning-deep: #ab570a;
+
+  --color-text-default-new: #ffffff;
+  --color-text-default: #e7e9ea;
+  --color-text-faded: #777;
+  --color-text-faded-new: #dee2e6;
+  --color-text-inverse: #000;
+  --color-text-link: #2ca4ab;
+  --color-text-link-new: #2ca4ab;
+  --color-text-warning: #f7b955;
+  --color-text-error: #f33;
+  --color-text-black: #000000;
+  --color-text-white: #ffffff;
+  --color-text-gray: #495057;
+
+  --color-background-default: #1f2125;
+  --color-background-elevated: #1f2125;
+  --color-background-elevated-new: #1f2125;
+  --color-background-gradient: #1f2125;
+
+  --color-background-alternative-faded: var(--shade-9);
+  --color-background-alternative-faint: var(--shade-8);
+  --color-background-alternative-faint-new: #343a40;
+  --color-separators-ayah-level: #444444;
+  --color-background-alternative-medium: var(--shade-7);
+  --color-background-alternative-deep: var(--shade-5);
+
+  --color-background-inverse: #fff;
+  --color-background-backdrop: rgba(0, 0, 0, 0.8);
+  --color-background-lighten: rgba(0, 0, 0, 0.75);
+  // lighten the `background-color` by using it in `background-image`. check Button's ghost variant for example
+
+  --color-borders-hairline: rgb(70, 75, 80);
+
+  --color-highlight: #2ca4ab;
+
+  --shadow-small: 0px 2px 4px var(--shade-9);
+  --shadow-flat: 0px 0px 8px var(--shade-9);
+  --shadow-normal: 0px 4px 8px var(--shade-9);
+  --shadow-medium: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+  --shadow-large: 0 5px 10px var(--shade-9);
+  --shadow-xlarge: 0 8px 30px var(--shade-9);
+  --shadow-jumbo: 0 30px 60px var(--shade-9);
+  --shadow-hover: 0 30px 60px var(--shade-9);
+  --shadow-sticky: 0 12px 10px -10px var(--shade-9);
+  --shadow-strong: 0px 4px 4px 0px rgba(0, 0, 0, 0.5);
+  --shadow-tooltip: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  --shadow-end-surah-card: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  --shadow-surah-search: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+  --shadow-language-selector: 0px 2px 4px 0px rgba(0, 0, 0, 0.3);
+  --shadow-chapter-header-actions: 0px 0px 4px rgba(0, 0, 0, 0.7);
+  --shadow-tajweed-trigger: 0px 2px 4px rgba(0, 0, 0, 0.7);
+  --shadow-reading-word-three-dots: 0px 0px 4px 0px rgba(0, 0, 0, 0.7);
+  font-palette: --Dark;
+
+  // scrollbar styles
+  --scrollbar-background: var(--shade-9);
+  --scrollbar-thumb: var(--shade-7);
+  --scrollbar-thumb-hover: var(--shade-6);
+  --scrollbar-thumb-active: var(--shade-5);
+
+  --color-grey-icons: #868e96;
+  --color-grey-icons-new: #9b9b9b;
+  --color-daily-progress: #adb5bd;
+  --color-separators: #1e2225;
+  --color-separators-new: #1b1d20;
+  --color-blue-buttons-and-icons: #2ca4ab;
+  --color-faint-blue-icons: #c2edef;
+  --color-black-buttons: #ffffff;
+  --color-topics-grey: #161616;
+  --color-topics-gold: #56354c;
+  --color-gqc: #cb955b;
+  --color-qdc-blue: #22a5ad;
+  --color-qdc-faded-blue: #ebf9fa;
+  --color-qdc-faint-blue: #c2edef;
+  --color-qdc-deep-blue: #258c91;
+  --color-streaks-dark: #1c4428;
+  --color-streaks-light: #93b69d;
+  --color-calligraphy: #060606;
+  --color-scholars-say-background: #fff8e4;
+  --color-scholars-say-text: #7c6e21;
+  --color-search-background: #000000;
+  --color-check: rgba(56, 121, 75, 1);
+  --color-green-light: rgba(228, 244, 233, 1);
+  --color-bookmark-icon: #22a5ad;
+}

@@ -1,71 +1,13 @@
 import { useState } from 'react';
-import { CheckCircle, ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { audioService } from '@/lib/audioService';
+import {
+  VocabularyFlashcard,
+  DemonstrativeBadge,
+  WordChipExercise,
+  type VocabItem,
+} from '@/components/pedagogy-v2';
 
-// Web Audio API Synthesizer & Speech Synthesis Service
-class AudioService {
-  private ctx: AudioContext | null = null;
-
-  public playTone(freq: number, type: OscillatorType = 'sine', duration: number = 0.15): void {
-    try {
-      if (typeof window === 'undefined') return;
-      if (!this.ctx) {
-        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-        this.ctx = new AudioCtx();
-      }
-      if (this.ctx.state === 'suspended') {
-        this.ctx.resume();
-      }
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-      gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-      osc.start();
-      osc.stop(this.ctx.currentTime + duration);
-    } catch {
-      // Graceful fallback if Web Audio is restricted
-    }
-  }
-
-  public playClick(): void {
-    this.playTone(400, 'triangle', 0.05);
-  }
-
-  public playSuccess(): void {
-    this.playTone(523.25, 'sine', 0.1);
-    setTimeout(() => this.playTone(659.25, 'sine', 0.15), 80);
-    setTimeout(() => this.playTone(783.99, 'sine', 0.25), 160);
-  }
-
-  public playError(): void {
-    this.playTone(240, 'sawtooth', 0.18);
-  }
-
-  public speakArabic(text: string, enabled: boolean): void {
-    if (!enabled || typeof window === 'undefined') return;
-    this.playClick();
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ar-SA';
-      utterance.rate = 0.85;
-      window.speechSynthesis.speak(utterance);
-    }
-  }
-}
-
-const audioService = new AudioService();
-
-interface VocabItem {
-  id: number;
-  ar: string;
-  roman: string;
-  en: string;
-  emoji: string;
-}
 
 // 3 VOCABULARY SETS FROM THE PHYSICAL BOOK
 const vocabSegment1: VocabItem[] = [
@@ -298,52 +240,27 @@ export function EshoArbiShikhiVol1Lesson1Engine() {
             />
           </div>
         </div>
-
       </header>
 
       {/* MAIN PLAYABLE CANVAS */}
       <main className="max-w-4xl w-full mx-auto flex-1 flex flex-col justify-center mb-6">
         <div className="bg-white dark:bg-neutral-800 rounded-3xl p-6 sm:p-8 min-h-[540px] flex flex-col justify-between transition-colors relative">
-          
           {/* STEP CONTENT AREA */}
           <div className="w-full flex-1 flex flex-col justify-center">
-
             {/* STEP 0: FIRST VOCABULARY (PAGE 15 TOP - 8 WORDS) */}
             {currentStep === 0 && (
               <div className="space-y-4">
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-                  {vocabSegment1.map((v, idx) => {
-                    const isTapped = revealedVocab[v.id];
-                    return (
-                      <div
-                        key={v.id}
-                        onClick={() => handleTapVocab(v)}
-                        className="bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 active:scale-95 transition-all p-4 sm:p-6 rounded-2xl sm:rounded-3xl flex flex-col justify-between items-center text-center cursor-pointer min-h-[140px] sm:min-h-[175px]"
-                      >
-                        <div className="w-full flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-neutral-400 dark:text-neutral-500">
-                          <span>Card 0{idx + 1}</span>
-                          <span className={isTapped ? 'text-emerald-600 dark:text-emerald-400 font-bold' : ''}>{isTapped ? '✓' : ''}</span>
-                        </div>
-
-                        <div className="my-2">
-                          <span className="font-arabic text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-100 block">
-                            {v.ar}
-                          </span>
-                        </div>
-
-                        <div className="w-full pt-2 border-t border-neutral-200/60 dark:border-neutral-800">
-                          <span className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300 block font-sans">
-                            {v.en}
-                          </span>
-                          {isTapped && (
-                            <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold block mt-1">
-                              {v.roman}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
+                  {vocabSegment1.map((v, idx) => (
+                    <VocabularyFlashcard
+                      key={v.id}
+                      item={v}
+                      index={idx}
+                      isRevealed={!!revealedVocab[v.id]}
+                      audioEnabled={audioEnabled}
+                      onTap={handleTapVocab}
+                    />
+                  ))}
                 </div>
               </div>
             )}
@@ -353,24 +270,52 @@ export function EshoArbiShikhiVol1Lesson1Engine() {
               <div className="space-y-6">
                 <div className="bg-neutral-100 dark:bg-neutral-900 p-4 sm:p-8 rounded-2xl sm:rounded-3xl space-y-6">
                   <div className="grid grid-cols-2 gap-3 sm:gap-4 text-center" dir="rtl">
-                    <div onClick={() => audioService.speakArabic('هٰذَا', audioEnabled)} className="bg-white dark:bg-neutral-800 p-4 sm:p-6 rounded-2xl sm:rounded-3xl cursor-pointer flex flex-col items-center justify-center">
-                      <span className="font-arabic text-2xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-100 block leading-tight">هٰذَا - هٰذِهِ</span>
-                      <span className="text-xs sm:text-sm font-semibold text-neutral-600 dark:text-neutral-400 block mt-2" dir="ltr">This</span>
+                    <div
+                      onClick={() => audioService.speakArabic('هٰذَا', audioEnabled)}
+                      className="bg-white dark:bg-neutral-800 p-4 sm:p-6 rounded-2xl sm:rounded-3xl cursor-pointer flex flex-col items-center justify-center"
+                    >
+                      <span className="font-arabic text-2xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-100 block leading-tight">
+                        هٰذَا - هٰذِهِ
+                      </span>
+                      <span className="text-xs sm:text-sm font-semibold text-neutral-600 dark:text-neutral-400 block mt-2" dir="ltr">
+                        This
+                      </span>
                     </div>
 
-                    <div onClick={() => audioService.speakArabic('ذٰلِكَ', audioEnabled)} className="bg-white dark:bg-neutral-800 p-4 sm:p-6 rounded-2xl sm:rounded-3xl cursor-pointer flex flex-col items-center justify-center">
-                      <span className="font-arabic text-2xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-100 block leading-tight">ذٰلِكَ - تِلْكَ</span>
-                      <span className="text-xs sm:text-sm font-semibold text-neutral-600 dark:text-neutral-400 block mt-2" dir="ltr">That</span>
+                    <div
+                      onClick={() => audioService.speakArabic('ذٰلِكَ', audioEnabled)}
+                      className="bg-white dark:bg-neutral-800 p-4 sm:p-6 rounded-2xl sm:rounded-3xl cursor-pointer flex flex-col items-center justify-center"
+                    >
+                      <span className="font-arabic text-2xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-100 block leading-tight">
+                        ذٰلِكَ - تِلْكَ
+                      </span>
+                      <span className="text-xs sm:text-sm font-semibold text-neutral-600 dark:text-neutral-400 block mt-2" dir="ltr">
+                        That
+                      </span>
                     </div>
 
-                    <div onClick={() => audioService.speakArabic('هٰذَا كِتَابٌ', audioEnabled)} className="bg-white dark:bg-neutral-800 p-4 sm:p-6 rounded-2xl sm:rounded-3xl cursor-pointer flex flex-col items-center justify-center">
-                      <span className="font-arabic text-xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 block leading-tight">هٰذَا كِتَابٌ</span>
-                      <span className="text-[10px] sm:text-sm font-semibold text-neutral-600 dark:text-neutral-400 block mt-2" dir="ltr">This is a book</span>
+                    <div
+                      onClick={() => audioService.speakArabic('هٰذَا كِتَابٌ', audioEnabled)}
+                      className="bg-white dark:bg-neutral-800 p-4 sm:p-6 rounded-2xl sm:rounded-3xl cursor-pointer flex flex-col items-center justify-center"
+                    >
+                      <span className="font-arabic text-xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 block leading-tight">
+                        هٰذَا كِتَابٌ
+                      </span>
+                      <span className="text-[10px] sm:text-sm font-semibold text-neutral-600 dark:text-neutral-400 block mt-2" dir="ltr">
+                        This is a book
+                      </span>
                     </div>
 
-                    <div onClick={() => audioService.speakArabic('ذٰلِكَ قَلَمٌ', audioEnabled)} className="bg-white dark:bg-neutral-800 p-4 sm:p-6 rounded-2xl sm:rounded-3xl cursor-pointer flex flex-col items-center justify-center">
-                      <span className="font-arabic text-xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 block leading-tight">ذٰلِكَ قَلَمٌ</span>
-                      <span className="text-[10px] sm:text-sm font-semibold text-neutral-600 dark:text-neutral-400 block mt-2" dir="ltr">That is a pen</span>
+                    <div
+                      onClick={() => audioService.speakArabic('ذٰلِكَ قَلَمٌ', audioEnabled)}
+                      className="bg-white dark:bg-neutral-800 p-4 sm:p-6 rounded-2xl sm:rounded-3xl cursor-pointer flex flex-col items-center justify-center"
+                    >
+                      <span className="font-arabic text-xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 block leading-tight">
+                        ذٰلِكَ قَلَمٌ
+                      </span>
+                      <span className="text-[10px] sm:text-sm font-semibold text-neutral-600 dark:text-neutral-400 block mt-2" dir="ltr">
+                        That is a pen
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -387,9 +332,7 @@ export function EshoArbiShikhiVol1Lesson1Engine() {
                     className="bg-neutral-100 dark:bg-neutral-900 p-3 sm:p-4 rounded-2xl sm:rounded-3xl flex items-center justify-between cursor-pointer group hover:bg-neutral-200/80 dark:hover:bg-neutral-800/80 transition-colors"
                     dir="rtl"
                   >
-                    <div className="px-4 py-2 sm:px-6 sm:py-3.5 bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-100 shrink-0 rounded-r-xl sm:rounded-r-2xl price-tag-rtl transition-colors max-w-[65%]">
-                      <span className="font-arabic text-lg sm:text-2xl font-bold break-words leading-tight">{item.ar}</span>
-                    </div>
+                    <DemonstrativeBadge text={item.ar} direction="rtl" variant="neutral" className="max-w-[65%]" />
 
                     <div className={`flex-1 flex items-center ${item.distance === 'near' ? 'justify-start pr-3 sm:pr-6' : 'justify-end pl-3 sm:pl-6'}`}>
                       {item.distance === 'near' ? (
@@ -413,38 +356,16 @@ export function EshoArbiShikhiVol1Lesson1Engine() {
             {currentStep === 3 && (
               <div className="space-y-4">
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-                  {vocabSegment2.map((v, idx) => {
-                    const isTapped = revealedVocab[v.id];
-                    return (
-                      <div
-                        key={v.id}
-                        onClick={() => handleTapVocab(v)}
-                        className="bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 active:scale-95 transition-all p-4 sm:p-6 rounded-2xl sm:rounded-3xl flex flex-col justify-between items-center text-center cursor-pointer min-h-[140px] sm:min-h-[175px]"
-                      >
-                        <div className="w-full flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-neutral-400 dark:text-neutral-500">
-                          <span>Card 0{idx + 1}</span>
-                          <span className={isTapped ? 'text-emerald-600 dark:text-emerald-400 font-bold' : ''}>{isTapped ? '✓' : ''}</span>
-                        </div>
-
-                        <div className="my-2">
-                          <span className="font-arabic text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-100 block">
-                            {v.ar}
-                          </span>
-                        </div>
-
-                        <div className="w-full pt-2 border-t border-neutral-200/60 dark:border-neutral-800">
-                          <span className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300 block font-sans">
-                            {v.en}
-                          </span>
-                          {isTapped && (
-                            <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold block mt-1">
-                              {v.roman}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
+                  {vocabSegment2.map((v, idx) => (
+                    <VocabularyFlashcard
+                      key={v.id}
+                      item={v}
+                      index={idx}
+                      isRevealed={!!revealedVocab[v.id]}
+                      audioEnabled={audioEnabled}
+                      onTap={handleTapVocab}
+                    />
+                  ))}
                 </div>
               </div>
             )}
@@ -459,9 +380,7 @@ export function EshoArbiShikhiVol1Lesson1Engine() {
                     className="bg-neutral-100 dark:bg-neutral-900 p-3 sm:p-4 rounded-2xl sm:rounded-3xl flex items-center justify-between cursor-pointer group hover:bg-neutral-200/80 dark:hover:bg-neutral-800/80 transition-colors"
                     dir="rtl"
                   >
-                    <div className="px-4 py-2 sm:px-6 sm:py-3.5 bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-100 shrink-0 rounded-r-xl sm:rounded-r-2xl price-tag-rtl transition-colors max-w-[65%]">
-                      <span className="font-arabic text-lg sm:text-2xl font-bold break-words leading-tight">{item.ar}</span>
-                    </div>
+                    <DemonstrativeBadge text={item.ar} direction="rtl" variant="neutral" className="max-w-[65%]" />
 
                     <div className={`flex-1 flex items-center ${item.distance === 'near' ? 'justify-start pr-3 sm:pr-6' : 'justify-end pl-3 sm:pl-6'}`}>
                       {item.distance === 'near' ? (
@@ -485,38 +404,16 @@ export function EshoArbiShikhiVol1Lesson1Engine() {
             {currentStep === 5 && (
               <div className="space-y-4">
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-                  {vocabSegment3.map((v, idx) => {
-                    const isTapped = revealedVocab[v.id];
-                    return (
-                      <div
-                        key={v.id}
-                        onClick={() => handleTapVocab(v)}
-                        className="bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 active:scale-95 transition-all p-4 sm:p-6 rounded-2xl sm:rounded-3xl flex flex-col justify-between items-center text-center cursor-pointer min-h-[140px] sm:min-h-[175px]"
-                      >
-                        <div className="w-full flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-neutral-400 dark:text-neutral-500">
-                          <span>Card 0{idx + 1}</span>
-                          <span className={isTapped ? 'text-emerald-600 dark:text-emerald-400 font-bold' : ''}>{isTapped ? '✓' : ''}</span>
-                        </div>
-
-                        <div className="my-2">
-                          <span className="font-arabic text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-100 block">
-                            {v.ar}
-                          </span>
-                        </div>
-
-                        <div className="w-full pt-2 border-t border-neutral-200/60 dark:border-neutral-800">
-                          <span className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300 block font-sans">
-                            {v.en}
-                          </span>
-                          {isTapped && (
-                            <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold block mt-1">
-                              {v.roman}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
+                  {vocabSegment3.map((v, idx) => (
+                    <VocabularyFlashcard
+                      key={v.id}
+                      item={v}
+                      index={idx}
+                      isRevealed={!!revealedVocab[v.id]}
+                      audioEnabled={audioEnabled}
+                      onTap={handleTapVocab}
+                    />
+                  ))}
                 </div>
               </div>
             )}
@@ -527,13 +424,21 @@ export function EshoArbiShikhiVol1Lesson1Engine() {
                 <div className="bg-neutral-100 dark:bg-neutral-900 p-4 sm:p-8 rounded-2xl sm:rounded-3xl space-y-6">
                   <div className="grid grid-cols-2 gap-3 sm:gap-4 text-center" dir="rtl">
                     <div className="bg-white dark:bg-neutral-800 p-4 sm:p-6 rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center">
-                      <span className="font-arabic text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 block leading-tight">مَا هٰذَا - مَا هٰذِهِ</span>
-                      <span className="text-xs sm:text-sm font-semibold text-neutral-600 dark:text-neutral-400 block mt-2" dir="ltr">What is this?</span>
+                      <span className="font-arabic text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 block leading-tight">
+                        مَا هٰذَا - مَا هٰذِهِ
+                      </span>
+                      <span className="text-xs sm:text-sm font-semibold text-neutral-600 dark:text-neutral-400 block mt-2" dir="ltr">
+                        What is this?
+                      </span>
                     </div>
 
                     <div className="bg-white dark:bg-neutral-800 p-4 sm:p-6 rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center">
-                      <span className="font-arabic text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 block leading-tight">مَا ذٰلِكَ - مَا تِلْكَ</span>
-                      <span className="text-xs sm:text-sm font-semibold text-neutral-600 dark:text-neutral-400 block mt-2" dir="ltr">What is that?</span>
+                      <span className="font-arabic text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 block leading-tight">
+                        مَا ذٰلِكَ - مَا تِلْكَ
+                      </span>
+                      <span className="text-xs sm:text-sm font-semibold text-neutral-600 dark:text-neutral-400 block mt-2" dir="ltr">
+                        What is that?
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -552,9 +457,13 @@ export function EshoArbiShikhiVol1Lesson1Engine() {
                   >
                     {/* First Line (Mobile): Question + Emoji */}
                     <div className="flex items-center w-full sm:w-auto sm:flex-1">
-                      <div className="px-4 py-2 sm:px-6 sm:py-3.5 bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-100 shrink-0 rounded-r-xl sm:rounded-r-2xl sm:rounded-l-none price-tag-rtl transition-colors max-w-[65%] sm:max-w-none">
-                        <span className="font-arabic text-xl sm:text-2xl font-bold break-words leading-tight">{item.qAr}</span>
-                      </div>
+                      <DemonstrativeBadge
+                        text={item.qAr}
+                        direction="rtl"
+                        variant="neutral"
+                        className="sm:rounded-l-none max-w-[65%] sm:max-w-none"
+                        textClassName="text-xl sm:text-2xl"
+                      />
 
                       <div className={`flex-1 flex items-center ${item.distance === 'near' ? 'justify-start pr-3 sm:pr-6' : 'justify-end pl-3 sm:pl-6'}`}>
                         {item.distance === 'near' ? (
@@ -572,9 +481,13 @@ export function EshoArbiShikhiVol1Lesson1Engine() {
                     </div>
 
                     {/* Second Line (Mobile): Answer */}
-                    <div className="px-4 py-2 sm:px-6 sm:py-3.5 bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-950 shrink-0 rounded-l-xl sm:rounded-l-2xl sm:rounded-r-none price-tag-ltr transition-colors self-end sm:self-auto mr-auto sm:mr-0">
-                      <span className="font-arabic text-xl sm:text-2xl font-bold">{item.aAr}</span>
-                    </div>
+                    <DemonstrativeBadge
+                      text={item.aAr}
+                      direction="ltr"
+                      variant="dark"
+                      className="sm:rounded-r-none self-end sm:self-auto mr-auto sm:mr-0"
+                      textClassName="text-xl sm:text-2xl"
+                    />
                   </div>
                 ))}
               </div>
@@ -582,140 +495,26 @@ export function EshoArbiShikhiVol1Lesson1Engine() {
 
             {/* STEP 8: INTERACTIVE PICTURE Q&A (PAGE 19 - 11 EXERCISES) */}
             {currentStep === 8 && (
-              <div className="space-y-4">
-                <div className="bg-neutral-100 dark:bg-neutral-900 rounded-3xl p-6 space-y-5">
-                  <div className="flex items-center justify-center gap-1.5 pb-1">
-                    {qaExercises.map((_, i) => (
-                      <div 
-                        key={i} 
-                        className={`w-1.5 h-1.5 rounded-full transition-all ${
-                          i === activeQAIndex 
-                            ? 'bg-neutral-900 dark:bg-neutral-100 scale-125' 
-                            : i < activeQAIndex 
-                              ? 'bg-emerald-500' 
-                              : 'bg-neutral-300 dark:bg-neutral-700'
-                        }`} 
-                      />
-                    ))}
-                  </div>
-
-                  {(() => {
-                    const activeQ = qaExercises[activeQAIndex];
-                    return (
-                      <div className="space-y-4">
-                        <div className="bg-white dark:bg-neutral-800 p-3 sm:p-5 rounded-2xl flex items-center justify-between gap-4" dir="rtl">
-                          <div className="flex items-center w-full sm:flex-1">
-                            <div className="px-4 py-2 sm:px-6 sm:py-3.5 bg-neutral-100 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-100 shrink-0 rounded-r-xl sm:rounded-r-2xl sm:rounded-l-none price-tag-rtl transition-colors max-w-[65%] sm:max-w-none">
-                              <span className="font-arabic text-xl sm:text-2xl font-bold break-words leading-tight">{activeQ.questionAr}</span>
-                            </div>
-
-                            <div className={`flex-1 flex items-center ${(activeQ.questionAr.includes('هٰذَا') || activeQ.questionAr.includes('هٰذِهِ')) ? 'justify-start pr-3 sm:pr-6' : 'justify-end pl-3 sm:pl-6'}`}>
-                              {(activeQ.questionAr.includes('هٰذَا') || activeQ.questionAr.includes('هٰذِهِ')) ? (
-                                <div className="flex items-center gap-2 sm:gap-3">
-                                  <div className="w-6 sm:w-12 h-0.5 bg-neutral-300 dark:bg-neutral-600" />
-                                  <span className="text-3xl sm:text-4xl">{activeQ.emoji}</span>
-                                </div>
-                              ) : (
-                                <div className="flex items-center gap-2 sm:gap-3 w-full justify-end">
-                                  <div className="flex-1 h-0.5 bg-neutral-300 dark:bg-neutral-600 mx-2 sm:mx-4" />
-                                  <span className="text-2xl sm:text-3xl opacity-60">{activeQ.emoji}</span>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="bg-white dark:bg-neutral-800 min-h-[76px] rounded-2xl p-4 flex items-center justify-center flex-wrap gap-3" dir="rtl">
-                          {selectedChips.length === 0 ? (
-                            <span className="text-xs text-neutral-400 dark:text-neutral-500" dir="ltr">
-                              Tap word chips below in sequence to assemble your answer
-                            </span>
-                          ) : (
-                            selectedChips.map((chip, index) => (
-                              <button
-                                key={`${chip}-${index}`}
-                                onClick={() => handleRemoveChip(index)}
-                                className="bg-neutral-100 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 font-arabic font-semibold text-xl px-5 py-2.5 rounded-2xl flex items-center gap-2 cursor-pointer active:scale-95 transition-all"
-                              >
-                                <span>{chip}</span>
-                                <span className="text-xs text-neutral-400 font-mono">✕</span>
-                              </button>
-                            ))
-                          )}
-                        </div>
-
-                        <div className="flex items-center justify-center flex-wrap gap-2 sm:gap-3 pt-2" dir="rtl">
-                          {activeQ.chips.map((chip, i) => (
-                            <button
-                              key={`chip-${chip}-${i}`}
-                              onClick={() => handleChipClick(chip)}
-                              className="bg-white dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100 font-arabic font-semibold text-base sm:text-lg px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl sm:rounded-2xl transition-all active:scale-95"
-                            >
-                              {chip}
-                            </button>
-                          ))}
-                        </div>
-
-                        {verificationResult.checked && (
-                          <div
-                            className={`p-4 rounded-2xl text-center text-sm font-semibold transition-all ${
-                              verificationResult.success
-                                ? 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-900 dark:text-emerald-300'
-                                : 'bg-rose-100 dark:bg-rose-950/80 text-rose-900 dark:text-rose-300'
-                            }`}
-                          >
-                            {verificationResult.success ? (
-                              <div className="flex items-center justify-center gap-2">
-                                <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                                <span>Correct: {activeQ.expectedAnswer.join(' ')}</span>
-                              </div>
-                            ) : (
-                              <span>Try again! Select the words in order.</span>
-                            )}
-                          </div>
-                        )}
-
-                        <div className="flex items-center justify-end gap-3 pt-2">
-                          <button
-                            onClick={handleResetChips}
-                            disabled={verificationResult.success}
-                            className="px-4 py-2.5 rounded-full text-xs font-semibold bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
-                          >
-                            <RotateCcw className="w-3.5 h-3.5" />
-                            <span>Reset</span>
-                          </button>
-                          
-                          {verificationResult.success ? (
-                            <button
-                              onClick={() => {
-                                audioService.playClick();
-                                if (activeQAIndex < qaExercises.length - 1) {
-                                  setActiveQAIndex((prev) => prev + 1);
-                                  handleResetChips();
-                                } else {
-                                  handleNextStep();
-                                }
-                              }}
-                              className="px-6 py-2.5 rounded-full text-xs font-bold bg-emerald-600 text-white hover:opacity-90 active:scale-95 transition-all flex items-center gap-1.5"
-                            >
-                              <span>{activeQAIndex < qaExercises.length - 1 ? 'Next' : 'Finish'}</span>
-                              {activeQAIndex < qaExercises.length - 1 && <ArrowRight className="w-4 h-4" />}
-                            </button>
-                          ) : (
-                            <button
-                              disabled={selectedChips.length === 0}
-                              onClick={handleVerifySentence}
-                              className="px-6 py-2.5 rounded-full text-xs font-bold bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 hover:opacity-90 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                            >
-                              Verify Answer
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })()}
-                </div>
-              </div>
+              <WordChipExercise
+                exercises={qaExercises}
+                activeQAIndex={activeQAIndex}
+                selectedChips={selectedChips}
+                verificationResult={verificationResult}
+                audioEnabled={audioEnabled}
+                onChipClick={handleChipClick}
+                onRemoveChip={handleRemoveChip}
+                onResetChips={handleResetChips}
+                onVerifySentence={handleVerifySentence}
+                onNextQA={() => {
+                  audioService.playClick();
+                  if (activeQAIndex < qaExercises.length - 1) {
+                    setActiveQAIndex((prev) => prev + 1);
+                    handleResetChips();
+                  } else {
+                    handleNextStep();
+                  }
+                }}
+              />
             )}
 
             {/* STEP 9: PARTNER PRACTICE DIRECTIVE (PAGE 19 BOTTOM) */}
@@ -728,7 +527,6 @@ export function EshoArbiShikhiVol1Lesson1Engine() {
                 </div>
               </div>
             )}
-
           </div>
 
           {/* FOOTER STAGE NAVIGATION */}
@@ -767,7 +565,6 @@ export function EshoArbiShikhiVol1Lesson1Engine() {
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
-
         </div>
       </main>
     </div>

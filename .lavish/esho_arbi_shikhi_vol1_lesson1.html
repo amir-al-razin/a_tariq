@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Esho Arbi Shikhi - Vol 1 Lesson 1 (3-Segment Book Flow)</title>
+  
+  <!-- Fonts: Amiri (Arabic), Outfit (UI), Noto Serif Bengali -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap" rel="stylesheet" />
+  
+  <!-- Tailwind CSS v3 via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            arabic: ['Amiri', 'serif'],
+            sans: ['Outfit', 'sans-serif'],
+            bengali: ['Noto Serif Bengali', 'serif'],
+          },
+          colors: {
+            raw: {
+              50: '#fafafa',
+              100: '#f4f4f5',
+              200: '#e4e4e7',
+              300: '#d4d4d8',
+              400: '#a1a1aa',
+              500: '#71717a',
+              600: '#52525b',
+              700: '#3f3f46',
+              800: '#27272a',
+              900: '#18181b',
+              950: '#09090b',
+            }
+          },
+          borderRadius: {
+            '3xl': '1.75rem',
+            '4xl': '2.25rem',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * { border: 0 !important; box-shadow: none !important; outline: none !important; }
+    body { font-family: 'Outfit', sans-serif; background-color: #09090b; color: #f4f4f5; user-select: none; -webkit-font-smoothing: antialiased; }
+    .arabic-text { font-family: 'Amiri', serif; line-height: 1.8; }
+    .bengali-text { font-family: 'Noto Serif Bengali', serif; }
+    .transition-tone { transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+
+    /* RTL Price Tag Badge Shape (Rightmost start) */
+    .price-tag-rtl { position: relative; background-color: #18181b; clip-path: polygon(0% 50%, 15px 0%, 100% 0%, 100% 100%, 15px 100%); }
+    .price-tag-ltr { position: relative; background-color: #18181b; clip-path: polygon(0% 0%, calc(100% - 15px) 0%, 100% 50%, calc(100% - 15px) 100%, 0% 100%); }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #18181b; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 9999px; }
+  </style>
+</head>
+<body class="min-h-screen bg-raw-950 text-raw-100 flex flex-col justify-between p-3 md:p-6 antialiased selection:bg-raw-800">
+
+  <!-- HEADER NAVIGATION -->
+  <header class="max-w-4xl w-full mx-auto bg-raw-900 rounded-3xl p-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 transition-tone">
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-3xl bg-raw-800 flex items-center justify-center text-raw-100 font-bold font-arabic text-xl">
+        أم
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs uppercase tracking-widest text-raw-400 font-bold">3-Segment Book Flow Engine</span>
+          <span class="text-[10px] bg-raw-800 text-raw-300 px-2.5 py-0.5 rounded-full font-mono">Abu Taher Misbah</span>
+        </div>
+        <h1 class="text-lg font-bold text-raw-100 flex items-center gap-2">
+          إسأل وتعلم • الدرس الأول
+          <span class="text-xs font-normal text-raw-400">(Volume 1, Lesson 1)</span>
+        </h1>
+      </div>
+    </div>
+
+    <!-- Step Progress Bar -->
+    <div class="w-full sm:w-72 flex flex-col gap-1.5">
+      <div class="flex justify-between text-xs font-medium text-raw-400">
+        <span id="step-label">Part 1: Initial Vocab & Near/Far</span>
+        <span id="step-percent" class="font-mono">20%</span>
+      </div>
+      <div class="w-full bg-raw-950 h-3 rounded-full overflow-hidden p-0.5">
+        <div id="progress-bar" class="bg-raw-100 h-full rounded-full transition-all duration-500 ease-out" style="width: 20%"></div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-2">
+      <button id="audio-toggle-btn" onclick="toggleAudio()" class="p-3 bg-raw-800 hover:bg-raw-700 text-raw-200 rounded-3xl transition-tone text-xs font-semibold flex items-center gap-2">
+        <span id="audio-icon">🔊</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN PLAYABLE CANVAS -->
+  <main class="max-w-4xl w-full mx-auto flex-1 flex flex-col justify-center mb-6">
+    <div id="learning-stage" class="bg-raw-900 rounded-3xl p-6 sm:p-8 min-h-[540px] flex flex-col justify-between transition-tone relative">
+      
+      <!-- STEP RENDER AREA -->
+      <div id="step-content-area" class="w-full flex-1 flex flex-col justify-center">
+        <!-- JS rendered -->
+      </div>
+
+      <!-- FOOTER STAGE NAVIGATION -->
+      <div class="mt-8 pt-6 border-t-0 bg-raw-950/50 rounded-3xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <button id="prev-btn" onclick="prevStep()" class="w-full sm:w-auto px-6 py-3.5 bg-raw-800 hover:bg-raw-700 text-raw-300 disabled:opacity-30 disabled:cursor-not-allowed rounded-3xl font-semibold text-sm transition-tone flex items-center justify-center gap-2">
+          ← Previous Section
+        </button>
+
+        <div class="flex items-center gap-1.5" id="dots-indicator">
+          <!-- Rendered by JS -->
+        </div>
+
+        <button id="next-btn" onclick="nextStep()" class="w-full sm:w-auto px-8 py-3.5 bg-raw-100 hover:bg-white text-raw-950 rounded-3xl font-bold text-sm transition-tone flex items-center justify-center gap-2">
+          Next Section →
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="max-w-4xl w-full mx-auto text-center text-xs text-raw-500 py-4">
+    Faithful 3-Segment adaptation of <span class="text-raw-300 font-semibold">Esho Arbi Shikhi (Vol 1, Lesson 1)</span> by Maulana Abu Taher Misbah.
+  </footer>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    let currentStep = 0;
+    let audioEnabled = true;
+    let revealedVocab = {};
+    let activeQAStep = 0;
+    let selectedAnswerChips = [];
+    let isAnswerVerified = false;
+    let verificationSuccess = false;
+
+    // Audio Synth
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function playTone(freq, type = 'sine', duration = 0.15) {
+      if (!audioEnabled) return;
+      try {
+        if (!audioCtx) audioCtx = new AudioCtx();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function playClick() { playTone(400, 'triangle', 0.05); }
+    function playSuccess() {
+      playTone(523.25, 'sine', 0.1);
+      setTimeout(() => playTone(659.25, 'sine', 0.15), 80);
+      setTimeout(() => playTone(783.99, 'sine', 0.25), 160);
+    }
+
+    function speakArabic(text) {
+      if (!audioEnabled) return;
+      playClick();
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'ar-SA';
+        u.rate = 0.85;
+        window.speechSynthesis.speak(u);
+      }
+    }
+
+    // 3 SEGMENTS OF VOCABULARY AS IN THE PHYSICAL BOOK
+    const vocabSegment1 = [
+      { id: 1, ar: 'كِتَابٌ', roman: 'kitābun', bn: 'একটি বই' },
+      { id: 2, ar: 'قَلَمٌ', roman: 'qalamun', bn: 'একটি কলম' },
+      { id: 3, ar: 'كُرْسِيٌّ', roman: 'kursiyyun', bn: 'একটি চেয়ার' },
+      { id: 4, ar: 'بَيْتٌ', roman: 'baytun', bn: 'একটি ঘর' },
+      { id: 5, ar: 'بَابٌ', roman: 'bābun', bn: 'একটি দরজা' },
+      { id: 6, ar: 'مِصْبَاحٌ', roman: 'miṣbāḥun', bn: 'একটি বাতি' },
+      { id: 7, ar: 'جِدَارٌ', roman: 'jidārun', bn: 'একটি দেয়াল' },
+      { id: 8, ar: 'سَرِيْرٌ', roman: 'sarīrun', bn: 'একটি খাট' },
+    ];
+
+    const vocabSegment2 = [
+      { id: 9, ar: 'مَدْرَسَةٌ', roman: 'madrasatun', bn: 'একটি মাদ্রাসা' },
+      { id: 10, ar: 'كُرَّاسَةٌ', roman: 'kurrāsatun', bn: 'একটি খাতা' },
+      { id: 11, ar: 'طَاوِلَةٌ', roman: 'ṭāwilatun', bn: 'একটি টেবিল' },
+      { id: 12, ar: 'حَقِيْبَةٌ', roman: 'ḥaqībatun', bn: 'একটি ব্যাগ' },
+      { id: 13, ar: 'حُجْرَةٌ', roman: 'ḥujratun', bn: 'একটি কামরা' },
+      { id: 14, ar: 'نَافِذَةٌ', roman: 'nāfidhatun', bn: 'একটি জানালা' },
+      { id: 15, ar: 'سَاعَةٌ', roman: 'sā‘atun', bn: 'একটি ঘড়ি' },
+      { id: 16, ar: 'نَظَّارَةٌ', roman: 'naẓẓāratun', bn: 'একটি চশমা' },
+    ];
+
+    const vocabSegment3 = [
+      { id: 17, ar: 'قُفْلٌ', roman: 'quflun', bn: 'একটি তালা' },
+      { id: 18, ar: 'مِفْتَاحٌ', roman: 'miftāḥun', bn: 'একটি চাবি' },
+      { id: 19, ar: 'صُنْدُوْقٌ', roman: 'ṣundūqun', bn: 'একটি বাক্স' },
+      { id: 20, ar: 'مِظَلَّةٌ', roman: 'miẓallatun', bn: 'একটি ছাতা' },
+      { id: 21, ar: 'سَيَّارَةٌ', roman: 'sayyāratun', bn: 'একটি কার' },
+      { id: 22, ar: 'دَرَّاجَةٌ', roman: 'darrājatun', bn: 'একটি সাইকেল' }
+    ];
+
+    const qaExercises = [
+      {
+        questionAr: 'مَا هَذَا؟',
+        distance: 'near',
+        image: '🪑',
+        expectedAnswer: ['هَذَا', 'كُرْسِيٌّ'],
+        chips: ['كُرْسِيٌّ', 'ذَلِكَ', 'هَذَا', 'بَيْتٌ', 'قَلَمٌ']
+      },
+      {
+        questionAr: 'مَا ذَلِكَ؟',
+        distance: 'far',
+        image: '🏠',
+        expectedAnswer: ['ذَلِكَ', 'بَيْتٌ'],
+        chips: ['هَذَا', 'بَيْتٌ', 'ذَلِكَ', 'كِتَابٌ', 'مَسْجِدٌ']
+      },
+      {
+        questionAr: 'مَا هَذِهِ؟',
+        distance: 'near',
+        image: '📓',
+        expectedAnswer: ['هَذِهِ', 'كُرَّاسَةٌ'],
+        chips: ['تِلْكَ', 'كُرَّاسَةٌ', 'هَذِهِ', 'طَاوِلَةٌ', 'هَذَا']
+      }
+    ];
+
+    const STEPS = [
+      { title: 'Segment 1: Initial Masculine Vocabulary', render: renderSegment1 },
+      { title: 'Segment 1 Exercises: Near & Far Pointers (هَذَا / ذَلِكَ)', render: renderSegment1Drill },
+      { title: 'Segment 2: Feminine Vocabulary (ending in ة)', render: renderSegment2 },
+      { title: 'Segment 2 Exercises: Feminine Pointers (هَذِهِ / تِلْكَ)', render: renderSegment2Drill },
+      { title: 'Segment 3: Household & Transport Vocab + Badge Q&A', render: renderSegment3 }
+    ];
+
+    // SEGMENT 1 VOCAB
+    function renderSegment1() {
+      return `
+        <div class="space-y-6">
+          <div class="bg-raw-950 p-5 rounded-3xl">
+            <span class="text-xs font-mono uppercase tracking-widest text-raw-400 font-bold">Segment 1 • المفردات الأولى (المذكر)</span>
+            <h2 class="text-xl font-bold text-raw-100 mt-0.5">1st Vocabulary Segment (Masculine Nouns)</h2>
+            <p class="text-xs text-raw-400 mt-1">Read vowelled Arabic first as in the book table. Tap for teacher audio & transliteration help.</p>
+          </div>
+
+          <div class="bg-raw-950 rounded-3xl p-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              ${vocabSegment1.map(v => {
+                const isTapped = revealedVocab[v.id];
+                return `
+                  <div onclick="tapVocab(${v.id}, '${v.ar}')" class="bg-raw-900 hover:bg-raw-800 active:scale-98 transition-tone p-4 rounded-2xl flex items-center justify-between cursor-pointer">
+                    <div class="flex items-center gap-4" dir="rtl">
+                      <span class="arabic-text text-2xl font-bold text-raw-100">${v.ar}</span>
+                      <span class="text-sm font-bengali text-raw-300 font-medium">${v.bn}</span>
+                    </div>
+
+                    <div class="text-right">
+                      ${isTapped ? `
+                        <span class="text-xs font-mono text-raw-300 block">${v.roman}</span>
+                        <span class="text-[10px] text-green-400 font-bold block">🔊 Audio Played</span>
+                      ` : `
+                        <span class="text-[10px] text-raw-500 font-mono">Tap for Audio</span>
+                      `}
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // SEGMENT 1 DRILL (هَذَا / ذَلِكَ)
+    function renderSegment1Drill() {
+      return `
+        <div class="space-y-6">
+          <div class="bg-raw-950 p-5 rounded-3xl">
+            <span class="text-xs font-mono uppercase tracking-widest text-raw-400 font-bold">Segment 1 Demonstration • هَذَا / ذَلِكَ</span>
+            <h2 class="text-xl font-bold text-raw-100 mt-0.5">Spatial Demonstration for 1st Segment</h2>
+            <p class="text-xs text-raw-400 mt-1">Rightmost: Arabic sentence tag badge. Image placed to its left at close vs far distance.</p>
+          </div>
+
+          <div class="space-y-4">
+            <div onclick="speakArabic('هَذَا كِتَابٌ')" class="bg-raw-950 p-6 rounded-3xl flex items-center justify-between cursor-pointer group" dir="rtl">
+              <div class="price-tag-rtl px-8 py-4 text-raw-100 shrink-0">
+                <span class="arabic-text text-3xl font-bold">هَذَا كِتَابٌ</span>
+              </div>
+              <div class="flex-1 flex items-center justify-start pr-6 gap-3">
+                <span class="text-5xl transition-transform group-hover:scale-110">📖</span>
+                <span class="text-xs font-mono bg-raw-900 px-3 py-1 rounded-full text-raw-400" dir="ltr">Near</span>
+              </div>
+            </div>
+
+            <div onclick="speakArabic('ذَلِكَ قَلَمٌ')" class="bg-raw-950 p-6 rounded-3xl flex items-center justify-between cursor-pointer group" dir="rtl">
+              <div class="price-tag-rtl px-8 py-4 text-raw-100 shrink-0">
+                <span class="arabic-text text-3xl font-bold">ذَلِكَ قَلَمٌ</span>
+              </div>
+              <div class="flex-1 flex items-center justify-end pl-6 gap-3">
+                <span class="text-xs font-mono bg-raw-900 px-3 py-1 rounded-full text-raw-400" dir="ltr">Far</span>
+                <span class="text-3xl opacity-60 transition-transform group-hover:scale-110">✏️</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // SEGMENT 2 VOCAB
+    function renderSegment2() {
+      return `
+        <div class="space-y-6">
+          <div class="bg-raw-950 p-5 rounded-3xl">
+            <span class="text-xs font-mono uppercase tracking-widest text-raw-400 font-bold">Segment 2 • المفردات الثانية (المؤنث)</span>
+            <h2 class="text-xl font-bold text-raw-100 mt-0.5">2nd Vocabulary Segment (Feminine Nouns with ة)</h2>
+            <p class="text-xs text-raw-400 mt-1">Introduced after initial masculine exercises. Read vowelled Arabic first.</p>
+          </div>
+
+          <div class="bg-raw-950 rounded-3xl p-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              ${vocabSegment2.map(v => {
+                const isTapped = revealedVocab[v.id];
+                return `
+                  <div onclick="tapVocab(${v.id}, '${v.ar}')" class="bg-raw-900 hover:bg-raw-800 active:scale-98 transition-tone p-4 rounded-2xl flex items-center justify-between cursor-pointer">
+                    <div class="flex items-center gap-4" dir="rtl">
+                      <span class="arabic-text text-2xl font-bold text-raw-100">${v.ar}</span>
+                      <span class="text-sm font-bengali text-raw-300 font-medium">${v.bn}</span>
+                    </div>
+
+                    <div class="text-right">
+                      ${isTapped ? `
+                        <span class="text-xs font-mono text-raw-300 block">${v.roman}</span>
+                        <span class="text-[10px] text-green-400 font-bold block">🔊 Audio Played</span>
+                      ` : `
+                        <span class="text-[10px] text-raw-500 font-mono">Tap for Audio</span>
+                      `}
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // SEGMENT 2 DRILL (هَذِهِ / تِلْكَ)
+    function renderSegment2Drill() {
+      return `
+        <div class="space-y-6">
+          <div class="bg-raw-950 p-5 rounded-3xl">
+            <span class="text-xs font-mono uppercase tracking-widest text-raw-400 font-bold">Segment 2 Demonstration • هَذِهِ / تِلْكَ</span>
+            <h2 class="text-xl font-bold text-raw-100 mt-0.5">Feminine Pointers Demonstration</h2>
+            <p class="text-xs text-raw-400 mt-1">Feminine demonstratives naturally pair with nouns ending in ة.</p>
+          </div>
+
+          <div class="space-y-4">
+            <div onclick="speakArabic('هَذِهِ مَدْرَسَةٌ')" class="bg-raw-950 p-6 rounded-3xl flex items-center justify-between cursor-pointer group" dir="rtl">
+              <div class="price-tag-rtl px-8 py-4 text-raw-100 shrink-0">
+                <span class="arabic-text text-3xl font-bold">هَذِهِ مَدْرَسَةٌ</span>
+              </div>
+              <div class="flex-1 flex items-center justify-start pr-6 gap-3">
+                <span class="text-5xl transition-transform group-hover:scale-110">🏫</span>
+                <span class="text-xs font-mono bg-raw-900 px-3 py-1 rounded-full text-raw-400" dir="ltr">Fem Near</span>
+              </div>
+            </div>
+
+            <div onclick="speakArabic('تِلْكَ كُرَّاسَةٌ')" class="bg-raw-950 p-6 rounded-3xl flex items-center justify-between cursor-pointer group" dir="rtl">
+              <div class="price-tag-rtl px-8 py-4 text-raw-100 shrink-0">
+                <span class="arabic-text text-3xl font-bold">تِلْكَ كُرَّاسَةٌ</span>
+              </div>
+              <div class="flex-1 flex items-center justify-end pl-6 gap-3">
+                <span class="text-xs font-mono bg-raw-900 px-3 py-1 rounded-full text-raw-400" dir="ltr">Fem Far</span>
+                <span class="text-3xl opacity-60 transition-transform group-hover:scale-110">📓</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // SEGMENT 3 VOCAB & Q&A
+    function renderSegment3() {
+      return `
+        <div class="space-y-6">
+          <div class="bg-raw-950 p-5 rounded-3xl">
+            <span class="text-xs font-mono uppercase tracking-widest text-raw-400 font-bold">Segment 3 • المفردات الثالثة والأسئلة</span>
+            <h2 class="text-xl font-bold text-raw-100 mt-0.5">3rd Vocabulary Segment & RTL Badge Q&A</h2>
+            <p class="text-xs text-raw-400 mt-1">Final vocabulary segment introducing locks, keys, boxes, watches, umbrellas, and transport objects.</p>
+          </div>
+
+          <div class="bg-raw-950 rounded-3xl p-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              ${vocabSegment3.map(v => {
+                const isTapped = revealedVocab[v.id];
+                return `
+                  <div onclick="tapVocab(${v.id}, '${v.ar}')" class="bg-raw-900 hover:bg-raw-800 active:scale-98 transition-tone p-4 rounded-2xl flex items-center justify-between cursor-pointer">
+                    <div class="flex items-center gap-4" dir="rtl">
+                      <span class="arabic-text text-2xl font-bold text-raw-100">${v.ar}</span>
+                      <span class="text-sm font-bengali text-raw-300 font-medium">${v.bn}</span>
+                    </div>
+
+                    <div class="text-right">
+                      ${isTapped ? `
+                        <span class="text-xs font-mono text-raw-300 block">${v.roman}</span>
+                        <span class="text-[10px] text-green-400 font-bold block">🔊 Audio Played</span>
+                      ` : `
+                        <span class="text-[10px] text-raw-500 font-mono">Tap for Audio</span>
+                      `}
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // STATE CONTROL
+    function updateView() {
+      const step = STEPS[currentStep];
+      document.getElementById('step-content-area').innerHTML = step.render();
+      document.getElementById('step-label').textContent = step.title;
+      const percent = Math.round(((currentStep + 1) / STEPS.length) * 100);
+      document.getElementById('step-percent').textContent = `${percent}%`;
+      document.getElementById('progress-bar').style.width = `${percent}%`;
+      
+      document.getElementById('prev-btn').disabled = (currentStep === 0);
+      document.getElementById('next-btn').textContent = (currentStep === STEPS.length - 1) ? 'Lesson Finished 🎉' : 'Next Section →';
+
+      const dotsContainer = document.getElementById('dots-indicator');
+      dotsContainer.innerHTML = STEPS.map((_, i) => `
+        <div onclick="goToStep(${i})" class="w-2.5 h-2.5 rounded-full cursor-pointer transition-tone ${i === currentStep ? 'bg-raw-100 scale-125' : 'bg-raw-800 hover:bg-raw-700'}"></div>
+      `).join('');
+    }
+
+    function nextStep() {
+      playClick();
+      if (currentStep < STEPS.length - 1) {
+        currentStep++;
+        updateView();
+      } else {
+        playSuccess();
+        goToStep(0);
+      }
+    }
+
+    function prevStep() {
+      playClick();
+      if (currentStep > 0) {
+        currentStep--;
+        updateView();
+      }
+    }
+
+    function goToStep(idx) {
+      playClick();
+      currentStep = idx;
+      updateView();
+    }
+
+    function tapVocab(id, arText) {
+      speakArabic(arText);
+      revealedVocab[id] = true;
+      updateView();
+    }
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      document.getElementById('audio-icon').textContent = audioEnabled ? '🔊' : '🔇';
+    }
+
+    window.addEventListener('DOMContentLoaded', updateView);
+  </script>
+</body>
+</html>

@@ -12,3 +12,6 @@ export * from './VerbTableView';
 export * from './MasdarFactoryView';
 export * from './VocabularyView';
 export * from './LessonHeader';
+export * from './DemonstrativeBadge';
+export * from './VocabularyFlashcard';
+export * from './WordChipExercise';

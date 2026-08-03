@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface TariqLogoProps {
   className?: string
   iconOnly?: boolean

@@ -19,7 +19,6 @@ import {
   MasdarFactoryView
 } from '../pedagogy-v2'
 import { setChunkProgress } from '../../state/progressStore'
-import FontToggle from '../FontToggle'
 
 type Props = {
   volumeId: 1 | 2 | 3
@@ -35,7 +34,7 @@ export const ChunkEngineScreen: React.FC<Props> = ({
   chunkId,
 }) => {
   const navigate = useNavigate()
-  const [isDark, setIsDark] = useState(false)
+  const [, setIsDark] = useState(false)
   const [progress, setProgress] = useState(0)
   const [isComplete, setIsComplete] = useState(false)
 

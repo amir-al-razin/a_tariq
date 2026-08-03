@@ -57,14 +57,7 @@ interface VerseAPI {
   words: WordAPI[];
 }
 
-function toArabicNumeral(num: number): string {
-  const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-  return num
-    .toString()
-    .split('')
-    .map((digit) => arabicDigits[parseInt(digit, 10)] || digit)
-    .join('');
-}
+
 
 function getSurahGlyph(chapterId: number): string {
   return String(chapterId).padStart(3, '0');
@@ -492,7 +485,7 @@ function MushafV2Page() {
                   (w) => w.verse_key?.endsWith(':1') && w.position === 1 && w.char_type_name === 'word'
                 );
                 const chapter = surahStartWord ? chaptersMap.get(surahStartWord.chapter_id) : null;
-                const showBismillah = chapter && chapter.bismillah_pre && chapter.id !== 1 && chapter.id !== 9;
+
 
                 return (
                   <React.Fragment key={lineGroup.lineNumber}>

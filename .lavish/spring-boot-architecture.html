@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="emerald">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Integration Architecture</title>
+    
+    <!-- Tailwind v4 + DaisyUI v5 (from CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5.0.0-beta.8/daisyui.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Mermaid for Diagrams -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: 'default',
+            fontFamily: 'Inter, sans-serif'
+        });
+    </script>
+    
+    <!-- Google Fonts for UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Quicksand', sans-serif; }
+    </style>
+</head>
+<body class="bg-base-200 min-h-screen p-8 text-base-content">
+    
+    <div class="max-w-5xl mx-auto space-y-8">
+        
+        <!-- Header -->
+        <header class="text-center space-y-4">
+            <h1 class="text-4xl font-bold text-primary">Java Lab Integration</h1>
+            <p class="text-xl text-base-content/70">Three architectural proposals for incorporating Spring Boot into the Tariq App</p>
+        </header>
+
+        <!-- Option 1: Progress & Analytics Microservice -->
+        <section class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <div class="badge badge-primary badge-lg mb-2">Option 1 (Recommended)</div>
+                <h2 class="card-title text-2xl mb-4">The "Progress & Analytics" Microservice</h2>
+                
+                <p class="mb-4 text-lg">
+                    In this model, the TanStack Start app continues to handle the UI and static curriculum data, but the Spring Boot app acts as a dedicated backend for tracking user progress, test scores, XP, and analytics. 
+                </p>
+                
+                <div class="flex flex-col lg:flex-row gap-8 items-center mb-6">
+                    <div class="flex-1 w-full overflow-x-auto">
+                        <pre class="mermaid">
+                            graph TD
+                            A[TanStack Start Frontend] -->|UI & Local Data| A
+                            A -->|POST /api/progress| B(Spring Boot Backend)
+                            A -->|GET /api/leaderboard| B
+                            B --> C[(PostgreSQL DB)]
+                        </pre>
+                    </div>
+                    <div class="flex-1 w-full space-y-4">
+                        <div class="alert alert-success">
+                            <span class="font-bold">Pros:</span> 
+                            <ul class="list-disc list-inside mt-2">
+                                <li>Clean separation of concerns.</li>
+                                <li>TanStack Start remains fast for static curriculum content.</li>
+                                <li>Fulfills lab requirements perfectly with clear REST APIs and DB integration.</li>
+                                <li>Easy to document (Swagger/OpenAPI).</li>
+                            </ul>
+                        </div>
+                        <div class="alert alert-warning">
+                            <span class="font-bold">Cons:</span>
+                            <ul class="list-disc list-inside mt-2">
+                                <li>Requires maintaining two separate deployment environments (Node.js + Java).</li>
+                                <li>Need to handle CORS and JWT authentication between the two.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Option 2: The Full Headless CMS (Curriculum Delivery) -->
+        <section class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <div class="badge badge-secondary badge-lg mb-2">Option 2</div>
+                <h2 class="card-title text-2xl mb-4">The Full Headless CMS</h2>
+                
+                <p class="mb-4 text-lg">
+                    Instead of hardcoding curriculum data (like lesson payloads) in TypeScript, we move ALL curriculum content into a relational database managed by Spring Boot. The frontend simply fetches lesson JSON payloads from the Spring Boot API.
+                </p>
+                
+                <div class="flex flex-col lg:flex-row gap-8 items-center mb-6">
+                    <div class="flex-1 w-full overflow-x-auto">
+                        <pre class="mermaid">
+                            graph TD
+                            A[TanStack Start SSR] -->|Fetch /api/lessons/:id| B(Spring Boot Backend)
+                            B --> C[(PostgreSQL DB)]
+                            A -->|Renders HTML| D[User Browser]
+                        </pre>
+                    </div>
+                    <div class="flex-1 w-full space-y-4">
+                        <div class="alert alert-success">
+                            <span class="font-bold">Pros:</span> 
+                            <ul class="list-disc list-inside mt-2">
+                                <li>Very impressive for a university lab project.</li>
+                                <li>Allows curriculum updates without recompiling the web app.</li>
+                                <li>TanStack Start's SSR works beautifully with external APIs.</li>
+                            </ul>
+                        </div>
+                        <div class="alert alert-warning">
+                            <span class="font-bold">Cons:</span>
+                            <ul class="list-disc list-inside mt-2">
+                                <li>Massive data entry overhead (migrating all TypeScript objects to SQL).</li>
+                                <li>Latency issues if the Spring Boot server isn't fast enough.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Option 3: Backend-for-Frontend (BFF) Pattern -->
+        <section class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <div class="badge badge-accent badge-lg mb-2">Option 3</div>
+                <h2 class="card-title text-2xl mb-4">The Gateway / BFF Pattern</h2>
+                
+                <p class="mb-4 text-lg">
+                    Spring Boot acts as the main entry point (Gateway) for the application. It handles authentication and session management. It serves the frontend assets (or proxies requests to TanStack Start) and handles its own business logic.
+                </p>
+                
+                <div class="flex flex-col lg:flex-row gap-8 items-center mb-6">
+                    <div class="flex-1 w-full overflow-x-auto">
+                        <pre class="mermaid">
+                            graph TD
+                            User -->|Requests| B(Spring Boot Gateway)
+                            B -->|Proxy UI Routes| A[TanStack Start]
+                            B -->|Handle Data Routes| C[(Database)]
+                        </pre>
+                    </div>
+                    <div class="flex-1 w-full space-y-4">
+                        <div class="alert alert-success">
+                            <span class="font-bold">Pros:</span> 
+                            <ul class="list-disc list-inside mt-2">
+                                <li>Avoids CORS issues entirely (same origin).</li>
+                                <li>Spring Security can handle all authentication easily.</li>
+                            </ul>
+                        </div>
+                        <div class="alert alert-warning">
+                            <span class="font-bold">Cons:</span>
+                            <ul class="list-disc list-inside mt-2">
+                                <li>Complex routing setup.</li>
+                                <li>Might fight against TanStack Start's built-in full-stack capabilities.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Section -->
+        <div class="text-center py-8">
+            <h3 class="text-2xl font-bold mb-4">Which approach would you like to take?</h3>
+            <p class="text-lg text-base-content/80 mb-6">You can leave comments directly on this page or reply in the chat.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

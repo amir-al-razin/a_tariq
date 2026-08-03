@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 2 Interactive Engine Prototype</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: {} }
+    }
+  </script>
+  
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <style>
+    body { background-color: #fafafa; }
+    .dark body { background-color: #171717; }
+    .font-arabic { font-family: 'Noto Naskh Arabic', serif; }
+    .price-tag-rtl { clip-path: polygon(0% 50%, 15px 0%, 100% 0%, 100% 100%, 15px 100%); }
+    .price-tag-ltr { clip-path: polygon(0 0, calc(100% - 15px) 0%, 100% 50%, calc(100% - 15px) 100%, 0 100%); }
+    ::-webkit-scrollbar { width: 0px; background: transparent; }
+  </style>
+</head>
+<body class="transition-colors duration-300">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // --- ICONS ---
+    const CheckCircle = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>;
+    const ArrowLeft = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>;
+    const ArrowRight = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>;
+    const RotateCcw = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>;
+
+    // --- DATA ---
+    const vocabAdjectives = [
+      { id: 1, ar: 'جَدِيدٌ - جَدِيدَةٌ', en: 'New' },
+      { id: 2, ar: 'قَدِيمٌ - قَدِيمَةٌ', en: 'Old' },
+      { id: 3, ar: 'جَمِيلٌ - جَمِيلَةٌ', en: 'Beautiful' },
+      { id: 4, ar: 'كَبِيرٌ - كَبِيرَةٌ', en: 'Big' },
+      { id: 5, ar: 'صَغِيرٌ - صَغِيرَةٌ', en: 'Small' },
+      { id: 6, ar: 'جَيِّدٌ - جَيِّدَةٌ', en: 'Good' }
+    ];
+
+    const vocabNouns = [
+      { id: 10, ar: 'فِرَاشٌ', en: 'A bed' },
+      { id: 11, ar: 'وِسَادَةٌ', en: 'A pillow' },
+      { id: 12, ar: 'قَمِيصٌ', en: 'A shirt' },
+      { id: 13, ar: 'قَلَنْسُوَةٌ', en: 'A cap' },
+      { id: 14, ar: 'لِبَاسٌ', en: 'A garment' },
+      { id: 15, ar: 'عِمَامَةٌ', en: 'A turban' },
+      { id: 16, ar: 'مِنْدِيلٌ', en: 'A handkerchief' },
+      { id: 17, ar: 'حِذَاءٌ', en: 'A shoe' },
+      { id: 18, ar: 'نَظِيفٌ - نَظِيفَةٌ', en: 'Clean' },
+      { id: 19, ar: 'وَسِخٌ - وَسِخَةٌ', en: 'Dirty' }
+    ];
+
+    const readingPairsTranslations = [
+      { id: 1, q: 'عَلَمٌ جَمِيلٌ', expected: ['A', 'beautiful', 'flag'], chips: ['A', 'beautiful', 'flag', 'garden', 'good'] },
+      { id: 2, q: 'حَدِيقَةٌ جَمِيلَةٌ', expected: ['A', 'beautiful', 'garden'], chips: ['A', 'beautiful', 'flag', 'garden', 'good'] },
+      { id: 3, q: 'قُفْلٌ جَيِّدٌ', expected: ['A', 'good', 'lock'], chips: ['A', 'good', 'lock', 'fan', 'big'] },
+      { id: 4, q: 'مِرْوَحَةٌ جَيِّدَةٌ', expected: ['A', 'good', 'fan'], chips: ['A', 'good', 'lock', 'fan', 'big'] },
+      { id: 5, q: 'مَسْجِدٌ كَبِيرٌ', expected: ['A', 'big', 'mosque'], chips: ['A', 'big', 'mosque', 'school', 'small'] },
+      { id: 6, q: 'مَدْرَسَةٌ كَبِيرَةٌ', expected: ['A', 'big', 'school'], chips: ['A', 'big', 'mosque', 'school', 'small'] },
+      { id: 7, q: 'بَيْتٌ صَغِيرٌ', expected: ['A', 'small', 'house'], chips: ['A', 'small', 'house', 'room', 'old'] },
+      { id: 8, q: 'حُجْرَةٌ صَغِيرَةٌ', expected: ['A', 'small', 'room'], chips: ['A', 'small', 'house', 'room', 'old'] },
+      { id: 9, q: 'مِصْبَاحٌ قَدِيمٌ', expected: ['An', 'old', 'lamp'], chips: ['An', 'old', 'lamp', 'clock', 'new'] },
+      { id: 10, q: 'سَاعَةٌ قَدِيمَةٌ', expected: ['An', 'old', 'clock'], chips: ['An', 'old', 'lamp', 'clock', 'new'] }
+    ];
+
+    const fillAdjective = [
+      { id: 1, q: 'مِظَلَّةٌ ــــــ', expected: ['قَدِيمَةٌ'], chips: ['قَدِيمٌ', 'قَدِيمَةٌ', 'كَبِيرٌ'] },
+      { id: 2, q: 'مِفْتَاحٌ ــــــ', expected: ['صَغِيرٌ'], chips: ['صَغِيرٌ', 'صَغِيرَةٌ', 'جَمِيلَةٌ'] },
+      { id: 3, q: 'بَيْتٌ ــــــ', expected: ['جَدِيدٌ'], chips: ['جَدِيدَةٌ', 'جَدِيدٌ', 'صَغِيرَةٌ'] },
+      { id: 4, q: 'نَظَّارَةٌ ــــــ', expected: ['جَيِّدَةٌ'], chips: ['جَيِّدَةٌ', 'جَيِّدٌ', 'قَدِيمٌ'] },
+      { id: 5, q: 'مِرْوَحَةٌ ــــــ', expected: ['جَمِيلَةٌ'], chips: ['جَمِيلَةٌ', 'كَبِيرٌ', 'جَمِيلٌ'] }
+    ];
+
+    const fillNoun = [
+      { id: 6, q: 'ــــــ قَدِيمٌ', expected: ['قُفْلٌ'], chips: ['قُفْلٌ', 'سَاعَةٌ', 'حَقِيبَةٌ'] },
+      { id: 7, q: 'ــــــ جَدِيدَةٌ', expected: ['مِسْطَرَةٌ'], chips: ['قَلَمٌ', 'مِسْطَرَةٌ', 'كِتَابٌ'] },
+      { id: 8, q: 'ــــــ جَمِيلٌ', expected: ['عَلَمٌ'], chips: ['عَلَمٌ', 'حَدِيقَةٌ', 'مَدْرَسَةٌ'] },
+      { id: 9, q: 'ــــــ صَغِيرَةٌ', expected: ['حُجْرَةٌ'], chips: ['بَيْتٌ', 'حُجْرَةٌ', 'مَسْجِدٌ'] },
+      { id: 10, q: 'ــــــ كَبِيرٌ', expected: ['بَابٌ'], chips: ['بَابٌ', 'نَافِذَةٌ', 'كُرَّاسَةٌ'] }
+    ];
+
+    const pointerDrills = [
+      { id: 1, ar: 'هَذَا كِتَابٌ جَدِيدٌ', emoji: '📖', distance: 'near' },
+      { id: 2, ar: 'تِلْكَ سَاعَةٌ جَدِيدَةٌ', emoji: '⌚', distance: 'far' },
+      { id: 3, ar: 'ذَلِكَ عَلَمٌ جَمِيلٌ', emoji: '🎌', distance: 'far' },
+      { id: 4, ar: 'هَذِهِ مِرْوَحَةٌ جَيِّدَةٌ', emoji: '🪭', distance: 'near' },
+      { id: 5, ar: 'تِلْكَ حَقِيبَةٌ صَغِيرَةٌ', emoji: '🎒', distance: 'far' },
+      { id: 6, ar: 'تِلْكَ حَقِيبَةٌ جَمِيلَةٌ', emoji: '🎒', distance: 'far' },
+      { id: 7, ar: 'هَذَا بَيْتٌ صَغِيرٌ', emoji: '🏠', distance: 'near' },
+      { id: 8, ar: 'ذَلِكَ مَسْجِدٌ كَبِيرٌ', emoji: '🕌', distance: 'far' },
+      { id: 9, ar: 'هَذِهِ مِظَلَّةٌ قَدِيمَةٌ', emoji: '☂️', distance: 'near' },
+      { id: 10, ar: 'تِلْكَ نَظَّارَةٌ جَدِيدَةٌ', emoji: '👓', distance: 'far' },
+      { id: 11, ar: 'هَذَا سَرِيرٌ', emoji: '🛏️', distance: 'near' },
+      { id: 12, ar: 'ذَلِكَ قُفْلٌ', emoji: '🔒', distance: 'far' }
+    ];
+
+    const translationPile = [
+      { id: 1, q: 'هَذَا مَسْجِدٌ جَدِيدٌ', expected: ['This', 'is', 'a', 'new', 'mosque'], chips: ['This', 'a', 'is', 'new', 'house', 'mosque', 'old'] },
+      { id: 2, q: 'هَذَا قُفْلٌ جَيِّدٌ', expected: ['This', 'is', 'a', 'good', 'lock'], chips: ['This', 'is', 'a', 'good', 'lock', 'That', 'new'] },
+      { id: 3, q: 'هَذَا فِرَاشٌ نَظِيفٌ', expected: ['This', 'is', 'a', 'clean', 'bed'], chips: ['This', 'is', 'a', 'clean', 'bed', 'shirt', 'That'] },
+      { id: 4, q: 'تِلْكَ حُجْرَةٌ نَظِيفَةٌ', expected: ['That', 'is', 'a', 'clean', 'room'], chips: ['That', 'is', 'a', 'dirty', 'clean', 'room', 'bed'] },
+      { id: 5, q: 'ذَلِكَ مِنْدِيلٌ صَغِيرٌ', expected: ['That', 'is', 'a', 'small', 'handkerchief'], chips: ['This', 'is', 'a', 'small', 'handkerchief', 'That', 'big'] },
+      { id: 6, q: 'هَذِهِ عِمَامَةٌ جَدِيدَةٌ', expected: ['This', 'is', 'a', 'new', 'turban'], chips: ['This', 'is', 'a', 'new', 'turban', 'old', 'shirt'] },
+      { id: 7, q: 'هَذَا قَمِيصٌ جَدِيدٌ', expected: ['This', 'is', 'a', 'new', 'shirt'], chips: ['This', 'is', 'a', 'new', 'shirt', 'old', 'cap'] },
+      { id: 8, q: 'تِلْكَ قَلَنْسُوَةٌ جَدِيدَةٌ', expected: ['That', 'is', 'a', 'new', 'cap'], chips: ['That', 'is', 'a', 'new', 'cap', 'dirty', 'garment'] },
+      { id: 9, q: 'هَذَا لِبَاسٌ نَظِيفٌ', expected: ['This', 'is', 'a', 'clean', 'garment'], chips: ['This', 'is', 'a', 'clean', 'garment', 'dirty', 'shoe'] },
+      { id: 10, q: 'ذَلِكَ حِذَاءٌ صَغِيرٌ', expected: ['That', 'is', 'a', 'small', 'shoe'], chips: ['That', 'is', 'a', 'small', 'shoe', 'big', 'pillow'] },
+      { id: 11, q: 'هَذِهِ وِسَادَةٌ جَمِيلَةٌ', expected: ['This', 'is', 'a', 'beautiful', 'pillow'], chips: ['This', 'is', 'a', 'beautiful', 'pillow', 'ugly', 'bed'] },
+      { id: 12, q: 'ذَلِكَ مِفْتَاحٌ صَغِيرٌ', expected: ['That', 'is', 'a', 'small', 'key'], chips: ['That', 'is', 'a', 'small', 'key', 'big', 'lock'] },
+      { id: 13, q: 'هَذِهِ سَبُّورَةٌ وَسِخَةٌ', expected: ['This', 'is', 'a', 'dirty', 'blackboard'], chips: ['This', 'is', 'a', 'dirty', 'blackboard', 'clean', 'school'] },
+      { id: 14, q: 'ذَلِكَ مِنْدِيلٌ وَسِخٌ', expected: ['That', 'is', 'a', 'dirty', 'handkerchief'], chips: ['That', 'is', 'a', 'dirty', 'handkerchief', 'clean', 'shirt'] }
+    ];
+
+    const STEPS = [
+      { id: 'adjectives', title: 'Adjectives' },
+      { id: 'agreement', title: 'Gender Agreement' },
+      { id: 'reading', title: 'Reading Pairs' },
+      { id: 'fill_noun', title: 'Fill Blanks (Noun)' },
+      { id: 'fill_adj', title: 'Fill Blanks (Adj)' },
+      { id: 'pointers', title: 'Pointer Drills' },
+      { id: 'nouns', title: 'Household Items' },
+      { id: 'translation', title: 'Interactive Translation' }
+    ];
+
+    // --- REUSABLE INTERACTIVE DRILL COMPONENT (Matching Lesson 1 Step 9 exact design) ---
+    function InteractiveDrill({ exercises, onComplete }) {
+      const [activeIndex, setActiveIndex] = useState(0);
+      const [selectedChips, setSelectedChips] = useState([]);
+      const [verificationResult, setVerificationResult] = useState({ checked: false, success: false });
+
+      const activeQ = exercises[activeIndex];
+
+      const handleChipClick = (chip) => {
+        if (verificationResult.checked) {
+          setVerificationResult({ checked: false, success: false });
+        }
+        setSelectedChips([...selectedChips, chip]);
+      };
+
+      const handleRemoveChip = (index) => {
+        if (verificationResult.checked) {
+          setVerificationResult({ checked: false, success: false });
+        }
+        setSelectedChips(selectedChips.filter((_, i) => i !== index));
+      };
+
+      const handleResetChips = () => {
+        setSelectedChips([]);
+        setVerificationResult({ checked: false, success: false });
+      };
+
+      const handleVerifySentence = () => {
+        const isCorrect = selectedChips.length === activeQ.expected.length &&
+                          selectedChips.every((chip, i) => chip === activeQ.expected[i]);
+
+        setVerificationResult({ checked: true, success: isCorrect });
+      };
+
+      const handleNext = () => {
+        if (activeIndex < exercises.length - 1) {
+          setActiveIndex(prev => prev + 1);
+          handleResetChips();
+        } else {
+          onComplete();
+        }
+      };
+
+      const isArabicOutput = /[\u0600-\u06FF]/.test(activeQ.chips[0]); // Check if chips are Arabic or English
+
+      return (
+        <div className="bg-neutral-100 dark:bg-neutral-900 rounded-3xl p-6 space-y-5">
+          <div className="flex items-center justify-center gap-1.5 pb-1 flex-wrap">
+            {exercises.map((_, i) => (
+              <div 
+                key={i} 
+                className={`w-1.5 h-1.5 rounded-full transition-all ${
+                  i === activeIndex 
+                    ? 'bg-neutral-900 dark:bg-neutral-100 scale-125' 
+                    : i < activeIndex 
+                      ? 'bg-emerald-500' 
+                      : 'bg-neutral-300 dark:bg-neutral-700'
+                }`} 
+              />
+            ))}
+          </div>
+
+          <div className="space-y-4">
+            <div className="bg-white dark:bg-neutral-800 p-3 sm:p-5 rounded-2xl flex items-center justify-center gap-4" dir="rtl">
+              <span className="font-arabic text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 break-words leading-tight text-center py-2">
+                {activeQ.q}
+              </span>
+            </div>
+
+            <div className="bg-white dark:bg-neutral-800 min-h-[76px] rounded-2xl p-4 flex items-center justify-center flex-wrap gap-3" dir={isArabicOutput ? "rtl" : "ltr"}>
+              {selectedChips.length === 0 ? (
+                <span className="text-xs text-neutral-400 dark:text-neutral-500" dir="ltr">
+                  Tap word chips below in sequence to assemble your answer
+                </span>
+              ) : (
+                selectedChips.map((chip, index) => (
+                  <button
+                    key={`${chip}-${index}`}
+                    onClick={() => handleRemoveChip(index)}
+                    className="bg-neutral-100 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 font-semibold text-lg sm:text-xl px-5 py-2.5 rounded-2xl flex items-center gap-2 cursor-pointer active:scale-95 transition-all"
+                  >
+                    <span className={isArabicOutput ? 'font-arabic' : ''}>{chip}</span>
+                    <span className="text-xs text-neutral-400 font-mono">✕</span>
+                  </button>
+                ))
+              )}
+            </div>
+
+            <div className="flex items-center justify-center flex-wrap gap-2 sm:gap-3 pt-2" dir={isArabicOutput ? "rtl" : "ltr"}>
+              {activeQ.chips.map((chip, i) => (
+                <button
+                  key={`chip-${chip}-${i}`}
+                  onClick={() => handleChipClick(chip)}
+                  className="bg-white dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100 font-semibold text-base sm:text-lg px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl sm:rounded-2xl transition-all active:scale-95"
+                >
+                  <span className={isArabicOutput ? 'font-arabic' : ''}>{chip}</span>
+                </button>
+              ))}
+            </div>
+
+            {verificationResult.checked && (
+              <div
+                className={`p-4 rounded-2xl text-center text-sm font-semibold transition-all ${
+                  verificationResult.success
+                    ? 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-900 dark:text-emerald-300'
+                    : 'bg-rose-100 dark:bg-rose-950/80 text-rose-900 dark:text-rose-300'
+                }`}
+              >
+                {verificationResult.success ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    <span>Correct: {activeQ.expected.join(' ')}</span>
+                  </div>
+                ) : (
+                  <span>Try again! Select the words in order.</span>
+                )}
+              </div>
+            )}
+
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                onClick={handleResetChips}
+                disabled={verificationResult.success}
+                className="px-4 py-2.5 rounded-full text-xs font-semibold bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Reset</span>
+              </button>
+              
+              {verificationResult.success ? (
+                <button
+                  onClick={handleNext}
+                  className="px-6 py-2.5 rounded-full text-xs font-bold bg-emerald-600 text-white hover:opacity-90 active:scale-95 transition-all flex items-center gap-1.5"
+                >
+                  <span>{activeIndex < exercises.length - 1 ? 'Next' : 'Finish'}</span>
+                  {activeIndex < exercises.length - 1 && <ArrowRight className="w-4 h-4" />}
+                </button>
+              ) : (
+                <button
+                  disabled={selectedChips.length === 0}
+                  onClick={handleVerifySentence}
+                  className="px-6 py-2.5 rounded-full text-xs font-bold bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 hover:opacity-90 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  Verify Answer
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- MAIN ENGINE APP ---
+    function App() {
+      const [isDark, setIsDark] = useState(false);
+      const [currentStep, setCurrentStep] = useState(0);
+
+      useEffect(() => {
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }, [isDark]);
+
+      const handleNextStep = () => {
+        if (currentStep < STEPS.length - 1) setCurrentStep(currentStep + 1);
+      };
+
+      const handlePrevStep = () => {
+        if (currentStep > 0) setCurrentStep(currentStep - 1);
+      };
+
+      const handleGoToStep = (idx) => {
+        setCurrentStep(idx);
+      };
+
+      const progressPercent = Math.round(((currentStep + 1) / STEPS.length) * 100);
+
+      return (
+        <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 flex flex-col justify-between p-3 md:p-6 transition-colors">
+          
+          {/* HEADER */}
+          <header className="max-w-4xl w-full mx-auto bg-white dark:bg-neutral-800 rounded-3xl p-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 transition-colors">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-3xl bg-neutral-100 dark:bg-neutral-700 flex items-center justify-center text-neutral-900 dark:text-neutral-100 font-bold font-arabic text-xl shrink-0">
+                ٢
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 flex items-center gap-3">
+                  Volume 1 • Lesson 2
+                  <button onClick={() => setIsDark(!isDark)} className="p-2 text-xl rounded-full bg-neutral-100 dark:bg-neutral-700 hover:opacity-80 transition-opacity">
+                    {isDark ? '☀️' : '🌙'}
+                  </button>
+                </h1>
+              </div>
+            </div>
+            
+            <div className="w-full sm:w-64 flex flex-col gap-1.5">
+              <div className="flex justify-between text-xs font-semibold text-neutral-500 dark:text-neutral-400 font-mono">
+                <span>{STEPS[currentStep].title}</span>
+                <span>{progressPercent}%</span>
+              </div>
+              <div className="w-full bg-neutral-200 dark:bg-neutral-950 h-3 rounded-full overflow-hidden p-0.5 flex">
+                <div className="bg-neutral-900 dark:bg-neutral-100 h-full rounded-full transition-all duration-500 ease-out" style={{ width: `${progressPercent}%` }} />
+              </div>
+            </div>
+          </header>
+
+          {/* MAIN CANVAS */}
+          <main className="max-w-4xl w-full mx-auto flex-1 flex flex-col justify-center mb-6">
+            <div className="bg-white dark:bg-neutral-800 rounded-3xl p-6 sm:p-8 min-h-[540px] flex flex-col justify-between transition-colors relative">
+              
+              <div className="w-full flex-1 flex flex-col justify-center">
+
+                {/* STEPS CONTENT */}
+                {currentStep === 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                    {vocabAdjectives.map(v => (
+                      <div key={v.id} className="bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 p-4 sm:p-6 rounded-2xl sm:rounded-3xl flex flex-col justify-between items-center text-center transition-all">
+                        <div className="my-2"><span className="font-arabic text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-100 block">{v.ar}</span></div>
+                        <div className="w-full pt-2 border-t border-neutral-200/60 dark:border-neutral-800"><span className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300 block font-sans">{v.en}</span></div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {currentStep === 1 && (
+                  <div className="bg-neutral-100 dark:bg-neutral-900 p-4 sm:p-8 rounded-2xl sm:rounded-3xl space-y-6">
+                    <div className="grid grid-cols-2 gap-3 sm:gap-4 text-center" dir="rtl">
+                      <div className="bg-white dark:bg-neutral-800 p-4 sm:p-6 rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center">
+                        <span className="font-arabic text-xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 block leading-tight">كِتَابٌ جَدِيدٌ</span>
+                        <span className="text-[10px] sm:text-sm font-semibold text-neutral-600 dark:text-neutral-400 block mt-2" dir="ltr">A new book (Masculine)</span>
+                      </div>
+                      <div className="bg-white dark:bg-neutral-800 p-4 sm:p-6 rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center">
+                        <span className="font-arabic text-xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 block leading-tight">كُرَّاسَةٌ جَدِيدَةٌ</span>
+                        <span className="text-[10px] sm:text-sm font-semibold text-neutral-600 dark:text-neutral-400 block mt-2" dir="ltr">A new notebook (Feminine)</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {currentStep === 2 && <InteractiveDrill exercises={readingPairsTranslations} onComplete={handleNextStep} />}
+                {currentStep === 3 && <InteractiveDrill exercises={fillNoun} onComplete={handleNextStep} />}
+                {currentStep === 4 && <InteractiveDrill exercises={fillAdjective} onComplete={handleNextStep} />}
+
+                {currentStep === 5 && (
+                  <div className="space-y-3">
+                    {pointerDrills.map((item) => (
+                      <div key={item.id} className="bg-neutral-100 dark:bg-neutral-900 p-3 sm:p-4 rounded-2xl sm:rounded-3xl flex items-center justify-between group hover:bg-neutral-200/80 dark:hover:bg-neutral-800/80 transition-colors" dir="rtl">
+                        <div className="px-4 py-2 sm:px-6 sm:py-3.5 bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-100 shrink-0 rounded-r-xl sm:rounded-r-2xl price-tag-rtl transition-colors max-w-[65%]">
+                          <span className="font-arabic text-lg sm:text-2xl font-bold break-words leading-tight">{item.ar}</span>
+                        </div>
+                        <div className={`flex-1 flex items-center ${item.distance === 'near' ? 'justify-start pr-3 sm:pr-6' : 'justify-end pl-3 sm:pl-6'}`}>
+                          {item.distance === 'near' ? (
+                            <div className="flex items-center gap-2 sm:gap-3">
+                              <div className="w-6 sm:w-12 h-0.5 bg-neutral-300 dark:bg-neutral-700" />
+                              <span className="text-3xl sm:text-4xl transition-transform group-hover:scale-110">{item.emoji}</span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2 sm:gap-3 w-full justify-end">
+                              <div className="flex-1 h-0.5 bg-neutral-300 dark:bg-neutral-700 mx-2 sm:mx-4" />
+                              <span className="text-2xl sm:text-3xl opacity-60 transition-transform group-hover:scale-110">{item.emoji}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {currentStep === 6 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                    {vocabNouns.map(v => (
+                      <div key={v.id} className="bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 p-4 sm:p-6 rounded-2xl sm:rounded-3xl flex flex-col justify-between items-center text-center transition-all">
+                        <div className="my-2"><span className="font-arabic text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-100 block">{v.ar}</span></div>
+                        <div className="w-full pt-2 border-t border-neutral-200/60 dark:border-neutral-800"><span className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300 block font-sans">{v.en}</span></div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {currentStep === 7 && <InteractiveDrill exercises={translationPile} onComplete={handleNextStep} />}
+
+              </div>
+
+              {/* EXACT LESSON 1 FOOTER STAGE NAVIGATION */}
+              <div className="mt-8 pt-6 border-t-0 bg-neutral-100/60 dark:bg-neutral-900/60 rounded-3xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <button
+                  onClick={handlePrevStep}
+                  disabled={currentStep === 0}
+                  className="w-full sm:w-auto px-6 py-3.5 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 text-neutral-800 dark:text-neutral-200 disabled:opacity-30 disabled:cursor-not-allowed rounded-3xl font-semibold text-sm transition-all flex items-center justify-center gap-2"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>Previous</span>
+                </button>
+
+                <div className="flex flex-wrap justify-center items-center gap-1.5 sm:gap-2 max-w-[200px] sm:max-w-none mx-auto py-2 sm:py-0">
+                  {STEPS.map((step, i) => (
+                    <button
+                      key={step.id}
+                      onClick={() => handleGoToStep(i)}
+                      className={`w-2.5 h-2.5 sm:w-2.5 sm:h-2.5 rounded-full transition-all ${
+                        i === currentStep
+                          ? 'bg-neutral-900 dark:bg-neutral-100 scale-125'
+                          : 'bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-400 dark:hover:bg-neutral-600'
+                      }`}
+                      title={step.title}
+                    />
+                  ))}
+                </div>
+
+                <button
+                  onClick={handleNextStep}
+                  disabled={currentStep === STEPS.length - 1}
+                  className="w-full sm:w-auto px-6 py-3.5 bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed rounded-3xl font-semibold text-sm transition-all flex items-center justify-center gap-2"
+                >
+                  <span>Next</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+
+            </div>
+          </main>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

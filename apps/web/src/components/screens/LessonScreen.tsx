@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Lock, Check, ArrowDown, ChevronDown } from 'lucide-react'
+import { ArrowLeft, Lock, Check, ChevronDown } from 'lucide-react'
 
 import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
 import { getLastVisitedChunk, setLastVisitedChunk } from '../../lib/progress'

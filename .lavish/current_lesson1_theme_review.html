@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Esho Arbi Shikhi - Vol 1 Lesson 1 Implementation Review</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Manrope', 'sans-serif'],
+            arabic: ['Cairo', 'Amiri', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom clip-path for Arabic RTL Price Tag shape */
+    .price-tag-rtl {
+      clip-path: polygon(0% 50%, 15px 0%, 100% 0%, 100% 100%, 15px 100%);
+    }
+  </style>
+</head>
+<body class="bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 min-h-screen flex flex-col justify-between p-3 md:p-6 transition-colors duration-300 font-sans selection:bg-neutral-200 dark:selection:bg-neutral-700">
+
+  <!-- MAIN APP WRAPPER -->
+  <div id="app" class="w-full max-w-4xl mx-auto flex flex-col justify-between flex-1">
+
+    <!-- CLEAN HEADER NAVIGATION -->
+    <header class="bg-white dark:bg-neutral-800 rounded-3xl p-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 transition-colors">
+      <!-- Title -->
+      <div>
+        <h1 class="text-base font-bold text-neutral-900 dark:text-neutral-100 flex items-center gap-2">
+          Lesson 1 • Esho Arbi Shikhi
+          <span class="text-xs font-normal text-neutral-500 dark:text-neutral-400">
+            (Volume 1)
+          </span>
+        </h1>
+      </div>
+
+      <!-- Clean Progress Bar -->
+      <div class="w-full sm:w-72 flex flex-col gap-1.5">
+        <div class="flex justify-between text-xs font-medium text-neutral-500 dark:text-neutral-400">
+          <span id="step-title-display">Segment 1: Masculine Vocab</span>
+          <span id="step-percent-display" class="font-mono">14%</span>
+        </div>
+        <div class="w-full bg-neutral-200 dark:bg-neutral-950 h-2.5 rounded-full overflow-hidden p-0.5">
+          <div
+            id="step-progress-bar"
+            class="bg-neutral-900 dark:bg-neutral-100 h-full rounded-full transition-all duration-500 ease-out"
+            style="width: 14%"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Action Toggles: Theme Switcher & Audio Toggle -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Theme Switcher Button -->
+        <button
+          id="theme-toggle-btn"
+          onclick="toggleTheme()"
+          class="px-3.5 py-2 bg-neutral-100 dark:bg-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-600 text-neutral-800 dark:text-neutral-200 rounded-3xl transition-colors text-xs font-semibold flex items-center gap-2 cursor-pointer"
+          title="Toggle Light / Dark Mode"
+        >
+          <span id="theme-btn-icon">🌙</span>
+          <span id="theme-btn-text" class="hidden sm:inline">Dark</span>
+        </button>
+
+        <!-- Audio Toggle Button -->
+        <button
+          id="audio-toggle-btn"
+          onclick="toggleAudio()"
+          class="p-3 bg-neutral-100 dark:bg-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-600 text-neutral-800 dark:text-neutral-200 rounded-3xl transition-colors text-xs font-semibold flex items-center gap-2 cursor-pointer"
+          title="Toggle Audio"
+        >
+          <span id="audio-icon">🔊</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN PLAYABLE CANVAS -->
+    <main class="w-full flex-1 flex flex-col justify-center mb-6">
+      <div class="bg-white dark:bg-neutral-800 rounded-3xl p-6 sm:p-8 min-h-[500px] flex flex-col justify-between transition-colors relative">
+        
+        <!-- STEP CONTENT CONTAINER -->
+        <div id="step-content-area" class="w-full flex-1 flex flex-col justify-center">
+          <!-- Dynamically populated by JS based on currentStep -->
+        </div>
+
+        <!-- FOOTER STAGE NAVIGATION -->
+        <div class="mt-8 pt-6 bg-neutral-100/60 dark:bg-neutral-900/60 rounded-3xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <button
+            id="prev-step-btn"
+            onclick="handlePrevStep()"
+            class="w-full sm:w-auto px-6 py-3.5 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 text-neutral-800 dark:text-neutral-200 disabled:opacity-30 disabled:cursor-not-allowed rounded-3xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
+            ← Previous Section
+          </button>
+
+          <!-- Step Dots Indicator -->
+          <div id="step-dots-container" class="flex items-center gap-2">
+            <!-- Dynamically populated -->
+          </div>
+
+          <button
+            id="next-step-btn"
+            onclick="handleNextStep()"
+            class="w-full sm:w-auto px-8 py-3.5 bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 hover:opacity-90 rounded-3xl font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span id="next-btn-text">Next Section →</span>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="text-center text-xs text-neutral-500 dark:text-neutral-400 py-4">
+      Esho Arbi Shikhi (Vol 1, Lesson 1) - Pedagogy Engine by Maulana Abu Taher Misbah
+    </footer>
+
+  </div>
+
+  <!-- AUDIO SERVICE & APPLICATION LOGIC SCRIPT -->
+  <script>
+    // Audio Synthesizer Class
+    class AudioService {
+      constructor() {
+        this.ctx = null;
+      }
+      playTone(freq, type = 'sine', duration = 0.15) {
+        try {
+          if (typeof window === 'undefined') return;
+          if (!this.ctx) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            this.ctx = new AudioCtx();
+          }
+          if (this.ctx.state === 'suspended') {
+            this.ctx.resume();
+          }
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch {
+          // Graceful fallback
+        }
+      }
+      playClick() {
+        this.playTone(400, 'triangle', 0.05);
+      }
+      playSuccess() {
+        this.playTone(523.25, 'sine', 0.1);
+        setTimeout(() => this.playTone(659.25, 'sine', 0.15), 80);
+        setTimeout(() => this.playTone(783.99, 'sine', 0.25), 160);
+      }
+      playError() {
+        this.playTone(240, 'sawtooth', 0.18);
+      }
+      speakArabic(text, enabled) {
+        if (!enabled || typeof window === 'undefined') return;
+        this.playClick();
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = 'ar-SA';
+          utterance.rate = 0.85;
+          window.speechSynthesis.speak(utterance);
+        }
+      }
+    }
+
+    const audioService = new AudioService();
+
+    // Data Structures
+    const vocabSegment1 = [
+      { id: 1, ar: 'كِتَابٌ', roman: 'kitābun', en: 'A book' },
+      { id: 2, ar: 'قَلَمٌ', roman: 'qalamun', en: 'A pen' },
+      { id: 3, ar: 'كُرْسِيٌّ', roman: 'kursiyyun', en: 'A chair' },
+      { id: 4, ar: 'بَيْتٌ', roman: 'baytun', en: 'A house' },
+      { id: 5, ar: 'بَابٌ', roman: 'bābun', en: 'A door' },
+      { id: 6, ar: 'مِصْبَاحٌ', roman: 'miṣbāḥun', en: 'A lamp' },
+      { id: 7, ar: 'جِدَارٌ', roman: 'jidārun', en: 'A wall' },
+      { id: 8, ar: 'سَرِيْرٌ', roman: 'sarīrun', en: 'A bed' },
+    ];
+
+    const vocabSegment2 = [
+      { id: 9, ar: 'مَدْرَسَةٌ', roman: 'madrasatun', en: 'A school' },
+      { id: 10, ar: 'كُرَّاسَةٌ', roman: 'kurrāsatun', en: 'A notebook' },
+      { id: 11, ar: 'طَاوِلَةٌ', roman: 'ṭāwilatun', en: 'A table' },
+      { id: 12, ar: 'حَقِيْبَةٌ', roman: 'ḥaqībatun', en: 'A bag' },
+      { id: 13, ar: 'حُجْرَةٌ', roman: 'ḥujratun', en: 'A room' },
+      { id: 14, ar: 'نَافِذَةٌ', roman: 'nāfidhatun', en: 'A window' },
+      { id: 15, ar: 'سَاعَةٌ', roman: 'sā‘atun', en: 'A watch' },
+      { id: 16, ar: 'نَظَّارَةٌ', roman: 'naẓẓāratun', en: 'Eyeglasses' },
+    ];
+
+    const vocabSegment3 = [
+      { id: 17, ar: 'قُفْلٌ', roman: 'quflun', en: 'A lock' },
+      { id: 18, ar: 'مِفْتَاحٌ', roman: 'miftāḥun', en: 'A key' },
+      { id: 19, ar: 'صُنْدُوْقٌ', roman: 'ṣundūqun', en: 'A box' },
+      { id: 20, ar: 'مِظَلَّةٌ', roman: 'miẓallatun', en: 'An umbrella' },
+      { id: 21, ar: 'سَيَّارَةٌ', roman: 'sayyāratun', en: 'A car' },
+      { id: 22, ar: 'دَرَّاجَةٌ', roman: 'darrājatun', en: 'A bicycle' },
+    ];
+
+    const segment1PointSentences = [
+      { id: 1, ar: 'هَذَا كِتَابٌ', en: 'This is a book', pointer: 'هَذَا', distance: 'near', emoji: '📖' },
+      { id: 2, ar: 'ذَلِكَ قَلَمٌ', en: 'That is a pen', pointer: 'ذَلِكَ', distance: 'far', emoji: '🖊️' },
+      { id: 3, ar: 'هَذَا بَيْتٌ', en: 'This is a house', pointer: 'هَذَا', distance: 'near', emoji: '🏠' },
+      { id: 4, ar: 'ذَلِكَ كُرْسِيٌّ', en: 'That is a chair', pointer: 'ذَلِكَ', distance: 'far', emoji: '🪑' },
+    ];
+
+    const segment2PointSentences = [
+      { id: 1, ar: 'هَذِهِ مَدْرَسَةٌ', en: 'This is a school', pointer: 'هَذِهِ', distance: 'near', emoji: '🏫' },
+      { id: 2, ar: 'تِلْكَ كُرَّاسَةٌ', en: 'That is a notebook', pointer: 'تِلْكَ', distance: 'far', emoji: '📓' },
+      { id: 3, ar: 'هَذِهِ حَقِيْبَةٌ', en: 'This is a bag', pointer: 'هَذِهِ', distance: 'near', emoji: '🎒' },
+      { id: 4, ar: 'تِلْكَ طَاوِلَةٌ', en: 'That is a table', pointer: 'تِلْكَ', distance: 'far', emoji: '🪵' },
+    ];
+
+    const qaExercises = [
+      {
+        id: 1,
+        questionAr: 'مَا هَذَا؟',
+        questionEn: 'What is this?',
+        distance: 'near',
+        emoji: '🪑',
+        expectedAnswer: ['هَذَا', 'كُرْسِيٌّ'],
+        chips: ['كُرْسِيٌّ', 'ذَلِكَ', 'هَذَا', 'بَيْتٌ', 'قَلَمٌ'],
+      },
+      {
+        id: 2,
+        questionAr: 'مَا ذَلِكَ؟',
+        questionEn: 'What is that?',
+        distance: 'far',
+        emoji: '🏠',
+        expectedAnswer: ['ذَلِكَ', 'بَيْتٌ'],
+        chips: ['هَذَا', 'بَيْتٌ', 'ذَلِكَ', 'كِتَابٌ', 'مَسْجِدٌ'],
+      },
+      {
+        id: 3,
+        questionAr: 'مَا هَذِهِ؟',
+        questionEn: 'What is this?',
+        distance: 'near',
+        emoji: '📓',
+        expectedAnswer: ['هَذِهِ', 'كُرَّاسَةٌ'],
+        chips: ['تِلْكَ', 'كُرَّاسَةٌ', 'هَذِهِ', 'طَاوِلَةٌ', 'هَذَا'],
+      },
+      {
+        id: 4,
+        questionAr: 'مَا تِلْكَ؟',
+        questionEn: 'What is that?',
+        distance: 'far',
+        emoji: '🚗',
+        expectedAnswer: ['تِلْكَ', 'سَيَّارَةٌ'],
+        chips: ['تِلْكَ', 'سَيَّارَةٌ', 'هَذِهِ', 'دَرَّاجَةٌ', 'سَاعَةٌ'],
+      },
+      {
+        id: 5,
+        questionAr: 'مَا هَذَا؟',
+        questionEn: 'What is this?',
+        distance: 'near',
+        emoji: '🔒',
+        expectedAnswer: ['هَذَا', 'قُفْلٌ'],
+        chips: ['هَذَا', 'قُفْلٌ', 'ذَلِكَ', 'مِفْتَاحٌ', 'صُنْدُوْقٌ'],
+      },
+    ];
+
+    // 7 Clean Steps
+    const STEPS = [
+      { id: 'seg1_vocab', titleEn: 'Segment 1: Masculine Vocab' },
+      { id: 'seg1_drill', titleEn: 'Segment 1: Near & Far Pointers' },
+      { id: 'seg2_vocab', titleEn: 'Segment 2: Feminine Vocab' },
+      { id: 'seg2_drill', titleEn: 'Segment 2: Feminine Pointers' },
+      { id: 'seg3_vocab', titleEn: 'Segment 3: Household & Items Vocab' },
+      { id: 'seg3_qa', titleEn: 'Segment 3: Interactive Q&A Exercises' },
+      { id: 'partner_practice', titleEn: 'Author Partner Practice Notice' },
+    ];
+
+    // State Variables
+    let currentStep = 0;
+    let audioEnabled = true;
+    let revealedVocab = {};
+    let activeQAIndex = 0;
+    let selectedChips = [];
+    let verificationResult = { checked: false, success: false };
+
+    // Theme Toggle Handler
+    function toggleTheme() {
+      audioService.playClick();
+      const htmlEl = document.documentElement;
+      const themeBtnIcon = document.getElementById('theme-btn-icon');
+      const themeBtnText = document.getElementById('theme-btn-text');
+
+      if (htmlEl.classList.contains('dark')) {
+        htmlEl.classList.remove('dark');
+        themeBtnIcon.textContent = '☀️';
+        themeBtnText.textContent = 'Light';
+      } else {
+        htmlEl.classList.add('dark');
+        themeBtnIcon.textContent = '🌙';
+        themeBtnText.textContent = 'Dark';
+      }
+    }
+
+    // Audio Toggle Handler
+    function toggleAudio() {
+      audioService.playClick();
+      audioEnabled = !audioEnabled;
+      const audioIcon = document.getElementById('audio-icon');
+      audioIcon.textContent = audioEnabled ? '🔊' : '🔇';
+    }
+
+    // Navigation Handlers
+    function handleNextStep() {
+      audioService.playClick();
+      if (currentStep < STEPS.length - 1) {
+        currentStep++;
+      } else {
+        audioService.playSuccess();
+        currentStep = 0;
+      }
+      render();
+    }
+
+    function handlePrevStep() {
+      audioService.playClick();
+      if (currentStep > 0) {
+        currentStep--;
+      }
+      render();
+    }
+
+    function handleGoToStep(idx) {
+      audioService.playClick();
+      currentStep = idx;
+      render();
+    }
+
+    function handleTapVocab(id, arText) {
+      audioService.speakArabic(arText, audioEnabled);
+      revealedVocab[id] = true;
+      render();
+    }
+
+    // Q&A Handlers
+    function handleChipClick(chip) {
+      audioService.playClick();
+      if (verificationResult.checked) {
+        verificationResult = { checked: false, success: false };
+      }
+      selectedChips.push(chip);
+      render();
+    }
+
+    function handleRemoveChip(index) {
+      audioService.playClick();
+      if (verificationResult.checked) {
+        verificationResult = { checked: false, success: false };
+      }
+      selectedChips.splice(index, 1);
+      render();
+    }
+
+    function handleResetChips() {
+      audioService.playClick();
+      selectedChips = [];
+      verificationResult = { checked: false, success: false };
+      render();
+    }
+
+    function handleVerifySentence() {
+      const activeQ = qaExercises[activeQAIndex];
+      const isCorrect =
+        selectedChips.length === activeQ.expectedAnswer.length &&
+        selectedChips.every((chip, i) => chip === activeQ.expectedAnswer[i]);
+
+      if (isCorrect) {
+        audioService.playSuccess();
+        verificationResult = { checked: true, success: true };
+        audioService.speakArabic(selectedChips.join(' '), audioEnabled);
+      } else {
+        audioService.playError();
+        verificationResult = { checked: true, success: false };
+      }
+      render();
+    }
+
+    // Clean Flashcard Grid Layout: Notice placed at section level!
+    function renderVocabGrid(vocabItems) {
+      return `
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          ${vocabItems.map((v, idx) => {
+            const isTapped = revealedVocab[v.id];
+            return `
+              <div
+                onclick="handleTapVocab(${v.id}, '${v.ar}')"
+                class="bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/80 dark:hover:bg-neutral-800 active:scale-95 transition-all p-6 rounded-3xl flex flex-col justify-between items-center text-center cursor-pointer min-h-[175px]"
+              >
+                <!-- Flashcard Top Badge -->
+                <div class="w-full flex items-center justify-between text-[11px] font-mono text-neutral-400 dark:text-neutral-500">
+                  <span>Card 0${idx + 1}</span>
+                  <span class="${isTapped ? 'text-emerald-600 dark:text-emerald-400 font-bold' : ''}">${isTapped ? '✓ Audio Played' : ''}</span>
+                </div>
+
+                <!-- Center Prominent Arabic Text -->
+                <div class="my-2">
+                  <span class="font-arabic text-4xl font-bold text-neutral-900 dark:text-neutral-100 block">
+                    ${v.ar}
+                  </span>
+                </div>
+
+                <!-- Flashcard Bottom Content -->
+                <div class="w-full pt-2 border-t border-neutral-200/60 dark:border-neutral-800">
+                  <span class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 block font-sans">
+                    ${v.en}
+                  </span>
+                  ${isTapped ? `
+                    <span class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold block mt-1">
+                      ${v.roman}
+                    </span>
+                  ` : ''}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    // Helper for rendering Pointer Sentence Cards
+    function renderPointerSentences(items) {
+      return `
+        <div class="space-y-4">
+          ${items.map((item) => `
+            <div
+              onclick="audioService.speakArabic('${item.ar}', audioEnabled)"
+              class="bg-neutral-100 dark:bg-neutral-900 p-6 rounded-3xl flex items-center justify-between cursor-pointer group transition-colors"
+              dir="rtl"
+            >
+              <div
+                class="px-8 py-4 bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-100 shrink-0 rounded-r-2xl price-tag-rtl transition-colors"
+              >
+                <span class="font-arabic text-3xl font-bold">${item.ar}</span>
+              </div>
+
+              <div
+                class="flex-1 flex items-center gap-3 ${
+                  item.distance === 'near' ? 'justify-start pr-6' : 'justify-end pl-6'
+                }"
+              >
+                ${item.distance === 'near' ? `
+                  <span class="text-5xl transition-transform group-hover:scale-110">
+                    ${item.emoji}
+                  </span>
+                  <span class="text-xs font-mono bg-white dark:bg-neutral-800 px-3 py-1 rounded-full text-neutral-600 dark:text-neutral-400" dir="ltr">
+                    Near (${item.pointer})
+                  </span>
+                ` : `
+                  <span class="text-xs font-mono bg-white dark:bg-neutral-800 px-3 py-1 rounded-full text-neutral-600 dark:text-neutral-400" dir="ltr">
+                    Far (${item.pointer})
+                  </span>
+                  <span class="text-3xl opacity-60 transition-transform group-hover:scale-110">
+                    ${item.emoji}
+                  </span>
+                `}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // Render Engine
+    function render() {
+      // 1. Header Progress
+      const progressPercent = Math.round(((currentStep + 1) / STEPS.length) * 100);
+      document.getElementById('step-title-display').textContent = STEPS[currentStep].titleEn;
+      document.getElementById('step-percent-display').textContent = `${progressPercent}%`;
+      document.getElementById('step-progress-bar').style.width = `${progressPercent}%`;
+
+      // 2. Step Dots
+      const dotsContainer = document.getElementById('step-dots-container');
+      dotsContainer.innerHTML = STEPS.map((step, i) => `
+        <button
+          onclick="handleGoToStep(${i})"
+          class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer ${
+            i === currentStep
+              ? 'bg-neutral-900 dark:bg-neutral-100 scale-125'
+              : 'bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-400 dark:hover:bg-neutral-600'
+          }"
+          title="${step.titleEn}"
+        ></button>
+      `).join('');
+
+      // 3. Navigation Buttons
+      const prevBtn = document.getElementById('prev-step-btn');
+      prevBtn.disabled = currentStep === 0;
+
+      const nextBtnText = document.getElementById('next-btn-text');
+      nextBtnText.textContent = currentStep === STEPS.length - 1 ? 'Lesson Finished 🎉' : 'Next Section →';
+
+      // 4. Main Step Content Area
+      const contentArea = document.getElementById('step-content-area');
+      contentArea.innerHTML = '';
+
+      if (currentStep === 0) {
+        // STEP 0: Segment 1 Vocab
+        contentArea.innerHTML = `
+          <div class="space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+              <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                Segment 1 • Masculine Nouns (المفردات الأولى)
+              </h2>
+              <span class="text-xs font-mono text-neutral-500 dark:text-neutral-400">
+                Tap card to play audio & reveal transliteration
+              </span>
+            </div>
+            ${renderVocabGrid(vocabSegment1)}
+          </div>
+        `;
+      } else if (currentStep === 1) {
+        // STEP 1: Segment 1 Drill
+        contentArea.innerHTML = `
+          <div class="space-y-4">
+            <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+              Segment 1 • Spatial Pointers (هَذَا / ذَلِكَ)
+            </h2>
+            ${renderPointerSentences(segment1PointSentences)}
+          </div>
+        `;
+      } else if (currentStep === 2) {
+        // STEP 2: Segment 2 Vocab
+        contentArea.innerHTML = `
+          <div class="space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+              <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                Segment 2 • Feminine Nouns (المفردات الثانية)
+              </h2>
+              <span class="text-xs font-mono text-neutral-500 dark:text-neutral-400">
+                Tap card to play audio & reveal transliteration
+              </span>
+            </div>
+            ${renderVocabGrid(vocabSegment2)}
+          </div>
+        `;
+      } else if (currentStep === 3) {
+        // STEP 3: Segment 2 Drill
+        contentArea.innerHTML = `
+          <div class="space-y-4">
+            <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+              Segment 2 • Feminine Pointers (هَذِهِ / تِلْكَ)
+            </h2>
+            ${renderPointerSentences(segment2PointSentences)}
+          </div>
+        `;
+      } else if (currentStep === 4) {
+        // STEP 4: Segment 3 Vocab
+        contentArea.innerHTML = `
+          <div class="space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+              <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                Segment 3 • Household Objects (المفردات الثالثة)
+              </h2>
+              <span class="text-xs font-mono text-neutral-500 dark:text-neutral-400">
+                Tap card to play audio & reveal transliteration
+              </span>
+            </div>
+            ${renderVocabGrid(vocabSegment3)}
+          </div>
+        `;
+      } else if (currentStep === 5) {
+        // STEP 5: Segment 3 Q&A Exercises
+        const activeQ = qaExercises[activeQAIndex];
+        contentArea.innerHTML = `
+          <div class="space-y-4">
+            <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+              Segment 3 • Interactive Q&A Exercises
+            </h2>
+
+            <!-- Q&A Interactive Card -->
+            <div class="bg-neutral-100 dark:bg-neutral-900 rounded-3xl p-6 space-y-5">
+              <div class="flex items-center justify-between">
+                <span class="px-3.5 py-1 rounded-full text-xs font-mono bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 font-semibold">
+                  Exercise ${activeQAIndex + 1} of ${qaExercises.length}
+                </span>
+                <div class="flex items-center gap-2">
+                  <button
+                    ${activeQAIndex === 0 ? 'disabled' : ''}
+                    onclick="activeQAIndex--; handleResetChips();"
+                    class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors cursor-pointer"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    ${activeQAIndex === qaExercises.length - 1 ? 'disabled' : ''}
+                    onclick="activeQAIndex++; handleResetChips();"
+                    class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors cursor-pointer"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+
+              <div class="space-y-4">
+                <!-- Question Box -->
+                <div class="bg-white dark:bg-neutral-800 p-5 rounded-2xl flex items-center justify-between" dir="rtl">
+                  <div class="flex items-center gap-4">
+                    <span class="text-4xl">${activeQ.emoji}</span>
+                    <div>
+                      <span class="font-arabic font-bold text-3xl text-neutral-900 dark:text-neutral-100 block">
+                        ${activeQ.questionAr}
+                      </span>
+                      <span class="text-xs text-neutral-500 dark:text-neutral-400 block mt-1 font-sans" dir="ltr">
+                        ${activeQ.questionEn} (${activeQ.distance === 'near' ? 'Near Pointer' : 'Far Pointer'})
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    onclick="audioService.speakArabic('${activeQ.questionAr}', audioEnabled)"
+                    class="p-3 bg-neutral-100 dark:bg-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-600 rounded-full transition-colors cursor-pointer"
+                  >
+                    🔊
+                  </button>
+                </div>
+
+                <!-- Selected Answer Slot -->
+                <div class="bg-white dark:bg-neutral-800 min-h-[72px] rounded-2xl p-4 flex items-center justify-center flex-wrap gap-3" dir="rtl">
+                  ${selectedChips.length === 0 ? `
+                    <span class="text-xs text-neutral-400 dark:text-neutral-500 font-sans" dir="ltr">
+                      Tap words below in sequence to assemble your answer
+                    </span>
+                  ` : selectedChips.map((chip, index) => `
+                    <button
+                      onclick="handleRemoveChip(${index})"
+                      class="bg-neutral-100 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 font-arabic font-semibold text-xl px-5 py-2 rounded-2xl flex items-center gap-2 cursor-pointer active:scale-95 transition-all"
+                    >
+                      <span>${chip}</span>
+                      <span class="text-xs text-neutral-400 font-mono">✕</span>
+                    </button>
+                  `).join('')}
+                </div>
+
+                <!-- Available Word Chips -->
+                <div class="flex items-center justify-center flex-wrap gap-3 pt-1" dir="rtl">
+                  ${activeQ.chips.map((chip) => `
+                    <button
+                      onclick="handleChipClick('${chip}')"
+                      class="bg-white dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100 font-arabic font-semibold text-lg px-5 py-2.5 rounded-2xl transition-all active:scale-95 cursor-pointer"
+                    >
+                      ${chip}
+                    </button>
+                  `).join('')}
+                </div>
+
+                <!-- Verification Result Banner -->
+                ${verificationResult.checked ? `
+                  <div
+                    class="p-4 rounded-2xl text-center text-sm font-semibold transition-all ${
+                      verificationResult.success
+                        ? 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-900 dark:text-emerald-300'
+                        : 'bg-rose-100 dark:bg-rose-950/80 text-rose-900 dark:text-rose-300'
+                    }"
+                  >
+                    ${verificationResult.success ? `
+                      <span>✓ Excellent! Correct answer: ${activeQ.expectedAnswer.join(' ')}</span>
+                    ` : `
+                      <span>Try again! Select the correct words in sequence.</span>
+                    `}
+                  </div>
+                ` : ''}
+
+                <!-- Controls -->
+                <div class="flex items-center justify-end gap-3 pt-1">
+                  <button
+                    onclick="handleResetChips()"
+                    class="px-4 py-2 rounded-full text-xs font-semibold bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors flex items-center gap-1.5 cursor-pointer"
+                  >
+                    🔄 Reset
+                  </button>
+                  <button
+                    ${selectedChips.length === 0 ? 'disabled' : ''}
+                    onclick="handleVerifySentence()"
+                    class="px-6 py-2 rounded-full text-xs font-bold bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 hover:opacity-90 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    Verify Answer
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (currentStep === 6) {
+        // STEP 6: Author Partner Practice Notice (English instruction line only)
+        contentArea.innerHTML = `
+          <div class="space-y-6">
+            <!-- Maulana Misbah's Instructions -->
+            <div class="bg-neutral-100 dark:bg-neutral-900 p-6 rounded-3xl space-y-3 transition-colors">
+              <div class="flex items-center gap-3">
+                <span class="px-3.5 py-1 rounded-full text-xs font-semibold bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200">
+                  Author's Partner Instructions
+                </span>
+                <span class="text-xs text-neutral-500 dark:text-neutral-400 font-mono">
+                  Maulana Abu Taher Misbah
+                </span>
+              </div>
+
+              <p class="text-base font-semibold text-neutral-900 dark:text-neutral-100 pt-1 leading-relaxed">
+                "Stand in pairs, point with your hand to various objects nearby and far away, ask questions and give answers."
+              </p>
+            </div>
+
+            <!-- AI Voice Partner Notice -->
+            <div class="bg-neutral-100 dark:bg-neutral-900 p-6 rounded-3xl space-y-2 transition-colors">
+              <div class="flex items-center gap-2 text-neutral-900 dark:text-neutral-100">
+                <span class="text-amber-500 text-lg">✨</span>
+                <h3 class="text-base font-bold">
+                  Interactive AI Voice Speaking Partner
+                </h3>
+              </div>
+              <p class="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed font-sans">
+                We are actively engineering a real-time interactive AI Voice Speaking Partner for this section so you can speak directly with the app!
+              </p>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // Initial render call on page load
+    render();
+  </script>
+</body>
+</html>

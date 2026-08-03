@@ -18,12 +18,11 @@ export const LessonNode: React.FC<Props> = ({
   number,
   status,
   faceColor,
-  shadowColor,
   textColor,
   entryDelay = 0,
   onPress,
 }) => {
-  const [isPressed, setIsPressed] = useState(false)
+  const [, setIsPressed] = useState(false)
   const SIZE = 72
   const isLocked = status === 'locked'
   const isCompleted = status === 'completed'
@@ -42,8 +41,6 @@ export const LessonNode: React.FC<Props> = ({
   const handlePointerLeave = () => {
     if (!isLocked) setIsPressed(false)
   }
-
-  const pushDepth = isPressed && !isLocked ? 0 : -6
 
   return (
     <motion.div

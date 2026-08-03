@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { Star, Check, Lock } from 'lucide-react'
+import { Check, Lock } from 'lucide-react'
 import { motion } from 'framer-motion'
 import * as m from '#/paraglide/messages.js'
 
@@ -151,13 +151,13 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                 <div className="flex-1">
                   <h2 className="font-english-semibold text-[22px] text-neutral-900 dark:text-neutral-100 tracking-tight">
                     {m[`vol${volumeId}chapters.${chapter.id}title` as keyof typeof m]
-                      ? m[`vol${volumeId}chapters.${chapter.id}title` as keyof typeof m]()
+                      ? (m[`vol${volumeId}chapters.${chapter.id}title` as keyof typeof m] as any)()
                       : chapter.titleEn}
                   </h2>
                   <p className="font-english text-sm text-neutral-500 dark:text-neutral-400 mt-1">
                     {m[`vol${volumeId}chapters.${chapter.id}subtitle` as keyof typeof m]
-                      ? m[`vol${volumeId}chapters.${chapter.id}subtitle` as keyof typeof m]()
-                      : chapter.subtitleEn}
+                      ? (m[`vol${volumeId}chapters.${chapter.id}subtitle` as keyof typeof m] as any)()
+                      : chapter.subtitle}
                   </p>
                 </div>
               </div>
