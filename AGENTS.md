@@ -243,15 +243,24 @@ payload: {
 - Branch from `main` (branch from integration branch)
 - Skip validation commands
 - Touch files not listed in the plan
+- Use shadow CSS utilities (`shadow-*`) anywhere in UI components (strictly prohibited by Raw Neutral design system)
+- Add inline theme toggle buttons or local theme state variables in lesson engines (managed globally by navbar)
+- Invent new UI components, wrappers, or emojis for curriculum lessons (restrict to authorized existing modules)
+- Combine introductory familiarization examples and interactive student practice into a single mixed lesson step
+- Write static translations for textbook practice dialogues/sentences (put them into interactive translation drills)
+- Place end-of-page new vocabulary after reading content (new vocabulary must precede page practice content)
+- Render word chip options in static answer order (always use Fisher-Yates shuffling memoized with `useMemo`)
 
 ### ✅ DO
-- Read the plan file FIRST
+- Read the plan file and `docs/engine-design-guidelines.md` FIRST before building or modifying lesson engines
 - Copy structures from working examples
 - Run `npx tsc --noEmit` before opening PR
 - Use `strReplace` for editing existing files
 - Follow existing patterns in the codebase
 - Ask for clarification when blocked
 - Test Arabic RTL rendering
+- Use `CurriculumHeader` and `CurriculumFooter` from shared components to ensure mobile responsive layout
+- Separate translated textbook examples (Familiarization) from non-translated interactive exercises (Practice)
 
 ---
 

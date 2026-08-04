@@ -353,6 +353,17 @@
         <pre><code>5. ABSOLUTE DESIGN SYSTEM &amp; THEME COMPLIANCE:</code></pre>
         <pre><code>   - All component structures must strictly obey our established design system, colors, and theme.</code></pre>
         <pre><code>   - Do not inject independent stylistic assumptions or invent ad-hoc visual rules.</code></pre>
+        <pre><code>   - Zero Box Shadows: shadow-* CSS utilities are strictly illegal in our Raw Neutral design system.</code></pre>
+        <pre><code>   - No Inline Theme Toggles: Do not add local theme toggles or isDark state inside lesson components (controlled globally in navbar).</code></pre>
+        <pre><code></code></pre>
+        <pre><code>6. STEP SEQUENCING &amp; PEDAGOGICAL SEPARATION:</code></pre>
+        <pre><code>   - Vocabulary Precedes Content: New vocabulary listed at the bottom of a textbook page MUST appear in a standalone vocabulary step BEFORE any reading or practice exercises of that page begin.</code></pre>
+        <pre><code>   - Separate Examples from Practice: Never mix translated demonstrations (Familiarization) and non-translated student exercises (Practice) within the same step!</code></pre>
+        <pre><code>   - No Static Translations for Exercises: When textbook practice sentences lack translations, put them directly into interactive exercises where the learner actively reconstructs the meaning.</code></pre>
+        <pre><code></code></pre>
+        <pre><code>7. INTERACTIVE DRILLS &amp; RESPONSIVE UI MECHANICS:</code></pre>
+        <pre><code>   - Word Chip Shuffling: Always use an unbiased Fisher-Yates shuffle memoized via useMemo with anti-identity checks so word chips never render in static answer order.</code></pre>
+        <pre><code>   - Responsive Layouts: Rely on CurriculumHeader and CurriculumFooter from shared components with Arabic numeral badge boxes (١, ٢, ٣...) and responsive flex wrapping.</code></pre>
       </div>
     </section>
 
