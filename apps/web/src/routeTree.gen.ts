@@ -9,45 +9,31 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as MushafV2IndexRouteImport } from './routes/mushaf-v2/index'
-import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
-import { Route as DemoIndexRouteImport } from './routes/demo/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as DemoV2IndexRouteImport } from './routes/demo-v2/index'
-import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
-import { Route as DemoI18nRouteImport } from './routes/demo.i18n'
+import { Route as DemoIndexRouteImport } from './routes/demo/index'
 import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
+import { Route as DemoI18nRouteImport } from './routes/demo.i18n'
+import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
+import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
+import { Route as MushafV2IndexRouteImport } from './routes/mushaf-v2/index'
 import { Route as VolumeVolumeIdIndexRouteImport } from './routes/volume/$volumeId/index'
-import { Route as CurriculumVol1Lesson3IndexRouteImport } from './routes/curriculum/vol1/lesson3/index'
-import { Route as CurriculumVol1Lesson2IndexRouteImport } from './routes/curriculum/vol1/lesson2/index'
 import { Route as CurriculumVol1Lesson1IndexRouteImport } from './routes/curriculum/vol1/lesson1/index'
+import { Route as CurriculumVol1Lesson2IndexRouteImport } from './routes/curriculum/vol1/lesson2/index'
+import { Route as CurriculumVol1Lesson3IndexRouteImport } from './routes/curriculum/vol1/lesson3/index'
+import { Route as PracticeVolumeIdLessonIdIndexRouteImport } from './routes/practice/$volumeId/$lessonId/index'
 import { Route as VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRouteImport } from './routes/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/index'
 import { Route as VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRouteImport } from './routes/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
 
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MushafV2IndexRoute = MushafV2IndexRouteImport.update({
-  id: '/mushaf-v2/',
-  path: '/mushaf-v2/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DesignSystemIndexRoute = DesignSystemIndexRouteImport.update({
-  id: '/design-system/',
-  path: '/design-system/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoIndexRoute = DemoIndexRouteImport.update({
-  id: '/demo/',
-  path: '/demo/',
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoV2IndexRoute = DemoV2IndexRouteImport.update({
@@ -55,14 +41,9 @@ const DemoV2IndexRoute = DemoV2IndexRouteImport.update({
   path: '/demo-v2/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoI18nRoute = DemoI18nRouteImport.update({
-  id: '/demo/i18n',
-  path: '/demo/i18n',
+const DemoIndexRoute = DemoIndexRouteImport.update({
+  id: '/demo/',
+  path: '/demo/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoDrizzleRoute = DemoDrizzleRouteImport.update({
@@ -70,15 +51,35 @@ const DemoDrizzleRoute = DemoDrizzleRouteImport.update({
   path: '/demo/drizzle',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DemoI18nRoute = DemoI18nRouteImport.update({
+  id: '/demo/i18n',
+  path: '/demo/i18n',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
+  id: '/demo/tanstack-query',
+  path: '/demo/tanstack-query',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesignSystemIndexRoute = DesignSystemIndexRouteImport.update({
+  id: '/design-system/',
+  path: '/design-system/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MushafV2IndexRoute = MushafV2IndexRouteImport.update({
+  id: '/mushaf-v2/',
+  path: '/mushaf-v2/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VolumeVolumeIdIndexRoute = VolumeVolumeIdIndexRouteImport.update({
   id: '/volume/$volumeId/',
   path: '/volume/$volumeId/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CurriculumVol1Lesson3IndexRoute =
-  CurriculumVol1Lesson3IndexRouteImport.update({
-    id: '/curriculum/vol1/lesson3/',
-    path: '/curriculum/vol1/lesson3/',
+const CurriculumVol1Lesson1IndexRoute =
+  CurriculumVol1Lesson1IndexRouteImport.update({
+    id: '/curriculum/vol1/lesson1/',
+    path: '/curriculum/vol1/lesson1/',
     getParentRoute: () => rootRouteImport,
   } as any)
 const CurriculumVol1Lesson2IndexRoute =
@@ -87,10 +88,16 @@ const CurriculumVol1Lesson2IndexRoute =
     path: '/curriculum/vol1/lesson2/',
     getParentRoute: () => rootRouteImport,
   } as any)
-const CurriculumVol1Lesson1IndexRoute =
-  CurriculumVol1Lesson1IndexRouteImport.update({
-    id: '/curriculum/vol1/lesson1/',
-    path: '/curriculum/vol1/lesson1/',
+const CurriculumVol1Lesson3IndexRoute =
+  CurriculumVol1Lesson3IndexRouteImport.update({
+    id: '/curriculum/vol1/lesson3/',
+    path: '/curriculum/vol1/lesson3/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PracticeVolumeIdLessonIdIndexRoute =
+  PracticeVolumeIdLessonIdIndexRouteImport.update({
+    id: '/practice/$volumeId/$lessonId/',
+    path: '/practice/$volumeId/$lessonId/',
     getParentRoute: () => rootRouteImport,
   } as any)
 const VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute =
@@ -120,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/curriculum/vol1/lesson1/': typeof CurriculumVol1Lesson1IndexRoute
   '/curriculum/vol1/lesson2/': typeof CurriculumVol1Lesson2IndexRoute
   '/curriculum/vol1/lesson3/': typeof CurriculumVol1Lesson3IndexRoute
+  '/practice/$volumeId/$lessonId/': typeof PracticeVolumeIdLessonIdIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
 }
@@ -137,6 +145,7 @@ export interface FileRoutesByTo {
   '/curriculum/vol1/lesson1': typeof CurriculumVol1Lesson1IndexRoute
   '/curriculum/vol1/lesson2': typeof CurriculumVol1Lesson2IndexRoute
   '/curriculum/vol1/lesson3': typeof CurriculumVol1Lesson3IndexRoute
+  '/practice/$volumeId/$lessonId': typeof PracticeVolumeIdLessonIdIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
 }
@@ -155,6 +164,7 @@ export interface FileRoutesById {
   '/curriculum/vol1/lesson1/': typeof CurriculumVol1Lesson1IndexRoute
   '/curriculum/vol1/lesson2/': typeof CurriculumVol1Lesson2IndexRoute
   '/curriculum/vol1/lesson3/': typeof CurriculumVol1Lesson3IndexRoute
+  '/practice/$volumeId/$lessonId/': typeof PracticeVolumeIdLessonIdIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute
   '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId': typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
 }
@@ -174,6 +184,7 @@ export interface FileRouteTypes {
     | '/curriculum/vol1/lesson1/'
     | '/curriculum/vol1/lesson2/'
     | '/curriculum/vol1/lesson3/'
+    | '/practice/$volumeId/$lessonId/'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
   fileRoutesByTo: FileRoutesByTo
@@ -191,6 +202,7 @@ export interface FileRouteTypes {
     | '/curriculum/vol1/lesson1'
     | '/curriculum/vol1/lesson2'
     | '/curriculum/vol1/lesson3'
+    | '/practice/$volumeId/$lessonId'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
   id:
@@ -208,6 +220,7 @@ export interface FileRouteTypes {
     | '/curriculum/vol1/lesson1/'
     | '/curriculum/vol1/lesson2/'
     | '/curriculum/vol1/lesson3/'
+    | '/practice/$volumeId/$lessonId/'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/'
     | '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
   fileRoutesById: FileRoutesById
@@ -226,19 +239,13 @@ export interface RootRouteChildren {
   CurriculumVol1Lesson1IndexRoute: typeof CurriculumVol1Lesson1IndexRoute
   CurriculumVol1Lesson2IndexRoute: typeof CurriculumVol1Lesson2IndexRoute
   CurriculumVol1Lesson3IndexRoute: typeof CurriculumVol1Lesson3IndexRoute
+  PracticeVolumeIdLessonIdIndexRoute: typeof PracticeVolumeIdLessonIdIndexRoute
   VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute: typeof VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute
   VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute: typeof VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -246,25 +253,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/mushaf-v2/': {
-      id: '/mushaf-v2/'
-      path: '/mushaf-v2'
-      fullPath: '/mushaf-v2/'
-      preLoaderRoute: typeof MushafV2IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/design-system/': {
-      id: '/design-system/'
-      path: '/design-system'
-      fullPath: '/design-system/'
-      preLoaderRoute: typeof DesignSystemIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/': {
-      id: '/demo/'
-      path: '/demo'
-      fullPath: '/demo/'
-      preLoaderRoute: typeof DemoIndexRouteImport
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo-v2/': {
@@ -274,18 +267,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoV2IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/i18n': {
-      id: '/demo/i18n'
-      path: '/demo/i18n'
-      fullPath: '/demo/i18n'
-      preLoaderRoute: typeof DemoI18nRouteImport
+    '/demo/': {
+      id: '/demo/'
+      path: '/demo'
+      fullPath: '/demo/'
+      preLoaderRoute: typeof DemoIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/drizzle': {
@@ -295,6 +281,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoDrizzleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/demo/i18n': {
+      id: '/demo/i18n'
+      path: '/demo/i18n'
+      fullPath: '/demo/i18n'
+      preLoaderRoute: typeof DemoI18nRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/tanstack-query': {
+      id: '/demo/tanstack-query'
+      path: '/demo/tanstack-query'
+      fullPath: '/demo/tanstack-query'
+      preLoaderRoute: typeof DemoTanstackQueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/design-system/': {
+      id: '/design-system/'
+      path: '/design-system'
+      fullPath: '/design-system/'
+      preLoaderRoute: typeof DesignSystemIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mushaf-v2/': {
+      id: '/mushaf-v2/'
+      path: '/mushaf-v2'
+      fullPath: '/mushaf-v2/'
+      preLoaderRoute: typeof MushafV2IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/volume/$volumeId/': {
       id: '/volume/$volumeId/'
       path: '/volume/$volumeId'
@@ -302,11 +316,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VolumeVolumeIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/curriculum/vol1/lesson3/': {
-      id: '/curriculum/vol1/lesson3/'
-      path: '/curriculum/vol1/lesson3'
-      fullPath: '/curriculum/vol1/lesson3/'
-      preLoaderRoute: typeof CurriculumVol1Lesson3IndexRouteImport
+    '/curriculum/vol1/lesson1/': {
+      id: '/curriculum/vol1/lesson1/'
+      path: '/curriculum/vol1/lesson1'
+      fullPath: '/curriculum/vol1/lesson1/'
+      preLoaderRoute: typeof CurriculumVol1Lesson1IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/curriculum/vol1/lesson2/': {
@@ -316,11 +330,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CurriculumVol1Lesson2IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/curriculum/vol1/lesson1/': {
-      id: '/curriculum/vol1/lesson1/'
-      path: '/curriculum/vol1/lesson1'
-      fullPath: '/curriculum/vol1/lesson1/'
-      preLoaderRoute: typeof CurriculumVol1Lesson1IndexRouteImport
+    '/curriculum/vol1/lesson3/': {
+      id: '/curriculum/vol1/lesson3/'
+      path: '/curriculum/vol1/lesson3'
+      fullPath: '/curriculum/vol1/lesson3/'
+      preLoaderRoute: typeof CurriculumVol1Lesson3IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/practice/$volumeId/$lessonId/': {
+      id: '/practice/$volumeId/$lessonId/'
+      path: '/practice/$volumeId/$lessonId'
+      fullPath: '/practice/$volumeId/$lessonId/'
+      preLoaderRoute: typeof PracticeVolumeIdLessonIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/': {
@@ -354,6 +375,7 @@ const rootRouteChildren: RootRouteChildren = {
   CurriculumVol1Lesson1IndexRoute: CurriculumVol1Lesson1IndexRoute,
   CurriculumVol1Lesson2IndexRoute: CurriculumVol1Lesson2IndexRoute,
   CurriculumVol1Lesson3IndexRoute: CurriculumVol1Lesson3IndexRoute,
+  PracticeVolumeIdLessonIdIndexRoute: PracticeVolumeIdLessonIdIndexRoute,
   VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute:
     VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRoute,
   VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRoute:
