@@ -8,17 +8,28 @@ export const lesson01: LessonData = {
       type: 'vocabulary',
       titleEn: 'Vocabulary: Beginning, Search, Preservation',
       titleAr: 'الْمُفْرَدَاتُ: الْبَدْءُ وَالْبَحْثُ وَالْمُحَافَظَةُ',
-      titleBn: 'শব্দভান্ডার: শুরু, অনুসন্ধান, সংরক্ষণ',
       payload: {
         words: [
-          { id: 1, ar: 'الْبَدْأُ', romanized: 'al-badʾu', en: 'To start / to begin', bn: 'শুরু করা', emoji: '▶️' },
-          { id: 2, ar: 'الْهُرُوبُ', romanized: 'al-hurūbu', en: 'To flee / to escape', bn: 'পালানো', emoji: '🏃' },
-          { id: 3, ar: 'الشُّعُورُ', romanized: 'ash-shuʿūru', en: 'To feel', bn: 'অনুভব করা', emoji: '🫀' },
-          { id: 4, ar: 'الْبَحْثُ', romanized: 'al-baḥthu', en: 'To search (for)', bn: 'খোঁজা', emoji: '🔎' },
-          { id: 5, ar: 'الْإِدْرَاكُ', romanized: 'al-idrāku', en: 'To realize', bn: 'বুঝে ওঠা', emoji: '💡' },
-          { id: 6, ar: 'الْمُحَافَظَةُ', romanized: 'al-muḥāfaẓah', en: 'To preserve', bn: 'সংরক্ষণ', emoji: '🛡️' },
-          { id: 7, ar: 'الِاعْتِرَافُ', romanized: 'al-iʿtirāf', en: 'To confess', bn: 'স্বীকার করা', emoji: '🙋' },
-          { id: 8, ar: 'التَّعَجُّبُ', romanized: 'at-taʿajjub', en: 'To be amazed', bn: 'আশ্চর্য হওয়া', emoji: '😮' },
+          { id: 1, ar: 'الْبَدْأُ', romanized: 'al-badʾu', en: 'To start / to begin', emoji: '▶️' },
+          {
+            id: 2,
+            ar: 'الْهُرُوبُ',
+            romanized: 'al-hurūbu',
+            en: 'To flee / to escape',
+            emoji: '🏃',
+          },
+          { id: 3, ar: 'الشُّعُورُ', romanized: 'ash-shuʿūru', en: 'To feel', emoji: '🫀' },
+          { id: 4, ar: 'الْبَحْثُ', romanized: 'al-baḥthu', en: 'To search (for)', emoji: '🔎' },
+          { id: 5, ar: 'الْإِدْرَاكُ', romanized: 'al-idrāku', en: 'To realize', emoji: '💡' },
+          {
+            id: 6,
+            ar: 'الْمُحَافَظَةُ',
+            romanized: 'al-muḥāfaẓah',
+            en: 'To preserve',
+            emoji: '🛡️',
+          },
+          { id: 7, ar: 'الِاعْتِرَافُ', romanized: 'al-iʿtirāf', en: 'To confess', emoji: '🙋' },
+          { id: 8, ar: 'التَّعَجُّبُ', romanized: 'at-taʿajjub', en: 'To be amazed', emoji: '😮' },
         ],
       },
     },
@@ -27,15 +38,30 @@ export const lesson01: LessonData = {
       type: 'application',
       titleEn: 'Verb Chains and Negative Forms',
       titleAr: 'سِلْسِلَةُ الأَفْعَالِ وَالصُّوَرُ السَّلْبِيَّةُ',
-      titleBn: 'ক্রিয়ার ধারা ও নেতিবাচক রূপ',
       payload: {
         instruction: 'Past/Present/Imperative chains and Negative forms:',
         items: [
-          { emoji: '🔗', ar: 'بَدَأُوا ... بَحَثُوا ... هَرَبُوا ... شَعَرُوا', en: 'They started ... searched ... fled ... felt' },
-          { emoji: '🔗', ar: 'فَقَدُوا ... سَخِرُوا ... أَغْلَقُوا ... حَرَّكُوا ... اِعْتَرَفُوا', en: 'They lost ... mocked ... closed ... moved ... confessed' },
-          { emoji: '🚫', ar: 'لَنْ يَبْدَءُوا ... لَنْ يَبْحَثُوا ... لَنْ يَهْرُبُوا', en: 'They will never start ... search ... flee (Negative Future)' },
-          { emoji: '🚫', ar: 'لَمْ يَبْدَءُوا ... لَمْ يَبْحَثُوا ... لَمْ يَهْرُبُوا', en: 'They did not start ... search ... flee (Negative Past)' }
-        ]
+          {
+            emoji: '🔗',
+            ar: 'بَدَأُوا ... بَحَثُوا ... هَرَبُوا ... شَعَرُوا',
+            en: 'They started ... searched ... fled ... felt',
+          },
+          {
+            emoji: '🔗',
+            ar: 'فَقَدُوا ... سَخِرُوا ... أَغْلَقُوا ... حَرَّكُوا ... اِعْتَرَفُوا',
+            en: 'They lost ... mocked ... closed ... moved ... confessed',
+          },
+          {
+            emoji: '🚫',
+            ar: 'لَنْ يَبْدَءُوا ... لَنْ يَبْحَثُوا ... لَنْ يَهْرُبُوا',
+            en: 'They will never start ... search ... flee (Negative Future)',
+          },
+          {
+            emoji: '🚫',
+            ar: 'لَمْ يَبْدَءُوا ... لَمْ يَبْحَثُوا ... لَمْ يَهْرُبُوا',
+            en: 'They did not start ... search ... flee (Negative Past)',
+          },
+        ],
       },
     },
     {
@@ -43,28 +69,25 @@ export const lesson01: LessonData = {
       type: 'paragraph',
       titleEn: 'Reading: Reliance, Adhan, and Study',
       titleAr: 'القِرَاءَةُ: التَّوَكُّلُ وَالأَذَانُ وَالْعِلْمُ',
-      titleBn: 'পাঠ: ভরসা, আযান ও জ্ঞান',
       payload: {
         paragraphs: [
           {
             titleEn: 'Reliance on Allah',
-            titleBn: 'আল্লাহর ওপর ভরসা',
             lines: [
               'الْمُسْلِمُونَ يَتَوَكَّلُونَ عَلَى اللهِ، وَيَبْدَءُونَ أَعْمَالَهُمْ بِاسْمِ اللهِ.',
               'أَمَرَ اللهُ الْمُسْلِمِينَ أَنْ يَتَوَكَّلُوا عَلَى اللهِ.',
             ],
-            translationEn: 'Muslims rely on Allah and begin their actions with the name of Allah. Allah commanded the Muslims to rely on Allah.',
-            translationBn: 'মুসলমানরা আল্লাহর ওপর ভরসা করে এবং আল্লাহর নামে কাজ শুরু করে। আল্লাহ মুসলমানদের আল্লাহর ওপর ভরসা করতে আদেশ করেছেন।',
+            translationEn:
+              'Muslims rely on Allah and begin their actions with the name of Allah. Allah commanded the Muslims to rely on Allah.',
           },
           {
             titleEn: 'The adhan',
-            titleBn: 'আযান',
             lines: [
               'بَعْدَ الأَذَانِ تَرَكَ النَّاسُ الْبَيْعَ وَأَغْلَقُوا حَوَانِيتَهُمْ وَأَسْرَعُوا إِلَى الْمَسْجِدِ.',
               'وَتَأَخَّرَ بَعْضُ النَّاسِ فَمَا أَدْرَكُوا إِلَّا رَكْعَةً أَوْ رَكْعَتَيْنِ.',
             ],
-            translationEn: 'After the adhan, people left selling, closed their shops, and hurried to the mosque. Some were late and caught only one or two rakʿahs.',
-            translationBn: 'আযানের পর মানুষ কেনাবেচা ছেড়ে দিল, দোকান বন্ধ করল এবং মসজিদে ছুটে গেল। কিছু লোক দেরি করেছিল, তাই তারা এক বা দুই রাকআতই পেল।',
+            translationEn:
+              'After the adhan, people left selling, closed their shops, and hurried to the mosque. Some were late and caught only one or two rakʿahs.',
           },
         ],
       },
@@ -74,19 +97,15 @@ export const lesson01: LessonData = {
       type: 'q_and_a',
       titleEn: 'Comprehension Questions',
       titleAr: 'أَسْئِلَةُ الفَهْم',
-      titleBn: 'বোধগম্যতা প্রশ্ন',
       payload: {
         instruction: 'Answer from the reading.',
-        instructionBn: 'পাঠ থেকে উত্তর দাও।',
         questions: [
           {
             emoji: '🤲',
             question_ar: 'عَلَى مَنْ يَتَوَكَّلُ الْمُسْلِمُونَ؟',
             question_en: 'Upon whom do Muslims rely?',
-            question_bn: 'মুসলমানরা কার ওপর ভরসা করে?',
             correct_ar: 'عَلَى اللهِ',
             correct_en: 'Upon Allah',
-            correct_bn: 'আল্লাহর ওপর',
             options_ar: ['عَلَى اللهِ', 'عَلَى النَّاسِ', 'عَلَى الْأَمْوَالِ'],
             questionType: 'hal',
           },
@@ -94,21 +113,22 @@ export const lesson01: LessonData = {
             emoji: '🚪',
             question_ar: 'مَاذَا فَعَلَ النَّاسُ بَعْدَ الأَذَانِ؟',
             question_en: 'What did people do after the adhan?',
-            question_bn: 'আযানের পর মানুষ কী করল?',
-            correct_ar: 'تَرَكُوا الْبَيْعَ وَأَغْلَقُوا حَوَانِيتَهُمْ وَأَسْرَعُوا إِلَى الْمَسْجِدِ',
+            correct_ar:
+              'تَرَكُوا الْبَيْعَ وَأَغْلَقُوا حَوَانِيتَهُمْ وَأَسْرَعُوا إِلَى الْمَسْجِدِ',
             correct_en: 'They left selling, closed their shops, and hurried to the mosque',
-            correct_bn: 'তারা কেনাবেচা ছেড়ে দিয়ে, দোকান বন্ধ করে মসজিদে ছুটে গেল',
-            options_ar: ['تَرَكُوا الْبَيْعَ وَأَغْلَقُوا حَوَانِيتَهُمْ وَأَسْرَعُوا إِلَى الْمَسْجِدِ', 'نَامُوا', 'لَعِبُوا'],
+            options_ar: [
+              'تَرَكُوا الْبَيْعَ وَأَغْلَقُوا حَوَانِيتَهُمْ وَأَسْرَعُوا إِلَى الْمَسْجِدِ',
+              'نَامُوا',
+              'لَعِبُوا',
+            ],
             questionType: 'general',
           },
           {
             emoji: '🧍',
             question_ar: 'هَلْ يَسْتَطِيعُ النَّاسُ أَنْ يَهْرُبُوا مِنَ الْمَوْتِ؟',
             question_en: 'Can people escape from death?',
-            question_bn: 'মানুষ কি মৃত্যু থেকে পালাতে পারে?',
             correct_ar: 'لَا، لَنْ يَهْرُبُوا مِنَ الْمَوْتِ',
             correct_en: 'No, they will not escape death',
-            correct_bn: 'না, তারা মৃত্যু থেকে পালাতে পারবে না',
             options_ar: ['نَعَمْ', 'لَا، لَنْ يَهْرُبُوا مِنَ الْمَوْتِ', 'أَحْيَانًا'],
             questionType: 'hal',
           },
@@ -120,14 +140,20 @@ export const lesson01: LessonData = {
       type: 'application',
       titleEn: 'Application: Lesson Phrases',
       titleAr: 'التَّطْبِيقُ: عِبَارَاتُ الدَّرْسِ',
-      titleBn: 'প্রয়োগ: পাঠের বাক্য',
       payload: {
         instruction: 'Read these core phrases again.',
-        instructionBn: 'এই মূল বাক্যগুলো আবার পড়ো।',
         items: [
-          { emoji: '👨', ar: 'قَالَ الْوَالِدُ: تَعَلَّمُوا الْعِلْمَ لَا لِتَكْسِبُوا ثَنَاءَ النَّاسِ.', en: 'The father said: Learn knowledge not to earn people\'s praise.', bn: 'পিতা বললেন: মানুষের প্রশংসার জন্য নয়, জ্ঞান শেখো।' },
-          { emoji: '👳', ar: 'قَالَ الْعَالِمُ: عَلِّمُوا أَوْلَادَكُمْ أُمُورَ دِينِهِمْ.', en: 'The scholar said: Teach your children the matters of their religion.', bn: 'আলেম বললেন: আপনার সন্তানদের তাদের ধর্মের বিষয়গুলো শেখান।' }
-        ]
+          {
+            emoji: '👨',
+            ar: 'قَالَ الْوَالِدُ: تَعَلَّمُوا الْعِلْمَ لَا لِتَكْسِبُوا ثَنَاءَ النَّاسِ.',
+            en: "The father said: Learn knowledge not to earn people's praise.",
+          },
+          {
+            emoji: '👳',
+            ar: 'قَالَ الْعَالِمُ: عَلِّمُوا أَوْلَادَكُمْ أُمُورَ دِينِهِمْ.',
+            en: 'The scholar said: Teach your children the matters of their religion.',
+          },
+        ],
       },
     },
   ],

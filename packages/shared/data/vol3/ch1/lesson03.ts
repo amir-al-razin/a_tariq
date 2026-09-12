@@ -18,7 +18,7 @@ export const lesson03: LessonData = {
             she: 'يَذْهَبْنَ',
             youM: 'تَذْهَبُونَ',
             youF: 'تَذْهَبْنَ',
-            i: 'نَذْهَبُ'
+            i: 'نَذْهَبُ',
           },
           {
             root: 'يَشْرَبُونَ / لَنْ يَشْرَبُوا',
@@ -27,7 +27,7 @@ export const lesson03: LessonData = {
             she: 'يَشْرَبْنَ',
             youM: 'تَشْرَبُونَ',
             youF: 'تَشْرَبْنَ',
-            i: 'نَشْرَبُ'
+            i: 'نَشْرَبُ',
           },
           {
             root: 'يَسْمَعُونَ / لَنْ يَسْمَعُوا',
@@ -36,7 +36,7 @@ export const lesson03: LessonData = {
             she: 'يَسْمَعْنَ',
             youM: 'تَسْمَعُونَ',
             youF: 'تَسْمَعْنَ',
-            i: 'نَسْمَعُ'
+            i: 'نَسْمَعُ',
           },
           {
             root: 'يَلْعَبُونَ / لَنْ يَلْعَبُوا',
@@ -45,7 +45,7 @@ export const lesson03: LessonData = {
             she: 'يَلْعَبْنَ',
             youM: 'تَلْعَبُونَ',
             youF: 'تَلْعَبْنَ',
-            i: 'نَلْعَبُ'
+            i: 'نَلْعَبُ',
           },
           {
             root: 'يَفْهَمُونَ / لَنْ يَفْهَمُوا',
@@ -54,11 +54,11 @@ export const lesson03: LessonData = {
             she: 'يَفْهَمْنَ',
             youM: 'تَفْهَمُونَ',
             youF: 'تَفْهَمْنَ',
-            i: 'نَفْهَمُ'
-          }
+            i: 'نَفْهَمُ',
+          },
         ],
-        sourceText: 'Plural verb forms with future negation using لَنْ'
-      }
+        sourceText: 'Plural verb forms with future negation using لَنْ',
+      },
     },
     {
       id: '3-1-3-2',
@@ -69,15 +69,15 @@ export const lesson03: LessonData = {
         rules: [
           {
             label: 'Future Negation Particle (لَنْ)',
-            labelBn: 'ভবিষ্যত নেতিবাচক কণ',
-            arabic: 'لَنْ is used to negate future actions. The verb after لَنْ takes the subjunctive form (منصوب).',
+            arabic:
+              'لَنْ is used to negate future actions. The verb after لَنْ takes the subjunctive form (منصوب).',
             romanized: 'lan yunaffi al-afyal al-mustaqbaliyyah',
-            meaning: 'Use لَنْ before the present tense verb to express that something will never happen',
-            meaningBn: 'ভবিষ্যতে কিছু কখনও ঘটবে না তা প্রকাশ করতে বর্তমান কালের ক্রিয়ার আগে لَنْ ব্যবহার করুন',
-            examples: []
-          }
-        ]
-      }
+            meaning:
+              'Use لَنْ before the present tense verb to express that something will never happen',
+            examples: [],
+          },
+        ],
+      },
     },
     {
       id: '3-1-3-3',
@@ -88,15 +88,15 @@ export const lesson03: LessonData = {
         rules: [
           {
             label: 'The Particle لِـ for Purpose/Intention',
-            labelBn: 'উদ্দেশ্যের জন্য لِـ কণ',
-            arabic: 'The particle لِـ is attached to verbs to express purpose or intention (why someone does something).',
+            arabic:
+              'The particle لِـ is attached to verbs to express purpose or intention (why someone does something).',
             romanized: 'lam yuassir al-qasdi wa al-niyyah',
-            meaning: 'When you add لِـ to a present tense verb, it indicates the purpose or reason for the action',
-            meaningBn: 'বর্তমান কালের ক্রিয়ায় لِـ যোগ করলে এটি কাজের উদ্দেশ্য বা কারণ নির্দেশ করে',
-            examples: []
-          }
-        ]
-      }
+            meaning:
+              'When you add لِـ to a present tense verb, it indicates the purpose or reason for the action',
+            examples: [],
+          },
+        ],
+      },
     },
     {
       id: '3-1-3-4',
@@ -108,7 +108,6 @@ export const lesson03: LessonData = {
           {
             title: 'Future Negation Chains',
             titleEn: 'Future Negation Chains',
-            titleBn: 'ভবিষ্যত নেতিবাচক কণের শৃঙ্খল',
             lines: [
               'احْفَظْ سِلْسِلَةَ الْأَفْعَالِ الْآتِيَةِ:',
               'لَنْ يَشْرَبُوا ... لَنْ يَسْمَعُوا ... لَنْ يَلْعَبُوا ... لَنْ يَفْهَمُوا ...',
@@ -116,13 +115,13 @@ export const lesson03: LessonData = {
               'لَنْ يَجْلِسُوا ... لَنْ يَضْرِبُوا ... لَنْ يَغْسِلُوا ... لَنْ يَكْذِبُوا ...',
               'لَنْ يَنْصُرُوا ... لَنْ يَكْتُبُوا ... لَنْ يَأْكُلُوا ... لَنْ يَأْمُرُوا ...',
               'لَنْ يُكْرِمُوا ... لَنْ يُعَلِّمُوا ... لَنْ يَنْتَظِرُوا ... لَنْ يُسَافِرُوا ...',
-              'لَنْ يَصُومُوا ... لَنْ يَبِيعُوا ... لَنْ يُجِيبُوا ... لَنْ يَسْتَرِيحُوا ...'
+              'لَنْ يَصُومُوا ... لَنْ يَبِيعُوا ... لَنْ يُجِيبُوا ... لَنْ يَسْتَرِيحُوا ...',
             ],
-            translationEn: 'Memorize the following verb chains: They will never drink... hear... play... understand... open... prevent... slaughter... ask... sit... hit... wash... lie... help... write... eat... command... honor... teach... wait... travel... fast... sell... answer... rest...',
-            translationBn: 'নিম্নলিখিত ক্রিয়া শৃঙ্খল মুখস্ত করুন: তারা কখনও পান করবে না... শুনবে না... খেলবে না... বুঝবে না... খুলবে না... প্রতিরোধ করবে না... জবাই করবে না... জিজ্ঞাসা করবে না... বসবে না... মারবে না... ধুবে না... মিথ্যা বলবে না... সাহায্য করবে না... লিখবে না... খাবে না... আদেশ করবে না... সম্মান করবে না... শেখাবে না... অপেক্ষা করবে না... ভ্রমণ করবে না... উপবাস করবে না... বিক্রয় করবে না... উত্তর দেবে না... বিশ্রাম নেবে না...'
-          }
-        ]
-      }
+            translationEn:
+              'Memorize the following verb chains: They will never drink... hear... play... understand... open... prevent... slaughter... ask... sit... hit... wash... lie... help... write... eat... command... honor... teach... wait... travel... fast... sell... answer... rest...',
+          },
+        ],
+      },
     },
     {
       id: '3-1-3-5',
@@ -134,41 +133,38 @@ export const lesson03: LessonData = {
           {
             title: 'Stories with Negation and Purpose - Part 1',
             titleEn: 'Stories with Negation and Purpose - Part 1',
-            titleBn: 'নেতিবাচকতা এবং উদ্দেশ্যের গল্প - পর্ব ১',
             lines: [
               'لَنْ يَدْخُلَ الْمُشْرِكُونَ الْجَنَّةَ، بَلْ يَدْخُلُونَ النَّارَ، وَلَنْ يَخْرُجُوا مِنْهَا أَبَدًا.',
               'لَنْ نَعْبُدَ غَيْرَ اللَّهِ وَلَنْ نَسْجُدَ لِغَيْرِ اللَّهِ.',
-              'قَالَ الْوَالِدُ لِأَوْلَادِهِ : أَرْجُو أَنْ أَتْرُكَكُمْ مِنْ بَعْدِي، وَلَنْ تَتْرُكُوا كِتَابَ اللَّهِ وَسُنَّةَ رَسُولِهِ.'
+              'قَالَ الْوَالِدُ لِأَوْلَادِهِ : أَرْجُو أَنْ أَتْرُكَكُمْ مِنْ بَعْدِي، وَلَنْ تَتْرُكُوا كِتَابَ اللَّهِ وَسُنَّةَ رَسُولِهِ.',
             ],
-            translationEn: 'The polytheists will never enter Paradise; rather, they will enter the Fire and will never exit from it. We will never worship other than Allah and will never prostrate to other than Allah. The father said to his children: I hope to leave you after me, and you will never abandon the Book of Allah and the Sunnah of His Messenger.',
-            translationBn: 'মুশরিক রা কখনও স্বর্গে প্রবেশ করবে না; বরং তারা নরকে প্রবেশ করবে এবং কখনও বের হবে না। আমরা আল্লাহ ছাড়া আর কাউকে পূজা করব না এবং আল্লাহ ছাড়া আর কাউকে সিজদা করব না। পিতা তার সন্তানদের বলেছেন: আমি আশা করি আমার পরে তোমাদের রেখে যাব, এবং তোমরা কখনও আল্লাহর কিতাব এবং তার রাসূলের সুন্নত পরিত্যাগ করবে না।'
+            translationEn:
+              'The polytheists will never enter Paradise; rather, they will enter the Fire and will never exit from it. We will never worship other than Allah and will never prostrate to other than Allah. The father said to his children: I hope to leave you after me, and you will never abandon the Book of Allah and the Sunnah of His Messenger.',
           },
           {
             title: 'Stories with Negation and Purpose - Part 2',
             titleEn: 'Stories with Negation and Purpose - Part 2',
-            titleBn: 'নেতিবাচকতা এবং উদ্দেশ্যের গল্প - পর্ব ২',
             lines: [
               'قَالَ الْعَالِمُ : مَا حَالَكُمْ يَا شُبَّانَ الْإِسْلَامِ! أَلَنْ تَحْمِلُوا السِّلَاحَ؟ أَلَنْ تَخْرُجُوا إِلَى الْجِهَادِ فِي سَبِيلِ اللَّهِ؟ بَلَى.. سَنَحْمِلُ وَسَنَخْرُجُ.',
               'هَؤُلَاءِ الصَّالِحُونَ لَنْ يَأْكُلُوا أَمْوَالَ الْيَتَامَى وَلَنْ يَمْلَؤُوا بُطُونَهُمْ بِالنَّارِ.',
-              'تَصْدُقُ الْمُسْلِمَاتُ دَائِمًا، وَلَنْ يَكْذِبْنَ أَبَدًا.'
+              'تَصْدُقُ الْمُسْلِمَاتُ دَائِمًا، وَلَنْ يَكْذِبْنَ أَبَدًا.',
             ],
-            translationEn: 'The scholar said: What is your condition, O youth of Islam! Will you not carry weapons? Will you not go out for Jihad in the path of Allah? Yes indeed... we will carry and we will go out. These righteous people will never eat the wealth of orphans and will never fill their bellies with the Fire. Muslim women always speak the truth and will never lie.',
-            translationBn: 'বিদ্বান বলেছেন: তোমাদের অবস্থা কী, হে ইসলামের যুবকরা! তোমরা কি অস্ত্র বহন করবে না? তোমরা কি আল্লাহর পথে জিহাদের জন্য বের হবে না? হ্যাঁ অবশ্যই... আমরা অস্ত্র বহন করব এবং বের হব। এই সৎকর্মশীলরা কখনও অনাথদের সম্পদ খাবে না এবং কখনও তাদের পেট নরক দিয়ে পূরণ করবে না। মুসলিম মহিলারা সবসময় সত্য বলে এবং কখনও মিথ্যা বলবে না।'
+            translationEn:
+              'The scholar said: What is your condition, O youth of Islam! Will you not carry weapons? Will you not go out for Jihad in the path of Allah? Yes indeed... we will carry and we will go out. These righteous people will never eat the wealth of orphans and will never fill their bellies with the Fire. Muslim women always speak the truth and will never lie.',
           },
           {
             title: 'Stories with Negation and Purpose - Part 3',
             titleEn: 'Stories with Negation and Purpose - Part 3',
-            titleBn: 'নেতিবাচকতা এবং উদ্দেশ্যের গল্প - পর্ব ৩',
             lines: [
               'لَنْ تَعْبُدَ الْمُسْلِمَاتُ غَيْرَ اللَّهِ وَلَنْ يَسْجُدْنَ لِغَيْرِ اللَّهِ.',
               'أَيَّتُهَا الْبَنَاتُ! أَلَنْ تَغْسِلْنَ ثِيَابَكُنَّ الْوَسِخَةَ؟ أَلَنْ تَلْبَسْنَ ثِيَابًا نَظِيفَةً؟ بَلَى.. نَغْسِلُ ثِيَابَنَا الْوَسِخَةَ وَنَلْبَسُ ثِيَابًا نَظِيفَةً.',
-              'سَيَنْصُرُ أَصْدِقَاءُ مَاجِدٍ الْمَظْلُومِينَ وَلَنْ يَنْصُرُوا الظَّالِمِينَ.'
+              'سَيَنْصُرُ أَصْدِقَاءُ مَاجِدٍ الْمَظْلُومِينَ وَلَنْ يَنْصُرُوا الظَّالِمِينَ.',
             ],
-            translationEn: 'Muslim women will never worship other than Allah and will never prostrate to other than Allah. O girls! Will you not wash your dirty clothes? Will you not wear clean clothes? Yes indeed... we wash our dirty clothes and wear clean clothes. Majid\'s friends will help the oppressed and will never help the oppressors.',
-            translationBn: 'মুসলিম মহিলারা আল্লাহ ছাড়া অন্য কারও পূজা করবে না এবং আল্লাহ ছাড়া অন্য কারও সিজদা করবে না। হে মেয়েরা! তোমরা কি তোমাদের ময়লা কাপড় ধুবে না? তোমরা কি পরিচ্ছন্ন কাপড় পরবে না? হ্যাঁ অবশ্যই... আমরা আমাদের ময়লা কাপড় ধুই এবং পরিচ্ছন্ন কাপড় পরি। মাজিদের বন্ধুরা অত্যাচারিতদের সাহায্য করবে এবং অত্যাচারীদের কখনও সাহায্য করবে না।'
-          }
-        ]
-      }
+            translationEn:
+              "Muslim women will never worship other than Allah and will never prostrate to other than Allah. O girls! Will you not wash your dirty clothes? Will you not wear clean clothes? Yes indeed... we wash our dirty clothes and wear clean clothes. Majid's friends will help the oppressed and will never help the oppressors.",
+          },
+        ],
+      },
     },
     {
       id: '3-1-3-6',
@@ -180,53 +176,49 @@ export const lesson03: LessonData = {
           {
             title: 'Reading and Translation Practice - Part 1',
             titleEn: 'Reading and Translation Practice - Part 1',
-            titleBn: 'পড়া এবং অনুবাদ অনুশীলন - পর্ব ১',
             lines: [
               'هَؤُلَاءِ الْأَوْلَادُ يَدْرُسُونَ اللُّغَةَ الْعَرَبِيَّةَ لِيَفْهَمُوا كَلَامَ اللَّهِ.',
               'ذَهَبَتِ الْبَنَاتُ إِلَى حَدِيقَةِ الْمَنْزِلِ لِيَلْعَبْنَ مَعَ عَائِشَةَ.',
-              'قَالَتِ الْأُمُّ لِبَنَاتِهَا : أُدْخُلْنَ الْحَمَّامَ لِتَغْسِلْنَ ثِيَابَكُنَّ الْوَسِخَةَ.'
+              'قَالَتِ الْأُمُّ لِبَنَاتِهَا : أُدْخُلْنَ الْحَمَّامَ لِتَغْسِلْنَ ثِيَابَكُنَّ الْوَسِخَةَ.',
             ],
-            translationEn: 'These boys are studying the Arabic language in order to understand the speech of Allah. The girls went to the house garden to play with Aisha. The mother said to her daughters: Enter the bathroom to wash your dirty clothes.',
-            translationBn: 'এই ছেলেরা আল্লাহর বাণী বোঝার জন্য আরবি ভাষা অধ্যয়ন করছে। মেয়েরা আয়ের সাথে খেলার জন্য বাড়ির বাগানে গেছে। মা তার মেয়েদের বলেছেন: বাথরুমে প্রবেশ করুন তোমাদের ময়লা কাপড় ধুতে।'
+            translationEn:
+              'These boys are studying the Arabic language in order to understand the speech of Allah. The girls went to the house garden to play with Aisha. The mother said to her daughters: Enter the bathroom to wash your dirty clothes.',
           },
           {
             title: 'Reading and Translation Practice - Part 2',
             titleEn: 'Reading and Translation Practice - Part 2',
-            titleBn: 'পড়া এবং অনুবাদ অনুশীলন - পর্ব ২',
             lines: [
               'قَالَ رَاشِدٌ لِأَصْدِقَائِهِ : خُذُوا هَذِهِ الْأَكْوَابَ لِتَشْرَبُوا مَاءً بَارِدًا.',
               'فَتَحَ أَصْدِقَاءُ مَاجِدٍ بَابَ الْغُرْفَةِ لِيَخْرُجُوا مِنَ الْغُرْفَةِ وَيَذْهَبُوا إِلَى حَدِيقَةِ الْمَنْزِلِ.',
-              'أَخَذَتِ الْبَنَاتُ الْمَنَادِيلَ النَّظِيفَةَ لِيَمْسَحْنَ بِهَا وُجُوهَهُنَّ.'
+              'أَخَذَتِ الْبَنَاتُ الْمَنَادِيلَ النَّظِيفَةَ لِيَمْسَحْنَ بِهَا وُجُوهَهُنَّ.',
             ],
-            translationEn: 'Rashid said to his friends: Take these cups to drink cold water. Majids friends opened the door of the room to exit the room and go to the house garden. The girls took the clean handkerchiefs to wipe their faces with them.',
-            translationBn: 'রাশিদ তার বন্ধুদের বলেছেন: এই কাপগুলি নিন ঠান্ডা জল পাওয়ার জন্য। মাজিদের বন্ধুরা ঘর থেকে বেরিয়ে বাগানে যাওয়ার জন্য ঘরের দরজা খুলেছে। মেয়েরা তাদের মুখ মোছার জন্য পরিচ্ছন্ন রুমাল নিয়েছে।'
+            translationEn:
+              'Rashid said to his friends: Take these cups to drink cold water. Majids friends opened the door of the room to exit the room and go to the house garden. The girls took the clean handkerchiefs to wipe their faces with them.',
           },
           {
             title: 'Reading and Translation Practice - Part 3',
             titleEn: 'Reading and Translation Practice - Part 3',
-            titleBn: 'পড়া এবং অনুবাদ অনুশীলন - পর্ব ৩',
             lines: [
               'قَالَتِ الْأُمُّ لِأَوْلَادِهَا : إِجْلِسُوا عَلَى الْمَائِدَةِ لِتَأْكُلُوا طَعَامَ الْعِشَاءِ.',
               'أَخَذَ التَّلَامِيذُ أَقْلَامَهُمْ لِيَكْتُبُوا مَقَالَةً عَنْ فَضِيلَةِ الْعِلْمِ.',
-              'أَخَذَ الْأَوْلَادُ الْكُرَةَ الْجَدِيدَةَ لِيَلْعَبُوا بِهَا مَعَ أَصْدِقَائِهِمْ.'
+              'أَخَذَ الْأَوْلَادُ الْكُرَةَ الْجَدِيدَةَ لِيَلْعَبُوا بِهَا مَعَ أَصْدِقَائِهِمْ.',
             ],
-            translationEn: 'The mother said to her children: Sit at the dining table to eat dinner. The students took their pens to write an article about the virtue of knowledge. The boys took the new ball to play with it with their friends.',
-            translationBn: 'মা তার সন্তানদের বলেছেন: ডাইনিং টেবিলে বসুন রাতের খাবার খেতে। শিক্ষার্থীরা জ্ঞানের গুণাবলী নিয়ে একটি প্রবন্ধ লিখতে তাদের কলম নিয়েছে। ছেলেরা তাদের বন্ধুদের সাথে খেলার জন্য নতুন বল নিয়েছে।'
+            translationEn:
+              'The mother said to her children: Sit at the dining table to eat dinner. The students took their pens to write an article about the virtue of knowledge. The boys took the new ball to play with it with their friends.',
           },
           {
             title: 'Reading and Translation Practice - Part 4',
             titleEn: 'Reading and Translation Practice - Part 4',
-            titleBn: 'পড়া এবং অনুবাদ অনুশীলন - পর্ব ৪',
             lines: [
               'جَلَسَ النَّاسُ فِي مَجْلِسِ الْعَالِمِ لِيَسْمَعُوا عِظَتَهُ.',
               'أَرْسَلَ هَؤُلَاءِ الْآبَاءُ أَوْلَادَهُمْ إِلَى الْمَدْرَسَةِ لِيَتَعَلَّمُوا اللُّغَةَ الْعَرَبِيَّةَ.',
-              'جَلَسَ الْمُسَافِرُونَ فِي غُرْفَةِ الِانْتِظَارِ لِيَنْتَظِرُوا الْقِطَارَ السَّرِيعَ.'
+              'جَلَسَ الْمُسَافِرُونَ فِي غُرْفَةِ الِانْتِظَارِ لِيَنْتَظِرُوا الْقِطَارَ السَّرِيعَ.',
             ],
-            translationEn: 'The people sat in the gathering of the scholar to hear his sermon. These fathers sent their children to school to learn the Arabic language. The travelers sat in the waiting room to wait for the fast train.',
-            translationBn: 'মানুষ বিদ্বানের সম্বোধন শুনতে বিদ্বানের সমাবেশে বসেছে। এই পিতারা আরবি ভাষা শিখতে তাদের সন্তানদের স্কুলে পাঠিয়েছেন। ভ্রমণকারীরা দ্রুত ট্রেনের অপেক্ষায় অপেক্ষার ঘরে বসেছিল।'
-          }
-        ]
-      }
+            translationEn:
+              'The people sat in the gathering of the scholar to hear his sermon. These fathers sent their children to school to learn the Arabic language. The travelers sat in the waiting room to wait for the fast train.',
+          },
+        ],
+      },
     },
     {
       id: '3-1-3-7',
@@ -234,43 +226,48 @@ export const lesson03: LessonData = {
       titleEn: 'Assessment - Verb Conjugation with Purpose',
       titleAr: 'التَّمْرِينُ - تَصْرِيفُ الأَفْعَالِ مَعَ الْقَصْدِ',
       payload: {
-        instruction: 'Complete the following sentences using the verb patterns with purpose (لِـ) matching the subject. (Example: يَدْرُسُ هَؤُلَاءِ الْأَوْلَادُ اللُّغَةَ الْعَرَبِيَّةَ لِيَفْهَمُوا كَلَامَ اللَّهِ)',
+        instruction:
+          'Complete the following sentences using the verb patterns with purpose (لِـ) matching the subject. (Example: يَدْرُسُ هَؤُلَاءِ الْأَوْلَادُ اللُّغَةَ الْعَرَبِيَّةَ لِيَفْهَمُوا كَلَامَ اللَّهِ)',
         questions: [
           {
             emoji: '📝',
-            question_ar: '(١) يَدْرُسُ هَذَا الْوَلَدُ اللُّغَةَ الْعَرَبِيَّةَ ___ كَلَامَ اللَّهِ',
+            question_ar:
+              '(١) يَدْرُسُ هَذَا الْوَلَدُ اللُّغَةَ الْعَرَبِيَّةَ ___ كَلَامَ اللَّهِ',
             question_en: 'This boy studies the Arabic language to understand the speech of Allah.',
             correct_ar: 'لِيَفْهَمَ',
             correct_en: 'to understand (m.sg)',
             options_ar: ['لِيَفْهَمَ', 'لِيَفْهَمُوا', 'لِتَفْهَمَ'],
-            questionType: 'general'
+            questionType: 'general',
           },
           {
             emoji: '📝',
-            question_ar: '(٢) تَدْرُسُ هَذِهِ الْبِنْتُ اللُّغَةَ الْعَرَبِيَّةَ ___ كَلَامَ اللَّهِ',
+            question_ar:
+              '(٢) تَدْرُسُ هَذِهِ الْبِنْتُ اللُّغَةَ الْعَرَبِيَّةَ ___ كَلَامَ اللَّهِ',
             question_en: 'This girl studies the Arabic language to understand the speech of Allah.',
             correct_ar: 'لِتَفْهَمَ',
             correct_en: 'to understand (f.sg)',
             options_ar: ['لِتَفْهَمَ', 'لِيَفْهَمَ', 'لِتَفْهَمْنَ'],
-            questionType: 'general'
+            questionType: 'general',
           },
           {
             emoji: '📝',
-            question_ar: '(٣) أَيُّهَا الْأَوْلَادُ! اُدْرُسُوا اللُّغَةَ الْعَرَبِيَّةَ ___ كَلَامَ اللَّهِ',
+            question_ar:
+              '(٣) أَيُّهَا الْأَوْلَادُ! اُدْرُسُوا اللُّغَةَ الْعَرَبِيَّةَ ___ كَلَامَ اللَّهِ',
             question_en: 'O boys! Study the Arabic language to understand the speech of Allah.',
             correct_ar: 'لِتَفْهَمُوا',
             correct_en: 'to understand (m.pl)',
             options_ar: ['لِتَفْهَمُوا', 'لِيَفْهَمُوا', 'لِتَفْهَمْنَ'],
-            questionType: 'general'
+            questionType: 'general',
           },
           {
             emoji: '📝',
-            question_ar: '(٤) أَيَّتُهَا الْبَنَاتُ! اُدْرُسْنَ اللُّغَةَ الْعَرَبِيَّةَ ___ كَلَامَ اللَّهِ',
+            question_ar:
+              '(٤) أَيَّتُهَا الْبَنَاتُ! اُدْرُسْنَ اللُّغَةَ الْعَرَبِيَّةَ ___ كَلَامَ اللَّهِ',
             question_en: 'O girls! Study the Arabic language to understand the speech of Allah.',
             correct_ar: 'لِتَفْهَمْنَ',
             correct_en: 'to understand (f.pl)',
             options_ar: ['لِتَفْهَمْنَ', 'لِيَفْهَمْنَ', 'لِتَفْهَمُوا'],
-            questionType: 'general'
+            questionType: 'general',
           },
           {
             emoji: '📝',
@@ -279,7 +276,7 @@ export const lesson03: LessonData = {
             correct_ar: 'لِتَفْهَمِي',
             correct_en: 'to understand (f.sg.2nd)',
             options_ar: ['لِتَفْهَمِي', 'لِتَفْهَمَ', 'لِتَفْهَمْنَ'],
-            questionType: 'general'
+            questionType: 'general',
           },
           {
             emoji: '📝',
@@ -288,10 +285,10 @@ export const lesson03: LessonData = {
             correct_ar: 'لِتَفْهَمَ',
             correct_en: 'to understand (m.sg.2nd)',
             options_ar: ['لِتَفْهَمَ', 'لِيَفْهَمَ', 'لِتَفْهَمِي'],
-            questionType: 'general'
-          }
-        ]
-      }
+            questionType: 'general',
+          },
+        ],
+      },
     },
     {
       id: '3-1-3-8',
@@ -299,36 +296,40 @@ export const lesson03: LessonData = {
       titleEn: 'Assessment - Complete Verb Chains with لِـ',
       titleAr: 'التَّمْرِينُ - أَكْمِلِ السِّلْسِلَةَ بِـ لِـ',
       payload: {
-        instruction: 'Complete the following verb chains adding the purpose particle لِـ to each verb form.',
+        instruction:
+          'Complete the following verb chains adding the purpose particle لِـ to each verb form.',
         questions: [
           {
             emoji: '📝',
             question_ar: '(١) لِيَكْتُبُوا ... لِيَأْكُلُوا ... لِيَشْرَبُوا ... لِيَجْلِسُوا ...',
-            question_en: 'Complete: For them to write... For them to eat... For them to drink... For them to sit...',
+            question_en:
+              'Complete: For them to write... For them to eat... For them to drink... For them to sit...',
             correct_ar: 'لِيَفْتَحُوا - لِيَحْفَظُوا - لِيَسْأَلُوا - لِيَلْعَبُوا',
             correct_en: 'To open - to memorize - to ask - to play',
             options_ar: [
               'لِيَفْتَحُوا - لِيَحْفَظُوا - لِيَسْأَلُوا - لِيَلْعَبُوا',
               'يَفْتَحُونَ - يَحْفَظُونَ - يَسْأَلُونَ - يَلْعَبُونَ',
-              'لِيَفْتَحُونَ - لِيَحْفَظُونَ - لِيَسْأَلُونَ - لِيَلْعَبُونَ'
+              'لِيَفْتَحُونَ - لِيَحْفَظُونَ - لِيَسْأَلُونَ - لِيَلْعَبُونَ',
             ],
-            questionType: 'general'
+            questionType: 'general',
           },
           {
             emoji: '📝',
-            question_ar: '(٢) لِيُرْسِلُوا ... لِيُعَلِّمُوا ... لِيَنْتَظِرُوا ... لِيَصُومُوا ...',
-            question_en: 'Complete: For them to send... For them to teach... For them to wait... For them to fast...',
+            question_ar:
+              '(٢) لِيُرْسِلُوا ... لِيُعَلِّمُوا ... لِيَنْتَظِرُوا ... لِيَصُومُوا ...',
+            question_en:
+              'Complete: For them to send... For them to teach... For them to wait... For them to fast...',
             correct_ar: 'لِيَبِيعُوا - لِيُسَافِرُوا - لِيَسْتَرِيحُوا - لِيُجِيبُوا',
             correct_en: 'To sell - to travel - to rest - to answer',
             options_ar: [
               'لِيَبِيعُوا - لِيُسَافِرُوا - لِيَسْتَرِيحُوا - لِيُجِيبُوا',
               'يَبِيعُونَ - يُسَافِرُونَ - يَسْتَرِيحُونَ - يُجِيبُونَ',
-              'لِيَبِيعُونَ - لِيُسَافِرُونَ - لِيَسْتَرِيحُونَ - لِيُجِيبُونَ'
+              'لِيَبِيعُونَ - لِيُسَافِرُونَ - لِيَسْتَرِيحُونَ - لِيُجِيبُونَ',
             ],
-            questionType: 'general'
-          }
-        ]
-      }
+            questionType: 'general',
+          },
+        ],
+      },
     },
     {
       id: '3-1-3-9',
@@ -343,9 +344,10 @@ export const lesson03: LessonData = {
             question_ar: 'هَلْ يَدْخُلُ الْمُشْرِكُونَ الْجَنَّةَ؟',
             question_en: 'Will the polytheists enter Paradise?',
             correct_ar: 'لا، لَنْ يَدْخُلُوا الْجَنَّةَ، بَلْ سَيَدْخُلُونَ النَّارَ',
-            correct_en: 'No, the polytheists will never enter Paradise; rather, they will enter the Fire',
+            correct_en:
+              'No, the polytheists will never enter Paradise; rather, they will enter the Fire',
             options_ar: ['نَعَمْ، سَيَدْخُلُونَ', 'لا، لَنْ يَدْخُلُوا الْجَنَّةَ'],
-            questionType: 'hal'
+            questionType: 'hal',
           },
           {
             emoji: '❓',
@@ -354,16 +356,17 @@ export const lesson03: LessonData = {
             correct_ar: 'لا، لَنْ يَخْرُجُوا مِنْهَا أَبَدًا',
             correct_en: 'No, they will never exit from it',
             options_ar: ['نَعَمْ', 'لا، أَبَدًا'],
-            questionType: 'hal'
+            questionType: 'hal',
           },
           {
             emoji: '❓',
             question_ar: 'مَاذَا قَالَتِ الْأُمُّ لِبَنَاتِهَا؟',
             question_en: 'What did the mother say to her daughters?',
-            correct_ar: 'قَالَتِ الْأُمُّ : أُدْخُلْنَ الْحَمَّامَ لِتَغْسِلْنَ ثِيَابَكُنَّ الْوَسِخَةَ',
+            correct_ar:
+              'قَالَتِ الْأُمُّ : أُدْخُلْنَ الْحَمَّامَ لِتَغْسِلْنَ ثِيَابَكُنَّ الْوَسِخَةَ',
             correct_en: 'The mother said: Enter the bathroom to wash your dirty clothes',
             options_ar: ['ادرسن', 'ادخلن الحمام', 'العبن'],
-            questionType: 'general'
+            questionType: 'general',
           },
           {
             emoji: '❓',
@@ -372,7 +375,7 @@ export const lesson03: LessonData = {
             correct_ar: 'يَدْرُسُونَ اللُّغَةَ الْعَرَبِيَّةَ لِيَفْهَمُوا كَلَامَ اللَّهِ',
             correct_en: 'They study the Arabic language in order to understand the speech of Allah',
             options_ar: ['للمال', 'لفهم كلام الله', 'للعب'],
-            questionType: 'general'
+            questionType: 'general',
           },
           {
             emoji: '❓',
@@ -381,7 +384,7 @@ export const lesson03: LessonData = {
             correct_ar: 'ذَهَبَتِ الْبَنَاتُ إِلَى حَدِيقَةِ الْمَنْزِلِ',
             correct_en: 'The girls went to the house garden',
             options_ar: ['المسجد', 'المدرسة', 'حديقة المنزل'],
-            questionType: 'general'
+            questionType: 'general',
           },
           {
             emoji: '❓',
@@ -390,7 +393,7 @@ export const lesson03: LessonData = {
             correct_ar: 'لِيَلْعَبْنَ مَعَ عَائِشَةَ',
             correct_en: 'To play with Aisha',
             options_ar: ['للقراءة', 'للعب مع عائشة', 'للدراسة'],
-            questionType: 'general'
+            questionType: 'general',
           },
           {
             emoji: '❓',
@@ -399,7 +402,7 @@ export const lesson03: LessonData = {
             correct_ar: 'قَالَ رَاشِدٌ : خُذُوا هَذِهِ الْأَكْوَابَ لِتَشْرَبُوا مَاءً بَارِدًا',
             correct_en: 'Rashid said: Take these cups to drink cold water',
             options_ar: ['اركضوا', 'خذوا الاكواب', 'اجلسوا'],
-            questionType: 'general'
+            questionType: 'general',
           },
           {
             emoji: '❓',
@@ -408,10 +411,10 @@ export const lesson03: LessonData = {
             correct_ar: 'أَخَذَتِ الْبَنَاتُ الْمَنَادِيلَ النَّظِيفَةَ',
             correct_en: 'The girls took the clean handkerchiefs',
             options_ar: ['الكتب', 'المناديل النظيفة', 'الاقلام'],
-            questionType: 'general'
-          }
-        ]
-      }
-    }
-  ]
+            questionType: 'general',
+          },
+        ],
+      },
+    },
+  ],
 };
