@@ -16,8 +16,10 @@ import { Route as DemoIndexRouteImport } from './routes/demo/index'
 import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
 import { Route as DemoI18nRouteImport } from './routes/demo.i18n'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
+import { Route as DemoVideoRouteImport } from './routes/demo/video'
 import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
 import { Route as MushafV2IndexRouteImport } from './routes/mushaf-v2/index'
+import { Route as PracticeDemoVideoRouteImport } from './routes/practice/demo/video'
 import { Route as VolumeVolumeIdIndexRouteImport } from './routes/volume/$volumeId/index'
 import { Route as CurriculumVol1Lesson1IndexRouteImport } from './routes/curriculum/vol1/lesson1/index'
 import { Route as CurriculumVol1Lesson2IndexRouteImport } from './routes/curriculum/vol1/lesson2/index'
@@ -61,6 +63,11 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   path: '/demo/tanstack-query',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DemoVideoRoute = DemoVideoRouteImport.update({
+  id: '/demo/video',
+  path: '/demo/video',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DesignSystemIndexRoute = DesignSystemIndexRouteImport.update({
   id: '/design-system/',
   path: '/design-system/',
@@ -69,6 +76,11 @@ const DesignSystemIndexRoute = DesignSystemIndexRouteImport.update({
 const MushafV2IndexRoute = MushafV2IndexRouteImport.update({
   id: '/mushaf-v2/',
   path: '/mushaf-v2/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PracticeDemoVideoRoute = PracticeDemoVideoRouteImport.update({
+  id: '/practice/demo/video',
+  path: '/practice/demo/video',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VolumeVolumeIdIndexRoute = VolumeVolumeIdIndexRouteImport.update({
@@ -119,10 +131,12 @@ export interface FileRoutesByFullPath {
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/demo/video': typeof DemoVideoRoute
   '/demo-v2/': typeof DemoV2IndexRoute
   '/demo/': typeof DemoIndexRoute
   '/design-system/': typeof DesignSystemIndexRoute
   '/mushaf-v2/': typeof MushafV2IndexRoute
+  '/practice/demo/video': typeof PracticeDemoVideoRoute
   '/volume/$volumeId/': typeof VolumeVolumeIdIndexRoute
   '/curriculum/vol1/lesson1/': typeof CurriculumVol1Lesson1IndexRoute
   '/curriculum/vol1/lesson2/': typeof CurriculumVol1Lesson2IndexRoute
@@ -137,10 +151,12 @@ export interface FileRoutesByTo {
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/demo/video': typeof DemoVideoRoute
   '/demo-v2': typeof DemoV2IndexRoute
   '/demo': typeof DemoIndexRoute
   '/design-system': typeof DesignSystemIndexRoute
   '/mushaf-v2': typeof MushafV2IndexRoute
+  '/practice/demo/video': typeof PracticeDemoVideoRoute
   '/volume/$volumeId': typeof VolumeVolumeIdIndexRoute
   '/curriculum/vol1/lesson1': typeof CurriculumVol1Lesson1IndexRoute
   '/curriculum/vol1/lesson2': typeof CurriculumVol1Lesson2IndexRoute
@@ -156,10 +172,12 @@ export interface FileRoutesById {
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/demo/i18n': typeof DemoI18nRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/demo/video': typeof DemoVideoRoute
   '/demo-v2/': typeof DemoV2IndexRoute
   '/demo/': typeof DemoIndexRoute
   '/design-system/': typeof DesignSystemIndexRoute
   '/mushaf-v2/': typeof MushafV2IndexRoute
+  '/practice/demo/video': typeof PracticeDemoVideoRoute
   '/volume/$volumeId/': typeof VolumeVolumeIdIndexRoute
   '/curriculum/vol1/lesson1/': typeof CurriculumVol1Lesson1IndexRoute
   '/curriculum/vol1/lesson2/': typeof CurriculumVol1Lesson2IndexRoute
@@ -176,10 +194,12 @@ export interface FileRouteTypes {
     | '/demo/drizzle'
     | '/demo/i18n'
     | '/demo/tanstack-query'
+    | '/demo/video'
     | '/demo-v2/'
     | '/demo/'
     | '/design-system/'
     | '/mushaf-v2/'
+    | '/practice/demo/video'
     | '/volume/$volumeId/'
     | '/curriculum/vol1/lesson1/'
     | '/curriculum/vol1/lesson2/'
@@ -194,10 +214,12 @@ export interface FileRouteTypes {
     | '/demo/drizzle'
     | '/demo/i18n'
     | '/demo/tanstack-query'
+    | '/demo/video'
     | '/demo-v2'
     | '/demo'
     | '/design-system'
     | '/mushaf-v2'
+    | '/practice/demo/video'
     | '/volume/$volumeId'
     | '/curriculum/vol1/lesson1'
     | '/curriculum/vol1/lesson2'
@@ -212,10 +234,12 @@ export interface FileRouteTypes {
     | '/demo/drizzle'
     | '/demo/i18n'
     | '/demo/tanstack-query'
+    | '/demo/video'
     | '/demo-v2/'
     | '/demo/'
     | '/design-system/'
     | '/mushaf-v2/'
+    | '/practice/demo/video'
     | '/volume/$volumeId/'
     | '/curriculum/vol1/lesson1/'
     | '/curriculum/vol1/lesson2/'
@@ -231,10 +255,12 @@ export interface RootRouteChildren {
   DemoDrizzleRoute: typeof DemoDrizzleRoute
   DemoI18nRoute: typeof DemoI18nRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  DemoVideoRoute: typeof DemoVideoRoute
   DemoV2IndexRoute: typeof DemoV2IndexRoute
   DemoIndexRoute: typeof DemoIndexRoute
   DesignSystemIndexRoute: typeof DesignSystemIndexRoute
   MushafV2IndexRoute: typeof MushafV2IndexRoute
+  PracticeDemoVideoRoute: typeof PracticeDemoVideoRoute
   VolumeVolumeIdIndexRoute: typeof VolumeVolumeIdIndexRoute
   CurriculumVol1Lesson1IndexRoute: typeof CurriculumVol1Lesson1IndexRoute
   CurriculumVol1Lesson2IndexRoute: typeof CurriculumVol1Lesson2IndexRoute
@@ -295,6 +321,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoTanstackQueryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/demo/video': {
+      id: '/demo/video'
+      path: '/demo/video'
+      fullPath: '/demo/video'
+      preLoaderRoute: typeof DemoVideoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/design-system/': {
       id: '/design-system/'
       path: '/design-system'
@@ -307,6 +340,13 @@ declare module '@tanstack/react-router' {
       path: '/mushaf-v2'
       fullPath: '/mushaf-v2/'
       preLoaderRoute: typeof MushafV2IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/practice/demo/video': {
+      id: '/practice/demo/video'
+      path: '/practice/demo/video'
+      fullPath: '/practice/demo/video'
+      preLoaderRoute: typeof PracticeDemoVideoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/volume/$volumeId/': {
@@ -367,10 +407,12 @@ const rootRouteChildren: RootRouteChildren = {
   DemoDrizzleRoute: DemoDrizzleRoute,
   DemoI18nRoute: DemoI18nRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  DemoVideoRoute: DemoVideoRoute,
   DemoV2IndexRoute: DemoV2IndexRoute,
   DemoIndexRoute: DemoIndexRoute,
   DesignSystemIndexRoute: DesignSystemIndexRoute,
   MushafV2IndexRoute: MushafV2IndexRoute,
+  PracticeDemoVideoRoute: PracticeDemoVideoRoute,
   VolumeVolumeIdIndexRoute: VolumeVolumeIdIndexRoute,
   CurriculumVol1Lesson1IndexRoute: CurriculumVol1Lesson1IndexRoute,
   CurriculumVol1Lesson2IndexRoute: CurriculumVol1Lesson2IndexRoute,

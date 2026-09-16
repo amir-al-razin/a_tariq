@@ -24,3 +24,15 @@ android
 
 # Kiro configuration (will be added after successful sprint workflow)
 .kiro/
+
+# Secrets & Environment variables
+.env
+.env.*
+!.env.example
+
+# Python virtual environment & caches
+.venv/
+__pycache__/
+*.pyc
+output/
+*.db

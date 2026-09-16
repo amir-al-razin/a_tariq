@@ -5,7 +5,6 @@ import { Tooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
 import confetti from 'canvas-confetti'
 import { CurriculumHeader } from '../../../../components/curriculum/shared/CurriculumHeader'
-import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
 import { VOL1_PRACTICE, type PracticeLine } from '../../../../lib/practice-data'
 
 export const Route = createFileRoute('/practice/$volumeId/$lessonId/')({
