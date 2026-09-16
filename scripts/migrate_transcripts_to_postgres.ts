@@ -49,7 +49,13 @@ const KNOWN_VIDEOS: KnownVideoConfig[] = [
   {
     videoId: 'peppa_pig_arabic',
     title: 'Peppa Pig Arabic (بيبا بيغ التسوق)',
-    sourceUrl: 'https://www.youtube.com/watch?v=HWGieW9zwso', // Default stream fallback
+    sourceUrl: 'https://www.youtube.com/watch?v=Sg1Z14G-4wk',
+    duration: 300,
+  },
+  {
+    videoId: 'Sg1Z14G-4wk',
+    title: 'Peppa Pig Arabic (بيبا بيغ التسوق)',
+    sourceUrl: 'https://www.youtube.com/watch?v=Sg1Z14G-4wk',
     duration: 300,
   },
 ]

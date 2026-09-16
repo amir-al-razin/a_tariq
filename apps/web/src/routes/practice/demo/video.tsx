@@ -34,7 +34,7 @@ const LIBRARY_PRESETS: HistoryItem[] = [
   {
     id: 'peppa_pig_arabic',
     title: '🐷 Peppa Pig Arabic (بيبا بيغ التسوق)',
-    url: 'https://www.youtube.com/watch?v=HWGieW9zwso',
+    url: 'https://www.youtube.com/watch?v=Sg1Z14G-4wk',
   },
 ]
 
@@ -92,14 +92,15 @@ function PracticeVideoDemoRoute() {
     if (!targetUrl) return
 
     // Special local preset: Peppa Pig Arabic with pre-verified JSON transcript
-    if (overrideTitle?.includes('Peppa Pig') || targetUrl.includes('peppa')) {
-      setVideoUrl(targetUrl)
+    if (overrideTitle?.includes('Peppa Pig') || targetUrl.includes('peppa') || targetUrl.includes('Sg1Z14G-4wk')) {
+      const peppaUrl = 'https://www.youtube.com/watch?v=Sg1Z14G-4wk'
+      setVideoUrl(peppaUrl)
       setTranscript(parsedTranscript as TranscriptSentence[])
       setVideoTitle('Peppa Pig Arabic (بيبا بيغ التسوق)')
-      setInputUrl(targetUrl)
+      setInputUrl(peppaUrl)
       setStatusMessage('Loaded Peppa Pig Arabic episode with verified synchronized vocabulary.')
       setErrorMessage(null)
-      saveToHistory({ title: 'Peppa Pig Arabic (بيبا بيغ التسوق)', url: targetUrl, id: 'peppa_pig_arabic' })
+      saveToHistory({ title: 'Peppa Pig Arabic (بيبا بيغ التسوق)', url: peppaUrl, id: 'Sg1Z14G-4wk' })
       return
     }
 
