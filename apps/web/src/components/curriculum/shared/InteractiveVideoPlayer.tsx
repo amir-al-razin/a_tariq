@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, memo, useCallback } from 'react'
 import ReactPlayer from 'react-player'
 
 export interface TranscriptWord {
@@ -29,6 +29,46 @@ function formatTime(seconds: number): string {
   return `${mins}:${secs < 10 ? '0' : ''}${secs}`
 }
 
+interface VideoSurfaceProps {
+  videoUrl: string
+  playerRef: React.RefObject<any>
+  onTimeUpdate: (seconds: number) => void
+}
+
+// Memoized player surface: NEVER re-renders on subtitle time ticks, completely eliminating audio bar glitches
+const VideoSurface = memo(function VideoSurface({ videoUrl, playerRef, onTimeUpdate }: VideoSurfaceProps) {
+  const isDirectFile = videoUrl.startsWith('/') || videoUrl.endsWith('.mp4')
+
+  return (
+    <div className="w-full aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border-4 border-neutral-100 dark:border-neutral-800 relative flex-shrink-0">
+      {isDirectFile ? (
+        <video
+          ref={playerRef}
+          src={videoUrl}
+          className="w-full h-full object-cover absolute top-0 left-0"
+          controls
+          onTimeUpdate={(e) => onTimeUpdate(e.currentTarget.currentTime)}
+        />
+      ) : (
+        <ReactPlayer
+          ref={playerRef}
+          src={videoUrl}
+          width="100%"
+          height="100%"
+          controls
+          onTimeUpdate={(e: any) => {
+            const t = e?.currentTarget?.currentTime
+            if (typeof t === 'number') {
+              onTimeUpdate(t)
+            }
+          }}
+          style={{ position: 'absolute', top: 0, left: 0 }}
+        />
+      )}
+    </div>
+  )
+})
+
 export function InteractiveVideoPlayer({ videoUrl, transcript }: InteractiveVideoPlayerProps) {
   const [isMounted, setIsMounted] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
@@ -42,35 +82,43 @@ export function InteractiveVideoPlayer({ videoUrl, transcript }: InteractiveVide
     setIsMounted(true)
   }, [])
 
+  const handleTimeUpdate = useCallback((t: number) => {
+    setCurrentTime(t)
+  }, [])
+
   const seekToTime = (timeInSeconds: number) => {
     if (playerRef.current) {
-      if (typeof playerRef.current.seekTo === 'function') {
-        playerRef.current.seekTo(timeInSeconds, 'seconds')
-      } else if ('currentTime' in playerRef.current) {
-        playerRef.current.currentTime = timeInSeconds
+      try {
+        if ('currentTime' in playerRef.current) {
+          playerRef.current.currentTime = timeInSeconds
+        } else if (typeof playerRef.current.seekTo === 'function') {
+          playerRef.current.seekTo(timeInSeconds, 'seconds')
+        }
+      } catch (e) {
+        console.warn('[InteractiveVideoPlayer] Seek warning:', e)
       }
     }
     setCurrentTime(timeInSeconds)
   }
 
-  // 60fps smooth timestamp synchronization (supports both ReactPlayer/YouTube and HTML5 video)
+  // Throttled time synchronization for active words & line-scroll (avoids control fighting)
   useEffect(() => {
-    let animId: number
-    const checkTime = () => {
+    let lastReportedTime = 0
+    const interval = setInterval(() => {
       if (playerRef.current) {
-        if (typeof playerRef.current.getCurrentTime === 'function') {
-          const t = playerRef.current.getCurrentTime()
-          if (typeof t === 'number' && !isNaN(t)) {
-            setCurrentTime(t)
-          }
-        } else if ('currentTime' in playerRef.current && !playerRef.current.paused) {
-          setCurrentTime(playerRef.current.currentTime)
+        let t: number | null = null
+        if ('currentTime' in playerRef.current && typeof playerRef.current.currentTime === 'number') {
+          t = playerRef.current.currentTime
+        } else if (typeof playerRef.current.getCurrentTime === 'function') {
+          t = playerRef.current.getCurrentTime()
+        }
+        if (typeof t === 'number' && !isNaN(t) && Math.abs(t - lastReportedTime) >= 0.12) {
+          lastReportedTime = t
+          setCurrentTime(t)
         }
       }
-      animId = requestAnimationFrame(checkTime)
-    }
-    animId = requestAnimationFrame(checkTime)
-    return () => cancelAnimationFrame(animId)
+    }, 120)
+    return () => clearInterval(interval)
   }, [])
 
   // Close popover if clicked outside word
@@ -130,33 +178,13 @@ export function InteractiveVideoPlayer({ videoUrl, transcript }: InteractiveVide
     <div className="max-w-4xl mx-auto flex flex-col gap-6 pb-12 w-full">
       
       {/* 1. Video Player (Landscape, Top) */}
-      <div className="w-full aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border-4 border-neutral-100 dark:border-neutral-800 relative flex-shrink-0">
-        {isMounted && (
-          videoUrl.startsWith('/') || videoUrl.endsWith('.mp4') ? (
-            <video
-              ref={playerRef}
-              src={videoUrl}
-              className="w-full h-full object-cover absolute top-0 left-0"
-              controls
-              onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
-            />
-          ) : (
-            <ReactPlayer
-              ref={playerRef}
-              src={videoUrl}
-              width="100%"
-              height="100%"
-              controls
-              onProgress={(state: any) => {
-                if (state && typeof state.playedSeconds === 'number') {
-                  setCurrentTime(state.playedSeconds)
-                }
-              }}
-              style={{ position: 'absolute', top: 0, left: 0 }}
-            />
-          )
-        )}
-      </div>
+      {isMounted && (
+        <VideoSurface
+          videoUrl={videoUrl}
+          playerRef={playerRef}
+          onTimeUpdate={handleTimeUpdate}
+        />
+      )}
 
       {/* 2. Top Status Bar */}
       <div className="flex items-center justify-between flex-wrap gap-3 px-2">
