@@ -11,9 +11,9 @@ export const Route = createFileRoute('/demo/video')({
 const defaultTranscript: TranscriptSentence[] = parsedTranscript as TranscriptSentence[]
 
 function VideoDemoRoute() {
-  const [videoUrl, setVideoUrl] = useState<string>('/peppa_pig_arabic.mp4')
+  const [videoUrl, setVideoUrl] = useState<string>('https://www.youtube.com/watch?v=HWGieW9zwso')
   const [transcript, setTranscript] = useState<TranscriptSentence[]>(defaultTranscript)
-  const [videoTitle, setVideoTitle] = useState<string>('Peppa Pig Arabic (بيبا بيغ التسوق)')
+  const [videoTitle, setVideoTitle] = useState<string>('Arabic Speech & Wisdom (الخطبة والموعظة)')
   const [inputUrl, setInputUrl] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [forceReTranscribe, setForceReTranscribe] = useState<boolean>(false)
@@ -29,7 +29,7 @@ function VideoDemoRoute() {
 
     setIsLoading(true)
     setErrorMessage(null)
-    setStatusMessage(shouldForce ? 'Re-transcribing video pipeline...' : 'Checking cache & analyzing video...')
+    setStatusMessage(shouldForce ? 'Re-transcribing video pipeline...' : 'Querying PostgreSQL cache & analyzing video...')
 
     try {
       const result = await transcribeVideoServerFn({
@@ -46,11 +46,11 @@ function VideoDemoRoute() {
         setVideoTitle(result.title || 'Transcribed Arabic Video')
         if (result.cached) {
           setStatusMessage(
-            `⚡ Instant Cache: Video was already transcribed! Playing immediately (${result.transcript.length} lines).`
+            `⚡ Instant Cache Hit: Loaded transcript from PostgreSQL (${result.transcript.length} lines)!`
           )
         } else {
           setStatusMessage(
-            `✓ Successfully transcribed in ${result.processingTimeSec || 0}s (${result.transcript.length} lines)!`
+            `✓ Successfully transcribed in ${result.processingTimeSec || 0}s and saved to database (${result.transcript.length} lines)!`
           )
         }
       } else {
@@ -73,12 +73,7 @@ function VideoDemoRoute() {
 
 
   const loadDefaultPreset = () => {
-    setVideoUrl('/peppa_pig_arabic.mp4')
-    setTranscript(defaultTranscript)
-    setVideoTitle('Peppa Pig Arabic (بيبا بيغ التسوق)')
-    setInputUrl('')
-    setErrorMessage(null)
-    setStatusMessage('Loaded pre-verified Peppa Pig episode.')
+    loadPreset('https://www.youtube.com/watch?v=HWGieW9zwso', 'Arabic Speech & Wisdom (الخطبة والموعظة)')
   }
 
   return (
@@ -91,55 +86,47 @@ function VideoDemoRoute() {
           Arabic Video Player Demo
         </h1>
         <p className="text-neutral-600 dark:text-neutral-400 text-sm sm:text-base max-w-2xl mx-auto">
-          Enter any Arabic video URL. If previously transcribed, it plays instantly from cache. Otherwise, it downloads and transcribes in real-time with Groq Whisper & LLM vocabulary enrichment.
+          Enter any Arabic video URL. Transcripts are stored in PostgreSQL and videos stream directly from YouTube or web sources with zero local video storage.
         </p>
       </div>
 
       {/* URL Input & Pipeline Control Bar */}
       <form onSubmit={(e) => handleTranscribe(e)} className="w-full max-w-4xl mx-auto flex flex-col gap-3 mb-8">
         <div className="flex items-center gap-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-2 shadow-lg focus-within:ring-2 focus-within:ring-emerald-500 transition-all">
-          <span className="text-xl px-2 text-neutral-400 select-none">🔗</span>
           <input
-            type="url"
+            type="text"
             value={inputUrl}
             onChange={(e) => setInputUrl(e.target.value)}
-            placeholder="Paste any Arabic video URL (e.g. YouTube, direct MP4)..."
-            className="flex-1 bg-transparent border-none outline-none text-neutral-800 dark:text-neutral-100 placeholder:text-neutral-400 text-sm sm:text-base px-2 py-1"
+            placeholder="Paste YouTube or Arabic video URL (e.g. https://www.youtube.com/watch?v=HWGieW9zwso)..."
+            className="flex-1 bg-transparent px-4 py-2 text-sm text-neutral-800 dark:text-neutral-200 placeholder-neutral-400 outline-none"
             disabled={isLoading}
           />
           <button
             type="submit"
             disabled={isLoading || !inputUrl.trim()}
-            className="px-5 py-2.5 rounded-xl font-semibold text-sm bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white shadow-md transition-all flex items-center gap-2 shrink-0 cursor-pointer disabled:cursor-not-allowed"
+            className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-medium text-sm transition-all shadow-md flex items-center gap-2 shrink-0 cursor-pointer"
           >
             {isLoading ? (
               <>
-                <span className="animate-spin text-sm">⏳</span>
-                <span>Processing...</span>
+                <span className="animate-spin text-xs">⏳</span>
+                <span>Transcribing...</span>
               </>
             ) : (
               <>
-                <span>▶️</span>
-                <span>Play / Transcribe</span>
+                <span>Transcribe & Play</span>
+                <span>➔</span>
               </>
             )}
           </button>
         </div>
 
-        {/* Presets & Cache Options */}
-        <div className="flex items-center justify-between flex-wrap gap-3 text-xs text-neutral-500 dark:text-neutral-400 px-1">
+        {/* Presets & Force Toggle */}
+        <div className="flex items-center justify-between flex-wrap gap-2 px-2 text-xs">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-medium text-neutral-700 dark:text-neutral-300">Ready Transcripts:</span>
+            <span className="text-neutral-500">Quick Presets:</span>
             <button
               type="button"
               onClick={loadDefaultPreset}
-              className="px-2.5 py-1 rounded-lg bg-white dark:bg-neutral-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-800 transition-all cursor-pointer"
-            >
-              🐷 Peppa Pig (Master)
-            </button>
-            <button
-              type="button"
-              onClick={() => loadPreset('https://www.youtube.com/watch?v=HWGieW9zwso', 'Arabic Speech & Wisdom')}
               className="px-2.5 py-1 rounded-lg bg-white dark:bg-neutral-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-800 transition-all cursor-pointer"
             >
               📖 Arabic Khutbah (HWGieW9zwso)
@@ -150,6 +137,13 @@ function VideoDemoRoute() {
               className="px-2.5 py-1 rounded-lg bg-white dark:bg-neutral-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-800 transition-all cursor-pointer"
             >
               💬 Dialogue (cObnEdY_gOY)
+            </button>
+            <button
+              type="button"
+              onClick={() => loadPreset('https://www.youtube.com/watch?v=dinQIb4ZFXY', 'Spoken Arabic Dialogue')}
+              className="px-2.5 py-1 rounded-lg bg-white dark:bg-neutral-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-800 transition-all cursor-pointer"
+            >
+              🗣️ Spoken Arabic (dinQIb4ZFXY)
             </button>
           </div>
 

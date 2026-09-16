@@ -34,7 +34,7 @@ export function InteractiveVideoPlayer({ videoUrl, transcript }: InteractiveVide
   const [currentTime, setCurrentTime] = useState(0)
   const [clickedWord, setClickedWord] = useState<TranscriptWord | null>(null)
   
-  const playerRef = useRef<HTMLVideoElement>(null)
+  const playerRef = useRef<any>(null)
   const transcriptContainerRef = useRef<HTMLDivElement>(null)
   
   // Prevent SSR hydration mismatch with ReactPlayer
@@ -42,12 +42,30 @@ export function InteractiveVideoPlayer({ videoUrl, transcript }: InteractiveVide
     setIsMounted(true)
   }, [])
 
-  // 60fps smooth timestamp synchronization (avoids sluggish 250ms onTimeUpdate lag)
+  const seekToTime = (timeInSeconds: number) => {
+    if (playerRef.current) {
+      if (typeof playerRef.current.seekTo === 'function') {
+        playerRef.current.seekTo(timeInSeconds, 'seconds')
+      } else if ('currentTime' in playerRef.current) {
+        playerRef.current.currentTime = timeInSeconds
+      }
+    }
+    setCurrentTime(timeInSeconds)
+  }
+
+  // 60fps smooth timestamp synchronization (supports both ReactPlayer/YouTube and HTML5 video)
   useEffect(() => {
     let animId: number
     const checkTime = () => {
-      if (playerRef.current && !playerRef.current.paused) {
-        setCurrentTime(playerRef.current.currentTime)
+      if (playerRef.current) {
+        if (typeof playerRef.current.getCurrentTime === 'function') {
+          const t = playerRef.current.getCurrentTime()
+          if (typeof t === 'number' && !isNaN(t)) {
+            setCurrentTime(t)
+          }
+        } else if ('currentTime' in playerRef.current && !playerRef.current.paused) {
+          setCurrentTime(playerRef.current.currentTime)
+        }
       }
       animId = requestAnimationFrame(checkTime)
     }
@@ -105,9 +123,7 @@ export function InteractiveVideoPlayer({ videoUrl, transcript }: InteractiveVide
 
   const handleWordClick = (w: TranscriptWord) => {
     setClickedWord(clickedWord?.id === w.id ? null : w)
-    if (playerRef.current) {
-      playerRef.current.currentTime = w.start
-    }
+    seekToTime(w.start)
   }
 
   return (
@@ -131,7 +147,11 @@ export function InteractiveVideoPlayer({ videoUrl, transcript }: InteractiveVide
               width="100%"
               height="100%"
               controls
-              onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+              onProgress={(state: any) => {
+                if (state && typeof state.playedSeconds === 'number') {
+                  setCurrentTime(state.playedSeconds)
+                }
+              }}
               style={{ position: 'absolute', top: 0, left: 0 }}
             />
           )
@@ -180,8 +200,8 @@ export function InteractiveVideoPlayer({ videoUrl, transcript }: InteractiveVide
               {/* Line Timestamp */}
               <span 
                 onClick={() => {
-                  if (playerRef.current && sentence.words[0]) {
-                    playerRef.current.currentTime = sentence.words[0].start
+                  if (sentence.words[0]) {
+                    seekToTime(sentence.words[0].start)
                   }
                 }}
                 className="text-xs font-sans font-mono text-neutral-400 dark:text-neutral-500 hover:text-emerald-600 dark:hover:text-emerald-400 cursor-pointer select-none me-3 self-center shrink-0"

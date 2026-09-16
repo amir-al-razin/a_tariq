@@ -189,66 +189,62 @@ def download_and_prepare_media(url: str, output_dir: Path, max_duration: Optiona
         duration = 0
 
     clean_id = re.sub(r"[^a-zA-Z0-9_-]", "_", raw_id)
-    video_path = output_dir / f"{clean_id}.mp4"
-    audio_wav = output_dir / f"{clean_id}_raw.wav"
     clean_audio_mp3 = output_dir / f"{clean_id}_speech.mp3"
+    temp_raw = output_dir / f"{clean_id}_temp"
 
-    # 2. Download video if not already present
-    if not video_path.exists():
-        print(f"[*] Downloading video: {title} (ID: {clean_id})...")
-        dl_cmd = [
+    # 2. Extract Audio Stream ONLY (Zero video blobs downloaded to disk)
+    if not clean_audio_mp3.exists():
+        print(f"[*] Extracting audio-only stream for: {title} (ID: {clean_id})...")
+        dl_audio_cmd = [
             "yt-dlp",
             "--js-runtimes", "node",
-            "-f", "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]/best",
-            "--merge-output-format", "mp4",
+            "-x",
+            "--audio-format", "mp3",
+            "--audio-quality", "5",
             "--no-playlist",
-            "-o", str(video_path),
+            "-o", f"{temp_raw}.%(ext)s",
             url
         ]
         if max_duration and (duration == 0 or duration > max_duration):
-            print(f"[*] Limiting download to first {max_duration} seconds...")
-            dl_cmd.extend(["--download-sections", f"*0-{max_duration}"])
+            print(f"[*] Limiting audio download to first {max_duration} seconds...")
+            dl_audio_cmd.extend(["--download-sections", f"*0-{max_duration}"])
 
         try:
-            subprocess.run(dl_cmd, check=True)
-            print(f"[✓] Video downloaded -> {video_path}")
-        except Exception as e:
-            print(f"[!] Direct video download failed ({e}), falling back to direct stream/audio...")
-            # Fallback to downloading audio only if video stream failed
-            dl_audio_cmd = [
-                "yt-dlp",
-                "--js-runtimes", "node",
-                "-x", "--audio-format", "mp3",
-                "-o", str(output_dir / f"{clean_id}_temp.%(ext)s"),
-                url
-            ]
             subprocess.run(dl_audio_cmd, check=True)
-            temp_mp3 = output_dir / f"{clean_id}_temp.mp3"
-            if temp_mp3.exists():
+        except Exception as e:
+            print(f"[!] Primary audio download failed ({e}), attempting generic audio extract...")
+            subprocess.run(["yt-dlp", "-x", "--audio-format", "mp3", "-o", f"{temp_raw}.%(ext)s", url], check=True)
+
+        temp_mp3 = output_dir / f"{clean_id}_temp.mp3"
+        if temp_mp3.exists():
+            print("[*] Applying speech DSP filter (bandpass + speech normalization)...")
+            ffmpeg_cmd = [
+                "ffmpeg", "-y",
+                "-i", str(temp_mp3),
+                "-af", "highpass=f=180,lowpass=f=4500,loudnorm=I=-16:TP=-1.5:LRA=11",
+                "-ar", "16000",
+                "-ac", "1",
+                "-b:a", "32k",
+                str(clean_audio_mp3)
+            ]
+            try:
+                subprocess.run(ffmpeg_cmd, check=True, capture_output=True)
+                print(f"[✓] Prepared speech audio -> {clean_audio_mp3}")
+            except Exception as fe:
+                print(f"[!] FFmpeg DSP warning ({fe}), using raw audio.")
                 temp_mp3.rename(clean_audio_mp3)
 
-    # 3. Extract and normalize audio if needed
-    if not clean_audio_mp3.exists() and video_path.exists():
-        print("[*] Extracting audio and applying speech DSP filter...")
-        # Extract 16kHz mono WAV first
-        ffmpeg_cmd = [
-            "ffmpeg", "-y",
-            "-i", str(video_path),
-            "-af", "highpass=f=180,lowpass=f=4500,loudnorm=I=-16:TP=-1.5:LRA=11",
-            "-ar", "16000",
-            "-ac", "1",
-            "-b:a", "32k",
-            str(clean_audio_mp3)
-        ]
-        subprocess.run(ffmpeg_cmd, check=True, capture_output=True)
-        print(f"[✓] Prepared speech audio for Whisper -> {clean_audio_mp3}")
+            # Delete the intermediate unnormalized temp mp3
+            if temp_mp3.exists():
+                temp_mp3.unlink()
 
     return {
         "videoId": clean_id,
         "title": title,
         "duration": duration,
-        "videoFile": str(video_path) if video_path.exists() else None,
-        "videoUrl": f"/downloads/{clean_id}.mp4" if video_path.exists() else url,
+        "videoFile": None,
+        "videoUrl": url,  # Stream directly from YouTube/web
+        "sourceUrl": url,
         "audioPath": str(clean_audio_mp3)
     }
 
@@ -713,6 +709,15 @@ def process_video_pipeline(url: str, max_duration: int = 300, force: bool = Fals
                 "totalWords": global_word_id - 1,
                 "totalSentences": len(sentences)
             }, mf, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
+    # Clean up ephemeral audio file so 0 media files remain on disk
+    try:
+        audio_p = Path(media_info.get("audioPath", ""))
+        if audio_p.exists():
+            audio_p.unlink()
+            print(f"[✓] Deleted temporary speech audio: {audio_p}")
     except Exception:
         pass
 

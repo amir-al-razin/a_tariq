@@ -35,4 +35,15 @@ android
 __pycache__/
 *.pyc
 output/
-*.db
+*.db
+
+# Media files (streamed directly from cloud / YouTube - zero local storage)
+*.mp4
+*.mp3
+*.wav
+*.webm
+*.mkv
+apps/web/public/downloads/*.mp4
+apps/web/public/downloads/*.mp3
+apps/web/public/downloads/*.wav
+
