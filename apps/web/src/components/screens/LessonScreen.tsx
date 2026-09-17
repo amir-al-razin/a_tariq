@@ -1,53 +1,14 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { motion } from 'framer-motion'
-import { ArrowLeft, Lock, Check, ChevronDown, Sparkles } from 'lucide-react'
+import { ArrowLeft, Play, Check } from 'lucide-react'
 
 import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
-import { getLastVisitedChunk, setLastVisitedChunk } from '../../lib/progress'
 import { useProgressStore } from '../../state/progressStore'
+import { useRetentionStore } from '../../state/retentionStore'
 import { LessonSessionRunner } from '../runner/LessonSessionRunner'
 import { getLessonSession } from '../../lib/lessonRegistry'
 import TransliterationToggle from '../TransliterationToggle'
-
-const ProgressRing = ({ progress, size = 40, strokeWidth = 3, color = 'currentColor' }: { progress: number, size?: number, strokeWidth?: number, color?: string }) => {
-  const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
-  const strokeDashoffset = circumference - progress * circumference;
-
-  return (
-    <div style={{ width: size, height: size, position: 'relative' }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          stroke="currentColor"
-          strokeWidth={strokeWidth}
-          fill="transparent"
-          className="text-neutral-200 dark:text-neutral-700"
-        />
-        <motion.circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          stroke={color}
-          strokeWidth={strokeWidth}
-          fill="transparent"
-          strokeDasharray={circumference}
-          initial={{ strokeDashoffset: circumference }}
-          animate={{ strokeDashoffset }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          strokeLinecap="round"
-          style={{ transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }}
-        />
-      </svg>
-      <div className="absolute inset-0 flex items-center justify-center font-english-semibold text-[10px]" style={{ color }}>
-        {Math.round(progress * 100)}%
-      </div>
-    </div>
-  )
-}
+import { playTapSound } from '../../lib/sound'
 
 type Props = {
   volumeId: 1 | 2 | 3
@@ -55,31 +16,18 @@ type Props = {
   darsNum: number
 }
 
-const CHUNK_SIZE = 64
+// Convert English numbers to Arabic-Indic digits
+function toArabicNumerals(n: number): string {
+  const digits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩']
+  return n.toString().split('').map(d => digits[parseInt(d, 10)] || d).join('')
+}
 
 export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) => {
   const navigate = useNavigate()
-  const [isDark, setIsDark] = useState(false)
-  const [lastVisited, setLastVisited] = useState<number | null>(null)
-
   const [isRunningSession, setIsRunningSession] = useState(false)
 
   const progressStore = useProgressStore((state) => state.progress)
-
-  useEffect(() => {
-    const checkDark = () => {
-      setIsDark(document.documentElement.classList.contains('dark'))
-    }
-    checkDark()
-    const observer = new MutationObserver(checkDark)
-    observer.observe(document.documentElement, { attributes: true })
-
-    setLastVisited(getLastVisitedChunk(chapterId, darsNum))
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [chapterId, darsNum])
+  const sessions = useRetentionStore((state) => state.sessions)
 
   const dataMap = {
     1: CHAPTERS,
@@ -88,49 +36,22 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
   }
 
   const chapters = dataMap[volumeId]
-  
   const chapter = useMemo(() => chapters.find((c) => c.id === chapterId), [chapters, chapterId])
   const lesson = useMemo(() => chapter?.lessons.find((l) => l.darsNumber === darsNum), [chapter, darsNum])
-  const chunks = useMemo(() => lesson?.chunks || [], [lesson])
-
-  const numChunks = chunks.length
-
-  const completedChunks = useMemo(() => {
-    let count = 0;
-    chunks.forEach(ch => {
-      if (progressStore[`progress.v${volumeId}.c${chapterId}.d${darsNum}.${ch.id}`] === 'completed') {
-        count++;
-      }
-    });
-    return count;
-  }, [chunks, progressStore, volumeId, chapterId, darsNum]);
-
-  const lessonProgress = numChunks === 0 ? 0 : completedChunks / numChunks;
 
   const registeredSession = useMemo(() => {
-    return getLessonSession(volumeId, chapterId, darsNum);
-  }, [volumeId, chapterId, darsNum]);
+    return getLessonSession(volumeId, chapterId, darsNum)
+  }, [volumeId, chapterId, darsNum])
 
-  const handleChunkPress = (chunkId: string, idx: number) => {
-    // Launch unified single-focus interactive session runner if available for this lesson
-    if (registeredSession) {
-      setIsRunningSession(true)
-      return
-    }
+  const isCompleted = useMemo(() => {
+    const hasSession = sessions.some(
+      (s) => s.volumeId === volumeId && s.chapterId === chapterId && s.lessonNum === darsNum
+    )
+    if (hasSession) return true
+    return progressStore[`progress.v${volumeId}.c${chapterId}.d${darsNum}`] === 'completed'
+  }, [sessions, progressStore, volumeId, chapterId, darsNum])
 
-    setLastVisitedChunk(chapterId, darsNum, idx)
-    setLastVisited(idx)
-    navigate({
-      to: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId',
-      params: {
-        volumeId: volumeId as any,
-        chapterId: chapterId as any,
-        darsNum: darsNum as any,
-        chunkId: chunkId as any,
-      },
-    })
-  }
-
+  // If in interactive session, render the runner
   if (isRunningSession) {
     return (
       <LessonSessionRunner
@@ -143,191 +64,111 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
   }
 
   if (!chapter || !lesson) {
-    return <div className="p-4">Lesson not found</div>
+    return <div className="p-4 text-center">Lesson not found</div>
   }
 
   return (
-    <div className="flex flex-col flex-1 min-h-screen bg-white dark:bg-neutral-950 pb-20 pt-7">
-      <div className="px-5 mb-6 max-w-[600px] mx-auto w-full flex items-center justify-between">
+    <div className="flex flex-col flex-1 min-h-screen bg-white dark:bg-neutral-950 pb-20 pt-7 font-english">
+      {/* Top Header */}
+      <div className="px-5 mb-8 max-w-[600px] mx-auto w-full flex items-center justify-between">
         <button
+          type="button"
           onClick={() => {
             navigate({
               to: '/volume/$volumeId',
               params: { volumeId: volumeId as any },
             })
           }}
-          className="p-2 -ml-2 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors"
-          aria-label="Go back"
+          className="p-2 -ml-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer border-0 shadow-none text-neutral-800 dark:text-neutral-200"
+          aria-label="Go back to volume"
         >
-          <ArrowLeft size={24} color={isDark ? "#e5e5e5" : "#171717"} />
+          <ArrowLeft size={22} />
         </button>
         <div className="flex-1 text-center font-english-semibold text-[17px] text-neutral-900 dark:text-neutral-100">
           Lesson {darsNum} · {chapter.titleEn}
         </div>
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           <TransliterationToggle compact />
-          <ProgressRing progress={lessonProgress} color="var(--accent-primary)" />
         </div>
       </div>
 
-      {/* Playful Interactive Session Launcher */}
-      {registeredSession && (
-        <div className="px-5 mb-6 max-w-[600px] mx-auto w-full">
+      {/* Main Single-Focus Launch Stage */}
+      <div className="flex-1 flex items-center justify-center px-4 w-full max-w-md mx-auto">
+        <div className="w-full rounded-4xl bg-neutral-100 dark:bg-neutral-900 p-8 sm:p-10 flex flex-col items-center text-center space-y-6">
+          {/* Central Commanding Lesson Node */}
+          <div className="relative flex items-center justify-center">
+            <div
+              className={`w-24 h-24 sm:w-28 sm:h-28 rounded-full flex flex-col items-center justify-center transition-all shadow-none border-0 select-none ${
+                isCompleted
+                  ? 'bg-accent-primary-subtle text-accent-primary dark:bg-neutral-800'
+                  : 'bg-accent-primary text-white ring-8 ring-accent-primary/20'
+              }`}
+            >
+              {isCompleted ? (
+                <div className="flex flex-col items-center">
+                  <Check size={36} className="stroke-[3]" />
+                  <span className="text-xs font-mono font-bold mt-1 opacity-80">
+                    {toArabicNumerals(darsNum)}
+                  </span>
+                </div>
+              ) : (
+                <span className="font-arabic-bold text-5xl leading-none" dir="rtl">
+                  {toArabicNumerals(darsNum)}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Titles & Pedagogical Concepts */}
+          <div className="space-y-1.5 w-full">
+            <span className="text-xs font-mono uppercase tracking-widest text-accent-primary font-bold block">
+              {isCompleted ? 'Mastered Lesson' : 'Interactive Session'}
+            </span>
+            <h2 className="font-arabic-bold text-3xl sm:text-4xl text-neutral-900 dark:text-white" dir="rtl">
+              {registeredSession?.titleAr || `الدَّرْسُ ${toArabicNumerals(darsNum)}`}
+            </h2>
+            <h3 className="font-english-semibold text-lg text-neutral-700 dark:text-neutral-200">
+              {registeredSession?.titleEn || `Lesson ${darsNum}`}
+            </h3>
+            <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-xs mx-auto pt-1">
+              {registeredSession?.steps.length || 13} Micro-Steps · 100% Mastery Drill
+            </p>
+          </div>
+
+          {/* Words Preview Pills */}
+          {registeredSession?.wordsLearned && registeredSession.wordsLearned.length > 0 && (
+            <div className="w-full pt-1">
+              <span className="text-[11px] font-mono text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block mb-2">
+                Key Vocabulary Covered
+              </span>
+              <div className="flex flex-wrap items-center justify-center gap-1.5">
+                {registeredSession.wordsLearned.slice(0, 6).map((word, idx) => (
+                  <span
+                    key={idx}
+                    className="px-3 py-1 rounded-full bg-white dark:bg-neutral-800 text-xs font-arabic text-neutral-800 dark:text-neutral-200"
+                    dir="rtl"
+                  >
+                    {word}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 56px Action Button */}
           <button
-            onClick={() => setIsRunningSession(true)}
+            type="button"
+            onClick={() => {
+              playTapSound()
+              setIsRunningSession(true)
+            }}
             className="w-full h-14 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-english-semibold text-base flex items-center justify-center gap-3 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
           >
-            <Sparkles size={20} className="text-white" />
-            <span>Start Interactive Session ({registeredSession.steps.length} Micro-Steps)</span>
+            <Play size={18} className="fill-white" />
+            <span>{isCompleted ? 'Practice Again' : 'Start Interactive Session'}</span>
           </button>
         </div>
-      )}
-      
-      <div className="flex-1 flex items-center justify-center relative w-full max-w-[800px] mx-auto min-h-[500px]">
-        {/* Desktop Circular Layout & Mobile Grid Wrapper */}
-        <div className="hidden md:flex w-full h-full items-center justify-center relative">
-          {chunks.map((chunk, idx) => {
-            const isCompleted = progressStore[`progress.v${volumeId}.c${chapterId}.d${darsNum}.${chunk.id}`] === 'completed'
-            const status = isCompleted ? 'completed' : 'open'
-            const isLastVisited = lastVisited === idx
-            const isInteractive = true
-
-            const dynamicRadius = Math.max(90, (numChunks * 85) / (2 * Math.PI))
-            const angle = -Math.PI / 2 + (idx * 2 * Math.PI) / numChunks
-            const x = dynamicRadius * Math.cos(angle)
-            const y = dynamicRadius * Math.sin(angle)
-
-            return (
-              <div
-                key={chunk.id}
-                style={{
-                  position: 'absolute',
-                  transform: `translate(${x}px, ${y}px)`,
-                  width: CHUNK_SIZE,
-                  height: CHUNK_SIZE + 6,
-                  zIndex: (isLastVisited || (lastVisited === null && idx === 0)) ? 100 : 5,
-                }}
-                className="flex items-end justify-center"
-              >
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.4 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ type: 'spring', delay: 0.1 + idx * 0.04, damping: 20, stiffness: 250 }}
-                  className="flex items-center justify-center"
-                >
-                  <ChunkNode
-                    idx={idx}
-                    status={status}
-                    isLastVisited={isLastVisited}
-                    onPress={() => isInteractive && handleChunkPress(chunk.id, idx)}
-                  />
-                </motion.div>
-              </div>
-            )
-          })}
-        </div>
-
-        {/* Mobile Grid Layout */}
-        <div className="grid md:hidden grid-cols-3 gap-6 p-6 content-center">
-          {chunks.map((chunk, idx) => {
-             const isCompleted = progressStore[`progress.v${volumeId}.c${chapterId}.d${darsNum}.${chunk.id}`] === 'completed'
-             const status = isCompleted ? 'completed' : 'open'
-             const isLastVisited = lastVisited === idx
-             const isInteractive = true
-
-             return (
-              <motion.div
-                key={chunk.id}
-                initial={{ opacity: 0, scale: 0.4 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ type: 'spring', delay: 0.1 + idx * 0.04, damping: 20, stiffness: 250 }}
-                style={{
-                  width: CHUNK_SIZE,
-                  height: CHUNK_SIZE,
-                  zIndex: (isLastVisited || (lastVisited === null && idx === 0)) ? 100 : 5,
-                }}
-                className="flex items-center justify-center relative"
-              >
-                <ChunkNode
-                  idx={idx}
-                  status={status}
-                  isLastVisited={isLastVisited}
-                  onPress={() => isInteractive && handleChunkPress(chunk.id, idx)}
-                />
-              </motion.div>
-             )
-          })}
-        </div>
       </div>
-    </div>
-  )
-}
-
-const ChunkNode = ({
-  idx,
-  status,
-  isLastVisited,
-  onPress,
-}: {
-  idx: number
-  status: string
-  isLastVisited: boolean
-  onPress: () => void
-}) => {
-  const isLocked = status === 'locked'
-  const isCompleted = status === 'completed'
-  const isTarget = isLastVisited || (status === 'open' && !isLastVisited && idx === 0)
-
-  return (
-    <div className="relative flex items-center justify-center">
-      {/* Sleek Raw Neutral Pointing Indicator Badge */}
-      {isTarget && (
-        <motion.div
-          initial={{ opacity: 0, y: -6 }}
-          animate={{ opacity: 1, y: [0, -4, 0] }}
-          transition={{
-            opacity: { duration: 0.2 },
-            y: { duration: 1.6, repeat: Infinity, ease: 'easeInOut' },
-          }}
-          className="absolute -top-[42px] z-30 flex flex-col items-center pointer-events-none select-none"
-        >
-          <div className="px-3 py-1 rounded-full bg-accent-secondary text-white font-english-bold text-[10px] uppercase tracking-widest flex items-center gap-1.5 shadow-none border-0 leading-none whitespace-nowrap">
-            <span>{isLastVisited ? 'CURRENT' : 'START'}</span>
-            <ChevronDown size={11} className="stroke-[3] shrink-0" />
-          </div>
-          <div className="w-0 h-0 border-x-[5px] border-x-transparent border-t-[5px] border-t-accent-secondary -mt-[1px]" />
-        </motion.div>
-      )}
-
-      <motion.button
-        disabled={isLocked}
-        whileTap={isLocked ? {} : { scale: 0.94 }}
-        whileHover={isLocked ? {} : { scale: 1.06 }}
-        onClick={onPress}
-        className={`relative focus:outline-none rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer ${
-          isTarget
-            ? 'bg-accent-primary text-white ring-4 ring-accent-primary/20 hover:bg-accent-primary-hover'
-            : isCompleted
-            ? 'bg-accent-primary-subtle text-accent-primary-text hover:opacity-90'
-            : isLocked
-            ? 'bg-neutral-100/50 dark:bg-neutral-900/50 text-neutral-300 dark:text-neutral-700 cursor-not-allowed'
-            : 'bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300'
-        }`}
-        style={{
-          width: CHUNK_SIZE,
-          height: CHUNK_SIZE,
-        }}
-      >
-        {isLocked ? (
-          <Lock size={22} className="opacity-60" />
-        ) : isCompleted ? (
-          <Check size={26} strokeWidth={3} />
-        ) : (
-          <span className="font-english-bold text-2xl">
-            {idx + 1}
-          </span>
-        )}
-      </motion.button>
     </div>
   )
 }

@@ -29,6 +29,22 @@ export interface ConceptItem {
   audioKey: string;
   exampleAudioKey?: string;
   emoji?: string;
+  compound?: {
+    baseAr: string;
+    baseRom?: string;
+    baseMeaningEn: string;
+    baseMeaningBn?: string;
+    baseAudioKey?: string;
+    operator?: string;
+    particleAr?: string;
+    particleEn?: string;
+    resultAr: string;
+    resultRom?: string;
+    resultMeaningEn: string;
+    resultMeaningBn?: string;
+    resultAudioKey?: string;
+    badge?: string;
+  };
 }
 
 export interface SunMoonItem {

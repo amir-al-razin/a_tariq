@@ -6,6 +6,8 @@ import { LESSON_04_SESSION } from './lesson4Session';
 import { LESSON_05_SESSION } from './lesson5Session';
 import { LESSON_06_SESSION } from './lesson6Session';
 import { LESSON_07_SESSION } from './lesson7Session';
+import { LESSON_08_SESSION } from './lesson8Session';
+import { LESSON_09_SESSION } from './lesson9Session';
 
 const SESSION_REGISTRY: Record<string, LessonSessionData> = {
   '1-1-1': LESSON_01_SESSION,
@@ -15,6 +17,8 @@ const SESSION_REGISTRY: Record<string, LessonSessionData> = {
   '1-1-5': LESSON_05_SESSION,
   '1-1-6': LESSON_06_SESSION,
   '1-1-7': LESSON_07_SESSION,
+  '1-1-8': LESSON_08_SESSION,
+  '1-1-9': LESSON_09_SESSION,
 };
 
 /**

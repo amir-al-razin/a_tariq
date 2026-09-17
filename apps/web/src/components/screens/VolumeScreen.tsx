@@ -1,39 +1,53 @@
-import React, { useEffect, useMemo } from 'react'
-import { useNavigate } from '@tanstack/react-router'
-import { Check, Lock } from 'lucide-react'
-import { motion } from 'framer-motion'
+import React, { useMemo, useState } from 'react'
+import { Check, Trophy, ArrowRight, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import * as m from '#/paraglide/messages.js'
 
 import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
 import { useProgressStore } from '../../state/progressStore'
+import { useRetentionStore } from '../../state/retentionStore'
 import { ProgressRing } from './ProgressRing'
+import { getLessonSession } from '../../lib/lessonRegistry'
+import { LessonSessionRunner } from '../runner/LessonSessionRunner'
+import { playTapSound } from '../../lib/sound'
 
 type Props = {
   volumeId: 1 | 2 | 3
 }
 
-export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
-  const navigate = useNavigate()
-  const progressStore = useProgressStore((state) => state.progress)
+// Convert English numbers to Arabic-Indic digits
+function toArabicNumerals(n: number): string {
+  const digits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩']
+  return n.toString().split('').map(d => digits[parseInt(d, 10)] || d).join('')
+}
 
-  useEffect(() => {
-    const lastLessonStr = sessionStorage.getItem('last_volume_lesson')
-    if (lastLessonStr) {
-      try {
-        const { volumeId: savedVol, chapterId: savedChap, darsNum: savedDars } = JSON.parse(lastLessonStr)
-        if (savedVol === volumeId) {
-          setTimeout(() => {
-            const el = document.getElementById(`lesson-${savedChap}-${savedDars}`)
-            if (el) {
-              el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-            }
-          }, 150)
-        }
-      } catch (e) {
-        // ignore parse error
-      }
-    }
-  }, [volumeId])
+// Rich pedagogical metadata for Volume 1 Chapter 1 lessons
+const CHAPTER_1_LESSONS_INFO: Record<number, { titleEn: string; titleAr: string; conceptEn: string }> = {
+  1: { titleEn: 'The Demonstrative: This', titleAr: 'الدَّرْسُ الأَوَّلُ · هَٰذَا', conceptEn: 'Masculine nouns, pointing near' },
+  2: { titleEn: 'The Far Demonstrative: That', titleAr: 'الدَّرْسُ الثَّانِي · ذَٰلِكَ', conceptEn: 'Masculine nouns, pointing far' },
+  3: { titleEn: 'Interrogatives: What & Who', titleAr: 'الدَّرْسُ الثَّالِثُ · مَا وَمَنْ', conceptEn: 'Questions with مَا and مَنْ' },
+  4: { titleEn: 'Questions & Sun Letters', titleAr: 'الدَّرْسُ الرَّابِعُ · أَ وَالشَّمْسِيَّةُ', conceptEn: 'Particle أَ & Sun/Moon phonetics' },
+  5: { titleEn: 'Feminine Demonstratives', titleAr: 'الدَّرْسُ الخَامِسُ · هَٰذِهِ وَتِلْكَ', conceptEn: 'Ta-Marbutah & feminine pointing' },
+  6: { titleEn: 'The Definite Article', titleAr: 'الدَّرْسُ السَّادِسُ · أَلْ', conceptEn: 'Tanween drops with Alif-Lam' },
+  7: { titleEn: 'The Possession Formula', titleAr: 'الدَّرْسُ السَّابِعُ · الإِضَافَةُ', conceptEn: 'Idafah: Mudaf & Mudaf Ilayh' },
+  8: { titleEn: 'The Preposition In', titleAr: 'الدَّرْسُ الثَّامِنُ · فِي', conceptEn: 'Kasrah shift after Harf Jarr فِي' },
+  9: { titleEn: 'Locatives & Prepositions', titleAr: 'الدَّرْسُ التَّاسِعُ · عِنْدَ وَمَعَ', conceptEn: 'Adverbs عِنْدَ, مَعَ, and preposition لِـ' },
+}
+
+// Sinusoidal meandering offsets for the vertical journey path (repeats rhythmically)
+const SINE_OFFSETS = [0, 56, 84, 56, 0, -56, -84, -56, 0]
+const ROW_HEIGHT = 176
+const CONTAINER_WIDTH = 380
+
+export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
+  const progressStore = useProgressStore((state) => state.progress)
+  const sessions = useRetentionStore((state) => state.sessions)
+
+  // Selected node for modal launchpad
+  const [selectedNodeLesson, setSelectedNodeLesson] = useState<{ chapterId: number; darsNum: number } | null>(null)
+
+  // Active interactive session runner (in-place modal execution)
+  const [activeSessionLesson, setActiveSessionLesson] = useState<{ chapterId: number; darsNum: number } | null>(null)
 
   const dataMap = {
     1: CHAPTERS,
@@ -67,189 +81,332 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
 
   const chapters = dataMap[volumeId]
 
-  const { totalChunks, completedChunks } = useMemo(() => {
-    let t = 0
-    let c = 0
+  // Check if a specific lesson is completed (via RetentionStore session record or ProgressStore)
+  const isLessonCompleted = (chapterId: number, darsNum: number) => {
+    const hasSession = sessions.some(
+      (s) => s.volumeId === volumeId && s.chapterId === chapterId && s.lessonNum === darsNum
+    )
+    if (hasSession) return true
+    return progressStore[`progress.v${volumeId}.c${chapterId}.d${darsNum}`] === 'completed'
+  }
+
+  // Calculate volume-wide lesson progress
+  const { totalLessons, completedLessons } = useMemo(() => {
+    let total = 0
+    let completed = 0
     chapters.forEach((ch) => {
       ch.lessons.forEach((l) => {
-        l.chunks.forEach((chunk) => {
-          t++
-          if (progressStore[`progress.v${volumeId}.c${ch.id}.d${l.darsNumber}.${chunk.id}`] === 'completed') {
-            c++
-          }
-        })
+        total++
+        if (isLessonCompleted(ch.id, l.darsNumber)) {
+          completed++
+        }
       })
     })
-    return { totalChunks: t, completedChunks: c }
-  }, [chapters, progressStore, volumeId])
+    return { totalLessons: total, completedLessons: completed }
+  }, [chapters, sessions, progressStore, volumeId])
 
-  const volumeProgress = totalChunks === 0 ? 0 : completedChunks / totalChunks
+  const volumeProgress = totalLessons === 0 ? 0 : completedLessons / totalLessons
 
   const getMessage = (_key: string, fnMap: Record<number, any>, fallback: string) => {
     const fn = fnMap[volumeId]
     return fn ? fn() : fallback
   }
 
-  // To find the next available lesson
+  // Find current active lesson along the curriculum path
   const nextLessonInfo = useMemo(() => {
     for (const chapter of chapters) {
       for (const lesson of chapter.lessons) {
-        const completedCount = lesson.chunks.filter(
-          (ch) => progressStore[`progress.v${volumeId}.c${chapter.id}.d${lesson.darsNumber}.${ch.id}`] === 'completed'
-        ).length
-        if (completedCount < lesson.chunks.length) {
+        if (!isLessonCompleted(chapter.id, lesson.darsNumber)) {
           return { chapterId: chapter.id, darsNum: lesson.darsNumber }
         }
       }
     }
     return { chapterId: chapters[0].id, darsNum: chapters[0].lessons[0].darsNumber }
-  }, [chapters, progressStore, volumeId])
+  }, [chapters, sessions, progressStore, volumeId])
+
+  // In-place Fullscreen Interactive Session Runner
+  if (activeSessionLesson) {
+    return (
+      <LessonSessionRunner
+        volumeId={volumeId}
+        chapterId={activeSessionLesson.chapterId}
+        lessonNum={activeSessionLesson.darsNum}
+        onExit={() => setActiveSessionLesson(null)}
+      />
+    )
+  }
 
   return (
-    <div className="flex flex-col flex-1 min-h-screen bg-white dark:bg-neutral-950 pb-20">
-      <div className="max-w-[800px] mx-auto w-full px-6 flex flex-col gap-6">
+    <div className="flex flex-col flex-1 min-h-screen bg-white dark:bg-neutral-950 pb-28 font-english">
+      <div className="max-w-2xl mx-auto w-full px-4 sm:px-6 flex flex-col gap-8">
         
-        {/* Banner - Raw Neutral Style */}
-        <div 
-          className="h-40 rounded-3xl relative overflow-hidden bg-neutral-100 dark:bg-neutral-900 flex items-center justify-between p-8 mt-6"
-        >
-          <div className="flex flex-col gap-2 z-10">
-            <h1 className="font-english-bold text-[36px] tracking-tight text-neutral-900 dark:text-neutral-100">
+        {/* Top Volume Hero Banner - Raw Neutral Plane Architecture */}
+        <div className="rounded-4xl relative overflow-hidden bg-neutral-100 dark:bg-neutral-900 flex items-center justify-between p-7 sm:p-8 mt-6">
+          <div className="flex flex-col gap-1.5 z-10">
+            <span className="text-xs font-mono uppercase tracking-widest text-accent-primary font-bold">
+              Pedagogical Curriculum
+            </span>
+            <h1 className="font-english-bold text-3xl sm:text-4xl tracking-tight text-neutral-900 dark:text-neutral-100">
               {getMessage(`volume_vol${volumeId}title1`, titleMap, `Volume ${volumeId}`)}
             </h1>
-            <p className="font-english text-[16px] text-neutral-500 dark:text-neutral-400">
-              {getMessage(`volume_vol${volumeId}meta1`, metaMap, 'Chapters · Lessons')}
+            <p className="font-english text-sm sm:text-base text-neutral-500 dark:text-neutral-400">
+              {completedLessons} of {totalLessons} Lessons Mastered · {getMessage(`volume_vol${volumeId}meta1`, metaMap, 'Chapters · Lessons')}
             </p>
           </div>
-          <div className="w-[84px] h-[84px] z-10 shrink-0 hidden sm:block">
-            <ProgressRing progress={volumeProgress} size={84} color="var(--accent-primary)" />
+
+          <div className="w-20 h-20 sm:w-22 sm:h-22 z-10 shrink-0">
+            <ProgressRing progress={volumeProgress} size={80} color="var(--accent-primary)" />
           </div>
 
-          <div className="absolute right-[-40px] top-[-50px] opacity-5 dark:opacity-[0.03] pointer-events-none transform -rotate-12 select-none">
-            <span className="font-mushaf text-[280px] leading-none text-neutral-900 dark:text-white">
+          {/* Majestic Watermark */}
+          <div className="absolute right-[-30px] top-[-40px] opacity-5 dark:opacity-[0.03] pointer-events-none transform -rotate-12 select-none">
+            <span className="font-mushaf text-[260px] leading-none text-neutral-900 dark:text-white">
               {arTitleMap[volumeId]}
             </span>
           </div>
         </div>
 
-        {/* Chapters List */}
-        <div className="flex flex-col gap-8 mt-4">
-          {chapters.map((chapter) => (
-            <div key={chapter.id} className="flex flex-col gap-4">
-              <div className="flex items-center gap-4 px-2">
-                <div className="flex-1">
-                  <h2 className="font-english-semibold text-[22px] text-neutral-900 dark:text-neutral-100 tracking-tight">
-                    {m[`vol${volumeId}chapters.${chapter.id}title` as keyof typeof m]
-                      ? (m[`vol${volumeId}chapters.${chapter.id}title` as keyof typeof m] as any)()
-                      : chapter.titleEn}
+        {/* Chapters & Winding Journey Paths */}
+        {chapters.map((chapter) => {
+          const chapterCompletedCount = chapter.lessons.filter((l) =>
+            isLessonCompleted(chapter.id, l.darsNumber)
+          ).length
+
+          return (
+            <div key={chapter.id} className="flex flex-col items-center w-full">
+              {/* Chapter Unit Card Header */}
+              <div className="w-full rounded-3xl bg-neutral-100 dark:bg-neutral-900 p-6 sm:p-7 flex items-center justify-between mb-12">
+                <div className="space-y-1">
+                  <span className="text-xs font-mono uppercase tracking-widest text-accent-primary font-bold">
+                    Chapter {chapter.id}
+                  </span>
+                  <h2 className="font-english-bold text-xl sm:text-2xl text-neutral-900 dark:text-neutral-100">
+                    {chapter.titleEn}
                   </h2>
-                  <p className="font-english text-sm text-neutral-500 dark:text-neutral-400 mt-1">
-                    {m[`vol${volumeId}chapters.${chapter.id}subtitle` as keyof typeof m]
-                      ? (m[`vol${volumeId}chapters.${chapter.id}subtitle` as keyof typeof m] as any)()
-                      : chapter.subtitle}
+                  <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">
+                    {chapter.subtitle}
                   </p>
                 </div>
+                <span className="px-3 py-1.5 rounded-full bg-white dark:bg-neutral-800 text-xs font-mono font-semibold text-neutral-700 dark:text-neutral-300">
+                  {chapterCompletedCount} / {chapter.lessons.length}
+                </span>
               </div>
 
-              <div className="flex flex-col gap-3">
-                {chapter.lessons.map((lesson) => {
-                  const chunks = lesson.chunks
-                  const total = chunks.length
-                  const completedCount = chunks.filter(ch => progressStore[`progress.v${volumeId}.c${chapter.id}.d${lesson.darsNumber}.${ch.id}`] === 'completed').length
-                  const isComplete = total > 0 && completedCount === total
-                  const isNext = nextLessonInfo.chapterId === chapter.id && nextLessonInfo.darsNum === lesson.darsNumber
-                  
-                  // For UI demonstration, assume unlocked unless explicitly handled
-                  const isLocked = false 
+              {/* Duolingo-Styled Serpentine Journey Path */}
+              <div
+                className="relative w-full flex flex-col items-center py-4"
+                style={{
+                  maxWidth: `${CONTAINER_WIDTH}px`,
+                }}
+              >
+                {/* Nodes Stack */}
+                <div className="w-full flex flex-col">
+                  {chapter.lessons.map((lesson, idx) => {
+                    const darsNum = lesson.darsNumber
+                    const isCompleted = isLessonCompleted(chapter.id, darsNum)
+                    const isCurrent =
+                      nextLessonInfo.chapterId === chapter.id &&
+                      nextLessonInfo.darsNum === darsNum &&
+                      !isCompleted
+                    const isFirst = idx === 0
+                    const xOffset = SINE_OFFSETS[idx % SINE_OFFSETS.length]
 
-                  return (
-                    <motion.div
-                      key={lesson.darsNumber}
-                      whileHover={!isLocked ? { scale: 1.01 } : {}}
-                      whileTap={!isLocked ? { scale: 0.99 } : {}}
-                    >
-                      <button
-                        id={`lesson-${chapter.id}-${lesson.darsNumber}`}
-                        onClick={() => {
-                          if (isLocked) return
-                          sessionStorage.setItem('last_volume_lesson', JSON.stringify({ volumeId, chapterId: chapter.id, darsNum: lesson.darsNumber }))
-                          navigate({
-                            to: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum',
-                            params: {
-                              // @ts-ignore
-                              volumeId: volumeId.toString(),
-                              // @ts-ignore
-                              chapterId: chapter.id,
-                              // @ts-ignore
-                              darsNum: lesson.darsNumber.toString(),
-                            },
-                          })
-                        }}
-                        className={`
-                          w-full relative flex flex-row items-center justify-between p-5 rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-neutral-400
-                          ${isLocked 
-                            ? 'opacity-50 cursor-not-allowed bg-neutral-50 dark:bg-neutral-900/50' 
-                            : 'cursor-pointer bg-neutral-100 hover:bg-neutral-200/80 dark:bg-neutral-900 dark:hover:bg-neutral-800 transition-colors'
-                          }
-                          ${isNext ? '' : ''}
-                        `}
+                    return (
+                      <div
+                        key={darsNum}
+                        className="relative flex items-center justify-center w-full"
+                        style={{ height: ROW_HEIGHT }}
                       >
-                        <div className="flex flex-row items-center gap-4">
-                          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-colors ${
-                            isComplete ? 'bg-accent-primary-subtle text-accent-primary-text' :
-                            isNext ? 'bg-accent-primary text-white' :
-                            'bg-neutral-200/50 dark:bg-neutral-800/50 text-neutral-500 dark:text-neutral-500'
-                          }`}>
-                            {isComplete ? <Check size={20} strokeWidth={2.5} /> : <span className="font-english-bold text-[16px]">{lesson.darsNumber}</span>}
-                          </div>
-                          <div className="flex flex-col items-start text-left">
-                            <div className="flex items-center gap-2">
-                              <span className={`font-english-semibold text-[17px] ${isComplete ? 'text-neutral-500 dark:text-neutral-400' : 'text-neutral-900 dark:text-neutral-100'}`}>
-                                Lesson {lesson.darsNumber}
-                              </span>
-                              {isNext && !isComplete && (
-                                <span className="px-2.5 py-0.5 rounded-full bg-accent-secondary text-white font-english-bold text-[10px] uppercase tracking-wider leading-none">
-                                  CURRENT
+                        {/* Node Container Shifted by S-Curve Offset */}
+                        <div
+                          style={{ transform: `translateX(${xOffset}px)` }}
+                          className="relative flex flex-col items-center"
+                        >
+                          {/* Pointing Beacon for Current Active Lesson */}
+                          {isCurrent && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -4 }}
+                              animate={{ opacity: 1, y: [-2, 4, -2] }}
+                              transition={{
+                                opacity: { duration: 0.2 },
+                                y: { duration: 2.2, repeat: Infinity, ease: 'easeInOut' },
+                              }}
+                              className="absolute -top-14 z-30 flex flex-col items-center pointer-events-none select-none"
+                            >
+                              <div className="px-5 py-2 rounded-full bg-accent-secondary text-white font-english-bold text-xs uppercase tracking-widest leading-none whitespace-nowrap">
+                                {isFirst ? 'START' : 'CURRENT'}
+                              </div>
+                              <div className="w-2.5 h-2.5 bg-accent-secondary rotate-45 -mt-1 rounded-[2px]" />
+                            </motion.div>
+                          )}
+
+                          {/* 3D Circular Stepping Stone Button */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              playTapSound()
+                              setSelectedNodeLesson({ chapterId: chapter.id, darsNum })
+                            }}
+                            className="group relative cursor-pointer border-0 p-0 bg-transparent select-none focus:outline-none transition-transform duration-150 hover:scale-[1.04]"
+                            aria-label={`Lesson ${darsNum}`}
+                          >
+                            {/* Base Pedestal (3D Circular Bevel - Always Darker than Top Face) */}
+                            <div
+                              className={`w-20 h-20 rounded-full transition-all duration-150 relative overflow-hidden ${
+                                isCurrent || isCompleted
+                                  ? 'bg-accent-primary'
+                                  : 'bg-neutral-300 dark:bg-neutral-900'
+                              }`}
+                              style={{ transform: 'translateY(6px)' }}
+                            >
+                              {(isCurrent || isCompleted) && (
+                                <div className="w-full h-full bg-black/30 dark:bg-black/25 pointer-events-none" />
+                              )}
+                            </div>
+
+                            {/* Raised Circular Top Face (Depresses on Tap) */}
+                            <div
+                              className={`absolute inset-0 w-20 h-20 rounded-full flex items-center justify-center transition-transform duration-100 group-active:translate-y-1.5 ${
+                                isCurrent || isCompleted
+                                  ? 'bg-accent-primary hover:bg-accent-primary-hover text-white'
+                                  : 'bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-400 dark:text-neutral-500'
+                              }`}
+                            >
+                              {isCompleted ? (
+                                <Check size={32} className="stroke-[3.5] text-white" />
+                              ) : (
+                                <span className="font-english-bold text-3xl leading-none">
+                                  {darsNum}
                                 </span>
                               )}
                             </div>
-                            <span className="font-english text-[13px] text-neutral-500 dark:text-neutral-500 mt-0.5">
-                              {completedCount} / {total} sections completed
-                            </span>
-                          </div>
+                          </button>
                         </div>
+                      </div>
+                    )
+                  })}
+                </div>
 
-                        <div className="flex flex-row items-center gap-3">
-                          {isLocked ? (
-                            <Lock size={18} className="text-neutral-400 mr-2" />
-                          ) : (
-                            <div className="hidden sm:flex flex-row gap-1.5 mr-2">
-                              {chunks.map((ch, idx) => {
-                                const st = progressStore[`progress.v${volumeId}.c${chapter.id}.d${lesson.darsNumber}.${ch.id}`]
-                                return (
-                                  <div 
-                                    key={idx} 
-                                    className={`w-2 h-2 rounded-full transition-colors ${
-                                      st === 'completed' 
-                                        ? 'bg-accent-primary' 
-                                        : 'bg-neutral-200 dark:bg-neutral-800'
-                                    }`}
-                                  />
-                                )
-                              })}
-                            </div>
-                          )}
-                        </div>
-                      </button>
-                    </motion.div>
-                  )
-                })}
+                {/* Chapter Mastery Trophy Milestone */}
+                <div className="pt-10 pb-8 flex flex-col items-center text-center space-y-3">
+                  <div className="w-20 h-20 rounded-4xl bg-accent-secondary-subtle dark:bg-neutral-900 text-accent-secondary flex items-center justify-center">
+                    <Trophy size={32} />
+                  </div>
+                  <div>
+                    <span className="text-xs font-mono uppercase tracking-widest text-accent-secondary font-bold block">
+                      Chapter Completion
+                    </span>
+                    <h4 className="font-english-bold text-base text-neutral-900 dark:text-neutral-100">
+                      Foundations Mastery Milestone
+                    </h4>
+                  </div>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
+          )
+        })}
 
-        <div className="flex justify-center pt-12 pb-16">
+        {/* Selected Lesson Launchpad Modal (Level 3 Overlay) */}
+        <AnimatePresence>
+          {selectedNodeLesson && (() => {
+            const chapter = chapters.find(c => c.id === selectedNodeLesson.chapterId)
+            const lesson = chapter?.lessons.find(l => l.darsNumber === selectedNodeLesson.darsNum)
+            if (!chapter || !lesson) return null
+
+            const darsNum = lesson.darsNumber
+            const isCompleted = isLessonCompleted(chapter.id, darsNum)
+            const isCurrent =
+              nextLessonInfo.chapterId === chapter.id &&
+              nextLessonInfo.darsNum === darsNum &&
+              !isCompleted
+            const lessonMeta = (chapter.id === 1 ? CHAPTER_1_LESSONS_INFO[darsNum] : null) || {
+              titleEn: `Lesson ${darsNum}`,
+              titleAr: `الدرس ${toArabicNumerals(darsNum)}`,
+              conceptEn: chapter.subtitle || 'Classical Arabic Drills',
+            }
+            const sessionData = getLessonSession(volumeId, chapter.id, darsNum)
+
+            return (
+              <div
+                className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+                onClick={() => setSelectedNodeLesson(null)}
+              >
+                <motion.div
+                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 30, scale: 0.95 }}
+                  transition={{ duration: 0.18, ease: 'easeOut' }}
+                  onClick={(e) => e.stopPropagation()}
+                  className="w-full max-w-sm rounded-4xl bg-white dark:bg-neutral-900 p-6 sm:p-7 flex flex-col items-center text-center space-y-5 shadow-none border-0 select-auto"
+                >
+                  {/* Header with Close */}
+                  <div className="w-full flex items-center justify-between">
+                    <span className="text-xs font-mono uppercase tracking-widest text-accent-primary font-bold">
+                      Lesson {darsNum} · {isCompleted ? 'Mastered' : isCurrent ? 'Up Next' : 'Available'}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedNodeLesson(null)}
+                      className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white cursor-pointer shadow-none border-0"
+                      aria-label="Close"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+
+                  {/* Node Medallion (Tactile Circular 3D) */}
+                  <div className="relative select-none my-2">
+                    <div
+                      className="w-20 h-20 rounded-full transition-all duration-150 relative overflow-hidden bg-accent-primary"
+                      style={{ transform: 'translateY(6px)' }}
+                    >
+                      <div className="w-full h-full bg-black/30 dark:bg-black/25 pointer-events-none" />
+                    </div>
+                    <div className="absolute inset-0 w-20 h-20 rounded-full bg-accent-primary text-white flex items-center justify-center font-english-bold text-3xl">
+                      {isCompleted ? <Check size={32} className="stroke-[3.5] text-white" /> : darsNum}
+                    </div>
+                  </div>
+
+                  {/* Titles */}
+                  <div className="space-y-1">
+                    <h3 className="font-arabic font-bold text-2xl text-neutral-900 dark:text-white" dir="rtl">
+                      {lessonMeta.titleAr}
+                    </h3>
+                    <h4 className="font-english-bold text-base text-neutral-700 dark:text-neutral-200">
+                      {lessonMeta.titleEn}
+                    </h4>
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400 pt-0.5">
+                      {lessonMeta.conceptEn}
+                    </p>
+                  </div>
+
+                  {/* Badge Pill */}
+                  <div className="w-full py-2.5 px-4 rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-between text-xs font-mono">
+                    <span className="text-neutral-500 dark:text-neutral-400">Mastery Target</span>
+                    <span className="text-accent-primary font-bold">{sessionData?.steps.length || 13} Micro-Steps</span>
+                  </div>
+
+                  {/* 56px Action Button */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      playTapSound()
+                      setSelectedNodeLesson(null)
+                      setActiveSessionLesson({ chapterId: chapter.id, darsNum })
+                    }}
+                    className="w-full h-14 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-english-semibold text-base flex items-center justify-center gap-2 cursor-pointer shadow-none border-0 active:scale-[0.98] transition-all"
+                  >
+                    <span>{isCompleted ? 'Practice Again' : 'Start Interactive Session'}</span>
+                    <ArrowRight size={18} />
+                  </button>
+                </motion.div>
+              </div>
+            )
+          })()}
+        </AnimatePresence>
+
+        {/* Footer End of Part */}
+        <div className="flex justify-center pt-8 pb-12">
           <div className="flex flex-col items-center gap-3">
             <div className="w-1.5 h-1.5 rounded-full bg-neutral-300 dark:bg-neutral-700" />
             <span className="font-english text-[14px] text-neutral-400 dark:text-neutral-500">

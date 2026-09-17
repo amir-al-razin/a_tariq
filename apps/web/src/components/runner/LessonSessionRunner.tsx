@@ -429,87 +429,209 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
     const currentConcept = payload.concepts[activeVocabCardIndex] || payload.concepts[0];
     const isLastCard = activeVocabCardIndex === payload.concepts.length - 1;
 
+    // Check if this concept demonstrates a compound / syntactic transformation (e.g. 'الْقَرْيَةُ ➔ فِي الْقَرْيَةِ')
+    const isCompound = Boolean(
+      currentConcept.compound ||
+      currentConcept.ar.includes('➔') ||
+      currentConcept.ar.includes('->')
+    );
+
+    const compoundData = isCompound
+      ? currentConcept.compound || (() => {
+          const arrowChar = currentConcept.ar.includes('➔') ? '➔' : '->';
+          const [baseAr, resultAr] = currentConcept.ar.split(arrowChar).map((s) => s.trim());
+          const [baseRom, resultRom] = (currentConcept.romanized || '').split(arrowChar).map((s) => s.trim());
+          const [baseMeaningEn, resultMeaningEn] = (currentConcept.meaningEn || '').split(arrowChar).map((s) => s.trim());
+          const [baseMeaningBn, resultMeaningBn] = (currentConcept.meaningBn || '').split(arrowChar).map((s) => s.trim());
+          return {
+            baseAr,
+            baseRom,
+            baseMeaningEn,
+            baseMeaningBn,
+            operator: '➔',
+            resultAr,
+            resultRom,
+            resultMeaningEn,
+            resultMeaningBn,
+            resultAudioKey: currentConcept.audioKey,
+            baseAudioKey: undefined as string | undefined,
+            particleAr: undefined as string | undefined,
+            particleEn: undefined as string | undefined,
+            badge: undefined as string | undefined,
+          };
+        })()
+      : null;
+
     return (
-      <div className="w-full max-w-lg mx-auto flex flex-col items-center space-y-6">
-        {/* Concept Presentation Card */}
-        <div className="w-full p-6 sm:p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center text-center space-y-6">
+      <div className="w-full max-w-lg mx-auto flex flex-col items-center space-y-5">
+        {/* Concept Presentation Card (Level 1 Surface Well) */}
+        <div className="w-full p-5 sm:p-6 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center text-center space-y-5">
           {/* Card index indicator */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             {payload.concepts.map((_, idx) => (
               <div
                 key={idx}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
                   idx === activeVocabCardIndex
-                    ? 'w-8 bg-accent-primary'
-                    : 'w-2 bg-neutral-300 dark:bg-neutral-700'
+                    ? 'w-6 bg-accent-primary'
+                    : 'w-1.5 bg-neutral-300 dark:bg-neutral-700'
                 }`}
               />
             ))}
           </div>
 
-          {/* Pointer word display */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-center gap-3">
-              <h2 className="font-arabic-bold text-6xl text-neutral-900 dark:text-white" dir="rtl">
-                {currentConcept.ar}
-              </h2>
-              <button
-                onClick={() => playArabicAudio(currentConcept.audioKey)}
-                className="w-10 h-10 rounded-full bg-neutral-200/80 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-colors cursor-pointer shadow-none border-0"
-                aria-label="Listen to word"
-              >
-                <Volume2 size={20} />
-              </button>
-            </div>
-            {showTransliteration && (
-              <p className="text-base font-mono text-accent-primary font-medium">
-                {currentConcept.romanized}
-              </p>
-            )}
-            <div className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-              {isBn ? (currentConcept.meaningBn || currentConcept.meaningEn) : currentConcept.meaningEn}
-            </div>
-          </div>
+          {/* Level 2 Raised Card: Pure, Uncluttered Transformation Stage */}
+          {isCompound && compoundData ? (
+            <div className="w-full rounded-3xl bg-white dark:bg-neutral-950 p-6 sm:p-7 flex flex-col items-center text-center space-y-5">
+              {/* Transformation Flow: Base ➔ Result */}
+              <div className="w-full flex items-center justify-around sm:justify-center sm:gap-8">
+                {/* Base Form */}
+                <button
+                  type="button"
+                  onClick={() => playArabicAudio(compoundData.baseAudioKey || compoundData.baseAr)}
+                  className="group flex flex-col items-center space-y-1 cursor-pointer bg-transparent border-0 p-0 text-center transition-transform active:scale-95"
+                  title="Listen"
+                >
+                  <span className="font-arabic-bold text-3xl sm:text-4xl text-neutral-800 group-hover:text-neutral-950 dark:text-neutral-200 dark:group-hover:text-white leading-relaxed whitespace-nowrap transition-colors" dir="rtl">
+                    {compoundData.baseAr}
+                  </span>
+                  {showTransliteration && compoundData.baseRom && (
+                    <span className="text-xs font-mono text-neutral-400">
+                      {compoundData.baseRom}
+                    </span>
+                  )}
+                  <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400" dir="ltr">
+                    {isBn ? (compoundData.baseMeaningBn || compoundData.baseMeaningEn) : compoundData.baseMeaningEn}
+                  </span>
+                </button>
 
-          {/* Authentic Visual Cue - Spatial Distance Only */}
-          {currentConcept.distance && (
-            <div className="w-full py-6 px-6 rounded-3xl bg-white dark:bg-neutral-950 flex items-center justify-center">
-              {currentConcept.distance === 'near' ? (
-                <div className="flex items-center justify-center gap-5">
-                  <span className="text-4xl select-none animate-pulse">👉</span>
-                  <span className="text-5xl select-none">{currentConcept.emoji}</span>
+                {/* Subtle Flow Arrow */}
+                <div className="w-8 h-8 rounded-full bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-neutral-400 shrink-0 text-sm select-none">
+                  ➔
                 </div>
-              ) : (
-                <div className="w-full flex items-center justify-between px-4 sm:px-8">
-                  <span className="text-4xl select-none">👉</span>
-                  <div className="flex-1 mx-4 sm:mx-6 flex items-center">
-                    <div className="flex-1 border-t-2 border-dashed border-accent-secondary/60" />
-                    <span className="text-accent-secondary text-sm -mr-1">▶</span>
+
+                {/* Transformed Result (Semantic Heritage Accent) */}
+                <button
+                  type="button"
+                  onClick={() => playArabicAudio(compoundData.resultAudioKey || currentConcept.audioKey || compoundData.resultAr)}
+                  className="group flex flex-col items-center space-y-1 cursor-pointer bg-transparent border-0 p-0 text-center transition-transform active:scale-95"
+                  title="Listen"
+                >
+                  <div className="flex items-center justify-center gap-1.5">
+                    <span className="font-arabic-bold text-3xl sm:text-4xl text-accent-primary group-hover:opacity-90 leading-relaxed whitespace-nowrap transition-opacity" dir="rtl">
+                      {compoundData.resultAr}
+                    </span>
+                    <Volume2 size={16} className="text-accent-primary/60 group-hover:text-accent-primary shrink-0 transition-colors" />
                   </div>
-                  <span className="text-5xl select-none">{currentConcept.emoji}</span>
+                  {showTransliteration && compoundData.resultRom && (
+                    <span className="text-xs font-mono text-accent-primary/80">
+                      {compoundData.resultRom}
+                    </span>
+                  )}
+                  <span className="text-sm font-semibold text-neutral-900 dark:text-white" dir="ltr">
+                    {isBn ? (compoundData.resultMeaningBn || compoundData.resultMeaningEn) : compoundData.resultMeaningEn}
+                  </span>
+                </button>
+              </div>
+
+              {/* Quiet Divider */}
+              {currentConcept.exampleAr && currentConcept.exampleAr !== currentConcept.ar && (
+                <div className="h-px w-24 bg-neutral-100 dark:bg-neutral-850" />
+              )}
+
+              {/* Contextual Example (Centered, Calm, Uncluttered) */}
+              {currentConcept.exampleAr && currentConcept.exampleAr !== currentConcept.ar && (
+                <div className="space-y-1">
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="font-arabic-bold text-2xl sm:text-3xl text-neutral-900 dark:text-white text-center" dir="rtl">
+                      {currentConcept.exampleAr}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => playArabicAudio(currentConcept.exampleAudioKey || currentConcept.exampleAr)}
+                      className="w-7 h-7 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 flex items-center justify-center text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-white transition-colors cursor-pointer shadow-none border-0 shrink-0"
+                      aria-label="Listen to example"
+                    >
+                      <Volume2 size={14} />
+                    </button>
+                  </div>
+                  <p className="text-xs sm:text-sm font-medium text-neutral-500 dark:text-neutral-400 text-center" dir="ltr">
+                    {isBn ? (currentConcept.exampleBn || currentConcept.exampleEn) : currentConcept.exampleEn}
+                  </p>
                 </div>
               )}
             </div>
-          )}
-
-          {/* Example Sentence / Phrase in Context */}
-          {currentConcept.exampleAr && currentConcept.exampleAr !== currentConcept.ar && (
-            <div className="w-full p-4 rounded-3xl bg-white dark:bg-neutral-950 flex items-center justify-between px-5 border-0">
-              <div className="text-right flex-1 pr-3" dir="rtl">
-                <div className="font-arabic-bold text-2xl text-neutral-900 dark:text-white">
-                  {currentConcept.exampleAr}
+          ) : (
+            /* Single Pointer Word Display */
+            <div className="w-full rounded-3xl bg-white dark:bg-neutral-950 p-6 sm:p-8 flex flex-col items-center text-center space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-center gap-3">
+                  <h2 className="font-arabic-bold text-6xl text-neutral-900 dark:text-white" dir="rtl">
+                    {currentConcept.ar}
+                  </h2>
+                  <button
+                    onClick={() => playArabicAudio(currentConcept.audioKey)}
+                    className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-colors cursor-pointer shadow-none border-0"
+                    aria-label="Listen to word"
+                  >
+                    <Volume2 size={20} />
+                  </button>
                 </div>
-                <div className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
-                  {isBn ? (currentConcept.exampleBn || currentConcept.exampleEn) : currentConcept.exampleEn}
+                {showTransliteration && (
+                  <p className="text-base font-mono text-accent-primary font-medium">
+                    {currentConcept.romanized}
+                  </p>
+                )}
+                <div className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+                  {isBn ? (currentConcept.meaningBn || currentConcept.meaningEn) : currentConcept.meaningEn}
                 </div>
               </div>
-              <button
-                onClick={() => playArabicAudio(currentConcept.exampleAudioKey || currentConcept.exampleAr)}
-                className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-colors cursor-pointer shadow-none border-0 shrink-0"
-                aria-label="Listen to example"
-              >
-                <Volume2 size={18} />
-              </button>
+
+              {/* Authentic Visual Cue - Spatial Distance Only */}
+              {currentConcept.distance && (
+                <div className="w-full py-4 flex items-center justify-center">
+                  {currentConcept.distance === 'near' ? (
+                    <div className="flex items-center justify-center gap-5">
+                      <span className="text-3xl select-none animate-pulse">👉</span>
+                      <span className="text-4xl select-none">{currentConcept.emoji}</span>
+                    </div>
+                  ) : (
+                    <div className="w-full flex items-center justify-between px-6">
+                      <span className="text-3xl select-none">👉</span>
+                      <div className="flex-1 mx-4 flex items-center">
+                        <div className="flex-1 border-t-2 border-dashed border-accent-secondary/60" />
+                        <span className="text-accent-secondary text-sm -mr-1">▶</span>
+                      </div>
+                      <span className="text-4xl select-none">{currentConcept.emoji}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Example Sentence / Phrase in Context */}
+              {currentConcept.exampleAr && currentConcept.exampleAr !== currentConcept.ar && (
+                <>
+                  <div className="h-px w-24 bg-neutral-100 dark:bg-neutral-850" />
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="font-arabic-bold text-2xl text-neutral-900 dark:text-white text-center" dir="rtl">
+                        {currentConcept.exampleAr}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => playArabicAudio(currentConcept.exampleAudioKey || currentConcept.exampleAr)}
+                        className="w-7 h-7 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 flex items-center justify-center text-neutral-500 dark:text-neutral-400 transition-colors cursor-pointer shadow-none border-0 shrink-0"
+                        aria-label="Listen to example"
+                      >
+                        <Volume2 size={14} />
+                      </button>
+                    </div>
+                    <p className="text-xs sm:text-sm font-medium text-neutral-500 dark:text-neutral-400 text-center" dir="ltr">
+                      {isBn ? (currentConcept.exampleBn || currentConcept.exampleEn) : currentConcept.exampleEn}
+                    </p>
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>

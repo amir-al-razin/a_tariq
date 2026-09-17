@@ -71,6 +71,8 @@
 - Use `t()` function for ALL user-facing strings
 - **No hardcoded Arabic, English, or Bangla text** in components
 - Translation keys must exist in `messages/` directory
+- **Strict Script Isolation**: `en` fields must contain only clean English; `bn` fields must contain only natural Bangla. Never mix scripts or English words into Bangla fields.
+- **Arabic Tashkeel Fidelity**: Every Arabic word in curriculum data must have complete, accurate Harakat (never guess or drop grammatical vowel endings).
 
 ---
 
@@ -254,6 +256,8 @@ payload: {
 - Hardcode hex colors or arbitrary Tailwind color classes (strictly use designated tokens like `bg-accent-primary`, `bg-neutral-100`, etc.)
 - Use 1px solid outline borders or drop shadows (`shadow-*`) anywhere in UI components (strictly prohibited by Raw Neutral)
 - Use arbitrary border radii (strictly follow the 5-tier radius hierarchy: `rounded-4xl` to `rounded-full`)
+- Mix languages across content fields (no Bengali script in English fields or English words in Bangla fields)
+- Output Arabic words without complete, accurate Harakat (never guess or drop vowel endings)
 
 ### ✅ DO
 - Read the plan file and `docs/engine-design-guidelines.md` FIRST before building or modifying lesson engines
@@ -267,6 +271,7 @@ payload: {
 - Test Arabic RTL rendering
 - Use `CurriculumHeader` and `CurriculumFooter` from shared components to ensure mobile responsive layout
 - Separate translated textbook examples (Familiarization) from non-translated interactive exercises (Practice)
+- Verify Arabic Tashkeel against textbook sources and keep English/Bangla fields 100% script-pure
 
 ---
 

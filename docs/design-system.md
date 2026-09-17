@@ -269,6 +269,8 @@ Status colors never adapt to theme accents. They are permanent invariants ensuri
 ### DO
 - Import all palette definitions and token helpers from `@tariq/shared`.
 - Use `bg-accent-primary`, `bg-accent-secondary`, and their subtle variants.
+- Center contextual sentences, examples, and subordinate translations (`text-center`).
+- Use `whitespace-nowrap` on comparative Arabic words to prevent glyph fragmentation across lines.
 - Use logical CSS properties (`ms-*`, `me-*`, `ps-*`, `pe-*`) for RTL layout integrity.
 - Verify every visual change in both Dark and Light modes using `agent-browser`.
 - Maintain zero TypeScript errors across all packages.
@@ -277,6 +279,7 @@ Status colors never adapt to theme accents. They are permanent invariants ensuri
 ### DON'T
 - NEVER use drop shadows (`shadow-*`).
 - NEVER use decorative outline borders (`border-*`) on cards.
+- NEVER use uppercase meta-labels (`BASE NOUN`, `EXAMPLE:`, `NOTE:`) or fragment content into multiple nested mini-cards (use a single Level 2 raised card with whitespace).
 - NEVER hardcode hex codes like `#4338CA` in UI components.
 - NEVER use cartoon sounds, bouncy floating coins, or playful dopamine triggers.
 - NEVER use em dashes in documentation or UI copy (use plain dash `-` instead).
