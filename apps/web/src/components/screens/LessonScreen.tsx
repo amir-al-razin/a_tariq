@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Lock, Check, ChevronDown } from 'lucide-react'
+import { ArrowLeft, Lock, Check, ChevronDown, Sparkles } from 'lucide-react'
 
 import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
 import { getLastVisitedChunk, setLastVisitedChunk } from '../../lib/progress'
 import { useProgressStore } from '../../state/progressStore'
+import { LessonSessionRunner } from '../runner/LessonSessionRunner'
+import { getLessonSession } from '../../lib/lessonRegistry'
+import TransliterationToggle from '../TransliterationToggle'
 
 const ProgressRing = ({ progress, size = 40, strokeWidth = 3, color = 'currentColor' }: { progress: number, size?: number, strokeWidth?: number, color?: string }) => {
   const radius = (size - strokeWidth) / 2;
@@ -59,6 +62,8 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
   const [isDark, setIsDark] = useState(false)
   const [lastVisited, setLastVisited] = useState<number | null>(null)
 
+  const [isRunningSession, setIsRunningSession] = useState(false)
+
   const progressStore = useProgressStore((state) => state.progress)
 
   useEffect(() => {
@@ -88,24 +93,6 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
   const lesson = useMemo(() => chapter?.lessons.find((l) => l.darsNumber === darsNum), [chapter, darsNum])
   const chunks = useMemo(() => lesson?.chunks || [], [lesson])
 
-  if (!chapter || !lesson) {
-    return <div className="p-4">Lesson not found</div>
-  }
-
-  const handleChunkPress = (chunkId: string, idx: number) => {
-    setLastVisitedChunk(chapterId, darsNum, idx)
-    setLastVisited(idx)
-    navigate({
-      to: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId',
-      params: {
-        volumeId: volumeId as any,
-        chapterId: chapterId as any,
-        darsNum: darsNum as any,
-        chunkId: chunkId as any,
-      },
-    })
-  }
-
   const numChunks = chunks.length
 
   const completedChunks = useMemo(() => {
@@ -119,6 +106,45 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
   }, [chunks, progressStore, volumeId, chapterId, darsNum]);
 
   const lessonProgress = numChunks === 0 ? 0 : completedChunks / numChunks;
+
+  const registeredSession = useMemo(() => {
+    return getLessonSession(volumeId, chapterId, darsNum);
+  }, [volumeId, chapterId, darsNum]);
+
+  const handleChunkPress = (chunkId: string, idx: number) => {
+    // Launch unified single-focus interactive session runner if available for this lesson
+    if (registeredSession) {
+      setIsRunningSession(true)
+      return
+    }
+
+    setLastVisitedChunk(chapterId, darsNum, idx)
+    setLastVisited(idx)
+    navigate({
+      to: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId',
+      params: {
+        volumeId: volumeId as any,
+        chapterId: chapterId as any,
+        darsNum: darsNum as any,
+        chunkId: chunkId as any,
+      },
+    })
+  }
+
+  if (isRunningSession) {
+    return (
+      <LessonSessionRunner
+        volumeId={volumeId}
+        chapterId={chapterId}
+        lessonNum={darsNum}
+        onExit={() => setIsRunningSession(false)}
+      />
+    )
+  }
+
+  if (!chapter || !lesson) {
+    return <div className="p-4">Lesson not found</div>
+  }
 
   return (
     <div className="flex flex-col flex-1 min-h-screen bg-white dark:bg-neutral-950 pb-20 pt-7">
@@ -138,10 +164,24 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
         <div className="flex-1 text-center font-english-semibold text-[17px] text-neutral-900 dark:text-neutral-100">
           Lesson {darsNum} · {chapter.titleEn}
         </div>
-        <div className="w-10 flex justify-end items-center">
-          <ProgressRing progress={lessonProgress} color={isDark ? "#a3a3a3" : "#525252"} />
+        <div className="flex items-center gap-2.5">
+          <TransliterationToggle compact />
+          <ProgressRing progress={lessonProgress} color="var(--accent-primary)" />
         </div>
       </div>
+
+      {/* Playful Interactive Session Launcher */}
+      {registeredSession && (
+        <div className="px-5 mb-6 max-w-[600px] mx-auto w-full">
+          <button
+            onClick={() => setIsRunningSession(true)}
+            className="w-full h-14 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-english-semibold text-base flex items-center justify-center gap-3 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+          >
+            <Sparkles size={20} className="text-white" />
+            <span>Start Interactive Session ({registeredSession.steps.length} Micro-Steps)</span>
+          </button>
+        </div>
+      )}
       
       <div className="flex-1 flex items-center justify-center relative w-full max-w-[800px] mx-auto min-h-[500px]">
         {/* Desktop Circular Layout & Mobile Grid Wrapper */}
@@ -251,11 +291,11 @@ const ChunkNode = ({
           }}
           className="absolute -top-[42px] z-30 flex flex-col items-center pointer-events-none select-none"
         >
-          <div className="px-3 py-1 rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 font-english-bold text-[10px] uppercase tracking-widest flex items-center gap-1.5 shadow-none border-0 leading-none whitespace-nowrap">
+          <div className="px-3 py-1 rounded-full bg-accent-secondary text-white font-english-bold text-[10px] uppercase tracking-widest flex items-center gap-1.5 shadow-none border-0 leading-none whitespace-nowrap">
             <span>{isLastVisited ? 'CURRENT' : 'START'}</span>
             <ChevronDown size={11} className="stroke-[3] shrink-0" />
           </div>
-          <div className="w-0 h-0 border-x-[5px] border-x-transparent border-t-[5px] border-t-neutral-900 dark:border-t-white -mt-[1px]" />
+          <div className="w-0 h-0 border-x-[5px] border-x-transparent border-t-[5px] border-t-accent-secondary -mt-[1px]" />
         </motion.div>
       )}
 
@@ -266,9 +306,9 @@ const ChunkNode = ({
         onClick={onPress}
         className={`relative focus:outline-none rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer ${
           isTarget
-            ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 ring-4 ring-neutral-200 dark:ring-neutral-800'
+            ? 'bg-accent-primary text-white ring-4 ring-accent-primary/20 hover:bg-accent-primary-hover'
             : isCompleted
-            ? 'bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100'
+            ? 'bg-accent-primary-subtle text-accent-primary-text hover:opacity-90'
             : isLocked
             ? 'bg-neutral-100/50 dark:bg-neutral-900/50 text-neutral-300 dark:text-neutral-700 cursor-not-allowed'
             : 'bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300'

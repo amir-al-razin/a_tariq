@@ -30,4 +30,10 @@ This document serves as the authoritative "North Star" and Anti-Regression Proto
 - **No Extra Jargon:** Exclude internal developer nomenclature from user-facing interfaces.
 - **Clean Learning Canvas:** The UI should present only the immediate learning material without meta-commentary, authors, or clutter.
 
+## 6. Harakat & Tashkeel Scope (Full Harakat Standard)
+- **Full Harakat by Default:** Arabic text across all active lessons, vocabulary steps, drills, and scripture references must always display full vowel marks (Harakat / Tashkeel), exactly matching standard printed Quran/Mushaf and printed textbooks.
+- **Zero Fading Overhead:** Dynamic diacritic fading, regex stripping, and fading state machines are strictly out of scope for the current stage. Modern readers and beginning students read text with full vowel marks; stripping or fading introduces needless complexity before the interactive pedagogy and lesson session runner are solidified.
+- **Future Phase Consideration:** Mimicking book diacritic fading or implementing a progressive fading engine is deferred until the core curriculum foundation, database models, and interactive drill mechanics are rock-solid.
+
 By strictly enforcing these principles, we guarantee a premium, consistent, and architecturally robust learning experience across every lesson in the curriculum.
+
