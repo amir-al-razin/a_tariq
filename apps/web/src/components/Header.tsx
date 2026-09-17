@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, Code2 } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
 import FontToggle from './FontToggle'
+import PaletteToggle from './PaletteToggle'
 import TariqLogo from './TariqLogo'
 
 export default function Header() {
@@ -47,11 +48,13 @@ export default function Header() {
           <TariqLogo />
         </Link>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 outline-none"
+              className={`h-9 flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 outline-none cursor-pointer ${
+                isDropdownOpen ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100' : ''
+              }`}
             >
               <Code2 size={16} />
               <span className="hidden sm:inline">Dev Tools</span>
@@ -91,14 +94,31 @@ export default function Header() {
                   >
                     Pedagogy Engine
                   </Link>
+                  <Link
+                    to="/pedagogy-lab"
+                    onClick={() => setIsDropdownOpen(false)}
+                    activeProps={{ className: "text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-800 font-bold" }}
+                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none"
+                  >
+                    Pedagogy Lab
+                  </Link>
+                  <a
+                    href="/prd-and-architecture.html"
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => setIsDropdownOpen(false)}
+                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none flex items-center justify-between"
+                  >
+                    <span>Architecture / PRD</span>
+                    <span className="text-[10px] font-mono uppercase bg-accent-primary-subtle text-accent-primary px-1.5 py-0.5 rounded font-bold">HTML</span>
+                  </a>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
-          <div className="flex items-center gap-2">
-            <FontToggle />
-            <ThemeToggle />
-          </div>
+          <PaletteToggle />
+          <FontToggle />
+          <ThemeToggle />
         </div>
       </div>
     </header>

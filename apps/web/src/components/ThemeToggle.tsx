@@ -1,4 +1,8 @@
 import { useEffect, useState } from 'react'
+import { Sun, Moon, SunMoon } from 'lucide-react'
+
+import { usePaletteStore } from '../state/paletteStore'
+import { applyPaletteToDocument } from '@tariq/shared'
 
 type ThemeMode = 'light' | 'dark' | 'auto'
 
@@ -29,6 +33,14 @@ function applyThemeMode(mode: ThemeMode) {
   }
 
   document.documentElement.style.colorScheme = resolved
+
+  // Synchronize active accent palette CSS custom properties with resolved light/dark mode
+  try {
+    const currentPalette = usePaletteStore.getState().paletteId
+    applyPaletteToDocument(currentPalette, resolved === 'dark')
+  } catch {
+    // Ignore in SSR or pre-hydration
+  }
 }
 
 export default function ThemeToggle() {
@@ -67,15 +79,27 @@ export default function ThemeToggle() {
       ? 'Theme mode: auto (system). Click to switch to light mode.'
       : `Theme mode: ${mode}. Click to switch mode.`
 
+  const icon =
+    mode === 'light' ? (
+      <Sun size={16} />
+    ) : mode === 'dark' ? (
+      <Moon size={16} />
+    ) : (
+      <SunMoon size={16} />
+    )
+
+  const modeText = mode === 'auto' ? 'Auto' : mode === 'dark' ? 'Dark' : 'Light'
+
   return (
     <button
       type="button"
       onClick={toggleMode}
       aria-label={label}
       title={label}
-      className="rounded-full bg-neutral-200/60 dark:bg-neutral-800 px-4 py-1.5 text-sm font-semibold text-neutral-900 dark:text-neutral-100 transition hover:bg-neutral-300/60 dark:hover:bg-neutral-700"
+      className="h-9 flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 outline-none cursor-pointer"
     >
-      {mode === 'auto' ? 'Auto' : mode === 'dark' ? 'Dark' : 'Light'}
+      {icon}
+      <span className="hidden sm:inline font-english">{modeText}</span>
     </button>
   )
 }

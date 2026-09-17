@@ -1,9 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Tajawal:wght@400;500;700&family=Vazirmatn:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Lexend:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700&family=Vazirmatn:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 @config "../tailwind.config.js";
 @plugin '@tailwindcss/typography';
 
 @import 'tw-animate-css';
+
+body {
+  font-family: 'Plus Jakarta Sans', Lexend, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
 
 /* Quran.com Mus'haf and Surah Names Font Faces */
 @font-face {
@@ -64,6 +68,19 @@
   --hero-a: rgba(79, 184, 178, 0.36);
   --hero-b: rgba(47, 106, 74, 0.2);
 
+  /* Accent Tokens (Kairouan Indigo Default - Swappable via @tariq/shared) */
+  --accent-primary: #4338CA;
+  --accent-primary-hover: #3730A3;
+  --accent-primary-subtle: #EEF2FF;
+  --accent-primary-text: #3730A3;
+  --accent-primary-glow: rgba(67, 56, 202, 0.08);
+
+  --accent-secondary: #C28135;
+  --accent-secondary-hover: #9A6321;
+  --accent-secondary-subtle: #FDF8F0;
+  --accent-secondary-text: #7C4A14;
+  --accent-secondary-glow: rgba(194, 129, 53, 0.08);
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
@@ -120,6 +137,19 @@
   --hero-a: rgba(96, 215, 207, 0.18);
   --hero-b: rgba(110, 200, 154, 0.12);
 
+  /* Accent Tokens in Dark Mode (100% Hue-Consistent Nocturnal Calibration) */
+  --accent-primary: #6366F1;
+  --accent-primary-hover: #4F46E5;
+  --accent-primary-subtle: rgba(67, 56, 202, 0.16);
+  --accent-primary-text: #A5B4FC;
+  --accent-primary-glow: rgba(99, 102, 241, 0.24);
+
+  --accent-secondary: #D99B4B;
+  --accent-secondary-hover: #C28135;
+  --accent-secondary-subtle: rgba(194, 129, 53, 0.16);
+  --accent-secondary-text: #FDE68A;
+  --accent-secondary-glow: rgba(217, 155, 75, 0.24);
+
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.141 0.005 285.823);
@@ -170,6 +200,10 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-primary: var(--accent-primary, #4338CA);
+  --color-accent-secondary: var(--accent-secondary, #C28135);
+  --color-accent-amber: #D97706;
+  --color-accent-rose: #E11D48;
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
@@ -352,10 +386,49 @@ a {
 }
 
 /* Dynamic Arabic Pedagogical Font Classes */
-.font-arabic,
-.font-arabic-medium,
+.font-arabic {
+  font-family: var(--font-arabic-family, 'Cairo', sans-serif);
+}
+.font-arabic-medium {
+  font-family: var(--font-arabic-family, 'Cairo', sans-serif);
+  font-weight: 500;
+}
 .font-arabic-semibold {
   font-family: var(--font-arabic-family, 'Cairo', sans-serif);
+  font-weight: 600;
+}
+.font-arabic-bold {
+  font-family: var(--font-arabic-family, 'Cairo', sans-serif);
+  font-weight: 700;
+}
+.font-arabic-extrabold {
+  font-family: var(--font-arabic-family, 'Cairo', sans-serif);
+  font-weight: 800;
+}
+
+/* Explicit English Font Weight Classes */
+.font-english {
+  font-family: 'Plus Jakarta Sans', Lexend, system-ui, -apple-system, sans-serif;
+}
+.font-english-medium {
+  font-family: 'Plus Jakarta Sans', Lexend, system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+}
+.font-english-semibold {
+  font-family: 'Plus Jakarta Sans', Lexend, system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+}
+.font-english-bold {
+  font-family: 'Plus Jakarta Sans', Lexend, system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+}
+.font-english-extrabold {
+  font-family: 'Plus Jakarta Sans', Lexend, system-ui, -apple-system, sans-serif;
+  font-weight: 800;
+}
+.font-english-black {
+  font-family: 'Plus Jakarta Sans', Lexend, system-ui, -apple-system, sans-serif;
+  font-weight: 800;
 }
 
 .font-amiri {

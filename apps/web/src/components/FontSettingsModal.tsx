@@ -97,7 +97,7 @@ export const FontSettingsModal: React.FC<FontSettingsModalProps> = ({ isOpen, on
                     }}
                     className={`w-full text-left p-4 rounded-2xl transition-all cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${
                       isSelected
-                        ? 'bg-neutral-900 text-neutral-100 dark:bg-neutral-100 dark:text-neutral-900'
+                        ? 'bg-accent-primary text-white'
                         : 'bg-neutral-100/90 dark:bg-neutral-800/60 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-200/80 dark:hover:bg-neutral-800'
                     }`}
                   >
@@ -108,11 +108,7 @@ export const FontSettingsModal: React.FC<FontSettingsModalProps> = ({ isOpen, on
                         </span>
                         {isSelected && (
                           <span
-                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase ${
-                              isSelected
-                                ? 'bg-neutral-200 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100'
-                                : ''
-                            }`}
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase bg-white/20 text-white"
                           >
                             <Check className="w-3 h-3" />
                             Active
@@ -122,7 +118,7 @@ export const FontSettingsModal: React.FC<FontSettingsModalProps> = ({ isOpen, on
                       <p
                         className={`font-english text-xs ${
                           isSelected
-                            ? 'text-neutral-300 dark:text-neutral-600'
+                            ? 'text-white/80'
                             : 'text-neutral-500 dark:text-neutral-400'
                         }`}
                       >
@@ -148,7 +144,7 @@ export const FontSettingsModal: React.FC<FontSettingsModalProps> = ({ isOpen, on
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-white font-semibold transition-colors cursor-pointer"
+                className="px-5 py-2 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-semibold transition-colors cursor-pointer"
               >
                 Done
               </button>
