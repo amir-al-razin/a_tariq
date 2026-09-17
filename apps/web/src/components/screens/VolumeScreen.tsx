@@ -226,17 +226,61 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                           {isCurrent && (
                             <motion.div
                               initial={{ opacity: 0, y: -4 }}
-                              animate={{ opacity: 1, y: [-2, 4, -2] }}
+                              animate={{ opacity: 1, y: [0, -6, 0] }}
                               transition={{
                                 opacity: { duration: 0.2 },
-                                y: { duration: 2.2, repeat: Infinity, ease: 'easeInOut' },
+                                y: {
+                                  duration: 1.2,
+                                  repeat: Infinity,
+                                  ease: 'easeInOut',
+                                },
                               }}
-                              className="absolute -top-14 z-30 flex flex-col items-center pointer-events-none select-none"
+                              className="absolute -top-11 z-30 flex flex-col items-center pointer-events-none select-none"
                             >
-                              <div className="px-5 py-2 rounded-full bg-accent-secondary text-white font-english-bold text-xs uppercase tracking-widest leading-none whitespace-nowrap">
-                                {isFirst ? 'START' : 'CURRENT'}
+                              <div className="relative flex items-center justify-center filter drop-shadow-none">
+                                {/* Unified 3D Speech Bubble SVG */}
+                                <svg
+                                  width={isFirst ? 76 : 88}
+                                  height={36}
+                                  viewBox={`0 0 ${isFirst ? 76 : 88} 36`}
+                                  className="overflow-visible"
+                                >
+                                  {/* Base Pedestal (3D Bevel Layer shifted down 3px) */}
+                                  <g transform="translate(0, 3)">
+                                    <path
+                                      d={
+                                        isFirst
+                                          ? 'M 10 0 H 66 A 10 10 0 0 1 76 10 V 16 A 10 10 0 0 1 66 26 H 44 L 38 32 L 32 26 H 10 A 10 10 0 0 1 0 16 V 10 A 10 10 0 0 1 10 0 Z'
+                                          : 'M 10 0 H 78 A 10 10 0 0 1 88 10 V 16 A 10 10 0 0 1 78 26 H 50 L 44 32 L 38 26 H 10 A 10 10 0 0 1 0 16 V 10 A 10 10 0 0 1 10 0 Z'
+                                      }
+                                      className="fill-accent-secondary"
+                                    />
+                                    <path
+                                      d={
+                                        isFirst
+                                          ? 'M 10 0 H 66 A 10 10 0 0 1 76 10 V 16 A 10 10 0 0 1 66 26 H 44 L 38 32 L 32 26 H 10 A 10 10 0 0 1 0 16 V 10 A 10 10 0 0 1 10 0 Z'
+                                          : 'M 10 0 H 78 A 10 10 0 0 1 88 10 V 16 A 10 10 0 0 1 78 26 H 50 L 44 32 L 38 26 H 10 A 10 10 0 0 1 0 16 V 10 A 10 10 0 0 1 10 0 Z'
+                                      }
+                                      className="fill-black/25 dark:fill-black/35"
+                                    />
+                                  </g>
+
+                                  {/* Top Face */}
+                                  <path
+                                    d={
+                                      isFirst
+                                        ? 'M 10 0 H 66 A 10 10 0 0 1 76 10 V 16 A 10 10 0 0 1 66 26 H 44 L 38 32 L 32 26 H 10 A 10 10 0 0 1 0 16 V 10 A 10 10 0 0 1 10 0 Z'
+                                        : 'M 10 0 H 78 A 10 10 0 0 1 88 10 V 16 A 10 10 0 0 1 78 26 H 50 L 44 32 L 38 26 H 10 A 10 10 0 0 1 0 16 V 10 A 10 10 0 0 1 10 0 Z'
+                                    }
+                                    className="fill-accent-secondary"
+                                  />
+                                </svg>
+
+                                {/* Label Text Centered on Top Face Bubble */}
+                                <span className="absolute top-0 inset-x-0 h-[26px] flex items-center justify-center font-english font-extrabold text-[12px] tracking-wider uppercase leading-none text-white select-none">
+                                  {isFirst ? 'START' : 'CURRENT'}
+                                </span>
                               </div>
-                              <div className="w-2.5 h-2.5 bg-accent-secondary rotate-45 -mt-1 rounded-[2px]" />
                             </motion.div>
                           )}
 
