@@ -9,14 +9,14 @@ argument-hint: <feature description | path/to/prd.md>
 
 ## Objective
 
-Create a detailed directive plan that tells Jules WHAT to build (with comprehensive explanation) and WHERE to look, but NOT complete code implementations.
+Create a detailed directive plan that tells the AI agent WHAT to build (with comprehensive explanation) and WHERE to look, but NOT complete code implementations.
 
-**Core Principle**: DETAILED DIRECTIVES - comprehensive explanations prevent hallucination, but no code implementations. Jules (Gemini 2.0 Flash Thinking) generates code from detailed requirements and patterns.
+**Core Principle**: DETAILED DIRECTIVES - comprehensive explanations prevent hallucination, but no code implementations. The AI agent generates code from detailed requirements and patterns.
 
 **Philosophy**: 
 - ✅ MORE detail about WHAT = better AI output
 - ✅ Comprehensive requirements = less hallucination
-- ❌ Complete code = wasted credits, Jules becomes copy-paste agent
+- ❌ Complete code = wasted tokens, AI agent becomes copy-paste agent
 
 **Target Length**: 80-150 lines (detailed explanations, no code blocks)
 
@@ -183,5 +183,5 @@ pnpm --filter web dev
 
 **Requirements**: {X} comprehensive requirements listed
 
-**Next Step**: Validate plan with `bash scripts/validate-plans.sh`, then trigger Jules.
+**Next Step**: Review the plan and proceed with implementation.
 ```

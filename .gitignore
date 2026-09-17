@@ -24,3 +24,4 @@ android
 
 # Kiro configuration (will be added after successful sprint workflow)
 .kiro/
+.lavish/
