@@ -72,16 +72,17 @@ export const ChunkEngineScreen: React.FC<ChunkEngineProps> = ({ route }) => {
 
     // Neutral token map (shared across all volumes)
     const C = {
-        neutral50:  '#F8F7F4',
-        neutral100: '#F0EEE8',
-        neutral200: '#E5E1D8',
-        neutral300: '#D5CEBF',
-        neutral400: '#B9AF9C',
-        neutral500: '#9A8F7B',
-        neutral600: '#7D7463',
-        neutral700: '#4F4A40',
-        neutral800: '#22201B',
-        neutral900: '#1A1815',
+        neutral50:  '#FFFFFF',
+        neutral100: '#F5F5F5',
+        neutral200: '#E5E5E5',
+        neutral300: '#D4D4D4',
+        neutral400: '#A3A3A3',
+        neutral500: '#737373',
+        neutral600: '#525252',
+        neutral700: '#404040',
+        neutral800: '#262626',
+        neutral900: '#171717',
+        neutral950: '#0A0A0A',
         // accent aliases so pedagogy views keep working with C.primary*
         primary300: accent.accent400,
         primary400: accent.accent400,
@@ -131,7 +132,7 @@ export const ChunkEngineScreen: React.FC<ChunkEngineProps> = ({ route }) => {
 
     if (!chunk) {
         return (
-            <View style={{ flex: 1, backgroundColor: isDark ? C.neutral900 : C.neutral50, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ flex: 1, backgroundColor: isDark ? C.neutral950 : C.neutral50, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ color: isDark ? C.neutral100 : C.neutral800 }}>Chunk not found</Text>
             </View>
         );
@@ -166,7 +167,7 @@ export const ChunkEngineScreen: React.FC<ChunkEngineProps> = ({ route }) => {
     const barWidth = `${Math.round(progress * 100)}%` as `${number}%`;
 
     return (
-        <View style={{ flex: 1, backgroundColor: isDark ? C.neutral900 : C.neutral50 }}>
+        <View style={{ flex: 1, backgroundColor: isDark ? C.neutral950 : C.neutral50 }}>
             {/* Header */}
             <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 48, paddingBottom: 16, gap: 12 }}>
                 <Pressable onPress={() => navigation.goBack()} style={{ padding: 8 }}>

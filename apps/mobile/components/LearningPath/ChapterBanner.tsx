@@ -16,9 +16,9 @@ export const ChapterBanner: React.FC<Props> = ({
   subtitleI18nKey, isDark, accentColor,
 }) => {
   const { t } = useTranslation();
-  const bg   = isDark ? '#22201B' : '#F0EEE8';
-  const text = isDark ? '#F0EEE8' : '#1A1815';
-  const sub  = isDark ? '#B9AF9C' : '#7D7463';
+  const bg   = isDark ? '#262626' : '#F5F5F5';
+  const text = isDark ? '#FAFAFA' : '#171717';
+  const sub  = isDark ? '#A3A3A3' : '#737373';
   return (
     <View style={{ marginHorizontal: 16, marginTop: 20, marginBottom: 12,
       borderRadius: 16, backgroundColor: bg }}>

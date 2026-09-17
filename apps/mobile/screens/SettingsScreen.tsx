@@ -31,7 +31,7 @@ export const SettingsScreen: React.FC = () => {
 
   return (
     <ScrollView
-      className="flex-1 bg-neutral-50 dark:bg-neutral-900"
+      className="flex-1 bg-white dark:bg-neutral-950"
       contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 32, paddingBottom: 48 }}
       showsVerticalScrollIndicator={false}>
 
@@ -55,7 +55,7 @@ export const SettingsScreen: React.FC = () => {
               accessibilityRole="button"
               accessibilityLabel={`Switch to ${lang.label}`}
               onPress={() => setLanguage(lang.code)}
-              className="w-full rounded-2xl border border-neutral-200 bg-neutral-100 p-5 active:opacity-70 dark:border-neutral-700 dark:bg-neutral-800">
+              className="w-full rounded-2xl bg-neutral-100 p-5 active:opacity-70 dark:bg-neutral-900">
               <View className="flex-row items-center justify-between">
                 <View>
                   <Text className="font-english-semibold text-h2 text-neutral-900 dark:text-neutral-100">
@@ -92,7 +92,7 @@ export const SettingsScreen: React.FC = () => {
               accessibilityRole="button"
               accessibilityLabel={`Use ${theme} theme`}
               onPress={() => selectTheme(theme)}
-              className="w-full rounded-2xl border border-neutral-200 bg-neutral-100 p-5 active:opacity-70 dark:border-neutral-700 dark:bg-neutral-800">
+              className="w-full rounded-2xl bg-neutral-100 p-5 active:opacity-70 dark:bg-neutral-900">
               <View className="flex-row items-center justify-between">
                 <View style={{ flex: 1, paddingRight: 12 }}>
                   <Text className="font-english-semibold text-h2 text-neutral-900 dark:text-neutral-100">

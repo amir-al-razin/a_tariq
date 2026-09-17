@@ -20,7 +20,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   ];
 
   return (
-    <View className="flex-1 gap-5 bg-neutral-50 px-6 py-8 dark:bg-neutral-900">
+    <View className="flex-1 gap-5 bg-white px-6 py-8 dark:bg-neutral-950">
       <View className="gap-2">
         <Text className="font-english-semibold text-display text-neutral-900 dark:text-neutral-100">
           {t('home.title')}
@@ -36,7 +36,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             return (
               <View
                 key={vol.key}
-                className="w-full flex-row items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-100 p-5 dark:border-neutral-700 dark:bg-neutral-800">
+                className="w-full flex-row items-center justify-between rounded-2xl bg-neutral-100 p-5 dark:bg-neutral-900">
                 <View className="gap-1">
                   <Text className="font-english-semibold text-h2 text-neutral-400 dark:text-neutral-500">
                     {t(vol.titleKey)}
@@ -45,7 +45,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                     {t('home.locked')}
                   </Text>
                 </View>
-                <Ionicons name="lock-closed" size={18} color="#9A8F7B" />
+                <Ionicons name="lock-closed" size={18} color="#737373" />
               </View>
             );
           }
@@ -54,7 +54,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
               key={vol.key}
               accessibilityRole="button"
               onPress={() => navigation.navigate(vol.key)}
-              className="w-full rounded-2xl border border-neutral-200 bg-neutral-100 p-5 active:opacity-70 dark:border-neutral-700 dark:bg-neutral-800">
+              className="w-full rounded-2xl bg-neutral-100 p-5 active:opacity-70 dark:bg-neutral-900">
               <Text className="font-english-semibold text-h2 text-neutral-900 dark:text-neutral-100">
                 {t(vol.titleKey)}
               </Text>

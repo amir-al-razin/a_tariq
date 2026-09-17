@@ -79,17 +79,17 @@ export default function App() {
     colors: {
       ...(isDark ? NavigationDarkTheme.colors : NavigationDefaultTheme.colors),
       primary: isDark ? '#16B78E' : '#0D775F',
-      background: isDark ? '#1A1815' : '#F8F7F4',
-      card: isDark ? '#1A1815' : '#F8F7F4',
-      text: isDark ? '#F0EEE8' : '#1A1815',
-      border: isDark ? '#22201B' : '#E5E1D8',
+      background: isDark ? '#0A0A0A' : '#FFFFFF',
+      card: isDark ? '#171717' : '#FFFFFF',
+      text: isDark ? '#FAFAFA' : '#171717',
+      border: isDark ? '#262626' : '#E5E5E5',
     },
   };
 
   return (
     <SafeAreaProvider>
       <SafeAreaView
-        className="flex-1 bg-neutral-50 dark:bg-neutral-900"
+        className="flex-1 bg-white dark:bg-neutral-950"
         edges={['top', 'left', 'right']}>
         <LanguageProvider>
           <ErrorBoundary>
@@ -98,12 +98,12 @@ export default function App() {
               screenOptions={{
                 headerShown: false,
                 sceneStyle: {
-                  backgroundColor: isDark ? '#1A1815' : '#F8F7F4',
+                  backgroundColor: isDark ? '#0A0A0A' : '#FFFFFF',
                 },
                 tabBarStyle: {
                   borderTopWidth: 1,
-                  borderTopColor: isDark ? '#22201B' : '#E5E1D8',
-                  backgroundColor: isDark ? '#1A1815' : '#F8F7F4',
+                  borderTopColor: isDark ? '#262626' : '#E5E5E5',
+                  backgroundColor: isDark ? '#0A0A0A' : '#FFFFFF',
                   elevation: 0,
                   shadowOpacity: 0,
                 },
@@ -111,8 +111,8 @@ export default function App() {
                   fontFamily: 'Lexend_500Medium',
                   fontSize: 12,
                 },
-                tabBarActiveTintColor: isDark ? '#F0EEE8' : '#22201B',
-                tabBarInactiveTintColor: isDark ? '#4F4A40' : '#B9AF9C',
+                tabBarActiveTintColor: isDark ? '#FAFAFA' : '#171717',
+                tabBarInactiveTintColor: isDark ? '#737373' : '#A3A3A3',
               }}>
               <Tab.Screen
                 name="Home"
