@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { Check, Lock } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -14,18 +14,7 @@ type Props = {
 
 export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
   const navigate = useNavigate()
-  const [isDark, setIsDark] = useState(false)
   const progressStore = useProgressStore((state) => state.progress)
-
-  useEffect(() => {
-    const checkDark = () => {
-      setIsDark(document.documentElement.classList.contains('dark'))
-    }
-    checkDark()
-    const observer = new MutationObserver(checkDark)
-    observer.observe(document.documentElement, { attributes: true })
-    return () => observer.disconnect()
-  }, [])
 
   useEffect(() => {
     const lastLessonStr = sessionStorage.getItem('last_volume_lesson')
@@ -133,7 +122,7 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
             </p>
           </div>
           <div className="w-[84px] h-[84px] z-10 shrink-0 hidden sm:block">
-            <ProgressRing progress={volumeProgress} size={84} color={isDark ? '#e5e5e5' : '#171717'} />
+            <ProgressRing progress={volumeProgress} size={84} color="var(--accent-primary)" />
           </div>
 
           <div className="absolute right-[-40px] top-[-50px] opacity-5 dark:opacity-[0.03] pointer-events-none transform -rotate-12 select-none">
@@ -207,8 +196,8 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                       >
                         <div className="flex flex-row items-center gap-4">
                           <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-colors ${
-                            isComplete ? 'bg-neutral-200 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400' :
-                            isNext ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900' :
+                            isComplete ? 'bg-accent-primary-subtle text-accent-primary-text' :
+                            isNext ? 'bg-accent-primary text-white' :
                             'bg-neutral-200/50 dark:bg-neutral-800/50 text-neutral-500 dark:text-neutral-500'
                           }`}>
                             {isComplete ? <Check size={20} strokeWidth={2.5} /> : <span className="font-english-bold text-[16px]">{lesson.darsNumber}</span>}
@@ -219,7 +208,7 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                                 Lesson {lesson.darsNumber}
                               </span>
                               {isNext && !isComplete && (
-                                <span className="px-2 py-0.5 rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 font-english-bold text-[10px] uppercase tracking-wider leading-none">
+                                <span className="px-2.5 py-0.5 rounded-full bg-accent-secondary text-white font-english-bold text-[10px] uppercase tracking-wider leading-none">
                                   CURRENT
                                 </span>
                               )}
@@ -242,7 +231,7 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                                     key={idx} 
                                     className={`w-2 h-2 rounded-full transition-colors ${
                                       st === 'completed' 
-                                        ? 'bg-neutral-400 dark:bg-neutral-600' 
+                                        ? 'bg-accent-primary' 
                                         : 'bg-neutral-200 dark:bg-neutral-800'
                                     }`}
                                   />

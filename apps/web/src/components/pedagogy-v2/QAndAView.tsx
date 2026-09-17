@@ -85,7 +85,7 @@ export const QAndAView: React.FC<Props> = ({payload, onProgress, onComplete}) =>
  key={i}
  className={cn(
 "h-1.5 rounded-full transition-all duration-300",
- i <= currentIndex ?"w-6 bg-neutral-900 dark:bg-neutral-100" :"w-1.5 bg-neutral-200 dark:bg-neutral-900"
+ i === currentIndex ?"w-6 bg-accent-primary" : i < currentIndex ?"w-2 bg-accent-secondary" :"w-1.5 bg-neutral-200 dark:bg-neutral-800"
  )}
  />
  ))}
@@ -118,11 +118,11 @@ export const QAndAView: React.FC<Props> = ({payload, onProgress, onComplete}) =>
  const isChosen = selected === opt;
  const isThisCorrect = opt === q.correct_ar;
 
- let cardClasses = 'bg-neutral-100 hover:bg-neutral-200/80 dark:bg-neutral-900 dark:hover:bg-neutral-900 text-neutral-900 dark:text-neutral-100';
+ let cardClasses = 'bg-neutral-100 hover:bg-neutral-200/80 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100';
 
  if (revealed){
  if (isThisCorrect){
- cardClasses = 'bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold -inner';
+ cardClasses = 'bg-accent-primary text-white font-semibold';
 } else if (isChosen && !isCorrect){
  cardClasses = 'bg-neutral-200/60 dark:bg-neutral-900/60 text-neutral-400 dark:text-neutral-500 opacity-60 line-through';
 } else{
@@ -151,7 +151,7 @@ export const QAndAView: React.FC<Props> = ({payload, onProgress, onComplete}) =>
 {/* Explanation / Answer Review Block (Borderless Tone-on-Tone) */}
 {revealed && (
  <div className="mt-4 p-8 rounded-3xl w-full max-w-xl bg-neutral-100 dark:bg-neutral-900 flex flex-col space-y-3">
- <div className="font-english text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+ <div className="font-english text-sm font-semibold uppercase tracking-wider text-accent-primary dark:text-accent-primary-text">
 {isCorrect
  ? m['qanda.correct']?.() ?? 'Correct'
  : m['qanda.notQuite']?.() ?? 'Not quite'}
@@ -180,7 +180,7 @@ export const QAndAView: React.FC<Props> = ({payload, onProgress, onComplete}) =>
 {revealed && !isLastQ && (
  <button
  onClick={handleNext}
- className="mt-6 px-8 py-4 rounded-full bg-neutral-900 text-white dark:bg-white dark:text-black transition-all hover:opacity-90 active:scale-95 flex items-center justify-center w-full max-w-xl cursor-pointer outline-none font-english text-base font-semibold"
+ className="mt-6 px-8 py-4 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white transition-all active:scale-95 flex items-center justify-center w-full max-w-xl cursor-pointer outline-none font-english text-base font-semibold"
  >
  <span>
 {m['qanda.nextQuestion']?.() ?? 'Next Question'}

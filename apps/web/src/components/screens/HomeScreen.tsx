@@ -53,7 +53,7 @@ export const HomeScreen = () => {
                       {m['home.locked']()}
                     </p>
                   </div>
-                  <Lock size={18} color="#9A8F7B" />
+                  <Lock size={18} color="#737373" />
                 </div>
               )
             }

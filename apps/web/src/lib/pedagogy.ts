@@ -1,10 +1,3 @@
-export const SCROLL_COMPLETE_TYPES = [
-  'grammar_rule',
-  'application',
-  'mixed',
-  'tarkeeb',
-  'verb_table',
-  'paragraph',
-  'masdar_factory',
-];
-
+// Anti-Regression Standard: Passive scrolling never completes any learning chunk.
+// All chunks require active user interaction and recall verification.
+export const SCROLL_COMPLETE_TYPES: string[] = [];

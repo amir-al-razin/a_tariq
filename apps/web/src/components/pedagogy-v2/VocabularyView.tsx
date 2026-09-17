@@ -140,45 +140,45 @@ export const VocabularyView: React.FC<Props> = ({payload, onProgress, onComplete
 {/* Tone-on-Tone Progress Dots */}
  <div className="flex flex-row items-center gap-2 flex-wrap justify-center pt-2">
 {words.map((_, i) => (
- <div
- key={i}
- className={cn(
-"h-1.5 rounded-full transition-all duration-300",
- i === currentIndex ?"w-6 bg-neutral-900 dark:bg-neutral-100" : i < currentIndex || done ?"w-2 bg-neutral-800 dark:bg-neutral-300" :"w-1.5 bg-neutral-200 dark:bg-neutral-900"
- )}
- />
- ))}
- </div>
- <p className="font-english text-xs tracking-wider text-neutral-400 dark:text-neutral-500 m-0">
+  <div
+  key={i}
+  className={cn(
+ "h-1.5 rounded-full transition-all duration-300",
+  i === currentIndex ?"w-6 bg-accent-primary" : i < currentIndex || done ?"w-2 bg-accent-secondary" :"w-1.5 bg-neutral-200 dark:bg-neutral-800"
+  )}
+  />
+  ))}
+  </div>
+  <p className="font-english text-xs tracking-wider text-neutral-400 dark:text-neutral-500 m-0">
 {done ?`${total} / ${total}`:`${currentIndex + 1} / ${total}`}
- </p>
+  </p>
 
-{/* High-Contrast Neutral Pill Buttons */}
- <div className="flex flex-row gap-4 w-full max-w-lg pt-2">
- <button
- onClick={handlePrev}
- disabled={isFirst && !flipped}
- className={cn(
-"flex-1 h-14 rounded-full flex items-center justify-center gap-2 transition-all outline-none font-english-medium text-sm",
- isFirst && !flipped
- ?"bg-neutral-100 dark:bg-neutral-900 text-neutral-300 dark:text-neutral-700 cursor-not-allowed opacity-40"
- :"bg-neutral-200 hover:bg-neutral-300/80 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100 cursor-pointer active:scale-95"
- )}
- >
- <ArrowLeft size={18} />
- <span>{flipped ? m['vocabulary.flipBack']() : m['vocabulary.previous']()}</span>
- </button>
+{/* High-Contrast Pill Buttons */}
+  <div className="flex flex-row gap-4 w-full max-w-lg pt-2">
+  <button
+  onClick={handlePrev}
+  disabled={isFirst && !flipped}
+  className={cn(
+ "flex-1 h-14 rounded-full flex items-center justify-center gap-2 transition-all outline-none font-english-medium text-sm",
+  isFirst && !flipped
+  ?"bg-neutral-100 dark:bg-neutral-900 text-neutral-300 dark:text-neutral-700 cursor-not-allowed opacity-40"
+  :"bg-neutral-200 hover:bg-neutral-300/80 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100 cursor-pointer active:scale-95"
+  )}
+  >
+  <ArrowLeft size={18} />
+  <span>{flipped ? m['vocabulary.flipBack']() : m['vocabulary.previous']()}</span>
+  </button>
 
- <button
- onClick={handleNext}
- disabled={done}
- className={cn(
-"flex-1 h-14 rounded-full flex items-center justify-center gap-2 transition-all outline-none font-english-semibold text-sm",
- done
- ?"bg-neutral-100 dark:bg-neutral-900 text-neutral-400 dark:text-neutral-600 cursor-not-allowed opacity-40"
- :"bg-neutral-900 text-white dark:bg-white dark:text-black hover:opacity-90 cursor-pointer active:scale-95"
- )}
- >
+  <button
+  onClick={handleNext}
+  disabled={done}
+  className={cn(
+ "flex-1 h-14 rounded-full flex items-center justify-center gap-2 transition-all outline-none font-english-semibold text-sm",
+  done
+  ?"bg-neutral-100 dark:bg-neutral-900 text-neutral-400 dark:text-neutral-600 cursor-not-allowed opacity-40"
+  :"bg-accent-primary hover:bg-accent-primary-hover text-white cursor-pointer active:scale-95"
+  )}
+  >
  <span>
 {!flipped ? m['vocabulary.reveal']() : isLast ? m['vocabulary.finish']() : m['vocabulary.next']()}
  </span>

@@ -42,7 +42,7 @@ export function VocabularyFlashcard({
     >
       <div className="w-full flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-neutral-400 dark:text-neutral-500">
         <span>Card {formattedIndex}</span>
-        <span className={isRevealed ? 'text-emerald-600 dark:text-emerald-400 font-bold' : ''}>
+        <span className={isRevealed ? 'text-accent-primary dark:text-accent-primary-text font-bold' : ''}>
           {isRevealed ? '✓' : ''}
         </span>
       </div>
@@ -58,7 +58,7 @@ export function VocabularyFlashcard({
           {item.en}
         </span>
         {isRevealed && (
-          <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold block mt-1">
+          <span className="text-xs font-mono text-accent-primary dark:text-accent-primary-text font-semibold block mt-1">
             {item.roman}
           </span>
         )}

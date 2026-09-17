@@ -14,4 +14,5 @@ export * from './VocabularyView';
 export * from './LessonHeader';
 export * from './DemonstrativeBadge';
 export * from './VocabularyFlashcard';
+export * from './VocabularyHeroCard';
 export * from './WordChipExercise';
