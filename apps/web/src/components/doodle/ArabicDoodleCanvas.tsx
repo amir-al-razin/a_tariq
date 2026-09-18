@@ -580,6 +580,7 @@ export interface DoodleEvalInput {
   canvasWidth: number
   canvasHeight: number
   watermarkBounds?: { centerX: number; centerY: number; width: number; height: number }
+  targetPixels?: { x: number; y: number }[]
 }
 
 export interface DoodleEvalResult {
@@ -588,6 +589,276 @@ export interface DoodleEvalResult {
   message: string
 }
 
+// 1. Interpolate sparse pointer events along strokes into dense continuous point cloud
+export function interpolateStrokePoints(points: StrokePoint[], step = 3): { x: number; y: number }[] {
+  const result: { x: number; y: number }[] = []
+  for (let i = 0; i < points.length; i++) {
+    result.push({ x: points[i].x, y: points[i].y })
+    if (i > 0 && points[i].strokeIndex === points[i - 1].strokeIndex) {
+      const p1 = points[i - 1]
+      const p2 = points[i]
+      const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y)
+      const steps = Math.floor(dist / step)
+      for (let s = 1; s < steps; s++) {
+        const t = s / steps
+        result.push({
+          x: p1.x + (p2.x - p1.x) * t,
+          y: p1.y + (p2.y - p1.y) * t,
+        })
+      }
+    }
+  }
+  return result
+}
+
+// 2. Offscreen Computer Vision Rasterizer: Extracts ground-truth pixel shape of glyph
+export function rasterizeGlyphToPoints(
+  char: string,
+  width: number,
+  height: number,
+  fontStr: string,
+  centerX: number,
+  centerY: number,
+  step = 4
+): { x: number; y: number }[] {
+  if (typeof document === 'undefined') return []
+  try {
+    const canvas = document.createElement('canvas')
+    canvas.width = Math.max(10, Math.round(width))
+    canvas.height = Math.max(10, Math.round(height))
+    const ctx = canvas.getContext('2d', { willReadFrequently: true })
+    if (!ctx) return []
+
+    ctx.font = fontStr
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.direction = 'rtl'
+    ctx.fillStyle = '#000000'
+    ctx.fillText(char, centerX, centerY)
+
+    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data
+    const rawPoints: { x: number; y: number }[] = []
+    let minX = canvas.width
+    let maxX = 0
+    let minY = canvas.height
+    let maxY = 0
+
+    for (let y = 0; y < canvas.height; y += step) {
+      for (let x = 0; x < canvas.width; x += step) {
+        const idx = (y * canvas.width + x) * 4
+        if (imgData[idx + 3] > 40) {
+          rawPoints.push({ x, y })
+          if (x < minX) minX = x
+          if (x > maxX) maxX = x
+          if (y < minY) minY = y
+          if (y > maxY) maxY = y
+        }
+      }
+    }
+
+    if (rawPoints.length === 0) return []
+
+    // Micro-align rasterized glyph to the exact visual center (centerX, centerY) of the DOM watermark
+    const bboxCenterX = (minX + maxX) / 2
+    const bboxCenterY = (minY + maxY) / 2
+    const offsetX = centerX - bboxCenterX
+    const offsetY = centerY - bboxCenterY
+
+    if (Math.abs(offsetX) <= 35 && Math.abs(offsetY) <= 35) {
+      return rawPoints.map((p) => ({ x: p.x + offsetX, y: p.y + offsetY }))
+    }
+
+    return rawPoints
+  } catch {
+    return []
+  }
+}
+
+// 3. High-fidelity synthetic fallback when running in headless test runner without canvas
+export function generateFallbackTargetPixels(
+  char: string,
+  centerX: number,
+  centerY: number,
+  width: number,
+  height: number
+): { x: number; y: number }[] {
+  const points: { x: number; y: number }[] = []
+  const step = 4
+
+  if (char === '٠') {
+    points.push({ x: centerX, y: centerY })
+    return points
+  }
+
+  // Vertical Letters: Alif family, Numeral 1
+  if (['ا', 'أ', 'إ', 'آ', '١'].includes(char)) {
+    const startY = centerY - height * 0.44
+    const endY = centerY + height * 0.44
+    for (let y = startY; y <= endY; y += step) {
+      points.push({ x: centerX, y })
+    }
+    if (char === 'أ' || char === 'آ') {
+      points.push({ x: centerX - 4, y: startY - 8 }, { x: centerX, y: startY - 10 }, { x: centerX + 4, y: startY - 8 })
+    } else if (char === 'إ') {
+      points.push({ x: centerX - 4, y: endY + 8 }, { x: centerX, y: endY + 10 }, { x: centerX + 4, y: endY + 8 })
+    }
+    return points
+  }
+
+  // Teeth + Basin: Seen (س), Sheen (ش)
+  if (char === 'س' || char === 'ش') {
+    // 3 teeth on the right half (x: centerX to centerX + width * 0.44)
+    const teethStartX = centerX + width * 0.44
+    const teethSpan = teethStartX - centerX
+    for (let t = 0; t <= 1; t += 0.05) {
+      const x = teethStartX - teethSpan * t
+      // Three sharp tooth peaks
+      const y = centerY - height * 0.12 - Math.abs(Math.sin(t * 3 * Math.PI)) * (height * 0.22)
+      points.push({ x, y })
+    }
+    // Deep curved basin on the left half (x: centerX to centerX - width * 0.44)
+    const basinSpan = width * 0.44
+    for (let t = 0; t <= 1; t += 0.04) {
+      const x = centerX - basinSpan * t
+      const y = centerY + Math.sin(t * Math.PI) * (height * 0.42) - (t > 0.85 ? (t - 0.85) * (height * 0.5) : 0)
+      points.push({ x, y })
+    }
+    return points
+  }
+
+  // Basin Letters: Baa (ب), Taa (ت), Thaa (ث)
+  if (['ب', 'ت', 'ث'].includes(char)) {
+    const startX = centerX + width * 0.44
+    const endX = centerX - width * 0.44
+    const span = startX - endX
+    for (let t = 0; t <= 1; t += 0.03) {
+      const x = startX - span * t
+      let y = centerY + height * 0.16
+      if (t < 0.18) {
+        y -= (1 - t / 0.18) * (height * 0.32)
+      } else if (t > 0.82) {
+        y -= ((t - 0.82) / 0.18) * (height * 0.32)
+      }
+      points.push({ x, y })
+    }
+    return points
+  }
+
+  // Hook & Belly Letters: Jeem (ج), Haa (ح), Khaa (خ)
+  if (['ج', 'ح', 'خ'].includes(char)) {
+    // Top crown
+    for (let t = 0; t <= 1; t += 0.08) {
+      points.push({
+        x: centerX + width * 0.35 - width * 0.45 * t,
+        y: centerY - height * 0.28,
+      })
+    }
+    // Lower C belly
+    for (let angle = -Math.PI / 2; angle <= Math.PI / 2; angle += 0.08) {
+      points.push({
+        x: centerX + Math.cos(angle) * (width * 0.38),
+        y: centerY + Math.sin(angle) * (height * 0.36) + height * 0.06,
+      })
+    }
+    return points
+  }
+
+  // Wedge Letters: Dal (د), Dhal (ذ)
+  if (['د', 'ذ'].includes(char)) {
+    for (let t = 0; t <= 1; t += 0.06) {
+      points.push({
+        x: centerX + width * 0.16 + width * 0.08 * t,
+        y: centerY - height * 0.24 + height * 0.44 * t,
+      })
+    }
+    for (let t = 0; t <= 1; t += 0.06) {
+      points.push({
+        x: centerX + width * 0.24 - width * 0.50 * t,
+        y: centerY + height * 0.20,
+      })
+    }
+    return points
+  }
+
+  // Dropping Arc: Raa (ر), Zaay (ز)
+  if (['ر', 'ز'].includes(char)) {
+    for (let t = 0; t <= 1; t += 0.04) {
+      points.push({
+        x: centerX + width * 0.20 - width * 0.55 * t,
+        y: centerY - height * 0.12 + Math.pow(t, 1.3) * (height * 0.52),
+      })
+    }
+    return points
+  }
+
+  // Default wide horizontal/curved glyphs and words
+  const startX = centerX + width * 0.44
+  const endX = centerX - width * 0.44
+  const span = Math.abs(startX - endX)
+  const steps = Math.floor(span / step)
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps
+    const x = startX - span * t
+    const y = centerY + Math.sin(t * Math.PI) * (height * 0.25)
+    points.push({ x, y })
+  }
+  return points
+}
+
+// 4. Bidirectional Computer Vision Shape Correlation Matcher
+export function computeBidirectionalShapeMatch(
+  targetPoints: { x: number; y: number }[],
+  userPoints: { x: number; y: number }[],
+  covRadius = 22,
+  precRadius = 26
+): { coverage: number; precision: number; shapeScore: number } {
+  if (targetPoints.length === 0 || userPoints.length === 0) {
+    return { coverage: 0, precision: 0, shapeScore: 0 }
+  }
+
+  const covRadiusSq = covRadius * covRadius
+  const precRadiusSq = precRadius * precRadius
+
+  // Target Coverage (Recall): Did the user trace close to the target glyph points?
+  let coveredCount = 0
+  for (let i = 0; i < targetPoints.length; i++) {
+    const tx = targetPoints[i].x
+    const ty = targetPoints[i].y
+    for (let j = 0; j < userPoints.length; j++) {
+      const dx = tx - userPoints[j].x
+      const dy = ty - userPoints[j].y
+      if (dx * dx + dy * dy <= covRadiusSq) {
+        coveredCount++
+        break
+      }
+    }
+  }
+  const coverage = coveredCount / targetPoints.length
+
+  // User Precision (Fidelity): Did the user's stroke stay near the character rather than scribbling wild marks?
+  let validCount = 0
+  for (let j = 0; j < userPoints.length; j++) {
+    const ux = userPoints[j].x
+    const uy = userPoints[j].y
+    for (let i = 0; i < targetPoints.length; i++) {
+      const dx = ux - targetPoints[i].x
+      const dy = uy - targetPoints[i].y
+      if (dx * dx + dy * dy <= precRadiusSq) {
+        validCount++
+        break
+      }
+    }
+  }
+  const precision = validCount / userPoints.length
+
+  // Harmonic Mean (F1 Shape Score)
+  const shapeScore =
+    precision + coverage > 0 ? (2 * precision * coverage) / (precision + coverage) : 0
+
+  return { coverage, precision, shapeScore }
+}
+
+// 5. Foolproof, AI-Grade Handwriting Recognition Pipeline
 export function evaluateDoodleStroke({
   points,
   currentChar,
@@ -595,6 +866,7 @@ export function evaluateDoodleStroke({
   canvasWidth,
   canvasHeight,
   watermarkBounds,
+  targetPixels,
 }: DoodleEvalInput): DoodleEvalResult {
   if (points.length < 3) {
     return {
@@ -612,13 +884,25 @@ export function evaluateDoodleStroke({
     }
   }
 
-  // 2. Resolve target reference metrics directly from DOM watermark
+  const isDotGlyph = currentChar === '٠'
+
+  // 2. Anti-speck filter
+  const minRequiredLength = isDotGlyph ? 5 : activeTab === 'words' ? 45 : 28
+  if (totalDrawnLength < minRequiredLength) {
+    return {
+      score: 15,
+      status: 'retry',
+      message: `Stroke is too brief (${Math.round(totalDrawnLength)}px). Draw the full outline of '${currentChar}'.`,
+    }
+  }
+
+  // 3. Resolve target reference metrics directly from DOM watermark
   const watermarkCenterX = watermarkBounds?.centerX ?? canvasWidth / 2
   const watermarkCenterY = watermarkBounds?.centerY ?? canvasHeight / 2
   const watermarkWidth = Math.max(30, watermarkBounds?.width ?? 80)
   const watermarkHeight = Math.max(30, watermarkBounds?.height ?? 80)
 
-  // 3. Overall Centering & Atelier proximity check
+  // 4. Overall Centering & User Bounding Dimensions
   let uMinX = canvasWidth
   let uMaxX = 0
   let uMinY = canvasHeight
@@ -631,8 +915,23 @@ export function evaluateDoodleStroke({
   }
   const userCenterX = (uMinX + uMaxX) / 2
   const userCenterY = (uMinY + uMaxY) / 2
+  const userWidth = Math.max(1, uMaxX - uMinX)
+  const userHeight = Math.max(1, uMaxY - uMinY)
+
+  // Anti-scribble / Chaos density filter (rejects dense tangle scribbles like Untitled3.png)
+  const boundingDim = Math.max(userWidth, userHeight)
+  const area = Math.max(10, userWidth * userHeight)
+  const scribbleDensity = totalDrawnLength / Math.sqrt(area)
+  if (!isDotGlyph && totalDrawnLength > Math.max(450, boundingDim * 6.0) && scribbleDensity > 6.2) {
+    return {
+      score: 12,
+      status: 'retry',
+      message: `Drawing is too dense and scribbled. Trace the clean shape of '${currentChar}'.`,
+    }
+  }
+
   const distFromTarget = Math.hypot(userCenterX - watermarkCenterX, userCenterY - watermarkCenterY)
-  const maxAllowedDist = Math.max(canvasWidth, canvasHeight) * 0.42
+  const maxAllowedDist = Math.max(canvasWidth, canvasHeight) * 0.40
   if (distFromTarget > maxAllowedDist) {
     return {
       score: 15,
@@ -641,57 +940,9 @@ export function evaluateDoodleStroke({
     }
   }
 
-  const isDotGlyph = currentChar === '٠'
-  const verticalGlyphs = new Set(['ا', 'أ', 'إ', 'آ', '١', 'ل', 'ط', 'ظ'])
-  const isVerticalGlyph = verticalGlyphs.has(currentChar)
-  const horizontalGlyphs = new Set([
-    'ب', 'ت', 'ث', 'د', 'ذ', 'س', 'ش', 'ص', 'ض', 'ك', 'ف', 'ن', 'هـ', 'ه',
-  ])
-  const isHorizontalGlyph = activeTab === 'words' || horizontalGlyphs.has(currentChar)
-  const isAngularNumeral = currentChar === '٧' || currentChar === '٨'
-
-  // 4. In-Vicinity Density Check: Prevent drawing lines far away from the glyph
-  const padX = Math.max(45, watermarkWidth * 0.45)
-  const padY = Math.max(45, watermarkHeight * 0.45)
-  const inVicinityPoints = points.filter(
-    (p) =>
-      p.x >= watermarkCenterX - watermarkWidth / 2 - padX &&
-      p.x <= watermarkCenterX + watermarkWidth / 2 + padX &&
-      p.y >= watermarkCenterY - watermarkHeight / 2 - padY &&
-      p.y <= watermarkCenterY + watermarkHeight / 2 + padY
-  )
-  const vicinityRatio = inVicinityPoints.length / points.length
-
-  if (!isDotGlyph && vicinityRatio < 0.50) {
-    return {
-      score: 15,
-      status: 'retry',
-      message: `Most strokes are drawn outside of '${currentChar}'. Trace directly over the guide.`,
-    }
-  }
-
-  // 5. Anti-Speck & Minimum Stroke Length
-  if (!isDotGlyph) {
-    const minLength = activeTab === 'words' ? 45 : 30
-    if (totalDrawnLength < minLength) {
-      return {
-        score: 15,
-        status: 'retry',
-        message: `Stroke is too brief (${Math.round(totalDrawnLength)}px). Draw the full outline of '${currentChar}'.`,
-      }
-    }
-  }
-
-  // 6. Dot Zero (٠) Specific Rules
+  // 5. Sifr (٠) compact dot verification
   if (isDotGlyph) {
-    if (totalDrawnLength < 5) {
-      return {
-        score: 15,
-        status: 'retry',
-        message: 'Draw a distinct dot for Sifr (٠).',
-      }
-    }
-    const dotSpan = Math.max(uMaxX - uMinX, uMaxY - uMinY)
+    const dotSpan = Math.max(userWidth, userHeight)
     if (dotSpan > 65 || totalDrawnLength > 120) {
       return {
         score: 25,
@@ -699,8 +950,7 @@ export function evaluateDoodleStroke({
         message: 'Sifr (٠) is a compact single dot. Avoid drawing large loops or lines.',
       }
     }
-    const distToCenter = Math.hypot(userCenterX - watermarkCenterX, userCenterY - watermarkCenterY)
-    if (distToCenter > 60) {
+    if (distFromTarget > 65) {
       return {
         score: 20,
         status: 'retry',
@@ -714,138 +964,177 @@ export function evaluateDoodleStroke({
     }
   }
 
-  // 7. Morphological Spatial Zone Verification
+  // 6. Anti-Straight-Slash / Line Filter (Rejects single straight slash / bar across curved letters like Untitled2.png)
+  const isSingleStroke = points.length > 0 && points.every((p) => p.strokeIndex === points[0].strokeIndex)
+  if (isSingleStroke && totalDrawnLength > 30) {
+    const startP = points[0]
+    const endP = points[points.length - 1]
+    const chordDist = Math.hypot(endP.x - startP.x, endP.y - startP.y)
+    const straightness = chordDist / Math.max(1, totalDrawnLength)
+    const straightLetters = new Set(['ا', 'أ', 'إ', 'آ', '١'])
 
-  // A. Vertical Glyphs (ا, أ, ١, ل, ط, ظ)
+    if (straightness > 0.88 && !straightLetters.has(currentChar)) {
+      return {
+        score: 18,
+        status: 'retry',
+        message: `'${currentChar}' is a curved or multi-part character. Trace its curves and distinctive shape, not a straight slash.`,
+      }
+    }
+  }
+
+  // 7. Structural Orientation & Endpoint Matching
+  const verticalGlyphs = new Set(['ا', 'أ', 'إ', 'آ', '١', 'ل', 'ط', 'ظ'])
+  const isVerticalGlyph = verticalGlyphs.has(currentChar)
+  const horizontalGlyphs = new Set([
+    'ب', 'ت', 'ث', 'د', 'ذ', 'س', 'ش', 'ص', 'ض', 'ك', 'ف', 'ن', 'هـ', 'ه',
+  ])
+  const isHorizontalGlyph = activeTab === 'words' || horizontalGlyphs.has(currentChar)
+
   if (isVerticalGlyph) {
-    // Points that lie within the vertical character column
-    const colHalfWidth = Math.max(34, watermarkWidth * 0.5)
-    const colPoints = inVicinityPoints.filter(
-      (p) => Math.abs(p.x - watermarkCenterX) <= colHalfWidth
-    )
-
-    if (colPoints.length < 3) {
+    // Vertical letter must have significant height and predominantly vertical aspect
+    const minHeight = Math.min(36, watermarkHeight * 0.40)
+    const minRatio = currentChar === 'ط' || currentChar === 'ظ' ? 0.40 : 0.80
+    if (userHeight < minHeight || userHeight < userWidth * minRatio) {
       return {
         score: 20,
         status: 'retry',
-        message: `'${currentChar}' is a vertical letter. Draw the vertical stem through the center guide.`,
+        message: `'${currentChar}' is a vertical letter. Draw downward from top to bottom, not horizontally.`,
       }
     }
 
-    let colMinY = canvasHeight
-    let colMaxY = 0
-    for (const p of colPoints) {
-      if (p.y < colMinY) colMinY = p.y
-      if (p.y > colMaxY) colMaxY = p.y
-    }
-    const colHeight = colMaxY - colMinY
-
-    const minRequiredHeight = Math.min(45, watermarkHeight * 0.40)
-    if (colHeight < minRequiredHeight) {
-      return {
-        score: 25,
-        status: 'retry',
-        message: `'${currentChar}' requires a downward vertical stroke. Your vertical stroke is too short (${Math.round(colHeight)}px).`,
-      }
-    }
-
-    // Must have points in the upper half and lower half of the glyph
-    const hasTop = colPoints.some((p) => p.y < watermarkCenterY - watermarkHeight * 0.10)
-    const hasBottom = colPoints.some((p) => p.y > watermarkCenterY + watermarkHeight * 0.10)
+    // Must reach upper and lower sections of the guide
+    const colHalfWidth = Math.max(34, watermarkWidth * 0.55)
+    const colPoints = points.filter((p) => Math.abs(p.x - watermarkCenterX) <= colHalfWidth)
+    const hasTop = colPoints.some((p) => p.y < watermarkCenterY - watermarkHeight * 0.12)
+    const hasBottom = colPoints.some((p) => p.y > watermarkCenterY + watermarkHeight * 0.12)
     if (!hasTop || !hasBottom) {
       return {
-        score: 25,
+        score: 20,
         status: 'retry',
         message: `Trace '${currentChar}' completely from top to bottom through the guide.`,
       }
     }
-  }
-
-  // B. Horizontal Basin Glyphs (ب, ت, ث, words, etc.)
-  else if (isHorizontalGlyph) {
-    const rowHalfHeight = Math.max(32, watermarkHeight * 0.5)
-    const rowPoints = inVicinityPoints.filter(
-      (p) => Math.abs(p.y - watermarkCenterY) <= rowHalfHeight
-    )
-
-    if (rowPoints.length < 3) {
+  } else if (isHorizontalGlyph) {
+    // Horizontal letter must have significant width and predominantly horizontal aspect
+    const minWidth = Math.min(36, watermarkWidth * 0.40)
+    if (userWidth < minWidth || userWidth < userHeight * 0.55) {
       return {
         score: 20,
         status: 'retry',
-        message: `'${currentChar}' has a horizontal basin. Trace the shape along the baseline guide.`,
+        message: `'${currentChar}' is a wide horizontal character. Trace the full basin from right to left.`,
       }
     }
 
-    let rowMinX = canvasWidth
-    let rowMaxX = 0
-    for (const p of rowPoints) {
-      if (p.x < rowMinX) rowMinX = p.x
-      if (p.x > rowMaxX) rowMaxX = p.x
-    }
-    const rowWidth = rowMaxX - rowMinX
-
-    const minRequiredWidth = Math.min(45, watermarkWidth * 0.40)
-    if (rowWidth < minRequiredWidth) {
-      return {
-        score: 25,
-        status: 'retry',
-        message: `'${currentChar}' requires a wide basin stroke. Your horizontal span is too narrow (${Math.round(rowWidth)}px).`,
-      }
-    }
-
-    const hasRight = rowPoints.some((p) => p.x > watermarkCenterX + watermarkWidth * 0.10)
-    const hasLeft = rowPoints.some((p) => p.x < watermarkCenterX - watermarkWidth * 0.10)
+    // Must reach right (start) and left (end) sections of the guide
+    const rowHalfHeight = Math.max(32, watermarkHeight * 0.55)
+    const rowPoints = points.filter((p) => Math.abs(p.y - watermarkCenterY) <= rowHalfHeight)
+    const hasRight = rowPoints.some((p) => p.x > watermarkCenterX + watermarkWidth * 0.12)
+    const hasLeft = rowPoints.some((p) => p.x < watermarkCenterX - watermarkWidth * 0.12)
     if (!hasRight || !hasLeft) {
       return {
-        score: 25,
+        score: 20,
         status: 'retry',
         message: `Trace '${currentChar}' across the full width from right to left.`,
       }
     }
-  }
 
-  // C. Angular Numerals (٧, ٨)
-  else if (isAngularNumeral) {
-    const hasRight = inVicinityPoints.some((p) => p.x > watermarkCenterX + 8)
-    const hasLeft = inVicinityPoints.some((p) => p.x < watermarkCenterX - 8)
-    const spanY = uMaxY - uMinY
-    if (!hasRight || !hasLeft || spanY < 22) {
-      return {
-        score: 25,
-        status: 'retry',
-        message: `Trace both diagonal strokes of numeral '${currentChar}'.`,
+    // Specialized Seen / Sheen structural check: must have teeth (peaks) on right and basin dip on left
+    if (currentChar === 'س' || currentChar === 'ش') {
+      const hasBasinDip = points.some(
+        (p) => p.x < watermarkCenterX + 12 && p.y > watermarkCenterY + watermarkHeight * 0.10
+      )
+      const hasTeethZone = points.some(
+        (p) => p.x > watermarkCenterX - 12 && p.y < watermarkCenterY + watermarkHeight * 0.05
+      )
+      if (!hasBasinDip || !hasTeethZone) {
+        return {
+          score: 22,
+          status: 'retry',
+          message: `'${currentChar}' has teeth on the right and a deep basin on the left. Trace both parts.`,
+        }
+      }
+    }
+
+    // Specialized Baa / Taa / Thaa check: smooth basin, no serrated teeth
+    if (['ب', 'ت', 'ث'].includes(currentChar)) {
+      let teethPeaks = 0
+      let goingUp = false
+      for (let i = 1; i < points.length; i++) {
+        const dy = points[i].y - points[i - 1].y
+        if (dy < -6) goingUp = true
+        else if (goingUp && dy > 6) {
+          teethPeaks++
+          goingUp = false
+        }
+      }
+      if (teethPeaks >= 2) {
+        return {
+          score: 20,
+          status: 'retry',
+          message: `'${currentChar}' has a smooth flat basin without serrated teeth. Follow its flat baseline.`,
+        }
       }
     }
   }
 
-  // D. Curved / Loop / General Glyphs (ج, ح, ر, و, م, ي, etc.)
-  else {
-    let qCount = 0
-    if (inVicinityPoints.some((p) => p.x >= watermarkCenterX && p.y <= watermarkCenterY)) qCount++
-    if (inVicinityPoints.some((p) => p.x < watermarkCenterX && p.y <= watermarkCenterY)) qCount++
-    if (inVicinityPoints.some((p) => p.x >= watermarkCenterX && p.y > watermarkCenterY)) qCount++
-    if (inVicinityPoints.some((p) => p.x < watermarkCenterX && p.y > watermarkCenterY)) qCount++
+  // 8. Dense point clouds & Computer Vision Shape Correlation
+  const userDensePoints = interpolateStrokePoints(points, 3)
+  const targetDensePoints =
+    targetPixels && targetPixels.length > 0
+      ? targetPixels
+      : generateFallbackTargetPixels(
+          currentChar,
+          watermarkCenterX,
+          watermarkCenterY,
+          watermarkWidth,
+          watermarkHeight
+        )
 
-    const spanX = uMaxX - uMinX
-    const spanY = uMaxY - uMinY
-    if (qCount < 2 || spanX < 16 || spanY < 16) {
-      return {
-        score: 25,
-        status: 'retry',
-        message: `Trace the full curved body of '${currentChar}'.`,
-      }
+  const covRadius = Math.max(12, Math.min(18, Math.round(watermarkHeight * 0.20)))
+  const precRadius = Math.max(14, Math.min(22, Math.round(watermarkHeight * 0.24)))
+
+  const { coverage, precision, shapeScore } = computeBidirectionalShapeMatch(
+    targetDensePoints,
+    userDensePoints,
+    covRadius,
+    precRadius
+  )
+
+  // Dynamic thresholds
+  const minCov = activeTab === 'words' ? 0.35 : 0.48
+  const minPrec = activeTab === 'words' ? 0.38 : 0.48
+  const minScore = activeTab === 'words' ? 0.36 : 0.48
+
+  if (coverage < minCov) {
+    return {
+      score: Math.round(shapeScore * 100),
+      status: 'retry',
+      message: `Coverage too low (${Math.round(coverage * 100)}%). Trace the complete shape of '${currentChar}'.`,
     }
   }
 
-  // 8. Dynamic Confidence Score
-  const centeringScore = Math.max(0, 1 - distFromTarget / maxAllowedDist)
-  const densityScore = vicinityRatio
-  const displayScore = Math.min(99, Math.max(86, Math.round(70 + centeringScore * 15 + densityScore * 14)))
+  if (precision < minPrec) {
+    return {
+      score: Math.round(shapeScore * 100),
+      status: 'retry',
+      message: `Too many stray strokes outside '${currentChar}' (${Math.round(precision * 100)}% on-target). Stay on the guide.`,
+    }
+  }
 
+  if (shapeScore < minScore) {
+    return {
+      score: Math.round(shapeScore * 100),
+      status: 'retry',
+      message: `Shape similarity is ${Math.round(shapeScore * 100)}%. Follow the character curves closer.`,
+    }
+  }
+
+  // 9. Recognized & Validated!
+  const displayScore = Math.min(99, Math.max(86, Math.round(72 + shapeScore * 26)))
   return {
     score: displayScore,
     status: 'success',
-    message: `مَا شَاءَ اللَّه! Verified '${currentChar}' accurately (${displayScore}%)! +30 XP awarded!`,
+    message: `مَا شَاءَ اللَّه! Shape recognized accurately (${displayScore}%)! +30 XP awarded!`,
   }
 }
 
@@ -1101,6 +1390,8 @@ export const ArabicDoodleCanvas: React.FC = () => {
     const canvasRect = canvas.getBoundingClientRect()
 
     let watermarkBounds: { centerX: number; centerY: number; width: number; height: number } | undefined
+    let targetPixels: { x: number; y: number }[] | undefined
+
     if (watermarkRef.current) {
       const wRect = watermarkRef.current.getBoundingClientRect()
       watermarkBounds = {
@@ -1109,6 +1400,19 @@ export const ArabicDoodleCanvas: React.FC = () => {
         width: Math.max(20, wRect.width),
         height: Math.max(20, wRect.height),
       }
+
+      // Computer Vision Rasterizer: Render actual glyph to extract exact 2D pixel shape
+      const style = window.getComputedStyle(watermarkRef.current)
+      const fontStr = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`
+      targetPixels = rasterizeGlyphToPoints(
+        currentChar,
+        canvasRect.width,
+        canvasRect.height,
+        fontStr,
+        watermarkBounds.centerX,
+        watermarkBounds.centerY,
+        4
+      )
     }
 
     const result = evaluateDoodleStroke({
@@ -1118,6 +1422,7 @@ export const ArabicDoodleCanvas: React.FC = () => {
       canvasWidth: canvasRect.width,
       canvasHeight: canvasRect.height,
       watermarkBounds,
+      targetPixels,
     })
 
     setEvaluationResult(result)
