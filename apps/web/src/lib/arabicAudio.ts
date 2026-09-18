@@ -845,6 +845,74 @@ function normalizeText(text: string): string {
   return text.trim();
 }
 
+const SLUG_TO_ARABIC: Record<string, string> = {
+  // Chapter 2 Lesson 1
+  'hal_hadha_qalam': 'هَلْ هَذَا قَلَمٌ ؟',
+  'naam_hadha_qalam': 'نَعَمْ .. هَذَا قَلَمٌ',
+  'hal_hadha_miftah': 'هَلْ هَذَا مِفْتَاحٌ ؟',
+  'la_hadha_qufl': 'لَا .. هَذَا قُفْلٌ',
+  'a_qalamun_hadha_am_miftah': 'أَ قَلَمٌ هَذَا أَمْ مِفْتَاحٌ ؟',
+  'qalamun': 'قَلَمٌ',
+  'a_hadha_qalamun_am_dhalika': 'أَ هَذَا قَلَمٌ أَمْ ذَلِكَ ؟',
+  'dhalika': 'ذَلِكَ',
+
+  // Chapter 2 Lesson 2
+  'taamun_tazaj': 'طَعَامٌ طَازَجٌ',
+  'hadha_taamun_tazaj': 'هَذَا طَعَامٌ طَازَجٌ',
+  'samakatun_tazajah': 'سَمَكَةٌ طَازَجَةٌ',
+  'tilka_samakatun_tazajah': 'تِلْكَ سَمَكَةٌ طَازَجَةٌ',
+
+  // Chapter 2 Lesson 3
+  'ghayru_mahir': 'غَيْرُ مَاهِرٍ',
+  'rashidun_laibun_ghayru_mahir': 'رَاشِدٌ لَاعِبٌ غَيْرُ مَاهِرٍ',
+  'ghayru_ladhidh': 'غَيْرُ لَذِيذٍ',
+  'hadha_taamun_ghayru_ladhidh': 'هَذَا طَعَامٌ غَيْرُ لَذِيذٍ',
+
+  // Chapter 2 Lesson 4
+  'masjidun_jamil': 'مَسْجِدٌ جَمِيلٌ',
+  'al_masjidu_jamil': 'اَلْمَسْجِدُ جَمِيلٌ',
+
+  // Chapter 2 Lesson 5
+  'bayti': 'بَيْتِيْ',
+  'hadha_bayti': 'هَذَا بَيْتِيْ',
+  'baytuka': 'بَيْتُكَ',
+  'dhalika_baytuka': 'ذَلِكَ بَيْتُكَ',
+  'baytuhu': 'بَيْتُهُ',
+  'baytuhu_jadid': 'بَيْتُهُ جَدِيدٌ',
+  'sharuha': 'شَعْرُهَا',
+  'sharuha_tawil': 'شَعْرُهَا طَوِيلٌ',
+
+  // Chapter 2 Lesson 6
+  'masjidu_al_asimati_kabir': 'مَسْجِدُ الْعَاصِمَةِ كَبِيرٌ',
+  'masjidu_al_asimati_kabirun_wa_jamil': 'مَسْجِدُ الْعَاصِمَةِ كَبِيرٌ وَ جَمِيلٌ',
+  'al_masjidu_baytu_allah': 'الْمَسْجِدُ بَيْتُ اللهِ',
+
+  // Chapter 2 Lesson 7
+  'fawqa_at_tawilah': 'فَوْقَ الطَّاوِلَةِ كِتَابٌ',
+  'al_kitabu_fawqa_at_tawilah': 'اَلْكِتَابُ فَوْقَ الطَّاوِلَةِ',
+  'az_zawraqu_tahta_al_jisr': 'اَلزَّوْرَقُ تَحْتَ الْجِسْرِ',
+  'tahta_al_jisri_zawraq': 'تَحْتَ الْجِسْرِ زَوْرَقٌ',
+
+  // Chapter 2 Lesson 8
+  'fi_hadha_al_fasli_sabburah': 'فِي هَذَا الْفَصْلِ سَبُّورَةٌ',
+  'fi_hadha_al_fasli_kursiyyun_wa_tawilah': 'فِي هَذَا الْفَصْلِ كُرْسِيٌّ وَ طَاوِلَةٌ',
+  'as_sabburatu_fi_hadha_al_fasl': 'اَلسَّبُّورَةُ فِي هَذَا الْفَصْلِ',
+  'al_kursiyyu_fi_hadha_al_fasl': 'اَلْكُرْسِيُّ فِي هَذَا الْفَصْلِ',
+
+  // Common phrases
+  'haza_kitab': 'هَذَا كِتَابٌ',
+  'haza_al_kitabu_jadid': 'هَذَا الْكِتَابُ جَدِيدٌ',
+};
+
+function cleanArabicForTts(text: string): string {
+  // If text contains transformation arrow (e.g. "مَاهِرٌ ➔ غَيْرُ مَاهِرٍ"), take the result part
+  if (text.includes('➔') || text.includes('->') || text.includes('⬅')) {
+    const parts = text.split(/➔|->|⬅/);
+    return parts[parts.length - 1].trim();
+  }
+  return text.trim();
+}
+
 /**
  * Stop any currently playing speech or recitation.
  */
@@ -863,23 +931,30 @@ export function stopArabicAudio(): void {
  * Play authentic Arabic audio for a word, phrase, question, or Quranic Ayah.
  * Resolution priority:
  * 1. Preloaded local asset from STATIC_AUDIO_MAP (0ms instant playback)
- * 2. Dynamic high-fidelity TTS proxy endpoint `/api/tts?text=...`
- * 3. Browser SpeechSynthesis API fallback
+ * 2. Quranic Recitation from EveryAyah CDN for `quran_` keys
+ * 3. Dynamic high-fidelity TTS proxy endpoint `/api/tts?text=...` with server disk cache
+ * 4. Browser SpeechSynthesis API fallback
  */
-export async function playArabicAudio(textOrKey: string): Promise<void> {
-  if (typeof window === 'undefined' || !textOrKey) return;
+export async function playArabicAudio(textOrKey: string, fallbackArabic?: string): Promise<void> {
+  if (typeof window === 'undefined' || (!textOrKey && !fallbackArabic)) return;
 
   stopArabicAudio();
 
-  const clean = normalizeText(textOrKey);
-  const audioSrc = STATIC_AUDIO_MAP[clean] || STATIC_AUDIO_MAP[clean.replace(/[؟?]/g, '').trim()];
+  const clean = textOrKey ? normalizeText(textOrKey) : '';
+  const cleanFallback = fallbackArabic ? normalizeText(fallbackArabic) : '';
 
-  if (audioSrc) {
+  // 1. Check STATIC_AUDIO_MAP by key, text, or fallback
+  const staticSrc =
+    STATIC_AUDIO_MAP[clean] ||
+    STATIC_AUDIO_MAP[clean.replace(/[؟?]/g, '').trim()] ||
+    (cleanFallback ? (STATIC_AUDIO_MAP[cleanFallback] || STATIC_AUDIO_MAP[cleanFallback.replace(/[؟?]/g, '').trim()]) : undefined);
+
+  if (staticSrc) {
     try {
-      let audio = audioCache.get(audioSrc);
+      let audio = audioCache.get(staticSrc);
       if (!audio) {
-        audio = new Audio(audioSrc);
-        audioCache.set(audioSrc, audio);
+        audio = new Audio(staticSrc);
+        audioCache.set(staticSrc, audio);
       } else {
         audio.currentTime = 0;
       }
@@ -887,13 +962,18 @@ export async function playArabicAudio(textOrKey: string): Promise<void> {
       await audio.play();
       return;
     } catch {
-      // Audio playback failed or blocked; fall through to TTS/speechSynthesis
+      // Static audio playback failed; continue to fallbacks
     }
   }
 
-  // Fallback 1: Online Quran Ayah Recitation (Mishary Alafasy) if key is quran_SSSAAA
-  if (clean.startsWith('quran_')) {
-    const ayahCode = clean.replace('quran_', '');
+  // 2. Online Quran Ayah Recitation (Mishary Alafasy) if key is quran_SSSAAA or quran_S_A
+  const quranKey = clean.startsWith('quran_') ? clean : (cleanFallback.startsWith('quran_') ? cleanFallback : '');
+  if (quranKey) {
+    let ayahCode = quranKey.replace('quran_', '');
+    if (ayahCode.includes('_')) {
+      const [s, a] = ayahCode.split('_');
+      ayahCode = `${s.padStart(3, '0')}${a.padStart(3, '0')}`;
+    }
     const quranCdnUrl = `https://everyayah.com/data/Alafasy_128kbps/${ayahCode}.mp3`;
     try {
       let audio = audioCache.get(quranCdnUrl);
@@ -911,9 +991,26 @@ export async function playArabicAudio(textOrKey: string): Promise<void> {
     }
   }
 
-  // Fallback 2: Dynamic TTS proxy endpoint
+  // 3. Determine the clean Arabic text for TTS synthesis
+  let targetArabic = '';
+  if (/[\u0600-\u06FF]/.test(clean)) {
+    targetArabic = cleanArabicForTts(clean);
+  } else if (cleanFallback && /[\u0600-\u06FF]/.test(cleanFallback)) {
+    targetArabic = cleanArabicForTts(cleanFallback);
+  } else if (SLUG_TO_ARABIC[clean]) {
+    targetArabic = cleanArabicForTts(SLUG_TO_ARABIC[clean]);
+  } else if (cleanFallback && SLUG_TO_ARABIC[cleanFallback]) {
+    targetArabic = cleanArabicForTts(SLUG_TO_ARABIC[cleanFallback]);
+  }
+
+  if (!targetArabic) {
+    // Never send non-Arabic latin slugs to Arabic TTS
+    return;
+  }
+
+  // 4. Dynamic TTS proxy endpoint with disk cache
   try {
-    const dynamicUrl = `/api/tts?text=${encodeURIComponent(clean)}`;
+    const dynamicUrl = `/api/tts?text=${encodeURIComponent(targetArabic)}`;
     let audio = audioCache.get(dynamicUrl);
     if (!audio) {
       audio = new Audio(dynamicUrl);
@@ -928,10 +1025,10 @@ export async function playArabicAudio(textOrKey: string): Promise<void> {
     // Dynamic TTS failed; fall through to SpeechSynthesis
   }
 
-  // Fallback 2: Browser SpeechSynthesis
+  // 5. Browser SpeechSynthesis fallback
   if ('speechSynthesis' in window) {
     try {
-      const utterance = new SpeechSynthesisUtterance(clean);
+      const utterance = new SpeechSynthesisUtterance(targetArabic);
       utterance.lang = 'ar-SA';
       utterance.rate = 0.85;
 

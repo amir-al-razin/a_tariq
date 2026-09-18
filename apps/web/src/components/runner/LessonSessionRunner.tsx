@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight, Check, Volume2, VolumeX, Sparkles, AlertCircle, Award } from 'lucide-react';
+import { X, ArrowRight, Check, Volume2, VolumeX, Sparkles, AlertCircle, Award, BookmarkCheck } from 'lucide-react';
 import type { SessionStep, LessonSessionData } from '@/lib/lessonSessionTypes';
 import { getLessonSession } from '@/lib/lessonRegistry';
 import { LESSON_01_SESSION } from '@/lib/lesson1Session';
 import { useRetentionStore } from '@/state/retentionStore';
 import { useLearningSettingsStore } from '@/state/learningSettingsStore';
+import { useLessonCheckpointStore } from '@/state/lessonCheckpointStore';
 import { playSuccessChime, playErrorCue, playTapSound } from '@/lib/sound';
 import { playArabicAudio, stopArabicAudio } from '@/lib/arabicAudio';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -15,6 +16,7 @@ interface LessonSessionRunnerProps {
   volumeId: number;
   chapterId: number;
   lessonNum: number;
+  initialStepIndex?: number;
   onExit: () => void;
 }
 
@@ -28,6 +30,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
   volumeId,
   chapterId,
   lessonNum,
+  initialStepIndex,
   onExit,
 }) => {
   const { language } = useLanguage();
@@ -39,22 +42,43 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
 
   // Session Queue State
   const [steps, setSteps] = useState<SessionStep[]>(() => sessionData.steps);
-  const [currentStepIndex, setCurrentStepIndex] = useState<number>(0);
+  const [currentStepIndex, setCurrentStepIndex] = useState<number>(() => {
+    if (typeof initialStepIndex === 'number' && initialStepIndex >= 0 && initialStepIndex < sessionData.steps.length) {
+      return initialStepIndex;
+    }
+    return 0;
+  });
   const [errorQueue, setErrorQueue] = useState<SessionStep[]>([]);
   const [isReviewingErrors, setIsReviewingErrors] = useState<boolean>(false);
   const [isSessionComplete, setIsSessionComplete] = useState<boolean>(false);
 
+  const saveCheckpoint = useLessonCheckpointStore((state) => state.saveCheckpoint);
+  const clearCheckpoint = useLessonCheckpointStore((state) => state.clearCheckpoint);
+  const [showExitConfirm, setShowExitConfirm] = useState<boolean>(false);
+
   // Sync session steps when lesson changes
   useEffect(() => {
     setSteps(sessionData.steps);
-    setCurrentStepIndex(0);
+    setCurrentStepIndex(
+      typeof initialStepIndex === 'number' && initialStepIndex >= 0 && initialStepIndex < sessionData.steps.length
+        ? initialStepIndex
+        : 0
+    );
     setErrorQueue([]);
     setIsReviewingErrors(false);
     setIsSessionComplete(false);
+    setShowExitConfirm(false);
     setTotalAttempts(0);
     setFirstTryCorrectCount(0);
     setRecycledErrorsResolved(0);
-  }, [sessionData]);
+  }, [sessionData, initialStepIndex]);
+
+  // Continuously record checkpoint so unexpected exits/refreshes never lose progress
+  useEffect(() => {
+    if (!isSessionComplete && !isReviewingErrors && currentStepIndex > 0 && currentStepIndex < steps.length) {
+      saveCheckpoint(volumeId, chapterId, lessonNum, currentStepIndex, steps.length);
+    }
+  }, [volumeId, chapterId, lessonNum, currentStepIndex, steps.length, isSessionComplete, isReviewingErrors, saveCheckpoint]);
 
   // Telemetry
   const [totalAttempts, setTotalAttempts] = useState<number>(0);
@@ -83,9 +107,17 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
   const [selectedSunMoonChoice, setSelectedSunMoonChoice] = useState<'sun' | 'moon' | null>(null);
 
 
-  // Possessive Matrix local state (Lesson 5 Page 32-33)
+  // Possessive Matrix local state (Lesson 5)
   const [activeMatrixNounIndex, setActiveMatrixNounIndex] = useState<number>(0);
   const [selectedSuffixIndex, setSelectedSuffixIndex] = useState<number>(0);
+
+  // Alternative QA local state
+  const [activeQAIndex, setActiveQAIndex] = useState<number>(0);
+  const [selectedQAAnswer, setSelectedQAAnswer] = useState<string | null>(null);
+
+  // Tarkib Dissector local state
+  const [activeTarkibIndex, setActiveTarkibIndex] = useState<number>(0);
+  const [assignedTarkibSlots, setAssignedTarkibSlots] = useState<Record<number, string>>({});
 
   // Stores
   const recordItemResult = useRetentionStore((state) => state.recordItemResult);
@@ -103,8 +135,12 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
   // Initialize chips for assembly step and shuffled meanings for pair matching
   useEffect(() => {
     if (currentStep?.type === 'sentence_assembly' && currentStep.assemblyPayload) {
+      const payload = currentStep.assemblyPayload;
+      const targetChips = (isBn && payload.chipsBn && payload.chipsBn.length > 0)
+        ? payload.chipsBn
+        : payload.chips;
       // Shuffle available chips (Fisher-Yates)
-      const chips = [...currentStep.assemblyPayload.chips];
+      const chips = [...targetChips];
       for (let i = chips.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [chips[i], chips[j]] = [chips[j], chips[i]];
@@ -145,8 +181,12 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
     setSelectedSunMoonChoice(null);
     setActiveMatrixNounIndex(0);
     setSelectedSuffixIndex(0);
+    setActiveQAIndex(0);
+    setSelectedQAAnswer(null);
+    setActiveTarkibIndex(0);
+    setAssignedTarkibSlots({});
     setStepStatus('idle');
-  }, [currentStep]);
+  }, [currentStep, isBn]);
 
   // Overall progress percentage
   const progressPercent = useMemo(() => {
@@ -165,7 +205,8 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
     if (currentStepIndex < steps.length - 1) {
       setCurrentStepIndex((prev) => prev + 1);
     } else if (!isReviewingErrors && errorQueue.length > 0) {
-      // Switch into error queue review mode once
+      // Primary lesson content is complete; clear main checkpoint and enter recycled error review
+      clearCheckpoint(volumeId, chapterId, lessonNum);
       setIsReviewingErrors(true);
       setSteps(errorQueue);
       setErrorQueue([]);
@@ -173,6 +214,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
     } else {
       // Finish session
       setIsSessionComplete(true);
+      clearCheckpoint(volumeId, chapterId, lessonNum);
       const durationSeconds = Math.round((Date.now() - startTime) / 1000);
       recordSessionComplete({
         volumeId,
@@ -194,6 +236,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
     errorQueue,
     startTime,
     recordSessionComplete,
+    clearCheckpoint,
     volumeId,
     chapterId,
     lessonNum,
@@ -285,8 +328,8 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
     } else if (currentStep?.type === 'concept_intro' && currentStep.conceptPayload) {
       const concepts = currentStep.conceptPayload.concepts;
       const concept = concepts[activeVocabCardIndex];
-      if (concept?.audioKey) {
-        playArabicAudio(concept.audioKey);
+      if (concept) {
+        playArabicAudio(concept.audioKey || concept.ar, concept.ar);
       }
     } else if (currentStep?.type === 'polar_sort' && currentStep.polarPayload) {
       playArabicAudio(currentStep.polarPayload.arabicSubject);
@@ -488,7 +531,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                 {/* Base Form */}
                 <button
                   type="button"
-                  onClick={() => playArabicAudio(compoundData.baseAudioKey || compoundData.baseAr)}
+                  onClick={() => playArabicAudio(compoundData.baseAudioKey || compoundData.baseAr, compoundData.baseAr)}
                   className="group flex flex-col items-center space-y-1 cursor-pointer bg-transparent border-0 p-0 text-center transition-transform active:scale-95"
                   title="Listen"
                 >
@@ -513,7 +556,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                 {/* Transformed Result (Semantic Heritage Accent) */}
                 <button
                   type="button"
-                  onClick={() => playArabicAudio(compoundData.resultAudioKey || currentConcept.audioKey || compoundData.resultAr)}
+                  onClick={() => playArabicAudio(compoundData.resultAudioKey || currentConcept.audioKey || compoundData.resultAr, compoundData.resultAr || currentConcept.ar)}
                   className="group flex flex-col items-center space-y-1 cursor-pointer bg-transparent border-0 p-0 text-center transition-transform active:scale-95"
                   title="Listen"
                 >
@@ -541,18 +584,18 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
 
               {/* Contextual Example (Centered, Calm, Uncluttered) */}
               {currentConcept.exampleAr && currentConcept.exampleAr !== currentConcept.ar && (
-                <div className="space-y-1">
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="font-arabic-bold text-2xl sm:text-3xl text-neutral-900 dark:text-white text-center" dir="rtl">
+                <div className="space-y-2 pt-1 w-full">
+                  <div className="flex items-center justify-center gap-2.5">
+                    <span className="font-arabic-bold text-xl sm:text-2xl text-neutral-900 dark:text-white text-center leading-[2] tracking-normal" dir="rtl">
                       {currentConcept.exampleAr}
                     </span>
                     <button
                       type="button"
-                      onClick={() => playArabicAudio(currentConcept.exampleAudioKey || currentConcept.exampleAr)}
-                      className="w-7 h-7 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 flex items-center justify-center text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-white transition-colors cursor-pointer shadow-none border-0 shrink-0"
+                      onClick={() => playArabicAudio(currentConcept.exampleAudioKey || currentConcept.exampleAr, currentConcept.exampleAr)}
+                      className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 flex items-center justify-center text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-white transition-colors cursor-pointer shadow-none border-0 shrink-0"
                       aria-label="Listen to example"
                     >
-                      <Volume2 size={14} />
+                      <Volume2 size={15} />
                     </button>
                   </div>
                   <p className="text-xs sm:text-sm font-medium text-neutral-500 dark:text-neutral-400 text-center" dir="ltr">
@@ -562,77 +605,87 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
               )}
             </div>
           ) : (
-            /* Single Pointer Word Display */
-            <div className="w-full rounded-3xl bg-white dark:bg-neutral-950 p-6 sm:p-8 flex flex-col items-center text-center space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-center justify-center gap-3">
-                  <h2 className="font-arabic-bold text-6xl text-neutral-900 dark:text-white" dir="rtl">
-                    {currentConcept.ar}
-                  </h2>
-                  <button
-                    onClick={() => playArabicAudio(currentConcept.audioKey)}
-                    className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-colors cursor-pointer shadow-none border-0"
-                    aria-label="Listen to word"
-                  >
-                    <Volume2 size={20} />
-                  </button>
-                </div>
-                {showTransliteration && (
-                  <p className="text-base font-mono text-accent-primary font-medium">
-                    {currentConcept.romanized}
-                  </p>
-                )}
-                <div className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-                  {isBn ? (currentConcept.meaningBn || currentConcept.meaningEn) : currentConcept.meaningEn}
-                </div>
-              </div>
-
-              {/* Authentic Visual Cue - Spatial Distance Only */}
-              {currentConcept.distance && (
-                <div className="w-full py-4 flex items-center justify-center">
-                  {currentConcept.distance === 'near' ? (
-                    <div className="flex items-center justify-center gap-5">
-                      <span className="text-3xl select-none animate-pulse">👉</span>
-                      <span className="text-4xl select-none">{currentConcept.emoji}</span>
-                    </div>
-                  ) : (
-                    <div className="w-full flex items-center justify-between px-6">
-                      <span className="text-3xl select-none">👉</span>
-                      <div className="flex-1 mx-4 flex items-center">
-                        <div className="flex-1 border-t-2 border-dashed border-accent-secondary/60" />
-                        <span className="text-accent-secondary text-sm -mr-1">▶</span>
-                      </div>
-                      <span className="text-4xl select-none">{currentConcept.emoji}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Example Sentence / Phrase in Context */}
-              {currentConcept.exampleAr && currentConcept.exampleAr !== currentConcept.ar && (
-                <>
-                  <div className="h-px w-24 bg-neutral-100 dark:bg-neutral-850" />
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-center gap-2">
-                      <span className="font-arabic-bold text-2xl text-neutral-900 dark:text-white text-center" dir="rtl">
-                        {currentConcept.exampleAr}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => playArabicAudio(currentConcept.exampleAudioKey || currentConcept.exampleAr)}
-                        className="w-7 h-7 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 flex items-center justify-center text-neutral-500 dark:text-neutral-400 transition-colors cursor-pointer shadow-none border-0 shrink-0"
-                        aria-label="Listen to example"
+            /* Single Pointer Word / Sentence Display */
+            (() => {
+              const isSentence = currentConcept.ar.includes(' ') || currentConcept.ar.length > 10;
+              return (
+                <div className="w-full rounded-3xl bg-white dark:bg-neutral-950 p-6 sm:p-8 flex flex-col items-center text-center space-y-5">
+                  <div className="space-y-3 w-full">
+                    <div className="flex items-center justify-center gap-3 w-full">
+                      <h2
+                        className={`font-arabic-bold ${
+                          isSentence ? 'text-3xl sm:text-4xl leading-[2] sm:leading-[2.2]' : 'text-5xl sm:text-6xl leading-relaxed'
+                        } text-neutral-900 dark:text-white tracking-normal text-center`}
+                        dir="rtl"
                       >
-                        <Volume2 size={14} />
+                        {currentConcept.ar}
+                      </h2>
+                      <button
+                        onClick={() => playArabicAudio(currentConcept.audioKey || currentConcept.ar, currentConcept.ar)}
+                        className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-colors cursor-pointer shadow-none border-0 shrink-0"
+                        aria-label="Listen to Arabic"
+                      >
+                        <Volume2 size={20} />
                       </button>
                     </div>
-                    <p className="text-xs sm:text-sm font-medium text-neutral-500 dark:text-neutral-400 text-center" dir="ltr">
-                      {isBn ? (currentConcept.exampleBn || currentConcept.exampleEn) : currentConcept.exampleEn}
-                    </p>
+                    {showTransliteration && (
+                      <p className="text-sm sm:text-base font-mono text-accent-primary font-medium pt-0.5">
+                        {currentConcept.romanized}
+                      </p>
+                    )}
+                    <div className="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-neutral-100 pt-0.5">
+                      {isBn ? (currentConcept.meaningBn || currentConcept.meaningEn) : currentConcept.meaningEn}
+                    </div>
                   </div>
-                </>
-              )}
-            </div>
+
+                  {/* Authentic Visual Cue - Spatial Distance Only */}
+                  {currentConcept.distance && (
+                    <div className="w-full py-4 flex items-center justify-center">
+                      {currentConcept.distance === 'near' ? (
+                        <div className="flex items-center justify-center gap-5">
+                          <span className="text-3xl select-none animate-pulse">👉</span>
+                          <span className="text-4xl select-none">{currentConcept.emoji}</span>
+                        </div>
+                      ) : (
+                        <div className="w-full flex items-center justify-between px-6">
+                          <span className="text-3xl select-none">👉</span>
+                          <div className="flex-1 mx-4 flex items-center">
+                            <div className="flex-1 border-t-2 border-dashed border-accent-secondary/60" />
+                            <span className="text-accent-secondary text-sm -mr-1">▶</span>
+                          </div>
+                          <span className="text-4xl select-none">{currentConcept.emoji}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Example Sentence / Phrase in Context */}
+                  {currentConcept.exampleAr && currentConcept.exampleAr !== currentConcept.ar && (
+                    <>
+                      <div className="h-px w-24 bg-neutral-100 dark:bg-neutral-850" />
+                      <div className="space-y-2 pt-1 w-full">
+                        <div className="flex items-center justify-center gap-2.5">
+                          <span className="font-arabic-bold text-xl sm:text-2xl text-neutral-900 dark:text-white text-center leading-[2] tracking-normal" dir="rtl">
+                            {currentConcept.exampleAr}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => playArabicAudio(currentConcept.exampleAudioKey || currentConcept.exampleAr, currentConcept.exampleAr)}
+                            className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 flex items-center justify-center text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-white transition-colors cursor-pointer shadow-none border-0 shrink-0"
+                            aria-label="Listen to example"
+                          >
+                            <Volume2 size={15} />
+                          </button>
+                        </div>
+                        <p className="text-xs sm:text-sm font-medium text-neutral-500 dark:text-neutral-400 text-center" dir="ltr">
+                          {isBn ? (currentConcept.exampleBn || currentConcept.exampleEn) : currentConcept.exampleEn}
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </div>
+              );
+            })()
           )}
         </div>
 
@@ -849,9 +902,18 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
     const payload = currentStep.assemblyPayload;
     if (!payload) return null;
 
+    const isArabicChips = (availableChips.length > 0 && /[\u0600-\u06FF]/.test(availableChips[0])) ||
+      (assembledChips.length > 0 && /[\u0600-\u06FF]/.test(assembledChips[0]));
+    const isBanglaChips = (availableChips.length > 0 && /[\u0980-\u09FF]/.test(availableChips[0])) ||
+      (assembledChips.length > 0 && /[\u0980-\u09FF]/.test(assembledChips[0]));
+
     const handleAddChip = (chip: string, index: number) => {
       if (stepStatus !== 'idle') return;
-      playArabicAudio(chip);
+      if (isArabicChips) {
+        playArabicAudio(chip);
+      } else {
+        playTapSound();
+      }
       setAssembledChips((prev) => [...prev, chip]);
       setAvailableChips((prev) => prev.filter((_, idx) => idx !== index));
     };
@@ -864,25 +926,61 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
     };
 
     const handleVerify = () => {
+      const targetExpected = (isBn && payload.expectedAnswerBn && payload.expectedAnswerBn.length > 0)
+        ? payload.expectedAnswerBn
+        : payload.expectedAnswer;
+
       const isMatch =
-        assembledChips.length === payload.expectedAnswer.length &&
-        assembledChips.every((word, idx) => word === payload.expectedAnswer[idx]);
+        assembledChips.length === targetExpected.length &&
+        assembledChips.every((word, idx) => word === targetExpected[idx]);
 
       if (isMatch) {
-        playArabicAudio(payload.expectedAnswer.join(' '));
+        if (payload.promptAr) {
+          playArabicAudio(payload.promptAr);
+        } else if (isArabicChips) {
+          playArabicAudio(payload.expectedAnswer.join(' '));
+        } else {
+          playSuccessChime();
+        }
         handlePass();
       } else {
         handleFail();
       }
     };
 
+    const chipFontClass = isArabicChips
+      ? 'font-arabic-bold text-xl'
+      : isBanglaChips
+      ? 'font-bangla font-semibold text-base sm:text-lg'
+      : 'font-english-semibold text-base sm:text-lg';
+
     return (
       <div className="w-full max-w-lg mx-auto flex flex-col items-center space-y-6">
         {/* Target Sentence Prompt */}
-        <div className="w-full p-6 sm:p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center text-center space-y-2">
-          <h3 className="text-2xl sm:text-3xl font-english-bold text-neutral-900 dark:text-neutral-100">
-            {isBn ? (payload.promptBn || payload.promptEn) : payload.promptEn}
-          </h3>
+        <div className="w-full p-6 sm:p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center text-center space-y-3">
+          {payload.promptAr ? (
+            <>
+              <div className="flex items-center justify-center gap-3">
+                <h3 className="font-arabic-bold text-3xl sm:text-4xl text-neutral-900 dark:text-white leading-relaxed" dir="rtl">
+                  {payload.promptAr}
+                </h3>
+                <button
+                  onClick={() => playArabicAudio(payload.promptAr!)}
+                  className="w-10 h-10 rounded-full bg-neutral-200/80 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 shrink-0 border-0 cursor-pointer transition-colors"
+                  aria-label="Listen to sentence"
+                >
+                  <Volume2 size={20} />
+                </button>
+              </div>
+              <p className="text-xs font-mono font-medium text-neutral-500 uppercase tracking-wider">
+                {isBn ? 'নিচের শব্দগুলো সাজিয়ে অনুবাদ করুন' : 'Assemble the translation using the word chips below'}
+              </p>
+            </>
+          ) : (
+            <h3 className="text-2xl sm:text-3xl font-english-bold text-neutral-900 dark:text-neutral-100">
+              {isBn ? (payload.promptBn || payload.promptEn) : payload.promptEn}
+            </h3>
+          )}
         </div>
 
         {/* Assembly Dropzone Slot */}
@@ -892,11 +990,15 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
               ? 'border-2 border-dashed border-neutral-300 dark:border-neutral-700 bg-neutral-100/50 dark:bg-neutral-900/50'
               : 'bg-neutral-100 dark:bg-neutral-900 border-0'
           }`}
-          dir="rtl"
+          dir={isArabicChips ? 'rtl' : 'ltr'}
         >
           {assembledChips.length === 0 ? (
             <span className="text-xs font-mono uppercase text-neutral-400 select-none">
-              Tap chips below to assemble sentence
+              {isArabicChips
+                ? 'Tap chips below to assemble sentence'
+                : isBn
+                ? 'অনুবাদ সাজাতে নিচের শব্দগুলোতে চাপ দিন'
+                : 'Tap chips below to assemble translation'}
             </span>
           ) : (
             assembledChips.map((chip, idx) => (
@@ -905,7 +1007,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                 layout
                 onClick={() => handleRemoveChip(chip, idx)}
                 disabled={stepStatus !== 'idle'}
-                className="h-12 px-5 rounded-2xl bg-white dark:bg-neutral-950 text-neutral-950 dark:text-white font-arabic-bold text-xl cursor-pointer select-none shadow-none border-0 active:scale-95 transition-transform"
+                className={`h-12 px-5 rounded-2xl bg-white dark:bg-neutral-950 text-neutral-950 dark:text-white ${chipFontClass} cursor-pointer select-none shadow-none border-0 active:scale-95 transition-transform`}
               >
                 {chip}
               </motion.button>
@@ -914,13 +1016,16 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
         </div>
 
         {/* Available Shuffled Word Chips */}
-        <div className="w-full flex flex-wrap items-center justify-center gap-3 pt-2" dir="rtl">
+        <div
+          className="w-full flex flex-wrap items-center justify-center gap-3 pt-2"
+          dir={isArabicChips ? 'rtl' : 'ltr'}
+        >
           {availableChips.map((chip, idx) => (
             <button
               key={`${chip}-${idx}`}
               onClick={() => handleAddChip(chip, idx)}
               disabled={stepStatus !== 'idle'}
-              className="h-12 px-5 rounded-2xl bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-arabic-bold text-xl transition-transform active:scale-95 cursor-pointer select-none shadow-none border-0"
+              className={`h-12 px-5 rounded-2xl bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-900 dark:text-neutral-100 ${chipFontClass} transition-transform active:scale-95 cursor-pointer select-none shadow-none border-0`}
             >
               {chip}
             </button>
@@ -938,7 +1043,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                 : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-400 cursor-not-allowed'
             }`}
           >
-            <span>Check Sentence</span>
+            <span>{isArabicChips ? 'Check Sentence' : (isBn ? 'অনুবাদ যাচাই করুন' : 'Check Translation')}</span>
             <Check size={18} />
           </button>
         ) : (
@@ -1323,6 +1428,8 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
   // --------------------------------------------------------------------------
   // RENDER: THE QURANIC ECHO MILESTONE UNLOCK
   // --------------------------------------------------------------------------
+  // RENDER: QURANIC ECHO (Sacred Milestone Scripture Synchronization)
+  // --------------------------------------------------------------------------
   const renderQuranicEcho = () => {
     const echo = currentStep.echoPayload;
     if (!echo) return null;
@@ -1335,15 +1442,20 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="w-full p-6 sm:p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 text-neutral-950 dark:text-white space-y-6 text-center"
+          className="w-full p-6 sm:p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 text-neutral-950 dark:text-white space-y-5 text-center"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent-secondary-subtle text-accent-secondary text-xs font-mono font-bold uppercase tracking-wider">
-            <Sparkles size={14} className="text-accent-secondary" />
-            <span>Quranic Milestone</span>
+          {/* Pattern Unlocked Header Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-primary-subtle text-accent-primary text-xs font-mono font-bold uppercase tracking-wider">
+            <Sparkles size={14} className="text-accent-primary" />
+            <span>
+              {isBn
+                ? (echo.patternNameBn ? `প্যাটার্ন আনলক · ${echo.patternNameBn}` : 'কুরআনিক মাইলফলক')
+                : (echo.patternNameEn ? `Pattern Unlocked · ${echo.patternNameEn}` : 'Quranic Milestone')}
+            </span>
           </div>
 
           <div className="space-y-1">
-            <h4 className="font-arabic-bold text-2xl text-accent-primary" dir="rtl">
+            <h4 className="font-arabic-bold text-2xl sm:text-3xl text-neutral-900 dark:text-white" dir="rtl">
               {echo.surahNameAr}
             </h4>
             <p className="text-xs font-mono text-neutral-500 dark:text-neutral-400">
@@ -1351,9 +1463,9 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
             </p>
           </div>
 
-          {/* Ayah Calligraphy with Dynamic Highlighted Words inside Tone-on-Tone Well */}
+          {/* Ayah Calligraphy Well with Target Pattern Highlighting */}
           <div className="p-6 rounded-3xl bg-white dark:bg-neutral-950 space-y-4">
-            <div className="font-arabic-bold text-2xl sm:text-3xl leading-loose tracking-normal flex flex-wrap items-center justify-center gap-x-2 gap-y-1" dir="rtl">
+            <div className="font-arabic-bold text-2xl sm:text-3xl leading-[2.2] sm:leading-[2.4] tracking-normal flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 text-center" dir="rtl">
               {words.map((w, idx) => {
                 const isHighlighted = echo.highlightedWords.some(hw => w.includes(hw) || hw.includes(w));
                 return (
@@ -1361,7 +1473,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                     key={idx}
                     className={
                       isHighlighted
-                        ? 'bg-accent-secondary-subtle text-accent-secondary px-2.5 py-0.5 rounded-2xl inline-block'
+                        ? 'bg-accent-primary-subtle text-accent-primary px-3 py-1 rounded-2xl inline-block font-bold'
                         : 'text-neutral-900 dark:text-neutral-100 inline-block'
                     }
                   >
@@ -1376,7 +1488,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
             <div className="pt-2">
               <button
                 onClick={() => playArabicAudio(ayahAudioKey)}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-xs font-english-semibold transition-colors cursor-pointer shadow-none border-0"
+                className="inline-flex items-center gap-2 px-5 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-xs font-english-semibold transition-colors cursor-pointer shadow-none border-0"
               >
                 <Volume2 size={16} className="text-accent-primary" />
                 <span>Listen Recitation</span>
@@ -1384,11 +1496,57 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
             </div>
           </div>
 
-          {/* Concise Spiritual Reflection */}
-          {echo.reflection && (
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed text-center max-w-md mx-auto">
-              {echo.reflection}
-            </p>
+          {/* Syntactic Architecture Bridge: Connecting Lesson Grammar to Quranic Grammar */}
+          {echo.lessonPatternAr && echo.quranPatternAr ? (
+            <div className="w-full p-5 rounded-3xl bg-white dark:bg-neutral-950 space-y-3.5 text-left">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-semibold text-accent-primary uppercase tracking-wider">
+                  Syntactic Architecture Bridge
+                </span>
+                <span className="text-[11px] font-mono text-neutral-400">Pattern in Action</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {/* Lesson Pattern */}
+                <div className="p-3.5 rounded-2xl bg-neutral-100 dark:bg-neutral-900 space-y-1">
+                  <span className="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400">
+                    In Your Lesson
+                  </span>
+                  <div className="font-arabic-bold text-lg text-neutral-950 dark:text-white" dir="rtl">
+                    {echo.lessonPatternAr}
+                  </div>
+                  <p className="text-xs text-neutral-600 dark:text-neutral-400">
+                    {isBn ? (echo.lessonPatternBn || echo.lessonPatternEn) : echo.lessonPatternEn}
+                  </p>
+                </div>
+
+                {/* Quran Pattern */}
+                <div className="p-3.5 rounded-2xl bg-accent-primary-subtle text-neutral-950 dark:text-white space-y-1">
+                  <span className="text-[11px] font-semibold text-accent-primary">
+                    In Holy Scripture
+                  </span>
+                  <div className="font-arabic-bold text-lg text-accent-primary" dir="rtl">
+                    {echo.quranPatternAr}
+                  </div>
+                  <p className="text-xs text-neutral-700 dark:text-neutral-300">
+                    {isBn ? (echo.quranPatternBn || echo.quranPatternEn) : echo.quranPatternEn}
+                  </p>
+                </div>
+              </div>
+
+              {/* Reflection / Linguistic Insight */}
+              {echo.reflection && (
+                <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed pt-1">
+                  {echo.reflection}
+                </p>
+              )}
+            </div>
+          ) : (
+            echo.reflection && (
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed text-center max-w-md mx-auto">
+                {echo.reflection}
+              </p>
+            )
           )}
         </motion.div>
 
@@ -1415,7 +1573,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
 
     const handleChoice = (type: 'sun' | 'moon') => {
       if (stepStatus !== 'idle') return;
-      playArabicAudio(currentItem.audioKey);
+      playArabicAudio(currentItem.audioKey || currentItem.wordAr, currentItem.wordAr);
       setSelectedSunMoonChoice(type);
       if (type === currentItem.letterType) {
         handlePass();
@@ -1450,7 +1608,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                 {currentItem.wordAr}
               </h3>
               <button
-                onClick={() => playArabicAudio(currentItem.audioKey)}
+                onClick={() => playArabicAudio(currentItem.audioKey || currentItem.wordAr, currentItem.wordAr)}
                 className="w-10 h-10 rounded-full bg-neutral-200/80 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-colors cursor-pointer shadow-none border-0"
                 aria-label="Listen to pronunciation"
               >
@@ -1599,7 +1757,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
         <div className="w-full space-y-3">
           {/* Card A: Without Al -> Sentence */}
           <div
-            onClick={() => playArabicAudio(payload.audioKeySentence)}
+            onClick={() => playArabicAudio(payload.audioKeySentence || payload.indefiniteSentenceAr, payload.indefiniteSentenceAr)}
             className="w-full p-4 rounded-3xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-between cursor-pointer hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 transition-colors"
           >
             <div className="text-left space-y-0.5">
@@ -1617,7 +1775,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  playArabicAudio(payload.audioKeySentence);
+                  playArabicAudio(payload.audioKeySentence || payload.indefiniteSentenceAr, payload.indefiniteSentenceAr);
                 }}
                 className="w-8 h-8 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center text-neutral-700 dark:text-neutral-200 shrink-0 cursor-pointer"
                 aria-label="Play audio"
@@ -1629,7 +1787,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
 
           {/* Card B: With Al + Description */}
           <div
-            onClick={() => playArabicAudio(payload.audioKeyComplete)}
+            onClick={() => playArabicAudio(payload.audioKeyComplete || payload.completeSentenceAr, payload.completeSentenceAr)}
             className="w-full p-4 rounded-3xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-between cursor-pointer hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 transition-colors"
           >
             <div className="text-left space-y-0.5">
@@ -1647,7 +1805,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  playArabicAudio(payload.audioKeyComplete);
+                  playArabicAudio(payload.audioKeyComplete || payload.completeSentenceAr, payload.completeSentenceAr);
                 }}
                 className="w-8 h-8 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center text-neutral-700 dark:text-neutral-200 shrink-0 cursor-pointer"
                 aria-label="Play audio"
@@ -1725,7 +1883,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                 {activeForm.ar}
               </h3>
               <button
-                onClick={() => playArabicAudio(activeForm.audioKey)}
+                onClick={() => playArabicAudio(activeForm.audioKey || activeForm.ar, activeForm.ar)}
                 className="w-10 h-10 rounded-full bg-neutral-200/80 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-colors cursor-pointer shadow-none border-0"
                 aria-label="Listen to conjugated word"
               >
@@ -1751,7 +1909,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                   key={f.suffix}
                   onClick={() => {
                     setSelectedSuffixIndex(idx);
-                    playArabicAudio(f.audioKey);
+                    playArabicAudio(f.audioKey || f.suffix, f.suffix);
                   }}
                   className={`p-2 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer shadow-none border-0 ${
                     isSelected
@@ -1811,7 +1969,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
           {payload.examples.map((item) => (
             <div
               key={item.id}
-              onClick={() => playArabicAudio(item.audioKey)}
+              onClick={() => playArabicAudio(item.audioKey || item.compoundAr, item.compoundAr)}
               className="w-full p-3.5 sm:p-4 rounded-3xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-between cursor-pointer hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 transition-colors"
             >
               <div className="text-left space-y-0.5">
@@ -1835,7 +1993,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    playArabicAudio(item.audioKey);
+                    playArabicAudio(item.audioKey || item.compoundAr, item.compoundAr);
                   }}
                   className="w-8 h-8 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center text-neutral-700 dark:text-neutral-200 shrink-0 cursor-pointer"
                   aria-label="Play audio"
@@ -1881,7 +2039,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
           {payload.sentences.map((item) => (
             <div
               key={item.id}
-              onClick={() => playArabicAudio(item.audioKey)}
+              onClick={() => playArabicAudio(item.audioKey || item.arabic, item.arabic)}
               className="w-full p-4 rounded-3xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-between cursor-pointer hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 transition-colors"
             >
               <div className="text-left space-y-0.5">
@@ -1900,7 +2058,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    playArabicAudio(item.audioKey);
+                    playArabicAudio(item.audioKey || item.arabic, item.arabic);
                   }}
                   className="w-8 h-8 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center text-neutral-700 dark:text-neutral-200 shrink-0 cursor-pointer"
                   aria-label="Play audio"
@@ -1923,6 +2081,434 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
           <span>{isBn ? 'পরবর্তী ধাপে যান' : 'Continue'}</span>
           <ArrowRight size={18} />
         </button>
+      </div>
+    );
+  };
+
+  // --------------------------------------------------------------------------
+  // RENDER: SPATIAL POINTING STEP (Direct visual near vs far discrimination)
+  // --------------------------------------------------------------------------
+  const renderSpatialPointing = () => {
+    const payload = currentStep.spatialPointingPayload;
+    if (!payload) return null;
+
+    const handleChoice = (option: string) => {
+      if (stepStatus !== 'idle') return;
+      playArabicAudio(option);
+      setSelectedPolarAnswer(option);
+      if (option === payload.correctAnswer) {
+        handlePass();
+      } else {
+        handleFail();
+      }
+    };
+
+    return (
+      <div className="w-full max-w-lg mx-auto flex flex-col items-center space-y-6">
+        {/* Spatial Visual Card */}
+        <div className="w-full p-6 sm:p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center space-y-6">
+          <div className="w-full min-h-[160px] rounded-3xl bg-white dark:bg-neutral-950 relative overflow-hidden flex items-center justify-center p-6 border-0">
+            {payload.distance === 'near' ? (
+              <div className="flex items-center justify-center gap-6">
+                <span className="text-5xl select-none animate-pulse">👉</span>
+                <div className="w-24 h-24 rounded-3xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-6xl select-none">
+                  {payload.emoji}
+                </div>
+                <div className="text-center">
+                  <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-accent-secondary/15 text-accent-secondary uppercase tracking-wider">
+                    {isBn ? 'কাছে' : 'Near'}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="w-full flex items-center justify-between px-4">
+                <span className="text-4xl select-none">👉</span>
+                <div className="flex-1 mx-4 flex items-center">
+                  <div className="flex-1 border-t-2 border-dashed border-accent-secondary/60" />
+                  <span className="text-accent-secondary text-sm -mr-1">▶</span>
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                  <div className="w-20 h-20 rounded-3xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-5xl select-none">
+                    {payload.emoji}
+                  </div>
+                  <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 uppercase tracking-wider">
+                    {isBn ? 'দূরে' : 'Far'}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Target Subject Badge */}
+          <div className="flex items-center gap-3">
+            <h3 className="font-arabic-bold text-3xl text-neutral-900 dark:text-white" dir="rtl">
+              {payload.objectAr}
+            </h3>
+            <button
+              onClick={() => playArabicAudio(payload.objectAr)}
+              className="w-8 h-8 rounded-full bg-neutral-200/80 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-colors cursor-pointer border-0"
+              aria-label="Listen"
+            >
+              <Volume2 size={16} />
+            </button>
+          </div>
+        </div>
+
+        {/* Choice Buttons */}
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {payload.options.map((option) => {
+            const isSelected = selectedPolarAnswer === option;
+            const isCorrect = option === payload.correctAnswer;
+            let btnStyle = 'bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-900 dark:text-white';
+
+            if (stepStatus !== 'idle') {
+              if (isSelected && isCorrect) {
+                btnStyle = 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 ring-2 ring-emerald-500';
+              } else if (isSelected && !isCorrect) {
+                btnStyle = 'bg-rose-500/15 text-rose-700 dark:text-rose-400 ring-2 ring-rose-500';
+              } else if (isCorrect) {
+                btnStyle = 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400';
+              }
+            }
+
+            return (
+              <button
+                key={option}
+                onClick={() => handleChoice(option)}
+                disabled={stepStatus !== 'idle'}
+                className={`w-full min-h-[56px] py-4 px-6 rounded-3xl font-arabic-bold text-2xl flex items-center justify-center transition-all active:scale-[0.98] cursor-pointer border-0 ${btnStyle}`}
+                dir="rtl"
+              >
+                {option}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Feedback & Continue */}
+        {stepStatus !== 'idle' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full space-y-3"
+          >
+            <button
+              onClick={advanceToNext}
+              className={`w-full h-14 rounded-full font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer border-0 text-white ${
+                stepStatus === 'correct'
+                  ? 'bg-emerald-600 hover:bg-emerald-700'
+                  : 'bg-rose-600 hover:bg-rose-700'
+              }`}
+            >
+              <span>{stepStatus === 'correct' ? 'Continue' : 'Got it! Continue'}</span>
+              <ArrowRight size={18} />
+            </button>
+          </motion.div>
+        )}
+      </div>
+    );
+  };
+
+  // --------------------------------------------------------------------------
+  // RENDER: ALTERNATIVE QA BATTERY (أ... أم... Mini-Game Drill)
+  // --------------------------------------------------------------------------
+  const renderAlternativeQA = () => {
+    const payload = currentStep.alternativeQAPayload;
+    if (!payload || !payload.questions || payload.questions.length === 0) return null;
+
+    const currentQ = payload.questions[activeQAIndex] || payload.questions[0];
+
+    const handleQAOptionSelect = (option: string) => {
+      if (selectedQAAnswer !== null) return;
+      playArabicAudio(option);
+      setSelectedQAAnswer(option);
+
+      if (option === currentQ.correctAnswerAr) {
+        playSuccessChime();
+        if (activeQAIndex < payload.questions.length - 1) {
+          setTimeout(() => {
+            setActiveQAIndex((prev) => prev + 1);
+            setSelectedQAAnswer(null);
+          }, 450);
+        } else {
+          handlePass();
+        }
+      } else {
+        handleFail();
+      }
+    };
+
+    return (
+      <div className="w-full max-w-lg mx-auto flex flex-col items-center space-y-6">
+        {/* Progress Counter in Battery */}
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-mono font-semibold text-neutral-500 dark:text-neutral-400">
+            {toArabicNumerals(activeQAIndex + 1)} / {toArabicNumerals(payload.questions.length)}
+          </span>
+          <div className="flex gap-1.5">
+            {payload.questions.map((_, idx) => (
+              <div
+                key={idx}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  idx === activeQAIndex
+                    ? 'bg-accent-primary w-4'
+                    : idx < activeQAIndex
+                    ? 'bg-emerald-500'
+                    : 'bg-neutral-300 dark:bg-neutral-800'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Question Card */}
+        <div className="w-full p-6 sm:p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center space-y-5 text-center">
+          {/* Optional Context Backdrop */}
+          {payload.contextAr && (
+            <div className="px-4 py-2 rounded-2xl bg-white dark:bg-neutral-950 flex items-center gap-2">
+              <span className="font-arabic-bold text-lg text-accent-secondary" dir="rtl">
+                {payload.contextAr}
+              </span>
+              <button
+                onClick={() => playArabicAudio(payload.contextAr!)}
+                className="w-6 h-6 rounded-full bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 border-0 cursor-pointer"
+              >
+                <Volume2 size={12} />
+              </button>
+            </div>
+          )}
+
+          {/* Active Question in Arabic */}
+          <div className="flex items-center justify-center gap-3">
+            <h3 className="font-arabic-bold text-2xl sm:text-3xl text-neutral-900 dark:text-white leading-relaxed" dir="rtl">
+              {currentQ.questionAr}
+            </h3>
+            <button
+              onClick={() => playArabicAudio(currentQ.questionAr)}
+              className="w-9 h-9 rounded-full bg-neutral-200/80 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 shrink-0 border-0 cursor-pointer"
+              aria-label="Listen to question"
+            >
+              <Volume2 size={16} />
+            </button>
+          </div>
+        </div>
+
+        {/* Option Chips */}
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {currentQ.optionsAr.map((opt) => {
+            const isSelected = selectedQAAnswer === opt;
+            const isCorrect = opt === currentQ.correctAnswerAr;
+            let style = 'bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-900 dark:text-white';
+
+            if (selectedQAAnswer !== null) {
+              if (isSelected && isCorrect) {
+                style = 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 ring-2 ring-emerald-500';
+              } else if (isSelected && !isCorrect) {
+                style = 'bg-rose-500/20 text-rose-700 dark:text-rose-300 ring-2 ring-rose-500';
+              } else if (isCorrect) {
+                style = 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400';
+              }
+            }
+
+            return (
+              <button
+                key={opt}
+                onClick={() => handleQAOptionSelect(opt)}
+                disabled={selectedQAAnswer !== null}
+                className={`w-full min-h-[56px] py-4 px-6 rounded-3xl font-arabic-bold text-2xl flex items-center justify-center transition-all active:scale-[0.98] cursor-pointer border-0 ${style}`}
+                dir="rtl"
+              >
+                {opt}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Feedback & Continue Button */}
+        {stepStatus !== 'idle' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full space-y-3"
+          >
+            <button
+              onClick={advanceToNext}
+              className={`w-full h-14 rounded-full font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer border-0 text-white ${
+                stepStatus === 'correct'
+                  ? 'bg-emerald-600 hover:bg-emerald-700'
+                  : 'bg-rose-600 hover:bg-rose-700'
+              }`}
+            >
+              <span>{stepStatus === 'correct' ? 'Continue' : 'Got it! Continue'}</span>
+              <ArrowRight size={18} />
+            </button>
+          </motion.div>
+        )}
+      </div>
+    );
+  };
+
+  // --------------------------------------------------------------------------
+  // RENDER: TARKIB DISSECTOR STEP (Interactive Syntactic Role Slotting)
+  // --------------------------------------------------------------------------
+  const renderTarkibDissector = () => {
+    const payload = currentStep.tarkibPayload;
+    if (!payload || !payload.sentences || payload.sentences.length === 0) return null;
+
+    const sentence = payload.sentences[activeTarkibIndex] || payload.sentences[0];
+
+    const handleAssignWord = (word: string) => {
+      if (stepStatus !== 'idle') return;
+      playArabicAudio(word);
+      const firstEmptySlotIdx = sentence.slots.findIndex((_, idx) => !assignedTarkibSlots[idx]);
+      if (firstEmptySlotIdx !== -1) {
+        setAssignedTarkibSlots((prev) => ({ ...prev, [firstEmptySlotIdx]: word }));
+      }
+    };
+
+    const handleClearSlot = (slotIdx: number) => {
+      if (stepStatus !== 'idle') return;
+      setAssignedTarkibSlots((prev) => {
+        const next = { ...prev };
+        delete next[slotIdx];
+        return next;
+      });
+    };
+
+    const allSlotsFilled = sentence.slots.every((_, idx) => Boolean(assignedTarkibSlots[idx]));
+
+    const handleCheckTarkib = () => {
+      if (!allSlotsFilled || stepStatus !== 'idle') return;
+      const isAllCorrect = sentence.slots.every(
+        (slot, idx) => assignedTarkibSlots[idx] === slot.expectedWordAr
+      );
+
+      if (isAllCorrect) {
+        if (activeTarkibIndex < payload.sentences.length - 1) {
+          playSuccessChime();
+          setTimeout(() => {
+            setActiveTarkibIndex((prev) => prev + 1);
+            setAssignedTarkibSlots({});
+          }, 500);
+        } else {
+          handlePass();
+        }
+      } else {
+        handleFail();
+      }
+    };
+
+    const availableWords = sentence.availableWordsAr.filter(
+      (w) => !Object.values(assignedTarkibSlots).includes(w)
+    );
+
+    return (
+      <div className="w-full max-w-lg mx-auto flex flex-col items-center space-y-6">
+        {/* Sentence Type Header */}
+        <div className="px-4 py-1.5 rounded-full bg-accent-secondary/15 text-accent-secondary text-xs font-mono font-bold uppercase tracking-wider">
+          {sentence.sentenceTypeAr}
+        </div>
+
+        {/* Full Sentence Display */}
+        <div className="w-full p-6 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center space-y-3 text-center">
+          <div className="flex items-center gap-3">
+            <h3 className="font-arabic-bold text-3xl sm:text-4xl text-neutral-900 dark:text-white leading-relaxed" dir="rtl">
+              {sentence.sentenceAr}
+            </h3>
+            <button
+              onClick={() => playArabicAudio(sentence.sentenceAr)}
+              className="w-8 h-8 rounded-full bg-neutral-200/80 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 border-0 cursor-pointer"
+              aria-label="Listen"
+            >
+              <Volume2 size={16} />
+            </button>
+          </div>
+        </div>
+
+        {/* Target Syntactic Slots */}
+        <div className="w-full grid grid-cols-2 gap-3" dir="rtl">
+          {sentence.slots.map((slot, idx) => {
+            const filledWord = assignedTarkibSlots[idx];
+            return (
+              <div
+                key={idx}
+                className="p-4 rounded-3xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center space-y-2 border-0"
+              >
+                <div className="flex items-center justify-between w-full">
+                  <span className="font-arabic-bold text-sm text-accent-primary">
+                    {slot.roleAr}
+                  </span>
+                  <span className="text-[11px] font-mono text-neutral-400">
+                    {isBn ? slot.roleBn : slot.roleEn}
+                  </span>
+                </div>
+
+                {filledWord ? (
+                  <button
+                    onClick={() => handleClearSlot(idx)}
+                    className="w-full min-h-[48px] py-2 px-3 rounded-2xl bg-white dark:bg-neutral-950 font-arabic-bold text-xl text-neutral-900 dark:text-white flex items-center justify-center gap-2 border-0 cursor-pointer hover:bg-rose-500/10 transition-colors"
+                  >
+                    <span>{filledWord}</span>
+                    <X size={14} className="text-neutral-400 hover:text-rose-500" />
+                  </button>
+                ) : (
+                  <div className="w-full min-h-[48px] rounded-2xl border-2 border-dashed border-neutral-300 dark:border-neutral-700 flex items-center justify-center text-xs font-mono text-neutral-400">
+                    {isBn ? 'শব্দ বসাও' : 'Place Word'}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Available Words Pool */}
+        <div className="w-full flex flex-wrap justify-center gap-2.5">
+          {availableWords.map((word) => (
+            <button
+              key={word}
+              onClick={() => handleAssignWord(word)}
+              disabled={stepStatus !== 'idle'}
+              className="min-h-[48px] py-2.5 px-6 rounded-full bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 font-arabic-bold text-xl text-neutral-900 dark:text-white border-0 cursor-pointer active:scale-95 transition-all"
+              dir="rtl"
+            >
+              {word}
+            </button>
+          ))}
+        </div>
+
+        {/* Action Button */}
+        {stepStatus === 'idle' ? (
+          <button
+            onClick={handleCheckTarkib}
+            disabled={!allSlotsFilled}
+            className={`w-full h-14 rounded-full font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] border-0 ${
+              allSlotsFilled
+                ? 'bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 cursor-pointer'
+                : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-400 cursor-not-allowed'
+            }`}
+          >
+            <span>{isBn ? 'যাচাই করুন' : 'Check Syntax'}</span>
+            <Check size={18} />
+          </button>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full space-y-3"
+          >
+            <button
+              onClick={advanceToNext}
+              className={`w-full h-14 rounded-full font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer border-0 text-white ${
+                stepStatus === 'correct'
+                  ? 'bg-emerald-600 hover:bg-emerald-700'
+                  : 'bg-rose-600 hover:bg-rose-700'
+              }`}
+            >
+              <span>{stepStatus === 'correct' ? 'Continue' : 'Got it! Continue'}</span>
+              <ArrowRight size={18} />
+            </button>
+          </motion.div>
+        )}
       </div>
     );
   };
@@ -1998,7 +2584,13 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
       {/* Top Header HUD */}
       <header className="sticky top-0 z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md px-6 py-4 flex items-center gap-4 border-b border-neutral-200/50 dark:border-neutral-800/50">
         <button
-          onClick={onExit}
+          onClick={() => {
+            if (currentStepIndex > 0 && !isSessionComplete) {
+              setShowExitConfirm(true);
+            } else {
+              onExit();
+            }
+          }}
           className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 flex items-center justify-center transition-colors cursor-pointer shrink-0"
           aria-label="Exit Lesson"
         >
@@ -2074,6 +2666,9 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
             {currentStep.type === 'vocab_prime' && renderVocabPrime()}
             {currentStep.type === 'concept_intro' && renderConceptIntro()}
             {currentStep.type === 'polar_sort' && renderPolarSort()}
+            {currentStep.type === 'spatial_pointing' && renderSpatialPointing()}
+            {currentStep.type === 'alternative_qa' && renderAlternativeQA()}
+            {currentStep.type === 'tarkib_dissector' && renderTarkibDissector()}
             {currentStep.type === 'sentence_assembly' && renderSentenceAssembly()}
             {currentStep.type === 'cloze_choice' && renderClozeChoice()}
             {currentStep.type === 'speed_pair' && renderSpeedPair()}
@@ -2086,6 +2681,58 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
           </motion.div>
         </AnimatePresence>
       </main>
+
+      {/* Exit Confirmation Modal */}
+      <AnimatePresence>
+        {showExitConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              transition={{ duration: 0.2 }}
+              className="w-full max-w-sm rounded-4xl bg-white dark:bg-neutral-900 p-6 sm:p-8 flex flex-col items-center text-center space-y-5 shadow-none border-0"
+            >
+              <div className="w-14 h-14 rounded-full bg-accent-primary-subtle text-accent-primary flex items-center justify-center">
+                <BookmarkCheck size={28} />
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="font-english-bold text-xl text-neutral-900 dark:text-neutral-100">
+                  {isBn ? 'পাঠ স্থগিত করবেন?' : 'Leave lesson?'}
+                </h3>
+                <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                  {isBn
+                    ? `আপনার অগ্রগতি সংরক্ষিত আছে (${toArabicNumerals(currentStepIndex + 1)}/${toArabicNumerals(steps.length)})। আপনি যেকোনো সময় আবার শুরু করতে পারবেন।`
+                    : `Your progress is saved at Step ${currentStepIndex + 1} of ${steps.length}. You can resume right where you left off.`}
+                </p>
+              </div>
+
+              <div className="flex flex-col w-full gap-2.5 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowExitConfirm(false)}
+                  className="w-full h-14 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+                >
+                  <span>{isBn ? 'শেখা চালিয়ে যান' : 'Keep Learning'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    saveCheckpoint(volumeId, chapterId, lessonNum, currentStepIndex, steps.length);
+                    setShowExitConfirm(false);
+                    onExit();
+                  }}
+                  className="w-full h-14 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 font-english-medium text-base flex items-center justify-center transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+                >
+                  <span>{isBn ? 'সংরক্ষণ করে প্রস্থান' : 'Save & Exit'}</span>
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

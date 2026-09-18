@@ -1,10 +1,12 @@
 import React, { useState, useMemo } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { ArrowLeft, Play, Check } from 'lucide-react'
+import { ArrowLeft, Play, Check, RotateCcw, BookmarkCheck } from 'lucide-react'
 
 import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
 import { useProgressStore } from '../../state/progressStore'
 import { useRetentionStore } from '../../state/retentionStore'
+import { useLessonCheckpointStore } from '../../state/lessonCheckpointStore'
+import { useLanguage } from '../../hooks/useLanguage'
 import { LessonSessionRunner } from '../runner/LessonSessionRunner'
 import { getLessonSession } from '../../lib/lessonRegistry'
 import TransliterationToggle from '../TransliterationToggle'
@@ -24,7 +26,19 @@ function toArabicNumerals(n: number): string {
 
 export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) => {
   const navigate = useNavigate()
-  const [isRunningSession, setIsRunningSession] = useState(false)
+  const { language } = useLanguage()
+  const isBn = language === 'bn'
+
+  const initialStepParam = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('step') : null
+  const initialStepIndex = initialStepParam !== null ? parseInt(initialStepParam, 10) : undefined
+
+  const checkpoint = useLessonCheckpointStore((state) =>
+    state.getCheckpoint(volumeId, chapterId, darsNum)
+  )
+  const clearCheckpoint = useLessonCheckpointStore((state) => state.clearCheckpoint)
+
+  const [activeStepIndex, setActiveStepIndex] = useState<number | undefined>(initialStepIndex)
+  const [isRunningSession, setIsRunningSession] = useState(() => initialStepIndex !== undefined)
 
   const progressStore = useProgressStore((state) => state.progress)
   const sessions = useRetentionStore((state) => state.sessions)
@@ -51,6 +65,13 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
     return progressStore[`progress.v${volumeId}.c${chapterId}.d${darsNum}`] === 'completed'
   }, [sessions, progressStore, volumeId, chapterId, darsNum])
 
+  const hasCheckpoint = Boolean(
+    checkpoint &&
+    checkpoint.currentStepIndex > 0 &&
+    registeredSession &&
+    checkpoint.currentStepIndex < registeredSession.steps.length
+  )
+
   // If in interactive session, render the runner
   if (isRunningSession) {
     return (
@@ -58,7 +79,11 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
         volumeId={volumeId}
         chapterId={chapterId}
         lessonNum={darsNum}
-        onExit={() => setIsRunningSession(false)}
+        initialStepIndex={activeStepIndex}
+        onExit={() => {
+          setActiveStepIndex(undefined)
+          setIsRunningSession(false)
+        }}
       />
     )
   }
@@ -122,7 +147,13 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
           {/* Titles & Pedagogical Concepts */}
           <div className="space-y-1.5 w-full">
             <span className="text-xs font-mono uppercase tracking-widest text-accent-primary font-bold block">
-              {isCompleted ? 'Mastered Lesson' : 'Interactive Session'}
+              {hasCheckpoint
+                ? (isCompleted
+                  ? (isBn ? 'অনুশীলন চলমান' : 'Practice in Progress')
+                  : (isBn ? 'সংরক্ষিত অগ্রগতি' : 'Lesson in Progress'))
+                : (isCompleted
+                  ? (isBn ? 'সম্পন্ন পাঠ' : 'Mastered Lesson')
+                  : (isBn ? 'ইন্টারেক্টিভ সেশন' : 'Interactive Session'))}
             </span>
             <h2 className="font-arabic-bold text-3xl sm:text-4xl text-neutral-900 dark:text-white" dir="rtl">
               {registeredSession?.titleAr || `الدَّرْسُ ${toArabicNumerals(darsNum)}`}
@@ -139,7 +170,7 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
           {registeredSession?.wordsLearned && registeredSession.wordsLearned.length > 0 && (
             <div className="w-full pt-1">
               <span className="text-[11px] font-mono text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block mb-2">
-                Key Vocabulary Covered
+                {isBn ? 'মূল শব্দভাণ্ডার' : 'Key Vocabulary Covered'}
               </span>
               <div className="flex flex-wrap items-center justify-center gap-1.5">
                 {registeredSession.wordsLearned.slice(0, 6).map((word, idx) => (
@@ -155,18 +186,95 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
             </div>
           )}
 
-          {/* 56px Action Button */}
-          <button
-            type="button"
-            onClick={() => {
-              playTapSound()
-              setIsRunningSession(true)
-            }}
-            className="w-full h-14 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-english-semibold text-base flex items-center justify-center gap-3 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
-          >
-            <Play size={18} className="fill-white" />
-            <span>{isCompleted ? 'Practice Again' : 'Start Interactive Session'}</span>
-          </button>
+          {/* In-Progress Checkpoint Status Banner */}
+          {hasCheckpoint && checkpoint && (
+            <div className="w-full p-4 rounded-3xl bg-accent-primary-subtle text-accent-primary flex flex-col gap-2 text-left">
+              <div className="flex items-center justify-between text-xs font-mono font-bold uppercase tracking-wider">
+                <span className="flex items-center gap-1.5">
+                  <BookmarkCheck size={14} />
+                  <span>
+                    {isCompleted
+                      ? (isBn ? 'অনুশীলন সংরক্ষিত' : 'Practice Saved')
+                      : (isBn ? 'সংরক্ষিত অগ্রগতি' : 'Progress Saved')}
+                  </span>
+                </span>
+                <span>
+                  {isBn
+                    ? `ধাপ ${toArabicNumerals(checkpoint.currentStepIndex + 1)} / ${toArabicNumerals(checkpoint.totalSteps)}`
+                    : `Step ${checkpoint.currentStepIndex + 1} of ${checkpoint.totalSteps}`}
+                </span>
+              </div>
+              <div className="w-full h-1.5 bg-accent-primary/20 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-accent-primary rounded-full transition-all duration-300"
+                  style={{
+                    width: `${Math.min(100, Math.round(((checkpoint.currentStepIndex) / checkpoint.totalSteps) * 100))}%`,
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Action Buttons: Dual (Resume + Restart) vs Single */}
+          {hasCheckpoint && checkpoint ? (
+            <div className="w-full flex flex-col gap-2.5">
+              <button
+                type="button"
+                onClick={() => {
+                  playTapSound()
+                  setActiveStepIndex(checkpoint.currentStepIndex)
+                  setIsRunningSession(true)
+                }}
+                className="w-full h-14 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-english-semibold text-base flex items-center justify-center gap-3 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+              >
+                <Play size={18} className="fill-white" />
+                <span>
+                  {isCompleted
+                    ? (isBn
+                      ? `অনুশীলন চালিয়ে যান (ধাপ ${toArabicNumerals(checkpoint.currentStepIndex + 1)})`
+                      : `Resume Practice (Step ${checkpoint.currentStepIndex + 1})`)
+                    : (isBn
+                      ? `পাঠ চালিয়ে যান (ধাপ ${toArabicNumerals(checkpoint.currentStepIndex + 1)})`
+                      : `Resume Lesson (Step ${checkpoint.currentStepIndex + 1})`)}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  playTapSound()
+                  clearCheckpoint(volumeId, chapterId, darsNum)
+                  setActiveStepIndex(0)
+                  setIsRunningSession(true)
+                }}
+                className="w-full h-14 rounded-full bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 font-english-medium text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+              >
+                <RotateCcw size={18} />
+                <span>
+                  {isCompleted
+                    ? (isBn ? 'শুরু থেকে অনুশীলন করুন' : 'Restart Practice')
+                    : (isBn ? 'শুরু থেকে শুরু করুন' : 'Start from Beginning')}
+                </span>
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                playTapSound()
+                setActiveStepIndex(0)
+                setIsRunningSession(true)
+              }}
+              className="w-full h-14 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-english-semibold text-base flex items-center justify-center gap-3 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+            >
+              <Play size={18} className="fill-white" />
+              <span>
+                {isCompleted
+                  ? (isBn ? 'আবার অনুশীলন করুন' : 'Practice Again')
+                  : (isBn ? 'ইন্টারেক্টিভ সেশন শুরু করুন' : 'Start Interactive Session')}
+              </span>
+            </button>
+          )}
         </div>
       </div>
     </div>

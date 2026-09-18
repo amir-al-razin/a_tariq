@@ -9,58 +9,33 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as DemoV2IndexRouteImport } from './routes/demo-v2/index'
-import { Route as DemoIndexRouteImport } from './routes/demo/index'
-import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
-import { Route as DemoI18nRouteImport } from './routes/demo.i18n'
-import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
-import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
-import { Route as MushafV2IndexRouteImport } from './routes/mushaf-v2/index'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as PedagogyLabIndexRouteImport } from './routes/pedagogy-lab/index'
+import { Route as MushafV2IndexRouteImport } from './routes/mushaf-v2/index'
+import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
+import { Route as DemoIndexRouteImport } from './routes/demo/index'
+import { Route as DemoV2IndexRouteImport } from './routes/demo-v2/index'
+import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
+import { Route as DemoI18nRouteImport } from './routes/demo.i18n'
+import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
 import { Route as VolumeVolumeIdIndexRouteImport } from './routes/volume/$volumeId/index'
 import { Route as VolumeVolumeIdChapterChapterIdLessonDarsNumIndexRouteImport } from './routes/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/index'
 import { Route as VolumeVolumeIdChapterChapterIdLessonDarsNumChunkChunkIdRouteImport } from './routes/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoV2IndexRoute = DemoV2IndexRouteImport.update({
-  id: '/demo-v2/',
-  path: '/demo-v2/',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoIndexRoute = DemoIndexRouteImport.update({
-  id: '/demo/',
-  path: '/demo/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoDrizzleRoute = DemoDrizzleRouteImport.update({
-  id: '/demo/drizzle',
-  path: '/demo/drizzle',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoI18nRoute = DemoI18nRouteImport.update({
-  id: '/demo/i18n',
-  path: '/demo/i18n',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DesignSystemIndexRoute = DesignSystemIndexRouteImport.update({
-  id: '/design-system/',
-  path: '/design-system/',
+const PedagogyLabIndexRoute = PedagogyLabIndexRouteImport.update({
+  id: '/pedagogy-lab/',
+  path: '/pedagogy-lab/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MushafV2IndexRoute = MushafV2IndexRouteImport.update({
@@ -68,9 +43,34 @@ const MushafV2IndexRoute = MushafV2IndexRouteImport.update({
   path: '/mushaf-v2/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PedagogyLabIndexRoute = PedagogyLabIndexRouteImport.update({
-  id: '/pedagogy-lab/',
-  path: '/pedagogy-lab/',
+const DesignSystemIndexRoute = DesignSystemIndexRouteImport.update({
+  id: '/design-system/',
+  path: '/design-system/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoIndexRoute = DemoIndexRouteImport.update({
+  id: '/demo/',
+  path: '/demo/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoV2IndexRoute = DemoV2IndexRouteImport.update({
+  id: '/demo-v2/',
+  path: '/demo-v2/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
+  id: '/demo/tanstack-query',
+  path: '/demo/tanstack-query',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoI18nRoute = DemoI18nRouteImport.update({
+  id: '/demo/i18n',
+  path: '/demo/i18n',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoDrizzleRoute = DemoDrizzleRouteImport.update({
+  id: '/demo/drizzle',
+  path: '/demo/drizzle',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VolumeVolumeIdIndexRoute = VolumeVolumeIdIndexRouteImport.update({
@@ -203,13 +203,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -217,46 +210,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo-v2/': {
-      id: '/demo-v2/'
-      path: '/demo-v2'
-      fullPath: '/demo-v2/'
-      preLoaderRoute: typeof DemoV2IndexRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/': {
-      id: '/demo/'
-      path: '/demo'
-      fullPath: '/demo/'
-      preLoaderRoute: typeof DemoIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/drizzle': {
-      id: '/demo/drizzle'
-      path: '/demo/drizzle'
-      fullPath: '/demo/drizzle'
-      preLoaderRoute: typeof DemoDrizzleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/i18n': {
-      id: '/demo/i18n'
-      path: '/demo/i18n'
-      fullPath: '/demo/i18n'
-      preLoaderRoute: typeof DemoI18nRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/design-system/': {
-      id: '/design-system/'
-      path: '/design-system'
-      fullPath: '/design-system/'
-      preLoaderRoute: typeof DesignSystemIndexRouteImport
+    '/pedagogy-lab/': {
+      id: '/pedagogy-lab/'
+      path: '/pedagogy-lab'
+      fullPath: '/pedagogy-lab/'
+      preLoaderRoute: typeof PedagogyLabIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mushaf-v2/': {
@@ -266,11 +231,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MushafV2IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/pedagogy-lab/': {
-      id: '/pedagogy-lab/'
-      path: '/pedagogy-lab'
-      fullPath: '/pedagogy-lab/'
-      preLoaderRoute: typeof PedagogyLabIndexRouteImport
+    '/design-system/': {
+      id: '/design-system/'
+      path: '/design-system'
+      fullPath: '/design-system/'
+      preLoaderRoute: typeof DesignSystemIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/': {
+      id: '/demo/'
+      path: '/demo'
+      fullPath: '/demo/'
+      preLoaderRoute: typeof DemoIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo-v2/': {
+      id: '/demo-v2/'
+      path: '/demo-v2'
+      fullPath: '/demo-v2/'
+      preLoaderRoute: typeof DemoV2IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/tanstack-query': {
+      id: '/demo/tanstack-query'
+      path: '/demo/tanstack-query'
+      fullPath: '/demo/tanstack-query'
+      preLoaderRoute: typeof DemoTanstackQueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/i18n': {
+      id: '/demo/i18n'
+      path: '/demo/i18n'
+      fullPath: '/demo/i18n'
+      preLoaderRoute: typeof DemoI18nRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/drizzle': {
+      id: '/demo/drizzle'
+      path: '/demo/drizzle'
+      fullPath: '/demo/drizzle'
+      preLoaderRoute: typeof DemoDrizzleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/volume/$volumeId/': {

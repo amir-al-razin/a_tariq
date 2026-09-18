@@ -1,6 +1,9 @@
+import React from 'react';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Pressable, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useThemeTokens } from '../theme/colors';
+import { playTapSound } from '../lib/sound';
 
 type HomeScreenProps = {
   navigation: {
@@ -12,59 +15,199 @@ type VolumeKey = 'VolumeOne' | 'VolumeTwo' | 'VolumeThree';
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { t } = useTranslation();
+  const theme = useThemeTokens();
 
-  const VOLUMES: { key: VolumeKey; titleKey: string; subtitleKey: string; locked: boolean }[] = [
-    { key: 'VolumeOne',   titleKey: 'home.volume1', subtitleKey: 'home.volume1Subtitle', locked: false },
-    { key: 'VolumeTwo',   titleKey: 'home.volume2', subtitleKey: 'home.volume2Subtitle', locked: false },
-    { key: 'VolumeThree', titleKey: 'home.volume3', subtitleKey: 'home.volume3Subtitle', locked: false },
+  const VOLUMES: {
+    key: VolumeKey;
+    volumeId: number;
+    titleKey: string;
+    subtitleKey: string;
+    titleAr: string;
+    locked: boolean;
+  }[] = [
+    {
+      key: 'VolumeOne',
+      volumeId: 1,
+      titleKey: 'home.volume1',
+      subtitleKey: 'home.volume1Subtitle',
+      titleAr: 'الجزء الأول',
+      locked: false,
+    },
+    {
+      key: 'VolumeTwo',
+      volumeId: 2,
+      titleKey: 'home.volume2',
+      subtitleKey: 'home.volume2Subtitle',
+      titleAr: 'الجزء الثاني',
+      locked: false,
+    },
+    {
+      key: 'VolumeThree',
+      volumeId: 3,
+      titleKey: 'home.volume3',
+      subtitleKey: 'home.volume3Subtitle',
+      titleAr: 'الجزء الثالث',
+      locked: false,
+    },
   ];
 
   return (
-    <View className="flex-1 gap-5 bg-white px-6 py-8 dark:bg-neutral-950">
-      <View className="gap-2">
-        <Text className="font-english-semibold text-display text-neutral-900 dark:text-neutral-100">
+    <ScrollView
+      style={{ flex: 1, backgroundColor: theme.canvas }}
+      contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 36, paddingBottom: 48 }}
+      showsVerticalScrollIndicator={false}>
+      {/* Hero Welcome Header */}
+      <View style={{ marginBottom: 28 }}>
+        <Text
+          style={{
+            fontFamily: 'Lexend_600SemiBold',
+            fontSize: 11,
+            letterSpacing: 2,
+            textTransform: 'uppercase',
+            color: theme.accentPrimary,
+            marginBottom: 6,
+          }}>
+          Curriculum Volumes
+        </Text>
+        <Text
+          style={{
+            fontFamily: 'Lexend_600SemiBold',
+            fontSize: 32,
+            color: theme.textPrimary,
+            marginBottom: 6,
+          }}>
           {t('home.title')}
         </Text>
-        <Text className="font-english text-body text-neutral-500 dark:text-neutral-400">
+        <Text
+          style={{
+            fontFamily: 'Lexend_400Regular',
+            fontSize: 15,
+            color: theme.textSecondary,
+            lineHeight: 22,
+          }}>
           {t('home.subtitle')}
         </Text>
       </View>
 
-      <View className="gap-3">
+      {/* Volume Cards (Level 1 Surface Well, rounded-3xl) */}
+      <View style={{ gap: 16 }}>
         {VOLUMES.map((vol) => {
           if (vol.locked) {
             return (
               <View
                 key={vol.key}
-                className="w-full flex-row items-center justify-between rounded-2xl bg-neutral-100 p-5 dark:bg-neutral-900">
-                <View className="gap-1">
-                  <Text className="font-english-semibold text-h2 text-neutral-400 dark:text-neutral-500">
+                style={{
+                  width: '100%',
+                  borderRadius: 24,
+                  backgroundColor: theme.surfaceWell,
+                  padding: 24,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  opacity: 0.6,
+                }}>
+                <View style={{ flex: 1 }}>
+                  <Text
+                    style={{
+                      fontFamily: 'Lexend_600SemiBold',
+                      fontSize: 20,
+                      color: theme.textMuted,
+                    }}>
                     {t(vol.titleKey)}
                   </Text>
-                  <Text className="font-english text-body-sm text-neutral-400 dark:text-neutral-600">
+                  <Text
+                    style={{
+                      fontFamily: 'Lexend_400Regular',
+                      fontSize: 13,
+                      color: theme.textMuted,
+                      marginTop: 4,
+                    }}>
                     {t('home.locked')}
                   </Text>
                 </View>
-                <Ionicons name="lock-closed" size={18} color="#737373" />
+                <Ionicons name="lock-closed" size={20} color={theme.textMuted} />
               </View>
             );
           }
+
           return (
-            <Pressable
+            <TouchableOpacity
               key={vol.key}
-              accessibilityRole="button"
-              onPress={() => navigation.navigate(vol.key)}
-              className="w-full rounded-2xl bg-neutral-100 p-5 active:opacity-70 dark:bg-neutral-900">
-              <Text className="font-english-semibold text-h2 text-neutral-900 dark:text-neutral-100">
+              activeOpacity={0.85}
+              onPress={() => {
+                playTapSound();
+                navigation.navigate(vol.key);
+              }}
+              style={{
+                width: '100%',
+                borderRadius: 24,
+                backgroundColor: theme.surfaceWell,
+                padding: 24,
+                position: 'relative',
+                overflow: 'hidden',
+              }}>
+              {/* Subtle Arabic Watermark */}
+              <View
+                style={{
+                  position: 'absolute',
+                  right: -10,
+                  top: -10,
+                  opacity: 0.04,
+                  transform: [{ rotate: '-8deg' }],
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'NotoSansArabic_600SemiBold',
+                    fontSize: 84,
+                    color: theme.textPrimary,
+                  }}>
+                  {vol.titleAr}
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: 6,
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'Lexend_600SemiBold',
+                    fontSize: 11,
+                    letterSpacing: 1.5,
+                    textTransform: 'uppercase',
+                    color: theme.accentPrimary,
+                  }}>
+                  Volume {vol.volumeId}
+                </Text>
+                <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
+              </View>
+
+              <Text
+                style={{
+                  fontFamily: 'Lexend_600SemiBold',
+                  fontSize: 22,
+                  color: theme.textPrimary,
+                  marginBottom: 6,
+                }}>
                 {t(vol.titleKey)}
               </Text>
-              <Text className="mt-1 font-english text-body-sm text-neutral-500 dark:text-neutral-400">
+
+              <Text
+                style={{
+                  fontFamily: 'Lexend_400Regular',
+                  fontSize: 13,
+                  color: theme.textSecondary,
+                  lineHeight: 20,
+                }}>
                 {t(vol.subtitleKey)}
               </Text>
-            </Pressable>
+            </TouchableOpacity>
           );
         })}
       </View>
-    </View>
+    </ScrollView>
   );
 };

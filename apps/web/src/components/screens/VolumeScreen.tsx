@@ -1,11 +1,13 @@
 import React, { useMemo, useState } from 'react'
-import { Check, Trophy, ArrowRight, X } from 'lucide-react'
+import { Check, Trophy, ArrowRight, X, Sparkles, Clock, Play, RotateCcw, BookmarkCheck } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import * as m from '#/paraglide/messages.js'
 
 import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
 import { useProgressStore } from '../../state/progressStore'
 import { useRetentionStore } from '../../state/retentionStore'
+import { useLessonCheckpointStore } from '../../state/lessonCheckpointStore'
+import { useLanguage } from '../../hooks/useLanguage'
 import { ProgressRing } from './ProgressRing'
 import { getLessonSession } from '../../lib/lessonRegistry'
 import { LessonSessionRunner } from '../runner/LessonSessionRunner'
@@ -21,17 +23,122 @@ function toArabicNumerals(n: number): string {
   return n.toString().split('').map(d => digits[parseInt(d, 10)] || d).join('')
 }
 
-// Rich pedagogical metadata for Volume 1 Chapter 1 lessons
-const CHAPTER_1_LESSONS_INFO: Record<number, { titleEn: string; titleAr: string; conceptEn: string }> = {
-  1: { titleEn: 'The Demonstrative: This', titleAr: 'الدَّرْسُ الأَوَّلُ · هَٰذَا', conceptEn: 'Masculine nouns, pointing near' },
-  2: { titleEn: 'The Far Demonstrative: That', titleAr: 'الدَّرْسُ الثَّانِي · ذَٰلِكَ', conceptEn: 'Masculine nouns, pointing far' },
-  3: { titleEn: 'Interrogatives: What & Who', titleAr: 'الدَّرْسُ الثَّالِثُ · مَا وَمَنْ', conceptEn: 'Questions with مَا and مَنْ' },
-  4: { titleEn: 'Questions & Sun Letters', titleAr: 'الدَّرْسُ الرَّابِعُ · أَ وَالشَّمْسِيَّةُ', conceptEn: 'Particle أَ & Sun/Moon phonetics' },
-  5: { titleEn: 'Feminine Demonstratives', titleAr: 'الدَّرْسُ الخَامِسُ · هَٰذِهِ وَتِلْكَ', conceptEn: 'Ta-Marbutah & feminine pointing' },
-  6: { titleEn: 'The Definite Article', titleAr: 'الدَّرْسُ السَّادِسُ · أَلْ', conceptEn: 'Tanween drops with Alif-Lam' },
-  7: { titleEn: 'The Possession Formula', titleAr: 'الدَّرْسُ السَّابِعُ · الإِضَافَةُ', conceptEn: 'Idafah: Mudaf & Mudaf Ilayh' },
-  8: { titleEn: 'The Preposition In', titleAr: 'الدَّرْسُ الثَّامِنُ · فِي', conceptEn: 'Kasrah shift after Harf Jarr فِي' },
-  9: { titleEn: 'Locatives & Prepositions', titleAr: 'الدَّرْسُ التَّاسِعُ · عِنْدَ وَمَعَ', conceptEn: 'Adverbs عِنْدَ, مَعَ, and preposition لِـ' },
+interface LessonMeta {
+  titleEn: string
+  arabicTopic: string
+  conceptEn: string
+}
+
+// Welcoming, layman-friendly metadata for Volume 1 Chapter 1 lessons
+const CHAPTER_1_LESSONS_INFO: Record<number, LessonMeta> = {
+  1: {
+    titleEn: 'Pointing Near: "This"',
+    arabicTopic: 'هَٰذَا',
+    conceptEn: 'Learn how to point to objects and people near you.',
+  },
+  2: {
+    titleEn: 'Pointing Far: "That"',
+    arabicTopic: 'ذَٰلِكَ',
+    conceptEn: 'Learn how to point to objects and people in the distance.',
+  },
+  3: {
+    titleEn: 'Asking "What" & "Who"',
+    arabicTopic: 'مَا وَ مَنْ',
+    conceptEn: 'Ask simple questions about things and people around you.',
+  },
+  4: {
+    titleEn: 'Yes/No Questions & Sounds',
+    arabicTopic: 'أَ وَ الْحُرُوفُ الشَّمْسِيَّةُ',
+    conceptEn: 'Ask quick confirmation questions and pronounce words smoothly.',
+  },
+  5: {
+    titleEn: 'Feminine Words & Pointing',
+    arabicTopic: 'هَٰذِهِ وَ تِلْكَ',
+    conceptEn: 'Identify feminine nouns and point to them accurately.',
+  },
+  6: {
+    titleEn: 'The Definite Word ("The")',
+    arabicTopic: 'أَلْ',
+    conceptEn: 'Make everyday words specific with the prefix "Al-".',
+  },
+  7: {
+    titleEn: 'Possession & Belonging',
+    arabicTopic: 'الإِضَافَةُ',
+    conceptEn: 'Express relationships like "the teacher\'s book" and "the house of Allah".',
+  },
+  8: {
+    titleEn: 'The Location Word "In"',
+    arabicTopic: 'حَرْفُ الْجَرِّ «فِي»',
+    conceptEn: 'Describe where people and objects are located in places.',
+  },
+  9: {
+    titleEn: 'Having & Being With',
+    arabicTopic: 'عِنْدَ وَ مَعَ',
+    conceptEn: 'Talk about what you have with you and who you are with.',
+  },
+}
+
+// Welcoming, layman-friendly metadata for Volume 1 Chapter 2 lessons
+const CHAPTER_2_LESSONS_INFO: Record<number, LessonMeta> = {
+  1: {
+    titleEn: 'General & Choice Questions',
+    arabicTopic: 'هَلْ وَ أَ...أَمْ',
+    conceptEn: 'Ask yes/no questions and choose between two alternatives.',
+  },
+  2: {
+    titleEn: 'Attributes & Opposites',
+    arabicTopic: 'الصِّفَةُ وَ الْمَوْصُوفُ',
+    conceptEn: 'Describe everyday food and objects with qualities like fresh and pure.',
+  },
+  3: {
+    titleEn: 'People, Roles & Character',
+    arabicTopic: 'الأَوْصَافُ وَ غَيْرُ',
+    conceptEn: 'Talk about professions, character, and opposite qualities with "ghayr".',
+  },
+  4: {
+    titleEn: 'Building Complete Sentences',
+    arabicTopic: 'تَرْكِيبُ الْجُمْلَةِ',
+    conceptEn: 'Form meaningful Arabic statements by pairing subjects and descriptions.',
+  },
+  5: {
+    titleEn: 'My, Your, His & Her',
+    arabicTopic: 'الضَّمَائِرُ الْمُتَّصِلَةُ',
+    conceptEn: 'Attach word endings to show who owns an item.',
+  },
+  6: {
+    titleEn: 'Places & Landmarks',
+    arabicTopic: 'الأَمَاكِنُ وَ الإِضَافَةُ',
+    conceptEn: 'Describe cities, mosques, markets, and institutions in full sentences.',
+  },
+  7: {
+    titleEn: 'Directions & Positions',
+    arabicTopic: 'ظُرُوفُ الْمَكَانِ',
+    conceptEn: 'Use words like above, below, in front of, and behind with ease.',
+  },
+  8: {
+    titleEn: 'Classrooms & School Life',
+    arabicTopic: 'الْفُصُولُ وَ الدِّرَاسَةُ',
+    conceptEn: 'Describe classrooms, learning supplies, and everyday scenes.',
+  },
+}
+
+// Welcoming, layman-friendly metadata for Volume 1 Chapter 3 lessons
+const CHAPTER_3_LESSONS_INFO: Record<number, LessonMeta> = {
+  1: {
+    titleEn: 'Possession with Pointing',
+    arabicTopic: 'إِمَامُ هَٰذَا الْمَسْجِدِ',
+    conceptEn: 'Express ownership of pointed items and read the sacred text on Al-Kaaba.',
+  },
+  2: {
+    titleEn: 'Definite Descriptive Phrases',
+    arabicTopic: 'الْوَرْدَةُ الْكَبِيرَةُ',
+    conceptEn: 'Progress from basic words to rich descriptive phrases and complete sentences.',
+  },
+  3: {
+    titleEn: 'Reading Authentic Arabic',
+    arabicTopic: 'قِرَاءَةُ النُّصُوصِ',
+    conceptEn: 'Celebrate completing Volume 1 by reading complete classical Arabic stories.',
+  },
 }
 
 // Sinusoidal meandering offsets for the vertical journey path (repeats rhythmically)
@@ -47,7 +154,17 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
   const [selectedNodeLesson, setSelectedNodeLesson] = useState<{ chapterId: number; darsNum: number } | null>(null)
 
   // Active interactive session runner (in-place modal execution)
-  const [activeSessionLesson, setActiveSessionLesson] = useState<{ chapterId: number; darsNum: number } | null>(null)
+  const [activeSessionLesson, setActiveSessionLesson] = useState<{
+    chapterId: number
+    darsNum: number
+    stepIndex?: number
+  } | null>(null)
+
+  const { language } = useLanguage()
+  const isBn = language === 'bn'
+
+  const getCheckpoint = useLessonCheckpointStore((state) => state.getCheckpoint)
+  const clearCheckpoint = useLessonCheckpointStore((state) => state.clearCheckpoint)
 
   const dataMap = {
     1: CHAPTERS,
@@ -131,6 +248,7 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
         volumeId={volumeId}
         chapterId={activeSessionLesson.chapterId}
         lessonNum={activeSessionLesson.darsNum}
+        initialStepIndex={activeSessionLesson.stepIndex}
         onExit={() => setActiveSessionLesson(null)}
       />
     )
@@ -204,6 +322,8 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                   {chapter.lessons.map((lesson, idx) => {
                     const darsNum = lesson.darsNumber
                     const isCompleted = isLessonCompleted(chapter.id, darsNum)
+                    const checkpoint = getCheckpoint(volumeId, chapter.id, darsNum)
+                    const hasCheckpoint = Boolean(checkpoint && checkpoint.currentStepIndex > 0)
                     const isCurrent =
                       nextLessonInfo.chapterId === chapter.id &&
                       nextLessonInfo.darsNum === darsNum &&
@@ -278,7 +398,7 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
 
                                 {/* Label Text Centered on Top Face Bubble */}
                                 <span className="absolute top-0 inset-x-0 h-[26px] flex items-center justify-center font-english font-extrabold text-[12px] tracking-wider uppercase leading-none text-white select-none">
-                                  {isFirst ? 'START' : 'CURRENT'}
+                                  {hasCheckpoint ? 'RESUME' : (isFirst ? 'START' : 'CURRENT')}
                                 </span>
                               </div>
                             </motion.div>
@@ -359,16 +479,31 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
 
             const darsNum = lesson.darsNumber
             const isCompleted = isLessonCompleted(chapter.id, darsNum)
+            const sessionData = getLessonSession(volumeId, chapter.id, darsNum)
+            const stepCount = sessionData?.steps.length || 10
+            const estimatedMinutes = Math.max(2, Math.ceil((stepCount * 20) / 60))
+            const checkpoint = getCheckpoint(volumeId, chapter.id, darsNum)
+            const hasCheckpoint = Boolean(
+              checkpoint &&
+              checkpoint.currentStepIndex > 0 &&
+              checkpoint.currentStepIndex < stepCount
+            )
             const isCurrent =
               nextLessonInfo.chapterId === chapter.id &&
               nextLessonInfo.darsNum === darsNum &&
               !isCompleted
-            const lessonMeta = (chapter.id === 1 ? CHAPTER_1_LESSONS_INFO[darsNum] : null) || {
-              titleEn: `Lesson ${darsNum}`,
-              titleAr: `الدرس ${toArabicNumerals(darsNum)}`,
-              conceptEn: chapter.subtitle || 'Classical Arabic Drills',
-            }
-            const sessionData = getLessonSession(volumeId, chapter.id, darsNum)
+            const lessonMeta: LessonMeta =
+              (chapter.id === 1
+                ? CHAPTER_1_LESSONS_INFO[darsNum]
+                : chapter.id === 2
+                ? CHAPTER_2_LESSONS_INFO[darsNum]
+                : chapter.id === 3
+                ? CHAPTER_3_LESSONS_INFO[darsNum]
+                : null) || {
+                titleEn: `Lesson ${darsNum}`,
+                arabicTopic: `الدرس ${toArabicNumerals(darsNum)}`,
+                conceptEn: chapter.subtitle || 'Classical Arabic interactive drill',
+              }
 
             return (
               <div
@@ -376,73 +511,166 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                 onClick={() => setSelectedNodeLesson(null)}
               >
                 <motion.div
-                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                  initial={{ opacity: 0, y: 24, scale: 0.96 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 30, scale: 0.95 }}
+                  exit={{ opacity: 0, y: 24, scale: 0.96 }}
                   transition={{ duration: 0.18, ease: 'easeOut' }}
                   onClick={(e) => e.stopPropagation()}
-                  className="w-full max-w-sm rounded-4xl bg-white dark:bg-neutral-900 p-6 sm:p-7 flex flex-col items-center text-center space-y-5 shadow-none border-0 select-auto"
+                  className="w-full max-w-sm rounded-4xl bg-white dark:bg-neutral-900 p-6 flex flex-col space-y-5 shadow-none border-0 select-auto"
                 >
-                  {/* Header with Close */}
+                  {/* Top Bar with Integrated Lesson Badge & Close Trigger */}
                   <div className="w-full flex items-center justify-between">
-                    <span className="text-xs font-mono uppercase tracking-widest text-accent-primary font-bold">
-                      Lesson {darsNum} · {isCompleted ? 'Mastered' : isCurrent ? 'Up Next' : 'Available'}
-                    </span>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-accent-primary text-white flex items-center justify-center font-english font-extrabold text-base select-none">
+                        {isCompleted ? <Check size={18} className="stroke-[3]" /> : darsNum}
+                      </div>
+                      <div className="text-start">
+                        <div className="text-xs font-english-bold text-neutral-900 dark:text-white uppercase tracking-wider">
+                          Lesson {darsNum}
+                        </div>
+                        <div className="text-[11px] font-english text-neutral-500 dark:text-neutral-400">
+                          {hasCheckpoint
+                            ? (isCompleted
+                              ? (isBn ? 'অনুশীলন চলমান' : 'Practice in Progress')
+                              : (isBn ? 'সংরক্ষিত অগ্রগতি' : 'In Progress'))
+                            : (isCompleted
+                              ? (isBn ? 'সম্পন্ন' : 'Completed')
+                              : (isCurrent
+                                ? (isBn ? 'পরবর্তী' : 'Up Next')
+                                : (isBn ? 'উপলব্ধ' : 'Available')))}
+                        </div>
+                      </div>
+                    </div>
                     <button
                       type="button"
                       onClick={() => setSelectedNodeLesson(null)}
-                      className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white cursor-pointer shadow-none border-0"
+                      className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white cursor-pointer transition-colors shadow-none border-0"
                       aria-label="Close"
                     >
                       <X size={16} />
                     </button>
                   </div>
 
-                  {/* Node Medallion (Tactile Circular 3D) */}
-                  <div className="relative select-none my-2">
+                  {/* Topic Discovery Surface (Raw Neutral Well) */}
+                  <div className="w-full p-5 rounded-3xl bg-neutral-100 dark:bg-neutral-950 flex flex-col items-center text-center space-y-2">
                     <div
-                      className="w-20 h-20 rounded-full transition-all duration-150 relative overflow-hidden bg-accent-primary"
-                      style={{ transform: 'translateY(6px)' }}
+                      className="font-arabic font-bold text-3xl sm:text-4xl text-neutral-950 dark:text-white leading-loose tracking-normal"
+                      dir="rtl"
                     >
-                      <div className="w-full h-full bg-black/30 dark:bg-black/25 pointer-events-none" />
+                      {lessonMeta.arabicTopic}
                     </div>
-                    <div className="absolute inset-0 w-20 h-20 rounded-full bg-accent-primary text-white flex items-center justify-center font-english-bold text-3xl">
-                      {isCompleted ? <Check size={32} className="stroke-[3.5] text-white" /> : darsNum}
-                    </div>
-                  </div>
-
-                  {/* Titles */}
-                  <div className="space-y-1">
-                    <h3 className="font-arabic font-bold text-2xl text-neutral-900 dark:text-white" dir="rtl">
-                      {lessonMeta.titleAr}
-                    </h3>
-                    <h4 className="font-english-bold text-base text-neutral-700 dark:text-neutral-200">
+                    <h3 className="font-english-bold text-base sm:text-lg text-neutral-800 dark:text-neutral-100">
                       {lessonMeta.titleEn}
-                    </h4>
-                    <p className="text-xs text-neutral-500 dark:text-neutral-400 pt-0.5">
+                    </h3>
+                    <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-xs">
                       {lessonMeta.conceptEn}
                     </p>
                   </div>
 
-                  {/* Badge Pill */}
-                  <div className="w-full py-2.5 px-4 rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-between text-xs font-mono">
-                    <span className="text-neutral-500 dark:text-neutral-400">Mastery Target</span>
-                    <span className="text-accent-primary font-bold">{sessionData?.steps.length || 13} Micro-Steps</span>
+                  {/* Lightweight Learning Stats */}
+                  <div className="flex items-center justify-center gap-3 text-xs font-english text-neutral-500 dark:text-neutral-400">
+                    <span className="inline-flex items-center gap-1.5">
+                      <Sparkles size={14} className="text-accent-secondary" />
+                      <span>{stepCount} interactive steps</span>
+                    </span>
+                    <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
+                    <span className="inline-flex items-center gap-1.5">
+                      <Clock size={14} />
+                      <span>~{estimatedMinutes} min</span>
+                    </span>
                   </div>
 
-                  {/* 56px Action Button */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playTapSound()
-                      setSelectedNodeLesson(null)
-                      setActiveSessionLesson({ chapterId: chapter.id, darsNum })
-                    }}
-                    className="w-full h-14 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-english-semibold text-base flex items-center justify-center gap-2 cursor-pointer shadow-none border-0 active:scale-[0.98] transition-all"
-                  >
-                    <span>{isCompleted ? 'Practice Again' : 'Start Interactive Session'}</span>
-                    <ArrowRight size={18} />
-                  </button>
+                  {/* Saved Checkpoint Progress Banner */}
+                  {hasCheckpoint && checkpoint && (
+                    <div className="w-full p-3.5 rounded-2xl bg-accent-primary-subtle text-accent-primary flex items-center justify-between text-xs font-mono font-bold">
+                      <span className="flex items-center gap-1.5">
+                        <BookmarkCheck size={14} />
+                        <span>
+                          {isCompleted
+                            ? (isBn ? 'অনুশীলন সংরক্ষিত' : 'Practice Saved')
+                            : (isBn ? 'সংরক্ষিত অগ্রগতি' : 'Saved Progress')}
+                        </span>
+                      </span>
+                      <span>
+                        {isBn
+                          ? `ধাপ ${toArabicNumerals(checkpoint.currentStepIndex + 1)} / ${toArabicNumerals(checkpoint.totalSteps)}`
+                          : `Step ${checkpoint.currentStepIndex + 1} of ${checkpoint.totalSteps}`}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Dual Action Buttons (Resume vs Restart) if Checkpoint Exists */}
+                  {hasCheckpoint && checkpoint ? (
+                    <div className="w-full flex flex-col gap-2.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          playTapSound()
+                          setSelectedNodeLesson(null)
+                          setActiveSessionLesson({
+                            chapterId: chapter.id,
+                            darsNum,
+                            stepIndex: checkpoint.currentStepIndex,
+                          })
+                        }}
+                        className="w-full h-14 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-english-semibold text-base flex items-center justify-center gap-2 cursor-pointer shadow-none border-0 active:scale-[0.98] transition-all"
+                      >
+                        <Play size={18} className="fill-white" />
+                        <span>
+                          {isCompleted
+                            ? (isBn
+                              ? `অনুশীলন চালিয়ে যান (ধাপ ${toArabicNumerals(checkpoint.currentStepIndex + 1)})`
+                              : `Resume Practice (Step ${checkpoint.currentStepIndex + 1})`)
+                            : (isBn
+                              ? `পাঠ চালিয়ে যান (ধাপ ${toArabicNumerals(checkpoint.currentStepIndex + 1)})`
+                              : `Resume Lesson (Step ${checkpoint.currentStepIndex + 1})`)}
+                        </span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          playTapSound()
+                          clearCheckpoint(volumeId, chapter.id, darsNum)
+                          setSelectedNodeLesson(null)
+                          setActiveSessionLesson({
+                            chapterId: chapter.id,
+                            darsNum,
+                            stepIndex: 0,
+                          })
+                        }}
+                        className="w-full h-14 rounded-full bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 font-english-medium text-base flex items-center justify-center gap-2 cursor-pointer shadow-none border-0 active:scale-[0.98] transition-all"
+                      >
+                        <RotateCcw size={18} />
+                        <span>
+                          {isCompleted
+                            ? (isBn ? 'শুরু থেকে অনুশীলন করুন' : 'Restart Practice')
+                            : (isBn ? 'শুরু থেকে শুরু করুন' : 'Start from Beginning')}
+                        </span>
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        playTapSound()
+                        setSelectedNodeLesson(null)
+                        setActiveSessionLesson({
+                          chapterId: chapter.id,
+                          darsNum,
+                          stepIndex: 0,
+                        })
+                      }}
+                      className="w-full h-14 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-english-semibold text-base flex items-center justify-center gap-2 cursor-pointer shadow-none border-0 active:scale-[0.98] transition-all"
+                    >
+                      <span>
+                        {isCompleted
+                          ? (isBn ? 'আবার অনুশীলন করুন' : 'Practice Again')
+                          : (isBn ? 'পাঠ শুরু করুন' : 'Start Lesson')}
+                      </span>
+                      <ArrowRight size={18} />
+                    </button>
+                  )}
                 </motion.div>
               </div>
             )

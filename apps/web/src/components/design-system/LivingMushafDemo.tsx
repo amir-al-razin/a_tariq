@@ -401,7 +401,7 @@ export function LivingMushafDemo() {
                 </p>
                 {selectedWord.tier === 3 && (
                   <div className="p-3 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 text-xs font-english-semibold flex items-center justify-between">
-                    <span>🌱 Keep advancing in Esho Arbi Shikhi to illuminate this revelation!</span>
+                    <span>🌱 Keep advancing your lessons to illuminate this revelation!</span>
                     <span className="text-[11px] font-mono underline">{selectedWord.curriculumRef}</span>
                   </div>
                 )}

@@ -1,0 +1,630 @@
+// Chapter 2 Lesson 6 Interactive Session Steps (Compound Possession & Civic Architecture)
+import type { LessonSessionData, SessionStep } from './lessonSessionTypes';
+
+export const CH2_LESSON_06_STEPS: SessionStep[] = [
+  // 1. Spatial Pointing Anchor: Distant Civic Structure
+  {
+    id: 'ch2-l6-step-1-spatial-mosque',
+    type: 'spatial_pointing',
+    pageNumber: 77,
+    titleEn: 'Spatial Anchor: Distant Sanctuary',
+    titleAr: 'الإِشَارَةُ المَكَانِيَّةُ: مَسْجِدٌ بَعِيدٌ',
+    instructionEn: 'Point to that beautiful mosque located in the distance.',
+    instructionBn: 'দূরে অবস্থিত ওই সুন্দর মসজিদটির দিকে নির্দেশ করুন।',
+    spatialPointingPayload: {
+      objectAr: 'مَسْجِدٌ',
+      distance: 'far',
+      gender: 'masculine',
+      correctAnswer: 'ذَلِكَ مَسْجِدٌ',
+      options: ['هَذَا مَسْجِدٌ', 'هَذِهِ مَسْجِدٌ', 'ذَلِكَ مَسْجِدٌ', 'تِلْكَ مَسْجِدٌ'],
+      emoji: '🕌',
+    },
+  },
+
+  // 2. Primary Vocabulary Priming: Civic Institutions & Moral Realities
+  {
+    id: 'ch2-l6-step-2-vocab-civic',
+    type: 'vocab_prime',
+    pageNumber: 77,
+    titleEn: 'Civic Places & Moral Qualities',
+    titleAr: 'مُفْرَدَاتُ الأَمَاكِنِ وَالمَفَاهِيمِ',
+    instructionEn: 'Listen to classical Arabic terms for civic places, knowledge centers, and moral states.',
+    instructionBn: 'নাগরিক প্রতিষ্ঠান, পাঠাগার ও নৈতিক অবস্থান সম্পর্কিত আরবি শব্দগুলো শুনুন।',
+    vocabPayload: {
+      words: [
+        {
+          id: 'c2l6-maktabah',
+          ar: 'مَكْتَبَةٌ',
+          en: 'A library / bookstore',
+          bn: 'একটি পাঠাগার বা লাইব্রেরি',
+          romanized: 'maktabatun',
+          emoji: '📚',
+        },
+        {
+          id: 'c2l6-asimah',
+          ar: 'عَاصِمَةٌ',
+          en: 'A capital city',
+          bn: 'একটি রাজধানী',
+          romanized: "'āṣimatun",
+          emoji: '🏛️',
+        },
+        {
+          id: 'c2l6-suq',
+          ar: 'سُوقٌ',
+          en: 'A market / bazaar',
+          bn: 'একটি বাজার',
+          romanized: 'sūqun',
+          emoji: '🏪',
+        },
+        {
+          id: 'c2l6-qayyim',
+          ar: 'قَيِّمٌ',
+          en: 'Valuable / precious',
+          bn: 'মূল্যবান বা তাৎপর্যপূর্ণ',
+          romanized: 'qayyimun',
+          emoji: '💎',
+        },
+        {
+          id: 'c2l6-khayr',
+          ar: 'خَيْرٌ',
+          en: 'Goodness / welfare',
+          bn: 'কল্যাণ বা মঙ্গল',
+          romanized: 'khayrun',
+          emoji: '✨',
+        },
+        {
+          id: 'c2l6-sharr',
+          ar: 'شَرٌّ',
+          en: 'Evil / harm',
+          bn: 'অকল্যাণ বা ক্ষতি',
+          romanized: 'sharrun',
+          emoji: '⚠️',
+        },
+      ],
+    },
+  },
+
+  // 3. Secondary Vocabulary Priming: Architecture & Narrative Entities
+  {
+    id: 'ch2-l6-step-3-vocab-structures',
+    type: 'vocab_prime',
+    pageNumber: 78,
+    titleEn: 'Architecture & Narrative Entities',
+    titleAr: 'مُفْرَدَاتُ البِنَاءِ وَالقَصَصِ',
+    instructionEn: 'Explore terms for structural components and classical narrative characters.',
+    instructionBn: 'ভবনের কাঠামো ও ক্লাসিক্যাল গল্পের চরিত্র সম্পর্কিত শব্দগুলো জানুন।',
+    vocabPayload: {
+      words: [
+        {
+          id: 'c2l6-saqf',
+          ar: 'سَقْفٌ',
+          en: 'A ceiling / roof',
+          bn: 'একটি ছাদ',
+          romanized: 'saqfun',
+          emoji: '🏠',
+        },
+        {
+          id: 'c2l6-alam',
+          ar: 'عَلَمٌ',
+          en: 'A flag',
+          bn: 'একটি পতাকা',
+          romanized: "'alamun",
+          emoji: '🚩',
+        },
+        {
+          id: 'c2l6-asad',
+          ar: 'أَسَدٌ',
+          en: 'A lion',
+          bn: 'একটি সিংহ',
+          romanized: 'asadun',
+          emoji: '🦁',
+        },
+        {
+          id: 'c2l6-far',
+          ar: 'فَأْرٌ',
+          en: 'A mouse / rat',
+          bn: 'একটি ইঁদুর',
+          romanized: "fa'run",
+          emoji: '🐭',
+        },
+        {
+          id: 'c2l6-qissah',
+          ar: 'قِصَّةٌ',
+          en: 'A story / tale',
+          bn: 'একটি গল্প বা কাহিনী',
+          romanized: 'qiṣṣatun',
+          emoji: '📖',
+        },
+        {
+          id: 'c2l6-manzar',
+          ar: 'مَنْظَرٌ',
+          en: 'A view / scenery',
+          bn: 'একটি দৃশ্য বা রূপ',
+          romanized: 'manẓarun',
+          emoji: '🌄',
+        },
+      ],
+    },
+  },
+
+  // 4. Synaptic Speed Match: Civic & Structural Lexicon
+  {
+    id: 'ch2-l6-step-4-speed-civic',
+    type: 'speed_pair',
+    pageNumber: 77,
+    titleEn: 'Synaptic Speed Pairing: Institutions & Structures',
+    titleAr: 'التَّطَابُقُ السَّرِيعُ: مُفْرَدَاتُ الأَمَاكِنِ',
+    instructionEn: 'Rapidly pair the Arabic terms for civic places with their English meanings.',
+    instructionBn: 'নাগরিক প্রতিষ্ঠান ও কাঠামোর আরবি শব্দের সাথে অর্থের দ্রুত মিল করুন।',
+    pairPayload: {
+      pairs: [
+        { id: 'p-c2l6-1', ar: 'مَكْتَبَةٌ', meaning: 'Library' },
+        { id: 'p-c2l6-2', ar: 'عَاصِمَةٌ', meaning: 'Capital city' },
+        { id: 'p-c2l6-3', ar: 'سَقْفٌ', meaning: 'Roof / ceiling' },
+        { id: 'p-c2l6-4', ar: 'قَيِّمٌ', meaning: 'Valuable' },
+        { id: 'p-c2l6-5', ar: 'خَيْرٌ', meaning: 'Goodness' },
+        { id: 'p-c2l6-6', ar: 'شَرٌّ', meaning: 'Evil' },
+      ],
+    },
+  },
+
+  // 5. Concept Discovery: Compound Possession in Nominal Sentences
+  {
+    id: 'ch2-l6-step-5-concept-idafah-sentences',
+    type: 'concept_intro',
+    pageNumber: 77,
+    titleEn: 'Grammar Paradigm: Idafah Construct as Subject and Predicate',
+    titleAr: 'قَاعِدَةٌ: الإِضَافَةُ فِي مَوْقِعِ المُبْتَدَأِ وَالخَبَرِ',
+    instructionEn: 'A possessive compound (Mudaf + Mudaf Ilayh) can function as the subject (Mubtada) or as the predicate (Khabar) of a complete sentence.',
+    instructionBn: 'সম্বন্ধ পদ (মুদাফ ও মুদাফ ইলাইহি) একটি পূর্ণ বাক্যের উদ্দেশ্য (মুবতাদা) অথবা বিধেয় (খবর) হিসেবে ব্যবহৃত হতে পারে।',
+    conceptPayload: {
+      concepts: [
+        {
+          id: 'cp-c2l6-idafah-sub',
+          ar: 'مَسْجِدُ الْعَاصِمَةِ كَبِيرٌ',
+          romanized: "masjidu al-'āṣimati kabīrun",
+          meaningEn: 'The mosque of the capital is large (Idafah as Subject).',
+          meaningBn: 'রাজধানীর মসজিদটি বড় (মুদাফ-মুদাফ ইলাইহি মুবতাদা হিসেবে)।',
+          exampleAr: 'مَسْجِدُ الْعَاصِمَةِ كَبِيرٌ وَ جَمِيلٌ',
+          exampleEn: 'The mosque of the capital is large and beautiful.',
+          exampleBn: 'রাজধানীর মসজিদটি বড় এবং সুন্দর।',
+          audioKey: 'masjidu_al_asimati_kabir',
+          exampleAudioKey: 'masjidu_al_asimati_kabirun_wa_jamil',
+          emoji: '🕌',
+        },
+        {
+          id: 'cp-c2l6-idafah-pred',
+          ar: 'الْمَسْجِدُ بَيْتُ اللَّهِ',
+          romanized: 'al-masjidu baytu Allāhi',
+          meaningEn: 'The mosque is the House of Allah (Idafah as Predicate).',
+          meaningBn: 'মসজিদ আল্লাহর ঘর (মুদাফ-মুদাফ ইলাইহি খবর হিসেবে)।',
+          exampleAr: 'الْمَسْجِدُ بَيْتُ اللَّهِ',
+          exampleEn: 'The mosque is the House of Allah.',
+          exampleBn: 'মসজিদ আল্লাহর ঘর।',
+          audioKey: 'al_masjidu_baytu_allah',
+          exampleAudioKey: 'al_masjidu_baytu_allah',
+          emoji: '🕋',
+        },
+      ],
+    },
+  },
+
+  // 6. Deep Pedagogical Concept: Fronted Prepositional Predicates (Shibh Jumlah)
+  {
+    id: 'ch2-l6-step-6-concept-fronted-predicate',
+    type: 'concept_intro',
+    pageNumber: 77,
+    titleEn: 'Syntactic Rule: Prepositional Phrases as Fronted Predicates',
+    titleAr: 'قَاعِدَةٌ: الخَبَرُ المُقَدَّمُ شِبْهُ الجُمْلَةِ',
+    instructionEn: 'When a prepositional phrase begins the sentence, it serves as a fronted predicate (Khabar Muqaddam) introducing an indefinite subject.',
+    instructionBn: 'যার-মাজরুর বা স্থানবাচক পদ বাক্যের শুরুতে এসে অগ্রবর্তী খবর (খবর মুকাদ্দাম) হিসেবে অনির্দিষ্ট মুবতাদাকে উপস্থাপন করে।',
+    conceptPayload: {
+      concepts: [
+        {
+          id: 'cp-c2l6-fi-masjid',
+          ar: 'فِي الْمَسْجِدِ خَيْرٌ',
+          romanized: 'fī al-masjidi khayrun',
+          meaningEn: 'In the mosque is goodness.',
+          meaningBn: 'মসজিদে কল্যাণ রয়েছে।',
+          exampleAr: 'فِي الْمَسْجِدِ خَيْرٌ وَ فِي السُّوقِ شَرٌّ',
+          exampleEn: 'In the mosque is goodness, and in the market is evil.',
+          exampleBn: 'মসজিদে কল্যাণ এবং বাজারে অকল্যাণ রয়েছে।',
+          audioKey: 'fi_al_masjidi_khayr',
+          exampleAudioKey: 'fi_al_masjidi_khayrun_wa_fi_al_suqi_sharr',
+          emoji: '✨',
+        },
+        {
+          id: 'cp-c2l6-fawqa-saqf',
+          ar: 'فَوْقَ السَّقْفِ عَلَمٌ',
+          romanized: "fawqa al-saqfi 'alamun",
+          meaningEn: 'Above the roof is a flag.',
+          meaningBn: 'ছাদের উপর একটি পতাকা রয়েছে।',
+          exampleAr: 'سَقْفُ الْبَيْتِ جَمِيلٌ ، فَوْقَ السَّقْفِ عَلَمٌ',
+          exampleEn: 'The roof of the house is beautiful; above the roof is a flag.',
+          exampleBn: 'বাড়ির ছাদ সুন্দর; ছাদের উপর একটি পতাকা রয়েছে।',
+          audioKey: 'fawqa_al_saqfi_alam',
+          exampleAudioKey: 'saqfu_al_bayti_jamil_fawqa_al_saqfi_alam',
+          emoji: '🚩',
+        },
+      ],
+    },
+  },
+
+  // 7. Polar Sort 1: Moral Geography of Sanctuary vs Market
+  {
+    id: 'ch2-l6-step-7-polar-khayr-sharr',
+    type: 'polar_sort',
+    pageNumber: 77,
+    titleEn: 'Binary Semantic Sort: Sanctuary vs Commercial Hub',
+    titleAr: 'تَمْيِيزُ الخَيْرِ وَالشَّرِّ فِي البِيئَةِ',
+    instructionEn: 'What moral atmosphere is found in the sacred mosque according to the classical text?',
+    instructionBn: 'পাঠ্যের বর্ণনা অনুযায়ী পবিত্র মসজিদে কী বিরাজমান?',
+    polarPayload: {
+      arabicSubject: 'فِي الْمَسْجِدِ',
+      meaningEn: 'In the mosque is...',
+      meaningBn: 'মসজিদে রয়েছে...',
+      gender: 'masculine',
+      correctAnswer: 'خَيْرٌ',
+      options: ['خَيْرٌ', 'شَرٌّ'],
+      emoji: '✨',
+    },
+  },
+
+  // 8. Polar Sort 2: Gender Agreement of Possessive Compounds
+  {
+    id: 'ch2-l6-step-8-polar-school-gender',
+    type: 'polar_sort',
+    pageNumber: 77,
+    titleEn: 'Binary Agreement: Gender of Mudaf Compound',
+    titleAr: 'تَمْيِيزُ التَّطَابُقِ فِي إِضَافَةِ المُؤَنَّثِ',
+    instructionEn: 'In the compound «مَدْرَسَةُ الْقَرْيَةِ» (The village school), which adjective agrees with the feminine core noun (Mudaf)?',
+    instructionBn: '«مَدْرَسَةُ الْقَرْيَةِ» পদটিতে মূল বিশেষ্য (মুদাফ) স্ত্রীলিঙ্গ হওয়ায় কোন খবরটি সঙ্গতিপূর্ণ?',
+    polarPayload: {
+      arabicSubject: 'مَدْرَسَةُ الْقَرْيَةِ',
+      meaningEn: 'The village school is...',
+      meaningBn: 'গ্রামের মাদ্রাসাটি...',
+      gender: 'feminine',
+      correctAnswer: 'صَغِيرَةٌ',
+      options: ['صَغِيرٌ', 'صَغِيرَةٌ'],
+      emoji: '🏫',
+    },
+  },
+
+  // 9. Cloze Choice Drill 1: Mosque Garden Architecture
+  {
+    id: 'ch2-l6-step-9-cloze-garden',
+    type: 'cloze_choice',
+    pageNumber: 77,
+    titleEn: 'Contextual Selection: Mosque Garden Architecture',
+    titleAr: 'اخْتِيَارُ الاسْمِ: حَدِيقَةُ المَسْجِدِ',
+    instructionEn: 'Complete the sentence: "In front of the mosque is a large and beautiful garden."',
+    instructionBn: '"মসজিদের সামনে একটি বড় ও সুন্দর বাগান রয়েছে" বাক্যটি পূর্ণ করুন।',
+    clozePayload: {
+      questionAr: 'أَمَامَ الْمَسْجِدِ ... كَبِيرَةٌ وَ جَمِيلَةٌ',
+      questionEn: 'In front of the mosque is a large and beautiful garden.',
+      questionBn: 'মসজিদের সামনে একটি বড় ও সুন্দর বাগান রয়েছে।',
+      partialAnswerAr: 'أَمَامَ الْمَسْجِدِ ... كَبِيرَةٌ وَ جَمِيلَةٌ',
+      correctAnswer: 'حَدِيقَةٌ',
+      options: ['حَدِيقَةٌ', 'مَكْتَبَةٌ', 'مَدْرَسَةٌ', 'حُجْرَةٌ'],
+      emoji: '🌳',
+    },
+  },
+
+  // 10. Cloze Choice Drill 2: Teacher’s Room State
+  {
+    id: 'ch2-l6-step-10-cloze-window-state',
+    type: 'cloze_choice',
+    pageNumber: 78,
+    titleEn: 'Syntactic Selection: Window State Agreement',
+    titleAr: 'اخْتِيَارُ الصِّفَةِ: حَالُ النَّافِذَةِ',
+    instructionEn: 'Complete: "The door of the room is open and its window is closed."',
+    instructionBn: '"কামরার দরজা খোলা এবং তার জানালাটি বন্ধ" বাক্যটি সঠিক শব্দ দিয়ে পূর্ণ করুন।',
+    clozePayload: {
+      questionAr: 'بَابُ الْحُجْرَةِ مَفْتُوحٌ وَ نَافِذَتُهَا ...',
+      questionEn: 'The door of the room is open and its window is closed.',
+      questionBn: 'কামরার দরজা খোলা এবং তার জানালাটি বন্ধ।',
+      partialAnswerAr: 'بَابُ الْحُجْرَةِ مَفْتُوحٌ وَ نَافِذَتُهَا ...',
+      correctAnswer: 'مُغْلَقَةٌ',
+      options: ['مُغْلَقَةٌ', 'مُغْلَقٌ', 'مَفْتُوحٌ', 'نَظِيفَةٌ'],
+      emoji: '🪟',
+    },
+  },
+
+  // 11. Dialogic Alternative Q&A Battery 1: Mosque & School
+  {
+    id: 'ch2-l6-step-11-dialogue-sanctuary',
+    type: 'alternative_qa',
+    pageNumber: 79,
+    titleEn: 'Dialogic Battery: Mosque & School Dissection',
+    titleAr: 'حِوَارُ التَّعْيِينِ: المَسْجِدُ وَالمَدْرَسَةُ',
+    instructionEn: 'Select the precise answer identifying civic structures based on the visual cue without using yes or no.',
+    instructionBn: 'হ্যাঁ বা না ছাড়া দৃশ্যায়ন অনুযায়ী সঠিক স্থানটি নির্দেশ করে উত্তর দিন।',
+    alternativeQAPayload: {
+      questions: [
+        {
+          id: 'qa-c2l6-1',
+          questionAr: 'أَ مَسْجِدُ الْقَرْيَةِ ذَلِكَ أَمْ مَسْجِدُ الْعَاصِمَةِ ؟ (🏛️ مَسْجِدُ الْعَاصِمَةِ)',
+          optionsAr: ['مَسْجِدُ الْعَاصِمَةِ', 'مَسْجِدُ الْقَرْيَةِ'],
+          correctAnswerAr: 'مَسْجِدُ الْعَاصِمَةِ',
+        },
+        {
+          id: 'qa-c2l6-2',
+          questionAr: 'أَ كَبِيرَةٌ حَدِيقَةُ الْمَسْجِدِ أَمْ صَغِيرَةٌ ؟ (🌳 كَبِيرَةٌ)',
+          optionsAr: ['كَبِيرَةٌ', 'صَغِيرَةٌ'],
+          correctAnswerAr: 'كَبِيرَةٌ',
+        },
+        {
+          id: 'qa-c2l6-3',
+          questionAr: 'أَ مَدْرَسَةُ الْمَدِينَةِ تِلْكَ أَمْ مَدْرَسَةُ الْقَرْيَةِ ؟ (🏫 مَدْرَسَةُ الْقَرْيَةِ)',
+          optionsAr: ['مَدْرَسَةُ الْقَرْيَةِ', 'مَدْرَسَةُ الْمَدِينَةِ'],
+          correctAnswerAr: 'مَدْرَسَةُ الْقَرْيَةِ',
+        },
+        {
+          id: 'qa-c2l6-4',
+          questionAr: 'أَ مَدْرَسَةُ الْقَرْيَةِ تِلْكَ أَمْ مَسْجِدُهَا ؟ (🏫 مَدْرَسَةٌ)',
+          optionsAr: ['مَدْرَسَةُ الْقَرْيَةِ', 'مَسْجِدُهَا'],
+          correctAnswerAr: 'مَدْرَسَةُ الْقَرْيَةِ',
+        },
+        {
+          id: 'qa-c2l6-5',
+          questionAr: 'أَ صَغِيرَةٌ هِيَ أَمْ كَبِيرَةٌ ؟ (🏫 صَغِيرَةٌ)',
+          optionsAr: ['صَغِيرَةٌ', 'كَبِيرَةٌ'],
+          correctAnswerAr: 'صَغِيرَةٌ',
+        },
+      ],
+    },
+  },
+
+  // 12. Dialogic Alternative Q&A Battery 2: House & Room Specifications
+  {
+    id: 'ch2-l6-step-12-dialogue-room-state',
+    type: 'alternative_qa',
+    pageNumber: 79,
+    titleEn: 'Dialogic Battery: Domestic & Academic Quarters',
+    titleAr: 'حِوَارُ التَّعْيِينِ: البَيْتُ وَالغُرْفَةُ',
+    instructionEn: 'Dissect the features of Majid’s residence and the teacher’s room based on the visual cue.',
+    instructionBn: 'দৃশ্যায়ন অনুযায়ী মাজেদের বাড়ি ও শিক্ষকের কামরা সম্পর্কিত প্রশ্নগুলোর সঠিক বিকল্প বেছে নিন।',
+    alternativeQAPayload: {
+      questions: [
+        {
+          id: 'qa-c2l6-6',
+          questionAr: 'أَ بَيْتُ مَحْمُودٍ هَذَا أَمْ بَيْتُ مَاجِدٍ ؟ (🏡 بَيْتُ مَاجِدٍ)',
+          optionsAr: ['بَيْتُ مَاجِدٍ', 'بَيْتُ مَحْمُودٍ'],
+          correctAnswerAr: 'بَيْتُ مَاجِدٍ',
+        },
+        {
+          id: 'qa-c2l6-7',
+          questionAr: 'أَ مَفْتُوحٌ بَابُ الْبَيْتِ أَمْ مُغْلَقٌ ؟ (🚪🔓 مَفْتُوحٌ)',
+          optionsAr: ['مَفْتُوحٌ', 'مُغْلَقٌ'],
+          correctAnswerAr: 'مَفْتُوحٌ',
+        },
+        {
+          id: 'qa-c2l6-8',
+          questionAr: 'أَ حُجْرَةُ الإِمَامِ تِلْكَ أَمْ حُجْرَةُ الْمُعَلِّمِ ؟ (👨‍🏫 حُجْرَةُ الْمُعَلِّمِ)',
+          optionsAr: ['حُجْرَةُ الْمُعَلِّمِ', 'حُجْرَةُ الإِمَامِ'],
+          correctAnswerAr: 'حُجْرَةُ الْمُعَلِّمِ',
+        },
+        {
+          id: 'qa-c2l6-9',
+          questionAr: 'أَ وَاسِعَةٌ حُجْرَتُهُ أَمْ ضَيِّقَةٌ ؟ (📐 وَاسِعَةٌ)',
+          optionsAr: ['وَاسِعَةٌ', 'ضَيِّقَةٌ'],
+          correctAnswerAr: 'وَاسِعَةٌ',
+        },
+        {
+          id: 'qa-c2l6-10',
+          questionAr: 'أَ كِتَابٌ فَوْقَ الْمِنْضَدَةِ أَمْ كُرَّاسَةٌ ؟ (📖 كِتَابٌ)',
+          optionsAr: ['كِتَابٌ', 'كُرَّاسَةٌ'],
+          correctAnswerAr: 'كِتَابٌ',
+        },
+      ],
+    },
+  },
+
+  // 13. Speed Pair Matching 2: Possessive Institutional Compounds
+  {
+    id: 'ch2-l6-step-13-speed-compounds',
+    type: 'speed_pair',
+    pageNumber: 77,
+    titleEn: 'Synaptic Speed Pairing: Institutional Constructs',
+    titleAr: 'التَّطَابُقُ السَّرِيعُ: المُرَكَّبَاتُ الإِضَافِيَّةُ',
+    instructionEn: 'Pair the compound possessive phrases with their English equivalents.',
+    instructionBn: 'সম্বন্ধযুক্ত প্রাতিষ্ঠানিক শব্দগুচ্ছের সাথে তাদের অনুবাদের দ্রুত মিল করুন।',
+    pairPayload: {
+      pairs: [
+        { id: 'p-c2l6-7', ar: 'مَسْجِدُ الْعَاصِمَةِ', meaning: 'The capital’s mosque' },
+        { id: 'p-c2l6-8', ar: 'مَدْرَسَةُ الْقَرْيَةِ', meaning: 'The village school' },
+        { id: 'p-c2l6-9', ar: 'كِتَابُ الْحَدِيثِ', meaning: 'The book of Hadith' },
+        { id: 'p-c2l6-10', ar: 'كِتَابُ الْقِصَّةِ', meaning: 'The book of story' },
+        { id: 'p-c2l6-11', ar: 'حُجْرَةُ الْمُعَلِّمِ', meaning: 'The teacher’s room' },
+      ],
+    },
+  },
+
+  // 14. Page 77: Authentic Reading & Translation Drill 1: Mosque of the Capital
+  {
+    id: 'ch2-l6-step-14-assembly-capital-mosque',
+    type: 'sentence_assembly',
+    pageNumber: 77,
+    titleEn: 'Textbook Translation: Capital Mosque & Garden',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: مَسْجِدُ العَاصِمَةِ',
+    instructionEn: 'Read the passage and assemble the translation using word chips.',
+    instructionBn: 'আরবি পাঠ্যটি পড়ুন এবং সঠিক অনুবাদ সাজিয়ে তুলুন।',
+    assemblyPayload: {
+      promptAr: 'مَسْجِدُ الْعَاصِمَةِ كَبِيرٌ وَجَمِيلٌ ، أَمَامَهُ حَدِيقَةٌ كَبِيرَةٌ',
+      promptEn: 'The mosque of the capital is big and beautiful, in front of it is a large garden',
+      promptBn: 'রাজধানীর মসজিদটি বড় এবং সুন্দর, তার সামনে একটি বড় বাগান রয়েছে',
+      expectedAnswer: ['The mosque of the capital', 'is large and beautiful', 'in front of it is', 'a large garden'],
+      chips: ['The mosque of the capital', 'is large and beautiful', 'in front of it is', 'a large garden', 'behind it', 'small'],
+      expectedAnswerBn: ['রাজধানীর মসজিদটি', 'বড় এবং সুন্দর', 'তার সামনে রয়েছে', 'একটি বড় বাগান'],
+      chipsBn: ['রাজধানীর মসজিদটি', 'বড় এবং সুন্দর', 'তার সামনে রয়েছে', 'একটি বড় বাগান', 'তার পেছনে', 'ছোট'],
+      emoji: '🕌',
+    },
+  },
+
+  // 15. Page 77: Authentic Reading & Translation Drill 2: Library & Precious Book
+  {
+    id: 'ch2-l6-step-15-assembly-library-book',
+    type: 'sentence_assembly',
+    pageNumber: 77,
+    titleEn: 'Textbook Translation: School & Valuable Book',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: مَدْرَسَةُ القَرْيَةِ',
+    instructionEn: 'Read the passage and assemble the translation.',
+    instructionBn: 'আরবি পাঠ্যটি পড়ুন এবং সঠিক অনুবাদ সাজিয়ে তুলুন।',
+    assemblyPayload: {
+      promptAr: 'تِلْكَ مَدْرَسَةُ الْقَرْيَةِ ، فِي مَكْتَبَتِهَا كِتَابٌ قَيِّمٌ',
+      promptEn: 'That is the village school, in its library is a valuable book',
+      promptBn: 'ওটি গ্রামের মাদ্রাসা, তার লাইব্রেরিতে একটি মূল্যবান কিতাব রয়েছে',
+      expectedAnswer: ['That is the village school', 'in its library is', 'a valuable book'],
+      chips: ['That is the village school', 'in its library is', 'a valuable book', 'a cheap notebook', 'in the market'],
+      expectedAnswerBn: ['ওটি গ্রামের মাদ্রাসা', 'তার লাইব্রেরিতে রয়েছে', 'একটি মূল্যবান কিতাব'],
+      chipsBn: ['ওটি গ্রামের মাদ্রাসা', 'তার লাইব্রেরিতে রয়েছে', 'একটি মূল্যবান কিতাব', 'একটি সস্তা খাতা', 'বাজারে'],
+      emoji: '📚',
+    },
+  },
+
+  // 16. Page 78: Authentic Reading & Translation Drill 3: Flag Over the Roof
+  {
+    id: 'ch2-l6-step-16-assembly-roof-flag',
+    type: 'sentence_assembly',
+    pageNumber: 78,
+    titleEn: 'Textbook Translation: Roof & Flag',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: سَقْفُ البَيْتِ وَالعَلَمُ',
+    instructionEn: 'Read the passage and assemble the translation.',
+    instructionBn: 'আরবি পাঠ্যটি পড়ুন এবং সঠিক অনুবাদ সাজিয়ে তুলুন।',
+    assemblyPayload: {
+      promptAr: 'سَقْفُ الْبَيْتِ جَمِيلٌ ، وَفَوْقَ السَّقْفِ عَلَمٌ',
+      promptEn: 'The roof of the house is beautiful and above the roof is a flag',
+      promptBn: 'বাড়ির ছাদ সুন্দর এবং ছাদের উপর একটি পতাকা রয়েছে',
+      expectedAnswer: ['The roof of the house is beautiful', 'and', 'above the roof is a flag'],
+      chips: ['The roof of the house is beautiful', 'and', 'above the roof is a flag', 'below the house', 'a door'],
+      expectedAnswerBn: ['বাড়ির ছাদ সুন্দর', 'এবং', 'ছাদের উপর একটি পতাকা রয়েছে'],
+      chipsBn: ['বাড়ির ছাদ সুন্দর', 'এবং', 'ছাদের উপর একটি পতাকা রয়েছে', 'ঘরের নিচে', 'একটি দরজা'],
+      emoji: '🚩',
+    },
+  },
+
+  // 17. Syntactic Tarkib Dissector: Compound Possession Architecture
+  {
+    id: 'ch2-l6-step-17-tarkib-dissector',
+    type: 'tarkib_dissector',
+    pageNumber: 77,
+    titleEn: 'Syntactic Tarkib Dissector: Idafah as Subject & Predicate',
+    titleAr: 'التَّرْكِيبُ النَّحْوِيُّ: بِنَاءُ الإِضَافَةِ فِي الجُمْلَةِ الاِسْمِيَّةِ',
+    instructionEn: 'Dissect the syntactic roles where the Idafah structure functions either as the subject (Mubtada) or as the predicate (Khabar).',
+    instructionBn: 'ইযাফাত কীভাবে বাক্যের উদ্দেশ্য (মুবতাদা) এবং বিধেয় (খবর) হিসেবে কাজ করে তা বিশ্লেষণ করুন।',
+    tarkibPayload: {
+      sentences: [
+        {
+          id: 'tarkib-c2l6-s1',
+          sentenceAr: 'مَسْجِدُ الْعَاصِمَةِ كَبِيرٌ',
+          sentenceTypeAr: 'جُمْلَةٌ اسْمِيَّةٌ (مُبْتَدَأٌ مُرَكَّبٌ إِضَافِيٌّ + خَبَرٌ)',
+          sentenceTypeEn: 'Nominal Sentence (Possessive Compound Subject + Predicate)',
+          sentenceTypeBn: 'নামবাচক বাক্য (মুদাফ-মুদাফ ইলাইহি মুবতাদা + খবর)',
+          slots: [
+            {
+              roleAr: 'مُضَافٌ (مُبْتَدَأٌ)',
+              roleEn: 'Possessed Noun / Mubtada',
+              roleBn: 'মুদাফ (মুবতাদা)',
+              expectedWordAr: 'مَسْجِدُ',
+            },
+            {
+              roleAr: 'مُضَافٌ إِلَيْهِ (مَجْرُورٌ)',
+              roleEn: 'Possessor Noun (Genitive)',
+              roleBn: 'মুদাফ ইলাইহি (মাজরুর)',
+              expectedWordAr: 'الْعَاصِمَةِ',
+            },
+            {
+              roleAr: 'خَبَرٌ (مَرْفُوعٌ)',
+              roleEn: 'Predicate (Nominative)',
+              roleBn: 'বিধেয় / খবর (মারফু)',
+              expectedWordAr: 'كَبِيرٌ',
+            },
+          ],
+          availableWordsAr: ['كَبِيرٌ', 'الْعَاصِمَةِ', 'مَسْجِدُ'],
+        },
+        {
+          id: 'tarkib-c2l6-s2',
+          sentenceAr: 'الْمَسْجِدُ بَيْتُ اللَّهِ',
+          sentenceTypeAr: 'جُمْلَةٌ اسْمِيَّةٌ (مُبْتَدَأٌ مَعْرِفَةٌ + خَبَرٌ مُرَكَّبٌ إِضَافِيٌّ)',
+          sentenceTypeEn: 'Nominal Sentence (Definite Subject + Possessive Compound Predicate)',
+          sentenceTypeBn: 'নামবাচক বাক্য (নির্দিষ্ট মুবতাদা + মুদাফ-মুদাফ ইলাইহি খবর)',
+          slots: [
+            {
+              roleAr: 'مُبْتَدَأٌ (مَعْرِفَةٌ)',
+              roleEn: 'Definite Subject (Mubtada)',
+              roleBn: 'নির্দিষ্ট উদ্দেশ্য (মুবতাদা)',
+              expectedWordAr: 'الْمَسْجِدُ',
+            },
+            {
+              roleAr: 'خَبَرٌ وَمُضَافٌ',
+              roleEn: 'Predicate & Mudaf',
+              roleBn: 'খবর ও মুদাফ',
+              expectedWordAr: 'بَيْتُ',
+            },
+            {
+              roleAr: 'مُضَافٌ إِلَيْهِ (لَفْظُ الجَلَالَةِ)',
+              roleEn: 'Genitive Possessor (Allah)',
+              roleBn: 'মুদাফ ইলাইহি (আল্লাহ)',
+              expectedWordAr: 'اللَّهِ',
+            },
+          ],
+          availableWordsAr: ['اللَّهِ', 'الْمَسْجِدُ', 'بَيْتُ'],
+        },
+      ],
+    },
+  },
+
+  // 18. Sacred Milestone: Quranic Echo (Surah Al-Fath 48:29)
+  {
+    id: 'ch2-l6-step-18-quranic-echo',
+    type: 'quranic_echo',
+    pageNumber: 82,
+    titleEn: 'Sacred Reflection: Idafah Construct as Predicate in the Quran',
+    titleAr: 'الأَثَرُ القُرْآنِيُّ: الإِضَافَةُ فِي مَقَامِ الخَبَرِ الشَّرِيفِ',
+    instructionEn: 'Witness how a possessive Idafah construct serves as the sublime informational predicate (Khabar) in Surah Al-Fath (48:29).',
+    instructionBn: 'সূরা আল-ফাতহে বাক্যের পরম খবর (বিধেয়) হিসেবে ইযাফাত গঠনের চিরন্তন ঐশী দৃষ্টান্ত উপলব্ধি করুন।',
+    echoPayload: {
+      surahNumber: 48,
+      ayahNumber: 29,
+      surahNameAr: 'الفتح',
+      surahNameEn: 'Al-Fath',
+      arabicText: 'مُّحَمَّدٌ رَّسُولُ اللَّهِ',
+      translationEn: 'Muhammad is the Messenger of Allah.',
+      translationBn: 'মুহাম্মদ আল্লাহর রাসুল।',
+      highlightedWords: ['مُّحَمَّدٌ', 'رَّسُولُ', 'اللَّهِ'],
+      patternNameEn: 'Idafah Construct as Predicate (مُبْتَدَأ + مُضَاف وَمُضَاف إِلَيْهِ)',
+      patternNameBn: 'বাক্যের খবর হিসেবে ইযাফাত গঠন',
+      lessonPatternAr: 'الْمَسْجِدُ بَيْتُ اللَّهِ',
+      lessonPatternEn: 'The mosque is the house of Allah',
+      lessonPatternBn: 'মসজিদ আল্লাহর ঘর',
+      quranPatternAr: 'مُّحَمَّدٌ رَّسُولُ اللَّهِ',
+      quranPatternEn: 'Muhammad is the Messenger of Allah',
+      quranPatternBn: 'মুহাম্মদ আল্লাহর রাসুল',
+      reflection: 'In Arabic syntax, a possessive compound (مُضَاف وَمُضَاف إِلَيْهِ) can serve as the complete informational predicate (خَبَر) describing a subject (مُبْتَدَأ). In your lesson, you built «الْمَسْجِدُ بَيْتُ اللَّهِ». In Surah Al-Fath, the paramount declaration of faith «مُّحَمَّدٌ رَّسُولُ اللَّهِ» utilizes this exact syntactic architecture, where «رَّسُولُ اللَّهِ» forms the predicate declaring the divine office of the Prophet.',
+      audioKey: 'quran_048029',
+    },
+  },
+];
+
+export const CH2_LESSON_06_SESSION: LessonSessionData = {
+  volumeId: 1,
+  chapterId: 2,
+  lessonNum: 6,
+  titleEn: 'Compound Possession & Civic Architecture',
+  titleAr: 'الإِضَافَةُ الْمُرَكَّبَةُ وَالأَمَاكِنُ',
+  wordsLearned: [
+    'مَكْتَبَةٌ',
+    'عَاصِمَةٌ',
+    'سُوقٌ',
+    'سَقْفٌ',
+    'قَيِّمٌ',
+    'خَيْرٌ',
+    'شَرٌّ',
+    'عَلَمٌ',
+    'أَسَدٌ',
+    'فَأْرٌ',
+    'قِصَّةٌ',
+    'مَنْظَرٌ',
+  ],
+  steps: CH2_LESSON_06_STEPS,
+};

@@ -1,0 +1,648 @@
+// Chapter 3 Lesson 3 Interactive Session Steps (Grand Capstone: Narrative Synthesis & Multi-Tiered Syntax)
+import type { LessonSessionData, SessionStep } from './lessonSessionTypes';
+
+export const CH3_LESSON_03_STEPS: SessionStep[] = [
+  // 1. Spatial Pointing Anchor: Demonstrative with the Private Room
+  {
+    id: 'ch3-l3-step-1-spatial-room',
+    type: 'spatial_pointing',
+    pageNumber: 100,
+    titleEn: 'Spatial Anchor: The Demonstrative Quarters',
+    titleAr: 'الإِشَارَةُ المَكَانِيَّةُ: هَذِهِ الغُرْفَةُ',
+    instructionEn: 'Point to this clean room standing in front of you.',
+    instructionBn: 'আপনার সামনে অবস্থিত এই পরিচ্ছন্ন কামরাটির দিকে নির্দেশ করুন।',
+    spatialPointingPayload: {
+      objectAr: 'الْغُرْفَةُ',
+      distance: 'near',
+      gender: 'feminine',
+      correctAnswer: 'هَذِهِ الْغُرْفَةُ',
+      options: ['هَذَا الْغُرْفَةُ', 'هَذِهِ الْغُرْفَةُ', 'ذَلِكَ الْغُرْفَةُ', 'تِلْكَ الْغُرْفَةُ'],
+      emoji: '🚪',
+    },
+  },
+
+  // 2. Primary Vocabulary Priming: Environmental Purity & Spatial Locatives
+  {
+    id: 'ch3-l3-step-2-vocab-purity',
+    type: 'vocab_prime',
+    pageNumber: 100,
+    titleEn: 'Purity, Locatives & Sacred Furnishings',
+    titleAr: 'مُفْرَدَاتُ النَّظَافَةِ وَالمَكَانِ وَالفُرُشِ',
+    instructionEn: 'Listen to classical Arabic terms for cleanliness, side proximity, sanctuaries, and prayer rugs.',
+    instructionBn: 'পরিচ্ছন্নতা, পার্শ্ববর্তী অবস্থান, উপাসনালয় ও জায়নামাজের আরবি শব্দগুলো শুনুন।',
+    vocabPayload: {
+      words: [
+        {
+          id: 'c3l3-bijanib',
+          ar: 'بِجَانِبِ',
+          en: 'Beside / next to / alongside',
+          bn: 'পাশে বা নিকটে',
+          romanized: 'bi-jānibi',
+          emoji: '↔️',
+        },
+        {
+          id: 'c3l3-safin',
+          ar: 'صَافٍ',
+          en: 'Pure / clear / limpid',
+          bn: 'স্বচ্ছ বা নির্মল',
+          romanized: 'ṣāfin',
+          emoji: '💧',
+        },
+        {
+          id: 'c3l3-qadhir',
+          ar: 'قَذِرٌ',
+          en: 'Dirty / uncleaned',
+          bn: 'অপরিষ্কার বা নোংরা',
+          romanized: 'qadhirun',
+          emoji: '🗑️',
+        },
+        {
+          id: 'c3l3-mabad',
+          ar: 'مَعْبَدٌ',
+          en: 'A temple / place of worship',
+          bn: 'একটি উপাসনালয় বা মন্দির',
+          romanized: "ma'badun",
+          emoji: '🛕',
+        },
+        {
+          id: 'c3l3-sajjadah',
+          ar: 'سَجَّادَةٌ',
+          en: 'A prayer carpet / rug',
+          bn: 'একটি জায়নামাজ বা গালিচা',
+          romanized: 'sajjādatun',
+          emoji: '🧎',
+        },
+        {
+          id: 'c3l3-ghaliyah',
+          ar: 'غَالِيَةٌ',
+          en: 'Expensive / precious',
+          bn: 'মূল্যবান বা দামি',
+          romanized: 'ghāliyatun',
+          emoji: '💎',
+        },
+      ],
+    },
+  },
+
+  // 3. Secondary Vocabulary Priming: Domestic Scale & Topography
+  {
+    id: 'ch3-l3-step-3-vocab-landscape',
+    type: 'vocab_prime',
+    pageNumber: 101,
+    titleEn: 'Landscape Topography & Domestic Furnishings',
+    titleAr: 'مُفْرَدَاتُ الطَّبِيعَةِ وَالأَثَاثِ المَنْزِلِيِّ',
+    instructionEn: 'Master classical vocabulary for tall flora, river widths, bedding, and lamps.',
+    instructionBn: 'উঁচু গাছ, নদীর বিস্তার, বিছানা ও প্রদীপের আরবি শব্দগুলো জানুন।',
+    vocabPayload: {
+      words: [
+        {
+          id: 'c3l3-shajarah',
+          ar: 'شَجَرَةٌ',
+          en: 'A tree',
+          bn: 'একটি গাছ',
+          romanized: 'shajaratun',
+          emoji: '🌳',
+        },
+        {
+          id: 'c3l3-aliyah',
+          ar: 'عَالِيَةٌ',
+          en: 'Tall / high / elevated',
+          bn: 'উঁচু বা সুউচ্চ',
+          romanized: "'āliyatun",
+          emoji: '🌲',
+        },
+        {
+          id: 'c3l3-wasi',
+          ar: 'وَاسِعٌ',
+          en: 'Spacious / wide',
+          bn: 'প্রশস্ত বা চওড়া',
+          romanized: 'wāsi‘un',
+          emoji: '🌊',
+        },
+        {
+          id: 'c3l3-dayyiq',
+          ar: 'ضَيِّقٌ',
+          en: 'Narrow / tight',
+          bn: 'সংকীর্ণ বা অপ্রশস্ত',
+          romanized: 'ḍayyiqun',
+          emoji: '📏',
+        },
+        {
+          id: 'c3l3-firash',
+          ar: 'فِرَاشٌ',
+          en: 'Bedding / mattress',
+          bn: 'বিছানা',
+          romanized: 'firāshun',
+          emoji: '🛏️',
+        },
+        {
+          id: 'c3l3-misbah',
+          ar: 'مِصْبَاحٌ',
+          en: 'A lamp',
+          bn: 'একটি বাতি',
+          romanized: 'miṣbāḥun',
+          emoji: '💡',
+        },
+      ],
+    },
+  },
+
+  // 4. Synaptic Speed Match: Purity & Nature Lexicon
+  {
+    id: 'ch3-l3-step-4-speed-purity',
+    type: 'speed_pair',
+    pageNumber: 100,
+    titleEn: 'Synaptic Speed Pairing: Purity & Setting',
+    titleAr: 'التَّطَابُقُ السَّرِيعُ: مُفْرَدَاتُ النَّظَافَةِ وَالبِيئَةِ',
+    instructionEn: 'Pair the classical Arabic terms for environment and purity with their English equivalents.',
+    instructionBn: 'প্রকৃতি ও পরিচ্ছন্নতা বিষয়ক আরবি শব্দের সাথে সঠিক অর্থের দ্রুত সংযোগ স্থাপন করুন।',
+    pairPayload: {
+      pairs: [
+        { id: 'p-c3l3-1', ar: 'بِجَانِبِ', meaning: 'Beside / next to' },
+        { id: 'p-c3l3-2', ar: 'صَافٍ', meaning: 'Pure / clear' },
+        { id: 'p-c3l3-3', ar: 'قَذِرٌ', meaning: 'Dirty' },
+        { id: 'p-c3l3-4', ar: 'مَعْبَدٌ', meaning: 'Temple' },
+        { id: 'p-c3l3-5', ar: 'سَجَّادَةٌ', meaning: 'Carpet' },
+        { id: 'p-c3l3-6', ar: 'عَالِيَةٌ', meaning: 'Tall / high' },
+      ],
+    },
+  },
+
+  // 5. Concept Discovery: Multi-Tiered Nested Noun Phrases
+  {
+    id: 'ch3-l3-step-5-concept-nested-phrases',
+    type: 'concept_intro',
+    pageNumber: 100,
+    titleEn: 'Grammar Paradigm: Multi-Tiered Complex Subjects',
+    titleAr: 'قَاعِدَةٌ: تَرْكِيبُ المُضَافِ مَعَ الإِشَارَةِ وَالبَدَلِ المَوْصُوفِ',
+    instructionEn: 'Observe how a possessed noun joins a demonstrative pointer, which governs a noun accompanied by its own adjective: «بَابُ هَذِهِ الْغُرْفَةِ الصَّغِيرَةِ وَاسِعٌ».',
+    instructionBn: 'মুদাফের পর ইশারা, এবং বদলের সাথে নিজস্ব সিফাত মিলে কীভাবে সুবিশাল জটিল মুবতাদা গঠিত হয় তা লক্ষ্য করুন: «بَابُ هَذِهِ الْغُرْفَةِ الصَّغِيرَةِ وَاسِعٌ»।',
+    conceptPayload: {
+      concepts: [
+        {
+          id: 'cp-c3l3-door-small-room',
+          ar: 'بَابُ هَذِهِ الْغُرْفَةِ الصَّغِيرَةِ وَاسِعٌ',
+          romanized: 'bābu hādhihi al-ghurfati aṣ-ṣaghīrati wāsi‘un',
+          meaningEn: 'The door of this small room is wide.',
+          meaningBn: 'এই ছোট কামরাটির দরজা প্রশস্ত।',
+          exampleAr: 'بَابُ هَذِهِ الْغُرْفَةِ الصَّغِيرَةِ وَاسِعٌ',
+          exampleEn: 'The door of this small room is wide.',
+          exampleBn: 'এই ছোট কামরার দরজা চওড়া।',
+          audioKey: 'babu_hazihi_al_ghurfati_as_saghirah',
+          exampleAudioKey: 'babu_hazihi_al_ghurfati_as_saghirati_wasi',
+          emoji: '🚪',
+        },
+        {
+          id: 'cp-c3l3-clock-pen',
+          ar: 'بِجَانِبِ السَّاعَةِ الْجَمِيلَةِ قَلَمٌ',
+          romanized: 'bi-jānibi as-sā‘ati al-jamīlati qalamun',
+          meaningEn: 'Beside the beautiful clock is a pen.',
+          meaningBn: 'সুন্দর ঘড়িটির পাশে একটি কলম রয়েছে।',
+          exampleAr: 'بِجَانِبِ السَّاعَةِ الْجَمِيلَةِ قَلَمٌ',
+          exampleEn: 'Beside the beautiful clock is a pen.',
+          exampleBn: 'সুন্দর ঘড়িটির পাশে একটি কলম আছে।',
+          audioKey: 'bijanib_as_saati_al_jamilah',
+          exampleAudioKey: 'bijanib_as_saati_al_jamilati_qalam',
+          emoji: '🕰️',
+        },
+      ],
+    },
+  },
+
+  // 6. Deep Pedagogical Concept: Locative «بِجَانِبِ» with Qualified Topographical Terms
+  {
+    id: 'ch3-l3-step-6-concept-bijanib-topography',
+    type: 'concept_intro',
+    pageNumber: 101,
+    titleEn: 'Syntactic Rule: Locative «بِجَانِبِ» Governing Complex Genitives',
+    titleAr: 'قَاعِدَةٌ: اسْتِعْمَالُ «بِجَانِبِ» مَعَ المَوْصُوفِ وَالصِّفَةِ',
+    instructionEn: 'The locative compound «بِجَانِبِ» (beside) functions as Mudaf, placing both the subsequent topographical noun and its descriptive adjective into the genitive state (Kasrah).',
+    instructionBn: '«بِجَانِبِ» পদটি মুদাফ হিসেবে পরবর্তী প্রাকৃতিক স্থান ও তার বিশেষণ উভয়কেই কাসরাহ (যের) প্রদান করে মাজরুর করে।',
+    conceptPayload: {
+      concepts: [
+        {
+          id: 'cp-c3l3-village-river',
+          ar: 'الْقَرْيَةُ الْقَدِيمَةُ بِجَانِبِ النَّهْرِ الْوَاسِعِ',
+          romanized: 'al-qaryatu al-qadīmatu bi-jānibi an-nahri al-wāsi‘i',
+          meaningEn: 'The ancient village is beside the wide river.',
+          meaningBn: 'পুরাতন গ্রামটি প্রশস্ত নদীর পাশে অবস্থিত।',
+          exampleAr: 'الْقَرْيَةُ الْقَدِيمَةُ بِجَانِبِ النَّهْرِ الْوَاسِعِ ، وَمَاءُ هَذَا النَّهْرِ صَافٍ',
+          exampleEn: 'The ancient village is beside the wide river, and the water of this river is clear.',
+          exampleBn: 'পুরাতন গ্রামটি প্রশস্ত নদীর পাশে, এবং এই নদীর পানি স্বচ্ছ।',
+          audioKey: 'al_qaryatu_al_qadimah_bijanib_an_nahr',
+          exampleAudioKey: 'al_qaryatu_al_qadimatu_bijanib_an_nahri_al_wasi',
+          emoji: '🏞️',
+        },
+        {
+          id: 'cp-c3l3-tree-house',
+          ar: 'الشَّجَرَةُ الْعَالِيَةُ بِجَانِبِ الْبَيْتِ الصَّغِيرِ',
+          romanized: 'ash-shajaratu al-‘āliyatu bi-jānibi al-bayti aṣ-ṣaghīri',
+          meaningEn: 'The tall tree is beside the small house.',
+          meaningBn: 'উঁচু গাছটি ছোট বাড়িটির পাশে অবস্থিত।',
+          exampleAr: 'الشَّجَرَةُ الْعَالِيَةُ بِجَانِبِ الْبَيْتِ الصَّغِيرِ',
+          exampleEn: 'The tall tree is beside the small house.',
+          exampleBn: 'উঁচু গাছটি ছোট বাড়িটির পাশে।',
+          audioKey: 'ash_shajaratu_al_aliyah',
+          exampleAudioKey: 'ash_shajaratu_al_aliyatu_bijanib_al_bayti_as_saghir',
+          emoji: '🌳',
+        },
+      ],
+    },
+  },
+
+  // 7. Polar Sort 1: River Water Purity Sort
+  {
+    id: 'ch3-l3-step-7-polar-water-purity',
+    type: 'polar_sort',
+    pageNumber: 101,
+    titleEn: 'Binary Semantic Sort: River Water Quality',
+    titleAr: 'تَمْيِيزُ صَفَاءِ المَاءِ مِنَ الكَدَرِ',
+    instructionEn: 'According to the reading narrative, what is the crystalline quality of the village river water?',
+    instructionBn: 'পাঠ্য অনুসারে গ্রামীণ নদীটির পানির অবস্থা কেমন?',
+    polarPayload: {
+      arabicSubject: 'مَاءُ هَذَا النَّهْرِ',
+      meaningEn: 'The water of this river is...',
+      meaningBn: 'এই নদীর পানি...',
+      gender: 'masculine',
+      correctAnswer: 'صَافٍ',
+      options: ['صَافٍ', 'قَذِرٌ'],
+      emoji: '💧',
+    },
+  },
+
+  // 8. Polar Sort 2: Gender Concord of Bedding vs Room
+  {
+    id: 'ch3-l3-step-8-polar-firash-gender',
+    type: 'polar_sort',
+    pageNumber: 100,
+    titleEn: 'Binary Gender Concord: Bedding vs Room Attributes',
+    titleAr: 'تَطَابُقُ التَّذْكِيرِ وَالتَّأْنِيثِ فِي نَظَافَةِ الفِرَاشِ',
+    instructionEn: 'Select the matching masculine adjective for Fatima’s bedding: «فِرَاشُهَا ...».',
+    instructionBn: 'ফাতেমার বিছানার বর্ণনায় পুংলিঙ্গ শব্দের জন্য উপযুক্ত রূপটি বাছুন: «فِرَاشُهَا ...»।',
+    polarPayload: {
+      arabicSubject: 'فِرَاشُهَا',
+      meaningEn: 'Her bedding (masculine noun)',
+      meaningBn: 'তার বিছানা (পুংবাচক বিশেষ্য)',
+      gender: 'masculine',
+      correctAnswer: 'نَظِيفٌ',
+      options: ['نَظِيفٌ', 'نَظِيفَةٌ'],
+      emoji: '🛏️',
+    },
+  },
+
+  // 9. Cloze Choice Drill 1: Ceiling Fan Placement
+  {
+    id: 'ch3-l3-step-9-cloze-fan-ceiling',
+    type: 'cloze_choice',
+    pageNumber: 100,
+    titleEn: 'Contextual Selection: Spatial Preposition of Fan',
+    titleAr: 'اخْتِيَارُ الظَّرْفِ: مَوْقِعُ المِرْوَحَةِ',
+    instructionEn: 'Complete: "The lamp is new, and the fan is ... the ceiling."',
+    instructionBn: '"বাতিটি নতুন এবং পাখাটি ছাদের ..." বাক্যটি সঠিক শব্দ দিয়ে পূর্ণ করুন।',
+    clozePayload: {
+      questionAr: 'الْمِصْبَاحُ جَدِيدٌ وَ الْمِرْوَحَةُ ... السَّقْفِ',
+      questionEn: 'The lamp is new, and the fan is under the ceiling.',
+      questionBn: 'বাতিটি নতুন এবং পাখাটি ছাদের নিচে।',
+      partialAnswerAr: 'الْمِصْبَاحُ جَدِيدٌ وَ الْمِرْوَحَةُ ... السَّقْفِ',
+      correctAnswer: 'تَحْتَ',
+      options: ['تَحْتَ', 'فَوْقَ', 'بِجَانِبِ', 'أَمَامَ'],
+      emoji: '🌀',
+    },
+  },
+
+  // 10. Cloze Choice Drill 2: Village Beside the Wide River
+  {
+    id: 'ch3-l3-step-10-cloze-village-river',
+    type: 'cloze_choice',
+    pageNumber: 101,
+    titleEn: 'Syntactic Selection: Beside the Wide River',
+    titleAr: 'اخْتِيَارُ حَرْفِ المَكَانِ: مَوْقِعُ القَرْيَةِ',
+    instructionEn: 'Complete: "The old village is ... the wide river."',
+    instructionBn: '"পুরাতন গ্রামটি প্রশস্ত নদীর ..." বাক্যটি পূর্ণ করুন।',
+    clozePayload: {
+      questionAr: 'الْقَرْيَةُ الْقَدِيمَةُ ... النَّهْرِ الْوَاسِعِ',
+      questionEn: 'The ancient village is beside the wide river.',
+      questionBn: 'পুরাতন গ্রামটি প্রশস্ত নদীর পাশে।',
+      partialAnswerAr: 'الْقَرْيَةُ الْقَدِيمَةُ ... النَّهْرِ الْوَاسِعِ',
+      correctAnswer: 'بِجَانِبِ',
+      options: ['بِجَانِبِ', 'تَحْتَ', 'فَوْقَ', 'خَلْفَ'],
+      emoji: '🏞️',
+    },
+  },
+
+  // 11. Dialogic Alternative Q&A Battery 1: Fatima’s Domestic Chamber
+  {
+    id: 'ch3-l3-step-11-dialogue-fatima-room',
+    type: 'alternative_qa',
+    pageNumber: 101,
+    titleEn: 'Dialogic Battery: Fatima’s Private Room & Furnishings',
+    titleAr: 'حِوَارُ التَّعْيِينِ: غُرْفَةُ فَاطِمَةَ وَأَثَاثُهَا',
+    instructionEn: 'Dissect the state and ownership of the bedroom through alternative inquiries based on visual cues without using yes or no.',
+    instructionBn: 'হ্যাঁ বা না ছাড়া দৃশ্যায়নের তথ্যের ভিত্তিতে ফাতেমার কামরা ও আসবাবপত্রের অবস্থা যাচাই করুন।',
+    alternativeQAPayload: {
+      questions: [
+        {
+          id: 'qa-c3l3-1',
+          questionAr: 'أَ نَظِيفَةٌ هِيَ أَمْ قَذِرَةٌ ؟ (✨ نَظِيفَةٌ)',
+          optionsAr: ['نَظِيفَةٌ', 'قَذِرَةٌ'],
+          correctAnswerAr: 'نَظِيفَةٌ',
+        },
+        {
+          id: 'qa-c3l3-2',
+          questionAr: 'أَ غُرْفَةُ خَالِدٍ هَذِهِ أَمْ غُرْفَةُ فَاطِمَةَ ؟ (👧 غُرْفَةُ فَاطِمَةَ)',
+          optionsAr: ['غُرْفَةُ فَاطِمَةَ', 'غُرْفَةُ خَالِدٍ'],
+          correctAnswerAr: 'غُرْفَةُ فَاطِمَةَ',
+        },
+        {
+          id: 'qa-c3l3-3',
+          questionAr: 'أَ نَظِيفٌ فِرَاشُهَا أَمْ قَذِرٌ ؟ (🛏️✨ نَظِيفٌ)',
+          optionsAr: ['نَظِيفٌ', 'قَذِرٌ'],
+          correctAnswerAr: 'نَظِيفٌ',
+        },
+        {
+          id: 'qa-c3l3-4',
+          questionAr: 'أَ فِي غُرْفَتِهَا هِيَ أَمْ فِي غُرْفَةِ الْمُعَلِّمَةِ ؟ (👧 فِي غُرْفَتِهَا)',
+          optionsAr: ['فِي غُرْفَتِهَا', 'فِي غُرْفَةِ الْمُعَلِّمَةِ'],
+          correctAnswerAr: 'فِي غُرْفَتِهَا',
+        },
+        {
+          id: 'qa-c3l3-5',
+          questionAr: 'أَ جَدِيدٌ الْمِصْبَاحُ أَمْ قَدِيمٌ ؟ (💡✨ جَدِيدٌ)',
+          optionsAr: ['جَدِيدٌ', 'قَدِيمٌ'],
+          correctAnswerAr: 'جَدِيدٌ',
+        },
+      ],
+    },
+  },
+
+  // 12. Dialogic Alternative Q&A Battery 2: Village, River & Tree
+  {
+    id: 'ch3-l3-step-12-dialogue-village-landscape',
+    type: 'alternative_qa',
+    pageNumber: 101,
+    titleEn: 'Dialogic Battery: Topography, River & Tall Tree',
+    titleAr: 'حِوَارُ التَّعْيِينِ: القَرْيَةُ وَالنَّهْرُ وَالشَّجَرَةُ العَالِيَةُ',
+    instructionEn: 'Answer questions distinguishing between the mosque, temple, river clarity, and the tall tree based on visual cues without using yes or no.',
+    instructionBn: 'হ্যাঁ বা না ছাড়া দৃশ্যায়নের তথ্যের ভিত্তিতে গ্রাম, নদী, মসজিদ ও উঁচু গাছ সম্পর্কিত প্রশ্নের উত্তর দিন।',
+    alternativeQAPayload: {
+      questions: [
+        {
+          id: 'qa-c3l3-6',
+          questionAr: 'أَ قَرْيَةٌ قَدِيمَةٌ هَذِهِ أَمْ قَرْيَةٌ جَدِيدَةٌ ؟ (🏘️ قَدِيمَةٌ)',
+          optionsAr: ['قَرْيَةٌ قَدِيمَةٌ', 'قَرْيَةٌ جَدِيدَةٌ'],
+          correctAnswerAr: 'قَرْيَةٌ قَدِيمَةٌ',
+        },
+        {
+          id: 'qa-c3l3-7',
+          questionAr: 'أَ صَافٍ مَاءُ هَذَا النَّهْرِ أَمْ قَذِرٌ ؟ (🌊✨ صَافٍ)',
+          optionsAr: ['صَافٍ', 'قَذِرٌ'],
+          correctAnswerAr: 'صَافٍ',
+        },
+        {
+          id: 'qa-c3l3-8',
+          questionAr: 'آلْمَسْجِدُ كَبِيرٌ أَمِ الْمَعْبَدُ ؟ (🕌 كَبِيرٌ)',
+          optionsAr: ['الْمَسْجِدُ', 'الْمَعْبَدُ'],
+          correctAnswerAr: 'الْمَسْجِدُ',
+        },
+        {
+          id: 'qa-c3l3-9',
+          questionAr: 'أَ الشَّجَرَةُ الْعَالِيَةُ بِجَانِبِ الْبَيْتِ الصَّغِيرِ أَمْ أَمَامَهُ ؟ (🌳 بِجَانِبِ الْبَيْتِ)',
+          optionsAr: ['بِجَانِبِ الْبَيْتِ الصَّغِيرِ', 'أَمَامَهُ'],
+          correctAnswerAr: 'بِجَانِبِ الْبَيْتِ الصَّغِيرِ',
+        },
+        {
+          id: 'qa-c3l3-10',
+          questionAr: 'أَ فِي مَسْجِدِ النُّورِ سَجَّادَةٌ غَالِيَةٌ أَمْ رَخِيصَةٌ ؟ (🕌💎 غَالِيَةٌ)',
+          optionsAr: ['سَجَّادَةٌ غَالِيَةٌ', 'سَجَّادَةٌ رَخِيصَةٌ'],
+          correctAnswerAr: 'سَجَّادَةٌ غَالِيَةٌ',
+        },
+      ],
+    },
+  },
+
+  // 13. Speed Pair Matching 2: Comprehensive Capstone Syntheses
+  {
+    id: 'ch3-l3-step-13-speed-capstone-phrases',
+    type: 'speed_pair',
+    pageNumber: 101,
+    titleEn: 'Synaptic Speed Pairing: Narrative Sentences',
+    titleAr: 'التَّطَابُقُ السَّرِيعُ: الجُمَلُ القَصَصِيَّةُ الشَّامِلَةُ',
+    instructionEn: 'Pair the narrative Arabic clauses with their fluent English translations.',
+    instructionBn: 'বর্ণনামূলক আরবি বাক্যগুলোর সাথে তাদের অনুবাদের দ্রুত মিল করুন।',
+    pairPayload: {
+      pairs: [
+        { id: 'p-c3l3-7', ar: 'الْقَرْيَةُ بِجَانِبِ النَّهْرِ', meaning: 'The village is beside the river' },
+        { id: 'p-c3l3-8', ar: 'مَاءُ هَذَا النَّهْرِ صَافٍ', meaning: 'The water of this river is clear' },
+        { id: 'p-c3l3-9', ar: 'الشَّجَرَةُ الْعَالِيَةُ بِجَانِبِ الْبَيْتِ', meaning: 'The tall tree is beside the house' },
+        { id: 'p-c3l3-10', ar: 'فِي مَسْجِدِ النُّورِ سَجَّادَةٌ', meaning: 'In Masjid an-Nur is a carpet' },
+        { id: 'p-c3l3-11', ar: 'بَابُ هَذِهِ الْغُرْفَةِ وَاسِعٌ', meaning: 'The door of this room is wide' },
+      ],
+    },
+  },
+
+  // 14. Page 100: Authentic Reading & Translation Drill 1: Door of Small Room
+  {
+    id: 'ch3-l3-step-14-assembly-small-room-door',
+    type: 'sentence_assembly',
+    pageNumber: 100,
+    titleEn: 'Textbook Translation: Small Room Door & Window',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: بَابُ الغُرْفَةِ الصَّغِيرَةِ',
+    instructionEn: 'Read the sentence and assemble the translation.',
+    instructionBn: 'আরবি বাক্যটি পড়ুন এবং সঠিক অনুবাদ তৈরি করুন।',
+    assemblyPayload: {
+      promptAr: 'بَابُ هَذِهِ الْغُرْفَةِ الصَّغِيرَةِ وَاسِعٌ ، وَنَافِذَتُهَا مَفْتُوحَةٌ',
+      promptEn: 'The door of this small room is wide and its window is open',
+      promptBn: 'এই ছোট কামরার দরজা প্রশস্ত এবং তার জানালা খোলা',
+      expectedAnswer: ['The door of this small room is wide', 'and its window', 'is open'],
+      chips: ['The door of this small room is wide', 'and its window', 'is open', 'is closed', 'narrow'],
+      expectedAnswerBn: ['এই ছোট কামরার দরজা প্রশস্ত', 'এবং তার জানালা', 'খোলা'],
+      chipsBn: ['এই ছোট কামরার দরজা প্রশস্ত', 'এবং তার জানালা', 'খোলা', 'বন্ধ', 'সংকীর্ণ'],
+      emoji: '🚪',
+    },
+  },
+
+  // 15. Page 101: Authentic Reading & Translation Drill 2: Village by River
+  {
+    id: 'ch3-l3-step-15-assembly-village-river-water',
+    type: 'sentence_assembly',
+    pageNumber: 101,
+    titleEn: 'Textbook Translation: Ancient Village & River',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: القَرْيَةُ القَدِيمَةُ وَالنَّهْرُ',
+    instructionEn: 'Read the sentence and assemble the translation.',
+    instructionBn: 'আরবি বাক্যটি পড়ুন এবং সঠিক অনুবাদ তৈরি করুন।',
+    assemblyPayload: {
+      promptAr: 'الْقَرْيَةُ الْقَدِيمَةُ بِجَانِبِ النَّهْرِ الْوَاسِعِ ، وَمَاءُ هَذَا النَّهْرِ صَافٍ',
+      promptEn: 'The ancient village is beside the wide river and the water of this river is clear',
+      promptBn: 'পুরাতন গ্রামটি প্রশস্ত নদীর পাশে এবং এই নদীর পানি স্বচ্ছ',
+      expectedAnswer: ['The ancient village is beside the wide river', 'and the water of this river', 'is clear'],
+      chips: ['The ancient village is beside the wide river', 'and the water of this river', 'is clear', 'muddy', 'far from'],
+      expectedAnswerBn: ['পুরাতন গ্রামটি প্রশস্ত নদীর পাশে', 'এবং এই নদীর পানি', 'স্বচ্ছ'],
+      chipsBn: ['পুরাতন গ্রামটি প্রশস্ত নদীর পাশে', 'এবং এই নদীর পানি', 'স্বচ্ছ', 'ঘোলা', 'দূরে'],
+      emoji: '🏞️',
+    },
+  },
+
+  // 16. Page 102: Authentic Reading & Translation Drill 3: Tall Tree & Carpet
+  {
+    id: 'ch3-l3-step-16-assembly-tree-carpet',
+    type: 'sentence_assembly',
+    pageNumber: 102,
+    titleEn: 'Textbook Translation: Tall Tree & Masjid Carpet',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: الشَّجَرَةُ العَالِيَةُ وَالسَّجَّادَةُ',
+    instructionEn: 'Read the sentence and assemble the translation.',
+    instructionBn: 'আরবি বাক্যটি পড়ুন এবং সঠিক অনুবাদ তৈরি করুন।',
+    assemblyPayload: {
+      promptAr: 'الشَّجَرَةُ الْعَالِيَةُ بِجَانِبِ الْبَيْتِ الصَّغِيرِ ، وَفِي مَسْجِدِ النُّورِ سَجَّادَةٌ غَالِيَةٌ',
+      promptEn: 'The tall tree is beside the small house and in Masjid an-Nur is an expensive carpet',
+      promptBn: 'উঁচু গাছটি ছোট বাড়িটির পাশে এবং নূর মসজিদে একটি দামি গালিচা রয়েছে',
+      expectedAnswer: ['The tall tree is beside the small house', 'and in Masjid an-Nur', 'is an expensive carpet'],
+      chips: ['The tall tree is beside the small house', 'and in Masjid an-Nur', 'is an expensive carpet', 'a cheap mat', 'in front of'],
+      expectedAnswerBn: ['উঁচু গাছটি ছোট বাড়িটির পাশে', 'এবং নূর মসজিদে', 'রয়েছে একটি দামি গালিচা'],
+      chipsBn: ['উঁচু গাছটি ছোট বাড়িটির পাশে', 'এবং নূর মসজিদে', 'রয়েছে একটি দামি গালিচা', 'একটি সস্তা মাদুর', 'সামনে'],
+      emoji: '🌳',
+    },
+  },
+
+  // 17. Syntactic Tarkib Dissector: Grand Synthesis Architecture
+  {
+    id: 'ch3-l3-step-17-tarkib-dissector',
+    type: 'tarkib_dissector',
+    pageNumber: 100,
+    titleEn: 'Syntactic Tarkib Dissector: Multi-Tiered Subject & Locative Trees',
+    titleAr: 'التَّرْكِيبُ النَّحْوِيُّ: بِنَاءُ المُبْتَدَأِ المُرَكَّبِ وَالمُرَكَّبِ الظَّرْفِيِّ',
+    instructionEn: 'Analyze the supreme syntactic architecture of Volume 1, unifying Mudaf, Demonstrative, Badal, and Sifah into a cohesive tree.',
+    instructionBn: 'মুদাফ, ইশারা, বদল ও সিফাত একত্রিত হয়ে কীভাবে পূর্ণাঙ্গ বাক্যরীতি গড়ে তোলে তা ব্যাকরণগত উপাদান অনুযায়ী বিশ্লেষণ করুন।',
+    tarkibPayload: {
+      sentences: [
+        {
+          id: 'tarkib-c3l3-s1',
+          sentenceAr: 'بَابُ هَذِهِ الْغُرْفَةِ الصَّغِيرَةِ وَاسِعٌ',
+          sentenceTypeAr: 'جُمْلَةٌ اسْمِيَّةٌ (مُبْتَدَأٌ مُرَكَّبٌ إِضَافِيٌّ إِشَارِيٌّ وَصْفِيٌّ + خَبَرٌ)',
+          sentenceTypeEn: 'Nominal Sentence (Multi-Tier Possessive-Descriptive Subject + Predicate)',
+          sentenceTypeBn: 'নামবাচক বাক্য (মুদাফ-ইশারা-বদল-সিফাত মুবতাদা + খবর)',
+          slots: [
+            {
+              roleAr: 'مُضَافٌ (مُبْتَدَأٌ)',
+              roleEn: 'Possessed Noun (Mubtada)',
+              roleBn: 'মুদাফ (মুবতাদা)',
+              expectedWordAr: 'بَابُ',
+            },
+            {
+              roleAr: 'مُضَافٌ إِلَيْهِ (اسْمُ إِشَارَةٍ)',
+              roleEn: 'Demonstrative Possessor',
+              roleBn: 'মুদাফ ইলাইহি (ইশারা)',
+              expectedWordAr: 'هَذِهِ',
+            },
+            {
+              roleAr: 'بَدَلٌ وَمَوْصُوفٌ (مَجْرُورٌ)',
+              roleEn: 'Substitute & Qualified Noun',
+              roleBn: 'বদল ও মাওসূফ (মাজরুর)',
+              expectedWordAr: 'الْغُرْفَةِ',
+            },
+            {
+              roleAr: 'صِفَةٌ (مَجْرُورَةٌ)',
+              roleEn: 'Adjective (Matching Genitive)',
+              roleBn: 'সিফাত (মাজরুর)',
+              expectedWordAr: 'الصَّغِيرَةِ',
+            },
+            {
+              roleAr: 'خَبَرٌ (مَرْفُوعٌ)',
+              roleEn: 'Predicate (Nominative)',
+              roleBn: 'বিধেয় (খবর)',
+              expectedWordAr: 'وَاسِعٌ',
+            },
+          ],
+          availableWordsAr: ['وَاسِعٌ', 'هَذِهِ', 'الصَّغِيرَةِ', 'بَابُ', 'الْغُرْفَةِ'],
+        },
+        {
+          id: 'tarkib-c3l3-s2',
+          sentenceAr: 'الْقَرْيَةُ الْقَدِيمَةُ بِجَانِبِ النَّهْرِ',
+          sentenceTypeAr: 'جُمْلَةٌ اسْمِيَّةٌ (مُبْتَدَأٌ مَوْصُوفٌ وَصِفَةٌ + خَبَرٌ شِبْهُ جُمْلَةٍ)',
+          sentenceTypeEn: 'Nominal Sentence (Descriptive Subject + Locative Predicate)',
+          sentenceTypeBn: 'নামবাচক বাক্য (মাওসূফ-সিফাত মুবতাদা + জরফি খবর)',
+          slots: [
+            {
+              roleAr: 'مَوْصُوفٌ (مُبْتَدَأٌ)',
+              roleEn: 'Qualified Noun (Mubtada)',
+              roleBn: 'মাওসূফ (মুবতাদা)',
+              expectedWordAr: 'الْقَرْيَةُ',
+            },
+            {
+              roleAr: 'صِفَةٌ (مَرْفُوعَةٌ)',
+              roleEn: 'Adjective (Sifah)',
+              roleBn: 'সিফাত (মারফু)',
+              expectedWordAr: 'الْقَدِيمَةُ',
+            },
+            {
+              roleAr: 'جَارٌّ وَمَجْرُورٌ وَمُضَافٌ',
+              roleEn: 'Locative Compound Preposition',
+              roleBn: 'যার-মুদাফ পদ',
+              expectedWordAr: 'بِجَانِبِ',
+            },
+            {
+              roleAr: 'مُضَافٌ إِلَيْهِ (مَجْرُورٌ)',
+              roleEn: 'Genitive Object of Location',
+              roleBn: 'মুদাফ ইলাইহি (মাজরুর)',
+              expectedWordAr: 'النَّهْرِ',
+            },
+          ],
+          availableWordsAr: ['النَّهْرِ', 'الْقَرْيَةُ', 'بِجَانِبِ', 'الْقَدِيمَةُ'],
+        },
+      ],
+    },
+  },
+
+  // 18. Sacred Milestone: Volume 1 Grand Finale (Surah Al-Ghashiyah 88:10-12)
+  {
+    id: 'ch3-l3-step-18-quranic-echo',
+    type: 'quranic_echo',
+    pageNumber: 102,
+    titleEn: 'Volume 1 Grand Finale: Paradise Syntactic Architecture',
+    titleAr: 'خِتَامُ الجُزْءِ الأَوَّلِ: عِمَارَةُ آيَاتِ الجَنَّةِ',
+    instructionEn: 'Celebrate completing Volume 1 by reflecting on the divine syntax of Surah Al-Ghashiyah (88:10-12).',
+    instructionBn: 'প্রথম খণ্ড সমাপ্তির গৌরবময় মুহূর্তে সূরা আল-গাশিয়ার ঐশী বাক্য গঠন প্রত্যক্ষ করুন।',
+    echoPayload: {
+      surahNumber: 88,
+      ayahNumber: 10,
+      surahNameAr: 'الغاشية',
+      surahNameEn: 'Al-Ghashiyah',
+      arabicText: 'فِي جَنَّةٍ عَالِيَةٍ ۝ لَّا تَسْمَعُ فِيهَا لَاغِيَةً ۝ فِيهَا عَيْنٌ جَارِيَةٌ',
+      translationEn: 'In an elevated garden, Where they will hear therein no ill speech, Within it is a flowing spring.',
+      translationBn: 'উচ্চমর্যাদাসম্পন্ন জান্নাতে, যেখানে তারা শুনবে না কোনো অসার বাক্য, তাতে রয়েছে বহমান ঝর্ণাধারা।',
+      highlightedWords: ['فِي', 'جَنَّةٍ', 'عَالِيَةٍ', 'فِيهَا', 'عَيْنٌ', 'جَارِيَةٌ'],
+      patternNameEn: 'The Grand Synthesis: Fronted Preposition & Qualified Attributes (شِبْهُ جُمْلَةٍ + مَوْصُوفٌ وَصِفَةٌ)',
+      patternNameBn: 'অব্যয় পদ ও গুণবাচক বিশেষ্যের পূর্ণাঙ্গ সংযোগ',
+      lessonPatternAr: 'فِي هَذِهِ الْقَرْيَةِ شَجَرَةٌ عَالِيَةٌ',
+      lessonPatternEn: 'In this village is a tall tree',
+      lessonPatternBn: 'এই গ্রামে একটি উঁচু গাছ আছে',
+      quranPatternAr: 'فِي جَنَّةٍ عَالِيَةٍ ۝ فِيهَا عَيْنٌ جَارِيَةٌ',
+      quranPatternEn: 'In an elevated garden, within it is a flowing spring',
+      quranPatternBn: 'উচ্চমর্যাদাসম্পন্ন জান্নাতে, তাতে রয়েছে বহমান ঝর্ণাধারা',
+      reflection: 'Congratulations! You have completed Volume 1. You can now fluently deconstruct noble Quranic passages that weave together fronted prepositional phrases («فِي جَنَّةٍ», «فِيهَا»), matching descriptive adjectives («عَالِيَةٍ», «جَارِيَةٍ»), and delayed subjects («عَيْنٌ»). Every grammatical pillar learned across all 20 lessons now converges into profound Quranic literacy.',
+      audioKey: 'quran_088010',
+    },
+  },
+];
+
+export const CH3_LESSON_03_SESSION: LessonSessionData = {
+  volumeId: 1,
+  chapterId: 3,
+  lessonNum: 3,
+  titleEn: 'Narrative Reading & Volume 1 Grand Finale',
+  titleAr: 'قِرَاءَةُ النُّصُوصِ وَخِتَامُ الجُزْءِ الأَوَّلِ',
+  wordsLearned: [
+    'صَافٍ',
+    'قَذِرٌ',
+    'بِجَانِبِ',
+    'مَعْبَدٌ',
+    'سَجَّادَةٌ',
+    'غَالِيَةٌ',
+    'فِرَاشٌ',
+    'عَالِيَةٌ',
+    'شَجَرَةٌ',
+    'وَاسِعٌ',
+    'ضَيِّقٌ',
+    'غُرْفَةٌ',
+  ],
+  steps: CH3_LESSON_03_STEPS,
+};

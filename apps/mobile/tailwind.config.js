@@ -23,7 +23,23 @@ module.exports = {
         'arabic-display': ['44px', { lineHeight: '60px' }],
         'arabic-body': ['18px', { lineHeight: '34px' }],
       },
+      borderRadius: {
+        '4xl': '32px',
+        '3xl': '24px',
+        '2xl': '16px',
+        xl: '12px',
+      },
       colors: {
+        accent: {
+          primary: '#4338CA',
+          'primary-hover': '#3730A3',
+          'primary-subtle': '#EEF2FF',
+          'primary-text': '#3730A3',
+          secondary: '#C28135',
+          'secondary-hover': '#9A6321',
+          'secondary-subtle': '#FDF8F0',
+          'secondary-text': '#7C4A14',
+        },
         primary: {
           50: '#ECFDF8',
           100: '#D1FAEF',
@@ -50,10 +66,10 @@ module.exports = {
           950: '#0A0A0A',
         },
         status: {
-          success: '#2E7D32',
-          warning: '#C77D00',
-          danger: '#C62828',
-          info: '#1565C0',
+          success: '#15803D',
+          warning: '#B45309',
+          danger: '#DC2626',
+          info: '#1D4ED8',
         },
       },
     },
