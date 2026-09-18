@@ -816,7 +816,7 @@ export const ArabicDoodleCanvas: React.FC = () => {
     setIsDrawing(false)
   }
 
-  // Lenient, Proximity & Key Waypoint Recognition Engine
+  // Proper, Non-Cheatable & Forgiving Handwriting Verification Engine
   const handleCheckDoodle = () => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -835,7 +835,15 @@ export const ArabicDoodleCanvas: React.FC = () => {
     const width = rect.width
     const height = rect.height
 
-    // 1. Render ground truth offscreen to sample key structural waypoints
+    // 1. Calculate user's total continuous stroke arc length
+    let totalDrawnLength = 0
+    for (let i = 1; i < points.length; i++) {
+      if (points[i].strokeIndex === points[i - 1].strokeIndex) {
+        totalDrawnLength += Math.hypot(points[i].x - points[i - 1].x, points[i].y - points[i - 1].y)
+      }
+    }
+
+    // 2. Render ground truth offscreen to sample key structural waypoints
     const offscreen = document.createElement('canvas')
     offscreen.width = width
     offscreen.height = height
@@ -852,14 +860,14 @@ export const ArabicDoodleCanvas: React.FC = () => {
 
     const targetData = offCtx.getImageData(0, 0, width, height).data
 
-    // 2. Extract bounding box and sample candidate waypoints of target glyph
+    // 3. Extract bounding box and sample candidate waypoints of target glyph
     const targetPoints: { x: number; y: number }[] = []
     let tMinX = width
     let tMaxX = 0
     let tMinY = height
     let tMaxY = 0
 
-    const scanStep = 5
+    const scanStep = 4
     for (let y = 0; y < height; y += scanStep) {
       for (let x = 0; x < width; x += scanStep) {
         const idx = (Math.floor(y) * width + Math.floor(x)) * 4
@@ -873,49 +881,22 @@ export const ArabicDoodleCanvas: React.FC = () => {
       }
     }
 
-    if (targetPoints.length === 0) {
+    const targetWidth = Math.max(1, tMaxX - tMinX)
+    const targetHeight = Math.max(1, tMaxY - tMinY)
+    const isDotGlyph = currentChar === '٠'
+
+    // Compute minimal required stroke arc length to prevent specks / accidental clicks
+    const expectedMinLength = isDotGlyph ? 14 : Math.max(45, (targetWidth + targetHeight) * 0.35)
+    if (totalDrawnLength < expectedMinLength) {
       setEvaluationResult({
-        score: 90,
-        status: 'success',
-        message: 'Calligraphy recognized! +30 XP awarded!',
+        score: 15,
+        status: 'retry',
+        message: `Stroke is too brief (${Math.round(totalDrawnLength)}px). Draw the complete outline of '${currentChar}'.`,
       })
-      addXp(30, `Calligraphy Mastered: ${currentChar}`)
       return
     }
 
-    // Uniformly sample 14 key structural waypoints (top, bottom, extremities, midpoints)
-    const waypoints: { x: number; y: number }[] = []
-    const sampleCount = Math.min(14, targetPoints.length)
-    const stride = Math.max(1, Math.floor(targetPoints.length / sampleCount))
-    for (let i = 0; i < targetPoints.length; i += stride) {
-      waypoints.push(targetPoints[i])
-      if (waypoints.length >= sampleCount) break
-    }
-
-    // Always include absolute extremities (top-most, bottom-most, right-most, left-most)
-    const topPt = targetPoints.reduce((acc, p) => (p.y < acc.y ? p : acc), targetPoints[0])
-    const bottomPt = targetPoints.reduce((acc, p) => (p.y > acc.y ? p : acc), targetPoints[0])
-    const rightPt = targetPoints.reduce((acc, p) => (p.x > acc.x ? p : acc), targetPoints[0])
-    const leftPt = targetPoints.reduce((acc, p) => (p.x < acc.x ? p : acc), targetPoints[0])
-    waypoints.push(topPt, bottomPt, rightPt, leftPt)
-
-    // 3. Evaluate User Strokes against Key Waypoints
-    // Generous tolerance radius: ~36px (forgiving for finger / mouse drawings)
-    const toleranceRadius = Math.max(34, Math.min(width, height) * 0.11)
-    let waypointsHit = 0
-
-    for (const wp of waypoints) {
-      const isHit = points.some((p) => {
-        const dx = p.x - wp.x
-        const dy = p.y - wp.y
-        return dx * dx + dy * dy <= toleranceRadius * toleranceRadius
-      })
-      if (isHit) waypointsHit++
-    }
-
-    const hitRatio = waypointsHit / waypoints.length
-
-    // User bounding box check
+    // 4. Check user bounding box and physical span
     let uMinX = width
     let uMaxX = 0
     let uMinY = height
@@ -929,24 +910,108 @@ export const ArabicDoodleCanvas: React.FC = () => {
     const userWidth = uMaxX - uMinX
     const userHeight = uMaxY - uMinY
 
-    // 4. Flexible Acceptance Rules:
-    // - Single letter / numeral: pass if hitRatio >= 0.35 (just ~35% of key landmarks touched!)
-    //   and has minimum physical span (width > 12px or height > 16px)
-    // - Words: pass if hitRatio >= 0.28 or user spanned at least 45% of word width
-    const targetWidth = tMaxX - tMinX
-    const spanOverlapRatio = targetWidth > 0 ? userWidth / targetWidth : 1
+    // Reject specks that don't span an adequate portion of the letter
+    if (!isDotGlyph && userWidth < Math.min(24, targetWidth * 0.32) && userHeight < Math.min(28, targetHeight * 0.32)) {
+      setEvaluationResult({
+        score: 20,
+        status: 'retry',
+        message: `Drawing is too small. Trace the full height and width of '${currentChar}'.`,
+      })
+      return
+    }
 
-    const isAccepted =
-      (hitRatio >= 0.35 && (userWidth > 12 || userHeight > 16)) ||
-      (activeTab === 'words' && (hitRatio >= 0.28 || spanOverlapRatio >= 0.45)) ||
-      (currentChar === '١' || currentChar === 'أ' ? userHeight >= 35 && hitRatio >= 0.25 : false)
+    // 5. In-Bounds Target Vicinity Check (prevent drawing far away in an arbitrary corner)
+    const padding = 55
+    const inTargetRegionCount = points.filter(
+      (p) =>
+        p.x >= tMinX - padding &&
+        p.x <= tMaxX + padding &&
+        p.y >= tMinY - padding &&
+        p.y <= tMaxY + padding
+    ).length
+    const inTargetRegionRatio = inTargetRegionCount / points.length
+    if (inTargetRegionRatio < 0.55) {
+      setEvaluationResult({
+        score: 15,
+        status: 'retry',
+        message: `Stroke is drawn off-center. Draw directly over the guide of '${currentChar}'.`,
+      })
+      return
+    }
+
+    // 6. Partition Target into Key Spatial Zones (Right start, Center body, Left end / tail)
+    const isVerticalChar = targetHeight > targetWidth * 1.35 || currentChar === '١' || currentChar === 'أ'
+
+    // Sample distinct landmark waypoints
+    const sampleCount = Math.min(16, targetPoints.length)
+    const waypoints: { x: number; y: number; zone: 'start' | 'mid' | 'end' }[] = []
+    const stride = Math.max(1, Math.floor(targetPoints.length / sampleCount))
+
+    for (let i = 0; i < targetPoints.length; i += stride) {
+      const pt = targetPoints[i]
+      let zone: 'start' | 'mid' | 'end' = 'mid'
+      if (isVerticalChar) {
+        zone = pt.y < tMinY + targetHeight * 0.35 ? 'start' : pt.y > tMaxY - targetHeight * 0.35 ? 'end' : 'mid'
+      } else {
+        zone = pt.x > tMaxX - targetWidth * 0.33 ? 'start' : pt.x < tMinX + targetWidth * 0.33 ? 'end' : 'mid'
+      }
+      waypoints.push({ x: pt.x, y: pt.y, zone })
+      if (waypoints.length >= sampleCount) break
+    }
+
+    // Include absolute extremities
+    const topPt = targetPoints.reduce((acc, p) => (p.y < acc.y ? p : acc), targetPoints[0])
+    const bottomPt = targetPoints.reduce((acc, p) => (p.y > acc.y ? p : acc), targetPoints[0])
+    const rightPt = targetPoints.reduce((acc, p) => (p.x > acc.x ? p : acc), targetPoints[0])
+    const leftPt = targetPoints.reduce((acc, p) => (p.x < acc.x ? p : acc), targetPoints[0])
+
+    waypoints.push(
+      { x: topPt.x, y: topPt.y, zone: isVerticalChar ? 'start' : 'mid' },
+      { x: bottomPt.x, y: bottomPt.y, zone: isVerticalChar ? 'end' : 'mid' },
+      { x: rightPt.x, y: rightPt.y, zone: 'start' },
+      { x: leftPt.x, y: leftPt.y, zone: 'end' }
+    )
+
+    // 7. Evaluate User Strokes against Landmark Waypoints
+    // Balanced tolerance radius: 26px (generous enough for natural mouse/touch, strict enough to prevent specks)
+    const toleranceRadius = Math.max(24, Math.min(width, height) * 0.085)
+    let waypointsHit = 0
+    const zonesHit = new Set<'start' | 'mid' | 'end'>()
+
+    for (const wp of waypoints) {
+      const isHit = points.some((p) => {
+        const dx = p.x - wp.x
+        const dy = p.y - wp.y
+        return dx * dx + dy * dy <= toleranceRadius * toleranceRadius
+      })
+      if (isHit) {
+        waypointsHit++
+        zonesHit.add(wp.zone)
+      }
+    }
+
+    const hitRatio = waypointsHit / waypoints.length
+    const widthSpanRatio = userWidth / targetWidth
+    const heightSpanRatio = userHeight / targetHeight
+
+    // 8. Proper Verification Criteria:
+    let isAccepted = false
+    if (isDotGlyph) {
+      isAccepted = totalDrawnLength >= 12 && inTargetRegionRatio >= 0.6
+    } else if (isVerticalChar) {
+      isAccepted = heightSpanRatio >= 0.40 && (zonesHit.has('start') || zonesHit.has('end')) && hitRatio >= 0.32
+    } else if (activeTab === 'words') {
+      isAccepted = (widthSpanRatio >= 0.42 || hitRatio >= 0.34) && zonesHit.size >= 2
+    } else {
+      isAccepted = (hitRatio >= 0.38 && zonesHit.size >= 2) || (widthSpanRatio >= 0.45 && hitRatio >= 0.32)
+    }
 
     if (isAccepted) {
-      const displayScore = Math.min(100, Math.max(86, Math.round(hitRatio * 40 + 60)))
+      const displayScore = Math.min(100, Math.max(85, Math.round(hitRatio * 40 + Math.min(1, Math.max(widthSpanRatio, heightSpanRatio)) * 25 + 35)))
       setEvaluationResult({
         score: displayScore,
         status: 'success',
-        message: `مَا شَاءَ اللَّه! Recognized '${currentChar}' smoothly (${displayScore}%)! +30 XP awarded!`,
+        message: `مَا شَاءَ اللَّه! Verified '${currentChar}' accurately (${displayScore}%)! +30 XP awarded!`,
       })
 
       confetti({
@@ -958,10 +1023,19 @@ export const ArabicDoodleCanvas: React.FC = () => {
       addXp(30, `Doodle Mastered: ${currentChar}`)
     } else {
       const progressPercent = Math.round(hitRatio * 100)
+      let hint = `Waypoint coverage: ${progressPercent}%.`
+      if (zonesHit.size < 2 && !isDotGlyph) {
+        hint += isVerticalChar
+          ? ` Trace both the top and bottom of the stroke.`
+          : ` Trace across from right to left.`
+      } else {
+        hint += ` Follow the character curves closer to verify.`
+      }
+
       setEvaluationResult({
         score: progressPercent,
         status: 'retry',
-        message: `Key points detected: ${progressPercent}%. Sketch loosely over the guideline curves to recognize.`,
+        message: hint,
       })
     }
   }
