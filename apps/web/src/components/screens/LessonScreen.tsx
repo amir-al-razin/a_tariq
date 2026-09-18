@@ -6,6 +6,8 @@ import { ArrowLeft, Lock, Check, ChevronDown } from 'lucide-react'
 import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
 import { getLastVisitedChunk, setLastVisitedChunk } from '../../lib/progress'
 import { useProgressStore } from '../../state/progressStore'
+import { ComprehensionCheckModal } from '../comprehension/ComprehensionCheckModal'
+import { RewardCelebrationModal } from '../gamification/RewardCelebrationModal'
 
 const ProgressRing = ({ progress, size = 40, strokeWidth = 3, color = 'currentColor' }: { progress: number, size?: number, strokeWidth?: number, color?: string }) => {
   const radius = (size - strokeWidth) / 2;
@@ -58,6 +60,7 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
   const navigate = useNavigate()
   const [isDark, setIsDark] = useState(false)
   const [lastVisited, setLastVisited] = useState<number | null>(null)
+  const [showComprehensionModal, setShowComprehensionModal] = useState(false)
 
   const progressStore = useProgressStore((state) => state.progress)
 
@@ -142,6 +145,17 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
           <ProgressRing progress={lessonProgress} color={isDark ? "#a3a3a3" : "#525252"} />
         </div>
       </div>
+
+      {/* Interactive Comprehension Check Action */}
+      <div className="flex items-center justify-center gap-2 mb-6 px-4">
+        <button
+          onClick={() => setShowComprehensionModal(true)}
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-100 hover:bg-neutral-200/80 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-english-bold transition-all shadow-sm cursor-pointer"
+        >
+          <span className="font-arabic text-sm" dir="rtl">هَلْ فَهِمْتَ؟</span>
+          <span>Check Understanding</span>
+        </button>
+      </div>
       
       <div className="flex-1 flex items-center justify-center relative w-full max-w-[800px] mx-auto min-h-[500px]">
         {/* Desktop Circular Layout & Mobile Grid Wrapper */}
@@ -219,6 +233,25 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
           })}
         </div>
       </div>
+
+      <RewardCelebrationModal />
+
+      <ComprehensionCheckModal
+        isOpen={showComprehensionModal}
+        onClose={() => setShowComprehensionModal(false)}
+        darsNum={darsNum}
+        volumeId={volumeId}
+        chapterId={chapterId}
+        chunks={chunks.map((c) => ({ id: c.id, titleEn: c.titleEn, titleAr: c.titleAr }))}
+        onRedirectToChunk={(targetChunkId) => {
+          setShowComprehensionModal(false)
+          const targetIdx = chunks.findIndex((c) => c.id === targetChunkId)
+          handleChunkPress(targetChunkId, targetIdx !== -1 ? targetIdx : 0)
+        }}
+        onLessonMastered={() => {
+          setShowComprehensionModal(false)
+        }}
+      />
     </div>
   )
 }

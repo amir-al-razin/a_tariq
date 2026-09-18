@@ -4,7 +4,14 @@ import {
   ChevronLeft,
   ChevronRight,
   Bookmark,
+  Sparkles,
+  Volume2,
+  X,
+  CheckCircle,
 } from 'lucide-react';
+import { useVocabStore } from '../../state/vocabStore';
+import { cleanArabic, QURAN_VOCAB_CATALOG } from '../../data/quranVocabData';
+import { GamificationHeaderWidget } from '../../components/gamification/GamificationHeaderWidget';
 
 export const Route = createFileRoute('/mushaf-v2/')({
   component: MushafV2Page,
@@ -131,6 +138,24 @@ function MushafV2Page() {
   }, [fontScaleIndex]);
 
   const currentScale = FONT_SCALES[fontScaleIndex];
+
+  const [highlightLearned, setHighlightLearned] = useState<boolean>(true);
+  const [selectedLearnedWord, setSelectedLearnedWord] = useState<{
+    rawText: string;
+    catalogItem?: (typeof QURAN_VOCAB_CATALOG)[0];
+    learnedEntry?: any;
+  } | null>(null);
+
+  const { isLearned, learnedWords } = useVocabStore();
+
+  const playWordAudio = (text: string) => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ar-SA';
+    utterance.rate = 0.85;
+    window.speechSynthesis.speak(utterance);
+  };
 
   const handleIncreaseFontSize = () => {
     setFontScaleIndex((prev) => Math.min(FONT_SCALES.length - 1, prev + 1));
@@ -272,6 +297,21 @@ function MushafV2Page() {
       }))
       .sort((a, b) => a.lineNumber - b.lineNumber);
   }, [verses]);
+
+  // Compute learned words stats on current page
+  const allWordsOnPage = useMemo(() => {
+    return verses.flatMap((v) => v.words || []);
+  }, [verses]);
+
+  const pageLearnedStats = useMemo(() => {
+    const textWords = allWordsOnPage.filter((w) => w.char_type_name === 'word');
+    const learnedOnPage = textWords.filter((w) => isLearned(w.text_uthmani));
+    return {
+      total: textWords.length,
+      unlocked: learnedOnPage.length,
+      percentage: textWords.length > 0 ? Math.round((learnedOnPage.length / textWords.length) * 100) : 0,
+    };
+  }, [allWordsOnPage, isLearned]);
 
   // Current page metadata
   const firstVerse = verses[0];
@@ -428,6 +468,23 @@ function MushafV2Page() {
                 +
               </button>
             </div>
+
+            {/* Greenlit Highlights Toggle & Unlocked Counter */}
+            <button
+              type="button"
+              onClick={() => setHighlightLearned((h) => !h)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-english-bold transition-all cursor-pointer flex-shrink-0 ${
+                highlightLearned
+                  ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 shadow-sm'
+                  : 'bg-neutral-100 dark:bg-neutral-900 text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200'
+              }`}
+              title="Toggle Greenlit Highlights for Learned Vocabulary"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Greenlit ({pageLearnedStats.unlocked}/{pageLearnedStats.total})</span>
+            </button>
+
+            <GamificationHeaderWidget />
           </div>
         </div>
       </header>
@@ -530,6 +587,8 @@ function MushafV2Page() {
                         >
                           {lineGroup.words.map((word, wordIdx) => {
                             const isEndMarker = word.char_type_name === 'end';
+                            const isWordLearned = !isEndMarker && highlightLearned && isLearned(word.text_uthmani);
+
                             return (
                               <React.Fragment key={word.id}>
                                 <span
@@ -537,10 +596,25 @@ function MushafV2Page() {
                                     fontFamily: `p${pageNumber}-v2, 'UthmanicHafs', serif`,
                                     fontSize: 'var(--mushaf-font-size)',
                                   }}
+                                  onClick={() => {
+                                    if (isWordLearned) {
+                                      const clean = cleanArabic(word.text_uthmani);
+                                      const entry = learnedWords[clean];
+                                      const catalog = QURAN_VOCAB_CATALOG.find((c) => c.arClean === clean);
+                                      setSelectedLearnedWord({
+                                        rawText: word.text_uthmani,
+                                        learnedEntry: entry,
+                                        catalogItem: catalog,
+                                      });
+                                      playWordAudio(word.text_uthmani);
+                                    }
+                                  }}
                                   className={
                                     isEndMarker
                                       ? 'font-mushaf text-neutral-500 dark:text-neutral-500 select-none mx-1 sm:mx-1.5 md:mx-2 inline-block md:flex-shrink-0'
-                                      : 'font-mushaf text-neutral-900 dark:text-neutral-100 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors cursor-pointer inline md:inline-block md:flex-shrink-0'
+                                      : isWordLearned
+                                        ? 'font-mushaf text-emerald-700 dark:text-emerald-300 bg-emerald-100/70 dark:bg-emerald-950/60 px-1 py-0.5 rounded-md border-b-2 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.3)] hover:bg-emerald-200/80 dark:hover:bg-emerald-900/60 transition-all cursor-pointer inline md:inline-block md:flex-shrink-0'
+                                        : 'font-mushaf text-neutral-900 dark:text-neutral-100 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors cursor-pointer inline md:inline-block md:flex-shrink-0'
                                   }
                                 >
                                   {word.code_v2 || word.text_uthmani}
@@ -586,6 +660,72 @@ function MushafV2Page() {
           </div>
         </div>
       </main>
+
+      {/* Greenlit Word Inspector Popover Modal */}
+      {selectedLearnedWord && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm font-english">
+          <div className="relative w-full max-w-sm bg-white dark:bg-neutral-900 rounded-3xl p-6 shadow-2xl border border-neutral-200/80 dark:border-neutral-700/80 text-center animate-in fade-in zoom-in-95">
+            <button
+              onClick={() => setSelectedLearnedWord(null)}
+              className="absolute top-4 right-4 p-1.5 rounded-full text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-center justify-center gap-1.5 text-xs font-english-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2">
+              <CheckCircle className="w-4 h-4" />
+              <span>Learned Vocabulary</span>
+            </div>
+
+            <div className="my-3">
+              <h3 className="font-arabic text-4xl text-neutral-900 dark:text-neutral-50 mb-1" dir="rtl">
+                {selectedLearnedWord.catalogItem?.ar || selectedLearnedWord.rawText}
+              </h3>
+              {selectedLearnedWord.catalogItem?.romanized && (
+                <p className="text-xs text-neutral-400 italic">
+                  {selectedLearnedWord.catalogItem.romanized}
+                </p>
+              )}
+              <p className="text-base font-english-bold text-neutral-800 dark:text-neutral-200 mt-2">
+                {selectedLearnedWord.catalogItem?.en || 'Word studied in curriculum'}
+              </p>
+            </div>
+
+            <div className="p-3 my-4 rounded-2xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200/60 dark:border-neutral-700/50 text-xs space-y-1">
+              <div className="flex justify-between text-neutral-500">
+                <span>Curriculum Source:</span>
+                <span className="font-english-bold text-neutral-800 dark:text-neutral-200">
+                  Vol {selectedLearnedWord.learnedEntry?.volume || 1}, Lesson {selectedLearnedWord.learnedEntry?.lesson || 1}
+                </span>
+              </div>
+              {selectedLearnedWord.catalogItem?.quranFrequency && (
+                <div className="flex justify-between text-neutral-500">
+                  <span>Quran Frequency:</span>
+                  <span className="font-english-bold text-emerald-600 dark:text-emerald-400">
+                    {selectedLearnedWord.catalogItem.quranFrequency.toLocaleString()}x occurrences
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                onClick={() => playWordAudio(selectedLearnedWord.rawText)}
+                className="flex-1 py-2.5 rounded-xl bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100 font-english-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+              >
+                <Volume2 className="w-3.5 h-3.5" />
+                <span>Listen Audio</span>
+              </button>
+              <button
+                onClick={() => setSelectedLearnedWord(null)}
+                className="flex-1 py-2.5 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-english-bold text-xs hover:opacity-90 transition-all cursor-pointer"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

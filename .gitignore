@@ -10,9 +10,6 @@ npm-debug.*
 *.orig.*
 web-build/
 
-
-
-
 ios
 android
 
@@ -22,7 +19,7 @@ android
 # Temporary files created by Metro to check the health of the file watcher
 .metro-health-check*
 
-# Kiro configuration (will be added after successful sprint workflow)
+# Kiro configuration
 .kiro/
 
 # Secrets & Environment variables
@@ -46,4 +43,3 @@ output/
 apps/web/public/downloads/*.mp4
 apps/web/public/downloads/*.mp3
 apps/web/public/downloads/*.wav
-

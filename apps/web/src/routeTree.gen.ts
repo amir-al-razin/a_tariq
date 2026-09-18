@@ -19,6 +19,7 @@ import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-qu
 import { Route as DemoVideoRouteImport } from './routes/demo/video'
 import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
 import { Route as MushafV2IndexRouteImport } from './routes/mushaf-v2/index'
+import { Route as VocabularyIndexRouteImport } from './routes/vocabulary/index'
 import { Route as PracticeDemoVideoRouteImport } from './routes/practice/demo/video'
 import { Route as VolumeVolumeIdIndexRouteImport } from './routes/volume/$volumeId/index'
 import { Route as CurriculumVol1Lesson1IndexRouteImport } from './routes/curriculum/vol1/lesson1/index'
@@ -76,6 +77,11 @@ const DesignSystemIndexRoute = DesignSystemIndexRouteImport.update({
 const MushafV2IndexRoute = MushafV2IndexRouteImport.update({
   id: '/mushaf-v2/',
   path: '/mushaf-v2/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VocabularyIndexRoute = VocabularyIndexRouteImport.update({
+  id: '/vocabulary/',
+  path: '/vocabulary/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PracticeDemoVideoRoute = PracticeDemoVideoRouteImport.update({
@@ -136,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/demo/': typeof DemoIndexRoute
   '/design-system/': typeof DesignSystemIndexRoute
   '/mushaf-v2/': typeof MushafV2IndexRoute
+  '/vocabulary/': typeof VocabularyIndexRoute
   '/practice/demo/video': typeof PracticeDemoVideoRoute
   '/volume/$volumeId/': typeof VolumeVolumeIdIndexRoute
   '/curriculum/vol1/lesson1/': typeof CurriculumVol1Lesson1IndexRoute
@@ -156,6 +163,7 @@ export interface FileRoutesByTo {
   '/demo': typeof DemoIndexRoute
   '/design-system': typeof DesignSystemIndexRoute
   '/mushaf-v2': typeof MushafV2IndexRoute
+  '/vocabulary': typeof VocabularyIndexRoute
   '/practice/demo/video': typeof PracticeDemoVideoRoute
   '/volume/$volumeId': typeof VolumeVolumeIdIndexRoute
   '/curriculum/vol1/lesson1': typeof CurriculumVol1Lesson1IndexRoute
@@ -177,6 +185,7 @@ export interface FileRoutesById {
   '/demo/': typeof DemoIndexRoute
   '/design-system/': typeof DesignSystemIndexRoute
   '/mushaf-v2/': typeof MushafV2IndexRoute
+  '/vocabulary/': typeof VocabularyIndexRoute
   '/practice/demo/video': typeof PracticeDemoVideoRoute
   '/volume/$volumeId/': typeof VolumeVolumeIdIndexRoute
   '/curriculum/vol1/lesson1/': typeof CurriculumVol1Lesson1IndexRoute
@@ -199,6 +208,7 @@ export interface FileRouteTypes {
     | '/demo/'
     | '/design-system/'
     | '/mushaf-v2/'
+    | '/vocabulary/'
     | '/practice/demo/video'
     | '/volume/$volumeId/'
     | '/curriculum/vol1/lesson1/'
@@ -219,6 +229,7 @@ export interface FileRouteTypes {
     | '/demo'
     | '/design-system'
     | '/mushaf-v2'
+    | '/vocabulary'
     | '/practice/demo/video'
     | '/volume/$volumeId'
     | '/curriculum/vol1/lesson1'
@@ -239,6 +250,7 @@ export interface FileRouteTypes {
     | '/demo/'
     | '/design-system/'
     | '/mushaf-v2/'
+    | '/vocabulary/'
     | '/practice/demo/video'
     | '/volume/$volumeId/'
     | '/curriculum/vol1/lesson1/'
@@ -260,6 +272,7 @@ export interface RootRouteChildren {
   DemoIndexRoute: typeof DemoIndexRoute
   DesignSystemIndexRoute: typeof DesignSystemIndexRoute
   MushafV2IndexRoute: typeof MushafV2IndexRoute
+  VocabularyIndexRoute: typeof VocabularyIndexRoute
   PracticeDemoVideoRoute: typeof PracticeDemoVideoRoute
   VolumeVolumeIdIndexRoute: typeof VolumeVolumeIdIndexRoute
   CurriculumVol1Lesson1IndexRoute: typeof CurriculumVol1Lesson1IndexRoute
@@ -342,6 +355,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MushafV2IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/vocabulary/': {
+      id: '/vocabulary/'
+      path: '/vocabulary'
+      fullPath: '/vocabulary/'
+      preLoaderRoute: typeof VocabularyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/practice/demo/video': {
       id: '/practice/demo/video'
       path: '/practice/demo/video'
@@ -412,6 +432,7 @@ const rootRouteChildren: RootRouteChildren = {
   DemoIndexRoute: DemoIndexRoute,
   DesignSystemIndexRoute: DesignSystemIndexRoute,
   MushafV2IndexRoute: MushafV2IndexRoute,
+  VocabularyIndexRoute: VocabularyIndexRoute,
   PracticeDemoVideoRoute: PracticeDemoVideoRoute,
   VolumeVolumeIdIndexRoute: VolumeVolumeIdIndexRoute,
   CurriculumVol1Lesson1IndexRoute: CurriculumVol1Lesson1IndexRoute,

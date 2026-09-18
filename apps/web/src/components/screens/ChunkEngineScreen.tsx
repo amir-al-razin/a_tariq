@@ -19,6 +19,8 @@ import {
   MasdarFactoryView
 } from '../pedagogy-v2'
 import { setChunkProgress } from '../../state/progressStore'
+import { ComprehensionCheckModal } from '../comprehension/ComprehensionCheckModal'
+import { RewardCelebrationModal } from '../gamification/RewardCelebrationModal'
 
 type Props = {
   volumeId: 1 | 2 | 3
@@ -37,6 +39,7 @@ export const ChunkEngineScreen: React.FC<Props> = ({
   const [, setIsDark] = useState(false)
   const [progress, setProgress] = useState(0)
   const [isComplete, setIsComplete] = useState(false)
+  const [showComprehensionCheck, setShowComprehensionCheck] = useState(false)
 
   const contentRef = useRef<HTMLDivElement>(null)
   const completeFiredRef = useRef(false)
@@ -137,9 +140,9 @@ export const ChunkEngineScreen: React.FC<Props> = ({
         },
       })
     } else {
-      goBack()
+      setShowComprehensionCheck(true)
     }
-  }, [nextChunk, navigate, volumeId, chapterId, darsNum, goBack])
+  }, [nextChunk, navigate, volumeId, chapterId, darsNum])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -291,6 +294,35 @@ export const ChunkEngineScreen: React.FC<Props> = ({
           </motion.div>
         )}
       </AnimatePresence>
+
+      <RewardCelebrationModal />
+
+      <ComprehensionCheckModal
+        isOpen={showComprehensionCheck}
+        onClose={() => {
+          setShowComprehensionCheck(false)
+          goBack()
+        }}
+        darsNum={darsNum}
+        volumeId={volumeId}
+        chapterId={chapterId}
+        chunks={lesson?.chunks.map((c) => ({ id: c.id, titleEn: c.titleEn, titleAr: c.titleAr })) || []}
+        onRedirectToChunk={(targetChunkId) => {
+          setShowComprehensionCheck(false)
+          navigate({
+            to: '/volume/$volumeId/chapter/$chapterId/lesson/$darsNum/chunk/$chunkId',
+            params: {
+              volumeId: volumeId.toString(),
+              chapterId: chapterId.toString(),
+              darsNum: darsNum.toString(),
+              chunkId: targetChunkId,
+            },
+          })
+        }}
+        onLessonMastered={() => {
+          goBack()
+        }}
+      />
     </div>
   )
 }
