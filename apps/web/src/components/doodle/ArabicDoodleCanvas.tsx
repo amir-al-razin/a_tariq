@@ -604,7 +604,7 @@ export function evaluateDoodleStroke({
     }
   }
 
-  // 1. Calculate total drawn stroke arc length
+  // 1. Calculate total continuous drawn stroke arc length
   let totalDrawnLength = 0
   for (let i = 1; i < points.length; i++) {
     if (points[i].strokeIndex === points[i - 1].strokeIndex) {
@@ -612,7 +612,13 @@ export function evaluateDoodleStroke({
     }
   }
 
-  // 2. Measure user's drawn bounding box
+  // 2. Resolve target reference metrics directly from DOM watermark
+  const watermarkCenterX = watermarkBounds?.centerX ?? canvasWidth / 2
+  const watermarkCenterY = watermarkBounds?.centerY ?? canvasHeight / 2
+  const watermarkWidth = Math.max(30, watermarkBounds?.width ?? 80)
+  const watermarkHeight = Math.max(30, watermarkBounds?.height ?? 80)
+
+  // 3. Overall Centering & Atelier proximity check
   let uMinX = canvasWidth
   let uMaxX = 0
   let uMinY = canvasHeight
@@ -623,18 +629,8 @@ export function evaluateDoodleStroke({
     if (p.y < uMinY) uMinY = p.y
     if (p.y > uMaxY) uMaxY = p.y
   }
-  const userWidth = Math.max(1, uMaxX - uMinX)
-  const userHeight = Math.max(1, uMaxY - uMinY)
   const userCenterX = (uMinX + uMaxX) / 2
   const userCenterY = (uMinY + uMaxY) / 2
-
-  // 3. Resolve target reference metrics directly from DOM watermark
-  const watermarkCenterX = watermarkBounds?.centerX ?? canvasWidth / 2
-  const watermarkCenterY = watermarkBounds?.centerY ?? canvasHeight / 2
-  const watermarkWidth = watermarkBounds?.width ?? 80
-  const watermarkHeight = watermarkBounds?.height ?? 80
-
-  // 4. Centering & Atelier proximity check
   const distFromTarget = Math.hypot(userCenterX - watermarkCenterX, userCenterY - watermarkCenterY)
   const maxAllowedDist = Math.max(canvasWidth, canvasHeight) * 0.42
   if (distFromTarget > maxAllowedDist) {
@@ -645,7 +641,6 @@ export function evaluateDoodleStroke({
     }
   }
 
-  // 5. Morphological Archetypes & Anti-Cheat Rule Engine
   const isDotGlyph = currentChar === '٠'
   const verticalGlyphs = new Set(['ا', 'أ', 'إ', 'آ', '١', 'ل', 'ط', 'ظ'])
   const isVerticalGlyph = verticalGlyphs.has(currentChar)
@@ -655,7 +650,27 @@ export function evaluateDoodleStroke({
   const isHorizontalGlyph = activeTab === 'words' || horizontalGlyphs.has(currentChar)
   const isAngularNumeral = currentChar === '٧' || currentChar === '٨'
 
-  // Anti-Speck Check: Reject single clicks, accidental specks, or micro-dots for full letters/words
+  // 4. In-Vicinity Density Check: Prevent drawing lines far away from the glyph
+  const padX = Math.max(45, watermarkWidth * 0.45)
+  const padY = Math.max(45, watermarkHeight * 0.45)
+  const inVicinityPoints = points.filter(
+    (p) =>
+      p.x >= watermarkCenterX - watermarkWidth / 2 - padX &&
+      p.x <= watermarkCenterX + watermarkWidth / 2 + padX &&
+      p.y >= watermarkCenterY - watermarkHeight / 2 - padY &&
+      p.y <= watermarkCenterY + watermarkHeight / 2 + padY
+  )
+  const vicinityRatio = inVicinityPoints.length / points.length
+
+  if (!isDotGlyph && vicinityRatio < 0.50) {
+    return {
+      score: 15,
+      status: 'retry',
+      message: `Most strokes are drawn outside of '${currentChar}'. Trace directly over the guide.`,
+    }
+  }
+
+  // 5. Anti-Speck & Minimum Stroke Length
   if (!isDotGlyph) {
     const minLength = activeTab === 'words' ? 45 : 30
     if (totalDrawnLength < minLength) {
@@ -665,18 +680,9 @@ export function evaluateDoodleStroke({
         message: `Stroke is too brief (${Math.round(totalDrawnLength)}px). Draw the full outline of '${currentChar}'.`,
       }
     }
-
-    const minSpan = activeTab === 'words' ? 50 : 36
-    if (userWidth + userHeight < minSpan) {
-      return {
-        score: 20,
-        status: 'retry',
-        message: `Drawing is too small. Trace the full body of '${currentChar}'.`,
-      }
-    }
   }
 
-  // Archetype 1: Dot Zero (٠)
+  // 6. Dot Zero (٠) Specific Rules
   if (isDotGlyph) {
     if (totalDrawnLength < 5) {
       return {
@@ -685,78 +691,156 @@ export function evaluateDoodleStroke({
         message: 'Draw a distinct dot for Sifr (٠).',
       }
     }
-    if (userWidth > 75 || userHeight > 75 || totalDrawnLength > 130) {
+    const dotSpan = Math.max(uMaxX - uMinX, uMaxY - uMinY)
+    if (dotSpan > 65 || totalDrawnLength > 120) {
       return {
         score: 25,
         status: 'retry',
         message: 'Sifr (٠) is a compact single dot. Avoid drawing large loops or lines.',
       }
     }
+    const distToCenter = Math.hypot(userCenterX - watermarkCenterX, userCenterY - watermarkCenterY)
+    if (distToCenter > 60) {
+      return {
+        score: 20,
+        status: 'retry',
+        message: `Draw Sifr (٠) near the center of the guide.`,
+      }
+    }
+    return {
+      score: 95,
+      status: 'success',
+      message: `مَا شَاءَ اللَّه! Verified '٠' accurately (95%)! +30 XP awarded!`,
+    }
   }
 
-  // Archetype 2: Vertical Glyphs (ا, أ, ١, ل, ط, ظ)
+  // 7. Morphological Spatial Zone Verification
+
+  // A. Vertical Glyphs (ا, أ, ١, ل, ط, ظ)
   if (isVerticalGlyph) {
-    if (userHeight < 24) {
+    // Points that lie within the vertical character column
+    const colHalfWidth = Math.max(34, watermarkWidth * 0.5)
+    const colPoints = inVicinityPoints.filter(
+      (p) => Math.abs(p.x - watermarkCenterX) <= colHalfWidth
+    )
+
+    if (colPoints.length < 3) {
       return {
-        score: 25,
+        score: 20,
         status: 'retry',
-        message: `'${currentChar}' is a vertical letter. Draw downward from top to bottom.`,
+        message: `'${currentChar}' is a vertical letter. Draw the vertical stem through the center guide.`,
       }
     }
-    if (userHeight < userWidth * 0.35) {
+
+    let colMinY = canvasHeight
+    let colMaxY = 0
+    for (const p of colPoints) {
+      if (p.y < colMinY) colMinY = p.y
+      if (p.y > colMaxY) colMaxY = p.y
+    }
+    const colHeight = colMaxY - colMinY
+
+    const minRequiredHeight = Math.min(45, watermarkHeight * 0.40)
+    if (colHeight < minRequiredHeight) {
       return {
         score: 25,
         status: 'retry',
-        message: `'${currentChar}' is primarily vertical. Your drawing is too flat horizontally.`,
+        message: `'${currentChar}' requires a downward vertical stroke. Your vertical stroke is too short (${Math.round(colHeight)}px).`,
+      }
+    }
+
+    // Must have points in the upper half and lower half of the glyph
+    const hasTop = colPoints.some((p) => p.y < watermarkCenterY - watermarkHeight * 0.10)
+    const hasBottom = colPoints.some((p) => p.y > watermarkCenterY + watermarkHeight * 0.10)
+    if (!hasTop || !hasBottom) {
+      return {
+        score: 25,
+        status: 'retry',
+        message: `Trace '${currentChar}' completely from top to bottom through the guide.`,
       }
     }
   }
 
-  // Archetype 3: Wide / Horizontal Basin & Words (ب, ت, ث, words, etc.)
-  if (isHorizontalGlyph) {
-    const minWidth = activeTab === 'words' ? 35 : 22
-    if (userWidth < minWidth) {
+  // B. Horizontal Basin Glyphs (ب, ت, ث, words, etc.)
+  else if (isHorizontalGlyph) {
+    const rowHalfHeight = Math.max(32, watermarkHeight * 0.5)
+    const rowPoints = inVicinityPoints.filter(
+      (p) => Math.abs(p.y - watermarkCenterY) <= rowHalfHeight
+    )
+
+    if (rowPoints.length < 3) {
       return {
-        score: 25,
+        score: 20,
         status: 'retry',
-        message: `'${currentChar}' has a wide shape. Trace the full horizontal span from right to left.`,
+        message: `'${currentChar}' has a horizontal basin. Trace the shape along the baseline guide.`,
       }
     }
-    if (userWidth < userHeight * 0.28) {
+
+    let rowMinX = canvasWidth
+    let rowMaxX = 0
+    for (const p of rowPoints) {
+      if (p.x < rowMinX) rowMinX = p.x
+      if (p.x > rowMaxX) rowMaxX = p.x
+    }
+    const rowWidth = rowMaxX - rowMinX
+
+    const minRequiredWidth = Math.min(45, watermarkWidth * 0.40)
+    if (rowWidth < minRequiredWidth) {
       return {
         score: 25,
         status: 'retry',
-        message: `'${currentChar}' is wide and horizontal. Your drawing is too narrow and vertical.`,
+        message: `'${currentChar}' requires a wide basin stroke. Your horizontal span is too narrow (${Math.round(rowWidth)}px).`,
+      }
+    }
+
+    const hasRight = rowPoints.some((p) => p.x > watermarkCenterX + watermarkWidth * 0.10)
+    const hasLeft = rowPoints.some((p) => p.x < watermarkCenterX - watermarkWidth * 0.10)
+    if (!hasRight || !hasLeft) {
+      return {
+        score: 25,
+        status: 'retry',
+        message: `Trace '${currentChar}' across the full width from right to left.`,
       }
     }
   }
 
-  // Archetype 4: Angular Numerals (٧, ٨)
-  if (isAngularNumeral) {
-    if (userWidth < 15 || userHeight < 16) {
+  // C. Angular Numerals (٧, ٨)
+  else if (isAngularNumeral) {
+    const hasRight = inVicinityPoints.some((p) => p.x > watermarkCenterX + 8)
+    const hasLeft = inVicinityPoints.some((p) => p.x < watermarkCenterX - 8)
+    const spanY = uMaxY - uMinY
+    if (!hasRight || !hasLeft || spanY < 22) {
       return {
         score: 25,
         status: 'retry',
-        message: `Trace both the diagonal strokes of numeral '${currentChar}'.`,
+        message: `Trace both diagonal strokes of numeral '${currentChar}'.`,
       }
     }
   }
 
-  // Archetype 5: General Curved / Loop Glyphs (ج, ح, ر, و, م, ي, numerals, etc.)
-  if (!isDotGlyph && !isVerticalGlyph && !isHorizontalGlyph && !isAngularNumeral) {
-    if (userWidth < 14 && userHeight < 14) {
+  // D. Curved / Loop / General Glyphs (ج, ح, ر, و, م, ي, etc.)
+  else {
+    let qCount = 0
+    if (inVicinityPoints.some((p) => p.x >= watermarkCenterX && p.y <= watermarkCenterY)) qCount++
+    if (inVicinityPoints.some((p) => p.x < watermarkCenterX && p.y <= watermarkCenterY)) qCount++
+    if (inVicinityPoints.some((p) => p.x >= watermarkCenterX && p.y > watermarkCenterY)) qCount++
+    if (inVicinityPoints.some((p) => p.x < watermarkCenterX && p.y > watermarkCenterY)) qCount++
+
+    const spanX = uMaxX - uMinX
+    const spanY = uMaxY - uMinY
+    if (qCount < 2 || spanX < 16 || spanY < 16) {
       return {
         score: 25,
         status: 'retry',
-        message: `Trace the curve and character body of '${currentChar}'.`,
+        message: `Trace the full curved body of '${currentChar}'.`,
       }
     }
   }
 
-  // 6. Natural Dynamic Scoring & Success Celebration
+  // 8. Dynamic Confidence Score
   const centeringScore = Math.max(0, 1 - distFromTarget / maxAllowedDist)
-  const spanScore = Math.min(1, (userWidth + userHeight) / Math.max(50, watermarkWidth + watermarkHeight))
-  const displayScore = Math.min(99, Math.max(86, Math.round(75 + centeringScore * 15 + spanScore * 10)))
+  const densityScore = vicinityRatio
+  const displayScore = Math.min(99, Math.max(86, Math.round(70 + centeringScore * 15 + densityScore * 14)))
 
   return {
     score: displayScore,

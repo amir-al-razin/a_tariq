@@ -78,7 +78,31 @@ describe('Arabic Doodle Handwriting Verification Engine', () => {
       watermarkBounds,
     })
     expect(res.status).toBe('retry')
-    expect(res.message).toMatch(/vertical/i)
+    expect(res.message).toMatch(/vertical|completely from top to bottom/i)
+  })
+
+  it('rejects bottom bar and top-right tick hack (as in Untitled.png)', () => {
+    // User draws horizontal line across bottom + mark at top right, missing Alif
+    const untitledPoints = [
+      { x: 150, y: 250, strokeIndex: 1 },
+      { x: 200, y: 250, strokeIndex: 1 },
+      { x: 250, y: 250, strokeIndex: 1 },
+      { x: 300, y: 250, strokeIndex: 1 },
+      { x: 350, y: 250, strokeIndex: 1 },
+      { x: 400, y: 250, strokeIndex: 1 },
+      { x: 380, y: 80, strokeIndex: 2 },
+      { x: 390, y: 80, strokeIndex: 2 },
+    ]
+    const res = evaluateDoodleStroke({
+      points: untitledPoints,
+      currentChar: 'أ',
+      activeTab: 'alphabet',
+      canvasWidth,
+      canvasHeight,
+      watermarkBounds: { centerX: 250, centerY: 150, width: 35, height: 130 },
+    })
+    expect(res.status).toBe('retry')
+    expect(res.message).toMatch(/outside|vertical|completely from top to bottom/i)
   })
 
   it('rejects thin vertical stick for wide basin letter Baa', () => {
