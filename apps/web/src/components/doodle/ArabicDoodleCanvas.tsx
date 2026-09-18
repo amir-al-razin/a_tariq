@@ -567,10 +567,202 @@ export const DOODLE_WORDS: DoodleWord[] = [
 type InkColor = 'obsidian' | 'indigo' | 'sepia' | 'emerald'
 type NibSize = 'fine' | 'medium' | 'broad'
 
-interface StrokePoint {
+export interface StrokePoint {
   x: number
   y: number
   strokeIndex: number
+}
+
+export interface DoodleEvalInput {
+  points: StrokePoint[]
+  currentChar: string
+  activeTab: DoodleTab
+  canvasWidth: number
+  canvasHeight: number
+  watermarkBounds?: { centerX: number; centerY: number; width: number; height: number }
+}
+
+export interface DoodleEvalResult {
+  score: number
+  status: 'idle' | 'success' | 'retry'
+  message: string
+}
+
+export function evaluateDoodleStroke({
+  points,
+  currentChar,
+  activeTab,
+  canvasWidth,
+  canvasHeight,
+  watermarkBounds,
+}: DoodleEvalInput): DoodleEvalResult {
+  if (points.length < 3) {
+    return {
+      score: 0,
+      status: 'retry',
+      message: 'Draw the character shape inside the atelier before evaluating!',
+    }
+  }
+
+  // 1. Calculate total drawn stroke arc length
+  let totalDrawnLength = 0
+  for (let i = 1; i < points.length; i++) {
+    if (points[i].strokeIndex === points[i - 1].strokeIndex) {
+      totalDrawnLength += Math.hypot(points[i].x - points[i - 1].x, points[i].y - points[i - 1].y)
+    }
+  }
+
+  // 2. Measure user's drawn bounding box
+  let uMinX = canvasWidth
+  let uMaxX = 0
+  let uMinY = canvasHeight
+  let uMaxY = 0
+  for (const p of points) {
+    if (p.x < uMinX) uMinX = p.x
+    if (p.x > uMaxX) uMaxX = p.x
+    if (p.y < uMinY) uMinY = p.y
+    if (p.y > uMaxY) uMaxY = p.y
+  }
+  const userWidth = Math.max(1, uMaxX - uMinX)
+  const userHeight = Math.max(1, uMaxY - uMinY)
+  const userCenterX = (uMinX + uMaxX) / 2
+  const userCenterY = (uMinY + uMaxY) / 2
+
+  // 3. Resolve target reference metrics directly from DOM watermark
+  const watermarkCenterX = watermarkBounds?.centerX ?? canvasWidth / 2
+  const watermarkCenterY = watermarkBounds?.centerY ?? canvasHeight / 2
+  const watermarkWidth = watermarkBounds?.width ?? 80
+  const watermarkHeight = watermarkBounds?.height ?? 80
+
+  // 4. Centering & Atelier proximity check
+  const distFromTarget = Math.hypot(userCenterX - watermarkCenterX, userCenterY - watermarkCenterY)
+  const maxAllowedDist = Math.max(canvasWidth, canvasHeight) * 0.42
+  if (distFromTarget > maxAllowedDist) {
+    return {
+      score: 15,
+      status: 'retry',
+      message: `Drawn off-center (${Math.round(distFromTarget)}px away). Trace directly over or near '${currentChar}'.`,
+    }
+  }
+
+  // 5. Morphological Archetypes & Anti-Cheat Rule Engine
+  const isDotGlyph = currentChar === '٠'
+  const verticalGlyphs = new Set(['ا', 'أ', 'إ', 'آ', '١', 'ل', 'ط', 'ظ'])
+  const isVerticalGlyph = verticalGlyphs.has(currentChar)
+  const horizontalGlyphs = new Set([
+    'ب', 'ت', 'ث', 'د', 'ذ', 'س', 'ش', 'ص', 'ض', 'ك', 'ف', 'ن', 'هـ', 'ه',
+  ])
+  const isHorizontalGlyph = activeTab === 'words' || horizontalGlyphs.has(currentChar)
+  const isAngularNumeral = currentChar === '٧' || currentChar === '٨'
+
+  // Anti-Speck Check: Reject single clicks, accidental specks, or micro-dots for full letters/words
+  if (!isDotGlyph) {
+    const minLength = activeTab === 'words' ? 45 : 30
+    if (totalDrawnLength < minLength) {
+      return {
+        score: 15,
+        status: 'retry',
+        message: `Stroke is too brief (${Math.round(totalDrawnLength)}px). Draw the full outline of '${currentChar}'.`,
+      }
+    }
+
+    const minSpan = activeTab === 'words' ? 50 : 36
+    if (userWidth + userHeight < minSpan) {
+      return {
+        score: 20,
+        status: 'retry',
+        message: `Drawing is too small. Trace the full body of '${currentChar}'.`,
+      }
+    }
+  }
+
+  // Archetype 1: Dot Zero (٠)
+  if (isDotGlyph) {
+    if (totalDrawnLength < 5) {
+      return {
+        score: 15,
+        status: 'retry',
+        message: 'Draw a distinct dot for Sifr (٠).',
+      }
+    }
+    if (userWidth > 75 || userHeight > 75 || totalDrawnLength > 130) {
+      return {
+        score: 25,
+        status: 'retry',
+        message: 'Sifr (٠) is a compact single dot. Avoid drawing large loops or lines.',
+      }
+    }
+  }
+
+  // Archetype 2: Vertical Glyphs (ا, أ, ١, ل, ط, ظ)
+  if (isVerticalGlyph) {
+    if (userHeight < 24) {
+      return {
+        score: 25,
+        status: 'retry',
+        message: `'${currentChar}' is a vertical letter. Draw downward from top to bottom.`,
+      }
+    }
+    if (userHeight < userWidth * 0.35) {
+      return {
+        score: 25,
+        status: 'retry',
+        message: `'${currentChar}' is primarily vertical. Your drawing is too flat horizontally.`,
+      }
+    }
+  }
+
+  // Archetype 3: Wide / Horizontal Basin & Words (ب, ت, ث, words, etc.)
+  if (isHorizontalGlyph) {
+    const minWidth = activeTab === 'words' ? 35 : 22
+    if (userWidth < minWidth) {
+      return {
+        score: 25,
+        status: 'retry',
+        message: `'${currentChar}' has a wide shape. Trace the full horizontal span from right to left.`,
+      }
+    }
+    if (userWidth < userHeight * 0.28) {
+      return {
+        score: 25,
+        status: 'retry',
+        message: `'${currentChar}' is wide and horizontal. Your drawing is too narrow and vertical.`,
+      }
+    }
+  }
+
+  // Archetype 4: Angular Numerals (٧, ٨)
+  if (isAngularNumeral) {
+    if (userWidth < 15 || userHeight < 16) {
+      return {
+        score: 25,
+        status: 'retry',
+        message: `Trace both the diagonal strokes of numeral '${currentChar}'.`,
+      }
+    }
+  }
+
+  // Archetype 5: General Curved / Loop Glyphs (ج, ح, ر, و, م, ي, numerals, etc.)
+  if (!isDotGlyph && !isVerticalGlyph && !isHorizontalGlyph && !isAngularNumeral) {
+    if (userWidth < 14 && userHeight < 14) {
+      return {
+        score: 25,
+        status: 'retry',
+        message: `Trace the curve and character body of '${currentChar}'.`,
+      }
+    }
+  }
+
+  // 6. Natural Dynamic Scoring & Success Celebration
+  const centeringScore = Math.max(0, 1 - distFromTarget / maxAllowedDist)
+  const spanScore = Math.min(1, (userWidth + userHeight) / Math.max(50, watermarkWidth + watermarkHeight))
+  const displayScore = Math.min(99, Math.max(86, Math.round(75 + centeringScore * 15 + spanScore * 10)))
+
+  return {
+    score: displayScore,
+    status: 'success',
+    message: `مَا شَاءَ اللَّه! Verified '${currentChar}' accurately (${displayScore}%)! +30 XP awarded!`,
+  }
 }
 
 export const ArabicDoodleCanvas: React.FC = () => {
@@ -816,204 +1008,37 @@ export const ArabicDoodleCanvas: React.FC = () => {
     setIsDrawing(false)
   }
 
+  const watermarkRef = useRef<HTMLSpanElement>(null)
+
   // Proper, Non-Cheatable & Forgiving Handwriting Verification Engine
   const handleCheckDoodle = () => {
     const canvas = canvasRef.current
     if (!canvas) return
-    const points = strokePointsRef.current
+    const canvasRect = canvas.getBoundingClientRect()
 
-    if (points.length < 5) {
-      setEvaluationResult({
-        score: 0,
-        status: 'retry',
-        message: 'Draw the character shape inside the atelier before evaluating!',
-      })
-      return
-    }
-
-    const rect = canvas.getBoundingClientRect()
-    const width = rect.width
-    const height = rect.height
-
-    // 1. Calculate user's total continuous stroke arc length
-    let totalDrawnLength = 0
-    for (let i = 1; i < points.length; i++) {
-      if (points[i].strokeIndex === points[i - 1].strokeIndex) {
-        totalDrawnLength += Math.hypot(points[i].x - points[i - 1].x, points[i].y - points[i - 1].y)
+    let watermarkBounds: { centerX: number; centerY: number; width: number; height: number } | undefined
+    if (watermarkRef.current) {
+      const wRect = watermarkRef.current.getBoundingClientRect()
+      watermarkBounds = {
+        centerX: (wRect.left + wRect.right) / 2 - canvasRect.left,
+        centerY: (wRect.top + wRect.bottom) / 2 - canvasRect.top,
+        width: Math.max(20, wRect.width),
+        height: Math.max(20, wRect.height),
       }
     }
 
-    // 2. Render ground truth offscreen to sample key structural waypoints
-    const offscreen = document.createElement('canvas')
-    offscreen.width = width
-    offscreen.height = height
-    const offCtx = offscreen.getContext('2d')
-    if (!offCtx) return
+    const result = evaluateDoodleStroke({
+      points: strokePointsRef.current,
+      currentChar,
+      activeTab,
+      canvasWidth: canvasRect.width,
+      canvasHeight: canvasRect.height,
+      watermarkBounds,
+    })
 
-    offCtx.fillStyle = '#000000'
-    const fontSize = activeTab === 'words' ? 76 : 94
-    offCtx.font = `bold ${fontSize}px "Amiri", "Traditional Arabic", serif`
-    offCtx.textAlign = 'center'
-    offCtx.textBaseline = 'middle'
-    offCtx.direction = 'rtl'
-    offCtx.fillText(currentChar, width / 2, height / 2)
+    setEvaluationResult(result)
 
-    const targetData = offCtx.getImageData(0, 0, width, height).data
-
-    // 3. Extract bounding box and sample candidate waypoints of target glyph
-    const targetPoints: { x: number; y: number }[] = []
-    let tMinX = width
-    let tMaxX = 0
-    let tMinY = height
-    let tMaxY = 0
-
-    const scanStep = 4
-    for (let y = 0; y < height; y += scanStep) {
-      for (let x = 0; x < width; x += scanStep) {
-        const idx = (Math.floor(y) * width + Math.floor(x)) * 4
-        if (targetData[idx + 3] > 40) {
-          targetPoints.push({ x, y })
-          if (x < tMinX) tMinX = x
-          if (x > tMaxX) tMaxX = x
-          if (y < tMinY) tMinY = y
-          if (y > tMaxY) tMaxY = y
-        }
-      }
-    }
-
-    const targetWidth = Math.max(1, tMaxX - tMinX)
-    const targetHeight = Math.max(1, tMaxY - tMinY)
-    const isDotGlyph = currentChar === '٠'
-
-    // Compute minimal required stroke arc length to prevent specks / accidental clicks
-    const expectedMinLength = isDotGlyph ? 14 : Math.max(45, (targetWidth + targetHeight) * 0.35)
-    if (totalDrawnLength < expectedMinLength) {
-      setEvaluationResult({
-        score: 15,
-        status: 'retry',
-        message: `Stroke is too brief (${Math.round(totalDrawnLength)}px). Draw the complete outline of '${currentChar}'.`,
-      })
-      return
-    }
-
-    // 4. Check user bounding box and physical span
-    let uMinX = width
-    let uMaxX = 0
-    let uMinY = height
-    let uMaxY = 0
-    for (const p of points) {
-      if (p.x < uMinX) uMinX = p.x
-      if (p.x > uMaxX) uMaxX = p.x
-      if (p.y < uMinY) uMinY = p.y
-      if (p.y > uMaxY) uMaxY = p.y
-    }
-    const userWidth = uMaxX - uMinX
-    const userHeight = uMaxY - uMinY
-
-    // Reject specks that don't span an adequate portion of the letter
-    if (!isDotGlyph && userWidth < Math.min(24, targetWidth * 0.32) && userHeight < Math.min(28, targetHeight * 0.32)) {
-      setEvaluationResult({
-        score: 20,
-        status: 'retry',
-        message: `Drawing is too small. Trace the full height and width of '${currentChar}'.`,
-      })
-      return
-    }
-
-    // 5. In-Bounds Target Vicinity Check (prevent drawing far away in an arbitrary corner)
-    const padding = 55
-    const inTargetRegionCount = points.filter(
-      (p) =>
-        p.x >= tMinX - padding &&
-        p.x <= tMaxX + padding &&
-        p.y >= tMinY - padding &&
-        p.y <= tMaxY + padding
-    ).length
-    const inTargetRegionRatio = inTargetRegionCount / points.length
-    if (inTargetRegionRatio < 0.55) {
-      setEvaluationResult({
-        score: 15,
-        status: 'retry',
-        message: `Stroke is drawn off-center. Draw directly over the guide of '${currentChar}'.`,
-      })
-      return
-    }
-
-    // 6. Partition Target into Key Spatial Zones (Right start, Center body, Left end / tail)
-    const isVerticalChar = targetHeight > targetWidth * 1.35 || currentChar === '١' || currentChar === 'أ'
-
-    // Sample distinct landmark waypoints
-    const sampleCount = Math.min(16, targetPoints.length)
-    const waypoints: { x: number; y: number; zone: 'start' | 'mid' | 'end' }[] = []
-    const stride = Math.max(1, Math.floor(targetPoints.length / sampleCount))
-
-    for (let i = 0; i < targetPoints.length; i += stride) {
-      const pt = targetPoints[i]
-      let zone: 'start' | 'mid' | 'end' = 'mid'
-      if (isVerticalChar) {
-        zone = pt.y < tMinY + targetHeight * 0.35 ? 'start' : pt.y > tMaxY - targetHeight * 0.35 ? 'end' : 'mid'
-      } else {
-        zone = pt.x > tMaxX - targetWidth * 0.33 ? 'start' : pt.x < tMinX + targetWidth * 0.33 ? 'end' : 'mid'
-      }
-      waypoints.push({ x: pt.x, y: pt.y, zone })
-      if (waypoints.length >= sampleCount) break
-    }
-
-    // Include absolute extremities
-    const topPt = targetPoints.reduce((acc, p) => (p.y < acc.y ? p : acc), targetPoints[0])
-    const bottomPt = targetPoints.reduce((acc, p) => (p.y > acc.y ? p : acc), targetPoints[0])
-    const rightPt = targetPoints.reduce((acc, p) => (p.x > acc.x ? p : acc), targetPoints[0])
-    const leftPt = targetPoints.reduce((acc, p) => (p.x < acc.x ? p : acc), targetPoints[0])
-
-    waypoints.push(
-      { x: topPt.x, y: topPt.y, zone: isVerticalChar ? 'start' : 'mid' },
-      { x: bottomPt.x, y: bottomPt.y, zone: isVerticalChar ? 'end' : 'mid' },
-      { x: rightPt.x, y: rightPt.y, zone: 'start' },
-      { x: leftPt.x, y: leftPt.y, zone: 'end' }
-    )
-
-    // 7. Evaluate User Strokes against Landmark Waypoints
-    // Balanced tolerance radius: 26px (generous enough for natural mouse/touch, strict enough to prevent specks)
-    const toleranceRadius = Math.max(24, Math.min(width, height) * 0.085)
-    let waypointsHit = 0
-    const zonesHit = new Set<'start' | 'mid' | 'end'>()
-
-    for (const wp of waypoints) {
-      const isHit = points.some((p) => {
-        const dx = p.x - wp.x
-        const dy = p.y - wp.y
-        return dx * dx + dy * dy <= toleranceRadius * toleranceRadius
-      })
-      if (isHit) {
-        waypointsHit++
-        zonesHit.add(wp.zone)
-      }
-    }
-
-    const hitRatio = waypointsHit / waypoints.length
-    const widthSpanRatio = userWidth / targetWidth
-    const heightSpanRatio = userHeight / targetHeight
-
-    // 8. Proper Verification Criteria:
-    let isAccepted = false
-    if (isDotGlyph) {
-      isAccepted = totalDrawnLength >= 12 && inTargetRegionRatio >= 0.6
-    } else if (isVerticalChar) {
-      isAccepted = heightSpanRatio >= 0.40 && (zonesHit.has('start') || zonesHit.has('end')) && hitRatio >= 0.32
-    } else if (activeTab === 'words') {
-      isAccepted = (widthSpanRatio >= 0.42 || hitRatio >= 0.34) && zonesHit.size >= 2
-    } else {
-      isAccepted = (hitRatio >= 0.38 && zonesHit.size >= 2) || (widthSpanRatio >= 0.45 && hitRatio >= 0.32)
-    }
-
-    if (isAccepted) {
-      const displayScore = Math.min(100, Math.max(85, Math.round(hitRatio * 40 + Math.min(1, Math.max(widthSpanRatio, heightSpanRatio)) * 25 + 35)))
-      setEvaluationResult({
-        score: displayScore,
-        status: 'success',
-        message: `مَا شَاءَ اللَّه! Verified '${currentChar}' accurately (${displayScore}%)! +30 XP awarded!`,
-      })
-
+    if (result.status === 'success') {
       confetti({
         particleCount: 80,
         spread: 65,
@@ -1021,22 +1046,6 @@ export const ArabicDoodleCanvas: React.FC = () => {
       })
 
       addXp(30, `Doodle Mastered: ${currentChar}`)
-    } else {
-      const progressPercent = Math.round(hitRatio * 100)
-      let hint = `Waypoint coverage: ${progressPercent}%.`
-      if (zonesHit.size < 2 && !isDotGlyph) {
-        hint += isVerticalChar
-          ? ` Trace both the top and bottom of the stroke.`
-          : ` Trace across from right to left.`
-      } else {
-        hint += ` Follow the character curves closer to verify.`
-      }
-
-      setEvaluationResult({
-        score: progressPercent,
-        status: 'retry',
-        message: hint,
-      })
     }
   }
 
@@ -1259,16 +1268,14 @@ export const ArabicDoodleCanvas: React.FC = () => {
             )}
 
             {/* Trace Watermark Outline */}
-            {showTraceGuide && (
-              <div
-                className={`absolute inset-0 flex items-center justify-center pointer-events-none select-none text-stone-300/85 dark:text-stone-800 font-arabic font-bold transition-opacity ${
-                  activeTab === 'words' ? 'text-6xl sm:text-7xl' : 'text-8xl sm:text-9xl'
-                }`}
-                dir="rtl"
-              >
-                {currentChar}
-              </div>
-            )}
+            <div
+              className={`absolute inset-0 flex items-center justify-center pointer-events-none select-none text-stone-300/85 dark:text-stone-800 font-arabic font-bold transition-opacity ${
+                activeTab === 'words' ? 'text-6xl sm:text-7xl' : 'text-8xl sm:text-9xl'
+              } ${showTraceGuide ? 'opacity-100' : 'opacity-0'}`}
+              dir="rtl"
+            >
+              <span ref={watermarkRef}>{currentChar}</span>
+            </div>
 
             {/* HTML5 Canvas */}
             <canvas
