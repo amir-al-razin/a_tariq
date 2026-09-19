@@ -304,7 +304,7 @@ export const LESSON_02_STEPS: SessionStep[] = [
     instructionBn: 'পরিচ্ছন্ন বিছানার জন্য উপযুক্ত গুণবাচক শব্দটি নির্বাচন করুন।',
     itemId: 'pattern:firash_nazif',
     clozePayload: {
-      questionAr: 'هَذَا فِرَاشٌ [ ... ] (🛏️✨)',
+      questionAr: 'هَذَا فِرَاشٌ [ ... ]',
       questionEn: 'This is a clean bed',
       questionBn: 'ইহা একটি পরিচ্ছন্ন বিছানা',
       partialAnswerAr: 'هَذَا فِرَاشٌ',
@@ -315,7 +315,7 @@ export const LESSON_02_STEPS: SessionStep[] = [
     },
   },
 
-  // 16. Fast Dialogic Mini-Game Battery (Exercise ख & ग oral synthesis)
+  // 16. Fast Dialogic Mini-Game Battery (Exercise খ & ग oral synthesis)
   {
     id: 'l2-step-16-dialogue-battery',
     type: 'alternative_qa',
@@ -328,25 +328,29 @@ export const LESSON_02_STEPS: SessionStep[] = [
       questions: [
         {
           id: 'q1',
-          questionAr: 'أَ هَذَا مَسْجِدٌ كَبِيرٌ أَمْ صَغِيرٌ ؟ (🕌)',
+          questionAr: 'أَ هَذَا مَسْجِدٌ كَبِيرٌ أَمْ صَغِيرٌ ؟',
+          visualCue: '🕌',
           optionsAr: ['مَسْجِدٌ كَبِيرٌ', 'بَيْتٌ صَغِيرٌ'],
           correctAnswerAr: 'مَسْجِدٌ كَبِيرٌ',
         },
         {
           id: 'q2',
-          questionAr: 'أَ هٰذَا فِرَاشٌ نَظِيفٌ أَمْ وَسِخٌ ؟ (🛏️✨)',
+          questionAr: 'أَ هٰذَا فِرَاشٌ نَظِيفٌ أَمْ وَسِخٌ ؟',
+          visualCue: '🛏️✨',
           optionsAr: ['فِرَاشٌ نَظِيفٌ', 'فِرَاشٌ وَسِخٌ'],
           correctAnswerAr: 'فِرَاشٌ نَظِيفٌ',
         },
         {
           id: 'q3',
-          questionAr: 'أَ تِلْكَ حُجْرَةٌ صَغِيرَةٌ أَمْ كَبِيرَةٌ ؟ (🚪)',
+          questionAr: 'أَ تِلْكَ حُجْرَةٌ صَغِيرَةٌ أَمْ كَبِيرَةٌ ؟',
+          visualCue: '🚪',
           optionsAr: ['حُجْرَةٌ صَغِيرَةٌ', 'حُجْرَةٌ كَبِيرَةٌ'],
           correctAnswerAr: 'حُجْرَةٌ صَغِيرَةٌ',
         },
         {
           id: 'q4',
-          questionAr: 'أَ ذٰلِكَ قُفْلٌ جَيِّدٌ أَمْ رَدِيءٌ ؟ (🔒⭐)',
+          questionAr: 'أَ ذٰلِكَ قُفْلٌ جَيِّدٌ أَمْ رَدِيءٌ ؟',
+          visualCue: '🔒⭐',
           optionsAr: ['قُفْلٌ جَيِّدٌ', 'قُفْلٌ قَدِيمٌ'],
           correctAnswerAr: 'قُفْلٌ جَيِّدٌ',
         },

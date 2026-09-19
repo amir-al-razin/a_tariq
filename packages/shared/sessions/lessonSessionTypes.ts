@@ -15,7 +15,8 @@ export type StepType =
   | 'branching_syntax'  // Demonstrative syntax tree equation
   | 'possessive_matrix' // Possessive pronoun suffix conjugation grid
   | 'idafah_equation'   // Idafah formula (Mudaf & Mudaf Ilayh)
-  | 'syntax_fronting';  // Spatial syntax contrast & interrogative fronting
+  | 'syntax_fronting'   // Spatial syntax contrast & interrogative fronting
+  | 'verb_preview_grid'; // Foundational verb conjugation paradigm preview for pure memorization
 
 export interface ConceptItem {
   id: string;
@@ -157,6 +158,10 @@ export interface AlternativeQAItem {
   optionsAr: string[];        // e.g. ["خَالِدٌ", "رَاشِدٌ"]
   correctAnswerAr: string;    // e.g. "رَاشِدٌ"
   audioKey?: string;
+  contextAr?: string;
+  contextEn?: string;
+  contextBn?: string;
+  visualCue?: string;
 }
 
 export interface AlternativeQAPayload {
@@ -185,6 +190,46 @@ export interface TarkibSentence {
 
 export interface TarkibDissectorPayload {
   sentences: TarkibSentence[];
+}
+
+export interface VerbConjugationForm {
+  id: string;
+  roleAr: string;            // e.g. "هُوَ - هِيَ" or "أَنْتَ - أَنْتِ" or "أَنَا" or "الأَمْرُ - النَّهْيُ"
+  roleEn: string;            // e.g. "3rd Person (He / She)"
+  roleBn: string;            // e.g. "সে (পুং - স্ত্রী)"
+  masculineAr: string;       // e.g. "فَعَلَ" / "يَفْعَلُ" / "اِفْعَلْ"
+  masculineBn?: string;      // e.g. "সে করেছে, করল" / "সে করবে, করছে, করে" / "তুমি কর"
+  masculineEn?: string;      // e.g. "He did" / "He does/will do" / "Do (m)"
+  feminineAr?: string;       // e.g. "فَعَلَتْ" / "تَفْعَلُ" / "اِفْعَلِيْ"
+  feminineBn?: string;       // e.g. "সে করেছে, করল" / "সে করবে, করছে, করে" / "তুমি কর"
+  feminineEn?: string;       // e.g. "She did" / "She does/will do" / "Do (f)"
+  prohibitiveMascAr?: string;// e.g. "لَا تَفْعَلْ"
+  prohibitiveMascBn?: string;// e.g. "তুমি করো না"
+  prohibitiveMascEn?: string;// e.g. "Do not do (m)"
+  prohibitiveFemAr?: string; // e.g. "لَا تَفْعَلِيْ"
+  prohibitiveFemBn?: string; // e.g. "তুমি করো না"
+  prohibitiveFemEn?: string; // e.g. "Do not do (f)"
+  audioKey?: string;
+}
+
+export interface VerbPreviewItem {
+  id: string;
+  rootAr: string;            // e.g. "فَعَلَ"
+  rootBn: string;            // e.g. "করা"
+  rootEn: string;            // e.g. "To do"
+  emoji: string;             // e.g. "⚡"
+  forms: VerbConjugationForm[];
+}
+
+export interface VerbPreviewPayload {
+  tense: 'past' | 'present' | 'imperative';
+  tenseLabelAr: string;      // "الفِعْلُ المَاضِي" | "الفِعْلُ المُضَارِعُ" | "فِعْلُ الأَمْرِ وَالنَّهْيِ"
+  tenseLabelEn: string;      // "Past Tense (Al-Madi)" | "Present/Future Tense (Al-Mudari')" | "Imperative & Prohibitive"
+  tenseLabelBn: string;      // "অতীতকালীন ক্রিয়া (আল-মাযী)" | "বর্তমান ও ভবিষ্যৎকালীন ক্রিয়া (আল-মুদারী')" | "আদেশ ও নিষেধবাচক ক্রিয়া (আমর ও নাহী)"
+  disclaimerAr: string;      // "فَقَطْ لِلْحِفْظِ ، لَا لِلِاسْتِعْمَالِ"
+  disclaimerEn: string;      // "For memorization only, not for active practice yet"
+  disclaimerBn: string;      // "শুধু মুখস্থ করার জন্য, ব্যবহার করার জন্য নয়"
+  verbs: VerbPreviewItem[];
 }
 
 export interface SessionStep {
@@ -283,6 +328,7 @@ export interface SessionStep {
   matrixPayload?: PossessiveMatrixPayload;
   idafahPayload?: IdafahEquationPayload;
   syntaxFrontingPayload?: SyntaxFrontingPayload;
+  verbPreviewPayload?: VerbPreviewPayload;
 }
 
 export interface LessonSessionData {

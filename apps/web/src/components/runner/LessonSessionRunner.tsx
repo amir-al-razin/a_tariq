@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight, Check, Volume2, VolumeX, Sparkles, AlertCircle, Award, BookmarkCheck } from 'lucide-react';
+import { X, ArrowRight, Check, Volume2, VolumeX, Sparkles, AlertCircle, Award, BookmarkCheck, Eye, EyeOff } from 'lucide-react';
 import type { SessionStep, LessonSessionData } from '@/lib/lessonSessionTypes';
 import { getLessonSession } from '@/lib/lessonRegistry';
 import { LESSON_01_SESSION } from '@/lib/lesson1Session';
@@ -119,6 +119,10 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
   const [activeTarkibIndex, setActiveTarkibIndex] = useState<number>(0);
   const [assignedTarkibSlots, setAssignedTarkibSlots] = useState<Record<number, string>>({});
 
+  // Verb Preview Grid local state (Ch2 L5, L6, L8)
+  const [activeVerbIndex, setActiveVerbIndex] = useState<number>(0);
+  const [revealConjugations, setRevealConjugations] = useState<boolean>(true);
+
   // Stores
   const recordItemResult = useRetentionStore((state) => state.recordItemResult);
   const recordSessionComplete = useRetentionStore((state) => state.recordSessionComplete);
@@ -185,6 +189,8 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
     setSelectedQAAnswer(null);
     setActiveTarkibIndex(0);
     setAssignedTarkibSlots({});
+    setActiveVerbIndex(0);
+    setRevealConjugations(true);
     setStepStatus('idle');
   }, [currentStep, isBn]);
 
@@ -2122,6 +2128,215 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
   };
 
   // --------------------------------------------------------------------------
+  // RENDER: VERB PREVIEW GRID (Ch2 L5 Past, Ch2 L6 Present, Ch2 L8 Imperative)
+  // "শুধু মুখস্থ করার জন্য, ব্যবহার করার জন্য নয়"
+  // --------------------------------------------------------------------------
+  const renderVerbPreviewGrid = () => {
+    const payload = currentStep.verbPreviewPayload;
+    if (!payload || payload.verbs.length === 0) return null;
+
+    const currentVerb = payload.verbs[activeVerbIndex] || payload.verbs[0];
+
+    return (
+      <div className="w-full max-w-xl mx-auto flex flex-col items-center space-y-5">
+        {/* Author Pedagogical Disclaimer Banner */}
+        <div className="w-full p-4 rounded-3xl bg-amber-500/10 dark:bg-amber-500/15 flex flex-col items-center text-center space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="text-sm">⚠️</span>
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
+              {isBn ? payload.disclaimerBn : payload.disclaimerEn}
+            </span>
+          </div>
+          <p className="font-arabic text-sm text-amber-800 dark:text-amber-200" dir="rtl">
+            {payload.disclaimerAr}
+          </p>
+          <span className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">
+            {isBn ? payload.tenseLabelBn : payload.tenseLabelEn}
+          </span>
+        </div>
+
+        {/* 8 Verb Selector Pills */}
+        <div className="w-full flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar justify-center flex-wrap">
+          {payload.verbs.map((verb, idx) => {
+            const isSelected = idx === activeVerbIndex;
+            return (
+              <button
+                key={verb.id}
+                onClick={() => {
+                  playTapSound();
+                  setActiveVerbIndex(idx);
+                  playArabicAudio(verb.rootAr);
+                }}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer border-0 shadow-none ${
+                  isSelected
+                    ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-950 font-bold'
+                    : 'bg-neutral-100 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800'
+                }`}
+              >
+                <span>{verb.emoji}</span>
+                <span className="font-arabic-bold text-sm tracking-normal" dir="rtl">{verb.rootAr}</span>
+                <span className="text-[10px] opacity-75">({isBn ? verb.rootBn : verb.rootEn})</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Active Verb Card & Forms */}
+        <div className="w-full p-5 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center space-y-4">
+          <div className="w-full flex items-center justify-between px-2">
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">{currentVerb.emoji}</span>
+              <div>
+                <h3 className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
+                  {isBn ? currentVerb.rootBn : currentVerb.rootEn}
+                </h3>
+                <span className="text-[11px] text-neutral-400 dark:text-neutral-500 font-mono">
+                  {toArabicNumerals(activeVerbIndex + 1)} / {toArabicNumerals(payload.verbs.length)}
+                </span>
+              </div>
+            </div>
+
+            {/* Active Recall Memory Test Toggle */}
+            <button
+              onClick={() => {
+                playTapSound();
+                setRevealConjugations((prev) => !prev);
+              }}
+              className="px-3 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors flex items-center gap-1.5 border-0 shadow-none cursor-pointer"
+              title="Test your memory by hiding or showing conjugations"
+            >
+              {revealConjugations ? (
+                <>
+                  <EyeOff size={13} />
+                  <span>{isBn ? 'লুকান (মুখস্থ পরীক্ষা)' : 'Hide (Test Memory)'}</span>
+                </>
+              ) : (
+                <>
+                  <Eye size={13} />
+                  <span>{isBn ? 'দেখান' : 'Reveal'}</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Forms List */}
+          <div className="w-full space-y-2.5">
+            {currentVerb.forms.map((form) => {
+              return (
+                <div
+                  key={form.id}
+                  className="w-full p-3.5 rounded-3xl bg-white dark:bg-neutral-950 flex flex-col sm:flex-row items-center justify-between gap-3 border-0 shadow-none"
+                >
+                  {/* Grammatical Role & Meaning */}
+                  <div className="text-left w-full sm:w-auto shrink-0 space-y-0.5">
+                    <span className="text-[11px] font-semibold text-accent-primary bg-accent-primary-subtle px-2 py-0.5 rounded-md">
+                      {isBn ? form.roleBn : form.roleEn}
+                    </span>
+                    <div className="text-xs text-neutral-500 dark:text-neutral-400">
+                      "{isBn ? (form.masculineBn || form.roleBn) : (form.masculineEn || form.roleEn)}"
+                    </div>
+                  </div>
+
+                  {/* Arabic Forms Display */}
+                  <div className="flex items-center gap-3 w-full sm:w-auto justify-end" dir="rtl">
+                    <div
+                      onClick={() => !revealConjugations && setRevealConjugations(true)}
+                      className={`flex items-center gap-2 cursor-pointer transition-all whitespace-nowrap ${
+                        !revealConjugations ? 'filter blur-sm select-none opacity-40' : ''
+                      }`}
+                    >
+                      {/* Masculine Form */}
+                      <span className="font-arabic-bold text-2xl tracking-normal leading-relaxed text-neutral-950 dark:text-white whitespace-nowrap">
+                        {form.masculineAr}
+                      </span>
+
+                      {/* Feminine Form */}
+                      {form.feminineAr && (
+                        <>
+                          <span className="text-neutral-300 dark:text-neutral-700 font-bold select-none">-</span>
+                          <span className="font-arabic-bold text-2xl tracking-normal leading-relaxed text-neutral-950 dark:text-white whitespace-nowrap">
+                            {form.feminineAr}
+                          </span>
+                        </>
+                      )}
+
+                      {/* Prohibitive Form (for imperative / prohibitive) */}
+                      {form.prohibitiveMascAr && (
+                        <>
+                          <span className="text-neutral-300 dark:text-neutral-700 font-bold select-none">|</span>
+                          <span className="font-arabic-bold text-2xl tracking-normal leading-relaxed text-accent-rose whitespace-nowrap">
+                            {form.prohibitiveMascAr}
+                          </span>
+                          {form.prohibitiveFemAr && (
+                            <>
+                              <span className="text-neutral-300 dark:text-neutral-700 font-bold select-none">-</span>
+                              <span className="font-arabic-bold text-2xl tracking-normal leading-relaxed text-accent-rose whitespace-nowrap">
+                                {form.prohibitiveFemAr}
+                              </span>
+                            </>
+                          )}
+                        </>
+                      )}
+                    </div>
+
+                    {/* Audio Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        playArabicAudio(
+                          form.audioKey || form.masculineAr,
+                          form.feminineAr
+                            ? `${form.masculineAr} ... ${form.feminineAr}`
+                            : form.masculineAr
+                        );
+                      }}
+                      className="w-8 h-8 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-700 dark:text-neutral-200 shrink-0 cursor-pointer hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors border-0 shadow-none"
+                      aria-label="Play pronunciation"
+                    >
+                      <Volume2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 56px Action Buttons */}
+        <div className="w-full flex items-center gap-3">
+          {activeVerbIndex < payload.verbs.length - 1 ? (
+            <button
+              onClick={() => {
+                playTapSound();
+                const nextIdx = activeVerbIndex + 1;
+                setActiveVerbIndex(nextIdx);
+                playArabicAudio(payload.verbs[nextIdx].rootAr);
+              }}
+              className="flex-1 h-14 rounded-full bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-300 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100 font-english-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+            >
+              <span>{isBn ? 'পরবর্তী ক্রিয়া' : 'Next Verb'}</span>
+              <span className="font-arabic-bold text-base tracking-normal" dir="rtl">
+                ({payload.verbs[activeVerbIndex + 1].rootAr})
+              </span>
+            </button>
+          ) : null}
+
+          <button
+            onClick={() => {
+              playTapSound();
+              advanceToNext();
+            }}
+            className="flex-1 h-14 rounded-full bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+          >
+            <span>{isBn ? 'পরবর্তী ধাপে যান' : 'Continue'}</span>
+            <ArrowRight size={18} />
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  // --------------------------------------------------------------------------
   // RENDER: SPATIAL POINTING STEP (Direct visual near vs far discrimination)
   // --------------------------------------------------------------------------
   const renderSpatialPointing = () => {
@@ -2299,18 +2514,34 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
 
         {/* Question Card */}
         <div className="w-full p-6 sm:p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center space-y-5 text-center">
-          {/* Optional Context Backdrop */}
-          {payload.contextAr && (
-            <div className="px-4 py-2 rounded-2xl bg-white dark:bg-neutral-950 flex items-center gap-2">
-              <span className="font-arabic-bold text-lg text-accent-secondary" dir="rtl">
-                {payload.contextAr}
-              </span>
-              <button
-                onClick={() => playArabicAudio(payload.contextAr!)}
-                className="w-6 h-6 rounded-full bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 border-0 cursor-pointer"
-              >
-                <Volume2 size={12} />
-              </button>
+          {/* Context Backdrop */}
+          {(currentQ.contextAr || payload.contextAr) && (
+            <div className="px-4 py-2 rounded-2xl bg-white dark:bg-neutral-950 flex flex-col items-center gap-1">
+              <div className="flex items-center gap-2">
+                <span className="font-arabic-bold text-lg text-accent-secondary" dir="rtl">
+                  {currentQ.contextAr || payload.contextAr}
+                </span>
+                <button
+                  onClick={() => playArabicAudio((currentQ.contextAr || payload.contextAr)!)}
+                  className="w-6 h-6 rounded-full bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 border-0 cursor-pointer"
+                >
+                  <Volume2 size={12} />
+                </button>
+              </div>
+              {(currentQ.contextBn || payload.contextBn || currentQ.contextEn || payload.contextEn) && (
+                <span className="text-xs text-neutral-500 dark:text-neutral-400 font-medium">
+                  {isBn
+                    ? (currentQ.contextBn || payload.contextBn)
+                    : (currentQ.contextEn || payload.contextEn)}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Visual Cue if present */}
+          {currentQ.visualCue && (
+            <div className="text-4xl">
+              {currentQ.visualCue}
             </div>
           )}
 
@@ -2714,6 +2945,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
             {currentStep.type === 'possessive_matrix' && renderPossessiveMatrix()}
             {currentStep.type === 'idafah_equation' && renderIdafahEquation()}
             {currentStep.type === 'syntax_fronting' && renderSyntaxFronting()}
+            {currentStep.type === 'verb_preview_grid' && renderVerbPreviewGrid()}
           </motion.div>
         </AnimatePresence>
       </main>

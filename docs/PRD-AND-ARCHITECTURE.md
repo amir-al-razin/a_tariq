@@ -128,6 +128,8 @@ export interface EngineProps<TPayload> {
 - Never use CSS box shadows (`shadow-*`) anywhere in UI components.
 - Never use 1px solid outline borders for card boundaries.
 - Never restore `SCROLL_COMPLETE_TYPES` or permit passive scrolling completion.
+- Never append answers, hints, or emojis inside question prompts in parentheses (e.g. `(🤝 صَدِيقِي)` or `(🚪 مَفْتُوحٌ)`). Question prompts must be pure Arabic; visual cues belong in dedicated UI slots, and textbook demonstrations must use syntax contrast cards rather than fake spoiled quizzes.
+- Never bundle multi-word phrases or entire clauses into a single chip in `sentence_assembly` drills (e.g. `"My house is old"`). Every word chip must strictly be a single word.
 - Never execute `git add`, `git commit`, or `git push` without explicit user permission.
 - Never kill the herdr server.
 - Never use the em dash "—"; use plain dash "-" instead.
