@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tariq Design System - Foundations, Tokens & Components</title>
+  
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Vazirmatn:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "sans-serif"],
+            arabic: ["Cairo", "Vazirmatn", "sans-serif"],
+            vazir: ["Vazirmatn", "sans-serif"],
+            quran: ["Amiri", "serif"],
+            mono: ["JetBrains Mono", "monospace"],
+          },
+          colors: {
+            // Raw Neutral System Tokens
+            canvas: {
+              light: "#FAFAFA",
+              dark: "#0A0A0A"
+            },
+            surface: {
+              light: "#FFFFFF",
+              dark: "#141414"
+            },
+            nested: {
+              light: "#F5F5F5",
+              dark: "#1F1F1F"
+            },
+            sunken: {
+              light: "#E5E5E5",
+              dark: "#2E2E2E"
+            },
+            charcoal: {
+              light: "#171717",
+              dark: "#F5F5F5"
+            },
+            muted: {
+              light: "#737373",
+              dark: "#A3A3A3"
+            },
+            // Dynamic Semantic Accent Tokens (Mapped to CSS variables from @tariq/shared)
+            accent: {
+              primary: {
+                DEFAULT: "var(--accent-primary)",
+                hover: "var(--accent-primary-hover)",
+                subtle: "var(--accent-primary-subtle)",
+                text: "var(--accent-primary-text)",
+                glow: "var(--accent-primary-glow)",
+              },
+              secondary: {
+                DEFAULT: "var(--accent-secondary)",
+                hover: "var(--accent-secondary-hover)",
+                subtle: "var(--accent-secondary-subtle)",
+                text: "var(--accent-secondary-text)",
+                glow: "var(--accent-secondary-glow)",
+              },
+            }
+          },
+          borderRadius: {
+            "4xl": "2.25rem",
+            "3xl": "1.75rem",
+            "2xl": "1.25rem",
+            "xl": "0.875rem"
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    :root {
+      --accent-primary: #4338CA;
+      --accent-primary-hover: #3730A3;
+      --accent-primary-subtle: #EEF2FF;
+      --accent-primary-text: #3730A3;
+      --accent-primary-glow: rgba(67, 56, 202, 0.08);
+
+      --accent-secondary: #C28135;
+      --accent-secondary-hover: #9A6321;
+      --accent-secondary-subtle: #FDF8F0;
+      --accent-secondary-text: #7C4A14;
+      --accent-secondary-glow: rgba(194, 129, 53, 0.08);
+    }
+
+    .dark {
+      --accent-primary: #6366F1;
+      --accent-primary-hover: #4F46E5;
+      --accent-primary-subtle: rgba(67, 56, 202, 0.16);
+      --accent-primary-text: #A5B4FC;
+      --accent-primary-glow: rgba(99, 102, 241, 0.24);
+
+      --accent-secondary: #D99B4B;
+      --accent-secondary-hover: #C28135;
+      --accent-secondary-subtle: rgba(194, 129, 53, 0.16);
+      --accent-secondary-text: #FDE68A;
+      --accent-secondary-glow: rgba(217, 155, 75, 0.24);
+    }
+
+    /* Strict Raw Neutral Mandate: Zero Drop Shadows, Zero Outline Borders */
+    *, *::before, *::after {
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      text-shadow: none !important;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #E5E5E5; border-radius: 9999px; }
+    .dark ::-webkit-scrollbar-thumb { background: #2E2E2E; }
+
+    /* Tactile Interactions */
+    .tactile-press {
+      transition: transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color 140ms ease, opacity 140ms ease;
+    }
+    .tactile-press:active {
+      transform: scale(0.97);
+    }
+
+    /* Plush Button Padding Mandate (56px Target Height) */
+    .pill-btn-plush {
+      padding-top: 18px !important;
+      padding-bottom: 18px !important;
+      padding-left: 36px !important;
+      padding-right: 36px !important;
+      min-height: 56px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      white-space: nowrap !important;
+    }
+
+    /* Code Snippet Styling */
+    pre, code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body class="bg-neutral-50 dark:bg-[#0A0A0A] text-neutral-900 dark:text-neutral-100 font-sans antialiased min-h-screen pb-36 transition-colors duration-200">
+
+  <!-- ================================================================= -->
+  <!-- TOP GLOBAL NAVIGATION BAR (Cross-linking all documents)           -->
+  <!-- ================================================================= -->
+  <header class="sticky top-0 z-50 bg-white/95 dark:bg-[#0A0A0A]/95 backdrop-blur-md px-6 sm:px-12 py-4 border-b border-neutral-100 dark:border-neutral-900">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 flex items-center justify-center font-bold text-xl shrink-0 font-arabic">
+            ط
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="font-bold text-base tracking-tight text-neutral-900 dark:text-white leading-none">Tariq Design System</h1>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">V2.0</span>
+            </div>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">Raw Neutral • Pure White (#FFFFFF) &amp; Cool Grayscale Planes</p>
+          </div>
+        </div>
+
+        <!-- Dark Mode Toggle Button for Mobile -->
+        <button id="themeToggleBtnMobile" onclick="toggleTheme()" class="md:hidden w-9 h-9 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-sm tactile-press">
+          <span class="dark:hidden">🌙</span>
+          <span class="hidden dark:inline">☀️</span>
+        </button>
+      </div>
+
+      <!-- Cross-Links & Navigation -->
+      <nav class="flex items-center gap-2 text-xs font-semibold overflow-x-auto w-full md:w-auto py-1">
+        <a href="#foundations" class="px-3 py-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all whitespace-nowrap">
+          Foundations
+        </a>
+        <a href="#tokens" class="px-3 py-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all whitespace-nowrap">
+          Tokens
+        </a>
+        <a href="#buttons" class="px-3 py-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all whitespace-nowrap">
+          Buttons &amp; Badges
+        </a>
+        <a href="#components" class="px-3 py-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all whitespace-nowrap">
+          Pedagogy Cards
+        </a>
+        
+        <!-- Divider -->
+        <div class="h-4 w-px bg-neutral-200 dark:bg-neutral-800 mx-1"></div>
+
+        <!-- Links to Sibling HTML Documents -->
+        <a href="design-preview.html" class="px-3 py-1.5 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 hover:opacity-90 transition-all whitespace-nowrap flex items-center gap-1.5">
+          <span>Component Catalog</span>
+          <span class="text-[10px]">↗</span>
+        </a>
+        <a href="gamified-preview.html" class="px-3 py-1.5 rounded-full bg-amber-100 text-amber-900 hover:bg-amber-200 transition-all whitespace-nowrap flex items-center gap-1.5 font-bold">
+          <span>Gamified Sandbox</span>
+          <span class="text-[10px]">★</span>
+        </a>
+        <a href="pedagogy-showcase.html" class="px-3 py-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all whitespace-nowrap flex items-center gap-1.5">
+          <span>46 Modules</span>
+          <span class="text-[10px]">↗</span>
+        </a>
+
+        <!-- Desktop Theme Toggle -->
+        <button id="themeToggleBtnDesktop" onclick="toggleTheme()" class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-xs font-semibold text-neutral-700 dark:text-neutral-300 transition-all tactile-press ms-1">
+          <span class="dark:hidden">🌙 Dark</span>
+          <span class="hidden dark:inline">☀️ Light</span>
+        </button>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 sm:px-12 space-y-28 pt-12">
+
+    <!-- ================================================================= -->
+    <!-- SECTION 0: HERO INTRODUCTION & DESIGN PHILOSOPHY                   -->
+    <!-- ================================================================= -->
+    <section class="space-y-6">
+      <div class="max-w-3xl space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-xs font-mono font-bold">
+          <span>PHILOSOPHY</span>
+          <span>•</span>
+          <span>RAW NEUTRAL V2</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 dark:text-white leading-tight">
+          Tone-on-tone luminance depth. Zero decorative borders. Zero drop shadows.
+        </h2>
+        <p class="text-neutral-600 dark:text-neutral-300 text-sm sm:text-base leading-relaxed">
+          The Tariq Design System creates visual depth exclusively through luminance shifts between layered flat surfaces. Designed for Quranic Arabic pedagogy, it eliminates visual noise so learners can focus entirely on Harakat (diacritics), linguistic harmony, and script geometry.
+        </p>
+      </div>
+
+      <!-- Core Architectural Rules Banner -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+        <div class="p-5 rounded-3xl bg-white dark:bg-[#141414] space-y-2">
+          <span class="text-xs font-mono font-bold text-neutral-400 block uppercase">Rule 01</span>
+          <h4 class="font-bold text-sm text-neutral-900 dark:text-white">Pure Grayscale Base</h4>
+          <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            Canvas is strictly <code class="text-[11px] bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded">#FAFAFA</code> and surfaces are pure white <code class="text-[11px] bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded">#FFFFFF</code>. Absolutely no yellowish or warm-stone tints.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-3xl bg-white dark:bg-[#141414] space-y-2">
+          <span class="text-xs font-mono font-bold text-neutral-400 block uppercase">Rule 02</span>
+          <h4 class="font-bold text-sm text-neutral-900 dark:text-white">Plane-on-Plane Hierarchy</h4>
+          <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            Depth is achieved by placing a <code class="text-[11px] bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded">neutral-100</code> inset well inside a <code class="text-[11px] bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded">bg-white</code> card. Zero 1px stroke outlines.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-3xl bg-white dark:bg-[#141414] space-y-2">
+          <span class="text-xs font-mono font-bold text-neutral-400 block uppercase">Rule 03</span>
+          <h4 class="font-bold text-sm text-neutral-900 dark:text-white">Plush Touch Ergonomics</h4>
+          <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            Primary action buttons require generous vertical padding (<code class="text-[11px] bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded">py-[18px] min-h-[56px]</code>) and full pill squircles.
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- SECTION 1: COLOR PALETTES & SURFACE LUMINANCE SCALE               -->
+    <!-- ================================================================= -->
+    <section id="tokens" class="space-y-8">
+      <div>
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 block mb-1">Section 01</span>
+        <h3 class="text-2xl font-bold tracking-tight text-neutral-950 dark:text-white">Color System &amp; Surface Luminance</h3>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">The layered plane system for light and dark modes.</p>
+      </div>
+
+      <!-- Surface Plane Demonstration -->
+      <div class="p-6 sm:p-8 rounded-4xl bg-white dark:bg-[#141414] space-y-6">
+        <h4 class="font-bold text-sm text-neutral-900 dark:text-white">Layered Plane Luminance Shift</h4>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          
+          <!-- Plane 0: Canvas -->
+          <div class="p-5 rounded-3xl bg-neutral-50 dark:bg-[#0A0A0A] space-y-3">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-neutral-700 dark:text-neutral-300">0. Canvas</span>
+              <span class="font-mono text-[11px] text-neutral-400">#FAFAFA</span>
+            </div>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+              Base application canvas. Screen background for all views.
+            </p>
+            <div class="text-[11px] font-mono text-neutral-400">bg-neutral-50</div>
+          </div>
+
+          <!-- Plane 1: Surface Card -->
+          <div class="p-5 rounded-3xl bg-white dark:bg-[#141414] space-y-3">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-neutral-900 dark:text-white">1. Surface Card</span>
+              <span class="font-mono text-[11px] text-neutral-400">#FFFFFF</span>
+            </div>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+              Primary container for pedagogical cards, dialogue blocks, and headers.
+            </p>
+            <div class="text-[11px] font-mono text-neutral-400">bg-white</div>
+          </div>
+
+          <!-- Plane 2: Recessed Well -->
+          <div class="p-5 rounded-3xl bg-neutral-100 dark:bg-[#1F1F1F] space-y-3">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-neutral-900 dark:text-white">2. Recessed Well</span>
+              <span class="font-mono text-[11px] text-neutral-400">#F5F5F5</span>
+            </div>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+              Cutout well inside a surface card for Arabic focal text, images, or media.
+            </p>
+            <div class="text-[11px] font-mono text-neutral-400">bg-neutral-100</div>
+          </div>
+
+          <!-- Plane 3: Sunken Interactive -->
+          <div class="p-5 rounded-3xl bg-neutral-200 dark:bg-[#2E2E2E] space-y-3">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-neutral-900 dark:text-white">3. Sunken / Active</span>
+              <span class="font-mono text-[11px] text-neutral-400">#E5E5E5</span>
+            </div>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+              Secondary button states, dot steppers, progress tracks, active tabs.
+            </p>
+            <div class="text-[11px] font-mono text-neutral-400">bg-neutral-200</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dynamic Semantic Accent Architecture -->
+      <div class="space-y-4 pt-4 border-t border-neutral-100 dark:border-neutral-800">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <div class="flex items-center gap-2">
+              <h4 class="font-bold text-sm text-neutral-900 dark:text-white">Dynamic Semantic Accent Tokens</h4>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-accent-primary-subtle text-accent-primary-text uppercase tracking-wider">
+                Zero Hardcoding
+              </span>
+            </div>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+              UI components never hardcode hex colors. They bind strictly to <code class="text-neutral-800 dark:text-neutral-200">accent-primary</code> and <code class="text-neutral-800 dark:text-neutral-200">accent-secondary</code> slots. Swapping or tweaking the theme in <code class="text-neutral-800 dark:text-neutral-200">@tariq/shared</code> updates the entire system instantly.
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-mono text-neutral-400">Locked Default:</span>
+            <span class="px-2.5 py-1 rounded-xl bg-accent-primary text-white text-xs font-bold font-mono">Kairouan Indigo</span>
+          </div>
+        </div>
+
+        <!-- 6-Palette Registry & Live Swapper -->
+        <div class="space-y-2 pt-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-neutral-400 uppercase tracking-wider">Live Palette Registry (Click to Preview System-Wide):</span>
+            <span class="text-[11px] font-mono text-neutral-400">6 Calibrated Themes</span>
+          </div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            
+            <!-- Palette 1: Kairouan Indigo (Locked In) -->
+            <div id="palette-card-kairouan_indigo" onclick="switchAccentPalette('kairouan_indigo')" class="p-4 rounded-2xl bg-white dark:bg-[#141414] ring-2 ring-accent-primary cursor-pointer transition-all space-y-2.5">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-bold text-sm text-neutral-900 dark:text-white">Kairouan Indigo</span>
+                    <span class="px-1.5 py-0.5 rounded-md text-[9px] font-mono font-bold bg-neutral-900 text-white dark:bg-white dark:text-neutral-950">DEFAULT</span>
+                  </div>
+                  <span class="text-[10px] font-mono text-neutral-400">9th-C Blue Quran · Gold Kufic</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <div class="w-5 h-5 rounded-full bg-[#4338CA] dark:bg-[#6366F1]" title="Primary: Royal Indigo"></div>
+                  <div class="w-5 h-5 rounded-full bg-[#C28135] dark:bg-[#D99B4B]" title="Secondary: Dune Sand"></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-[11px] font-mono">
+                <span class="text-neutral-500 dark:text-neutral-400">P: #4338CA</span>
+                <span class="text-neutral-300 dark:text-neutral-700">•</span>
+                <span class="text-neutral-500 dark:text-neutral-400">S: #C28135</span>
+              </div>
+            </div>
+
+            <!-- Palette 2: Academic Lapis -->
+            <div id="palette-card-academic_lapis" onclick="switchAccentPalette('academic_lapis')" class="p-4 rounded-2xl bg-white dark:bg-[#141414] ring-1 ring-neutral-200 dark:ring-neutral-800 hover:ring-neutral-400 cursor-pointer transition-all space-y-2.5">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="font-bold text-sm text-neutral-900 dark:text-white block">Academic Lapis</span>
+                  <span class="text-[10px] font-mono text-neutral-400">Tezhip · Brilliant / Khan Focus</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <div class="w-5 h-5 rounded-full bg-[#2563EB] dark:bg-[#3B82F6]" title="Primary: Lapis"></div>
+                  <div class="w-5 h-5 rounded-full bg-[#D97706] dark:bg-[#F59E0B]" title="Secondary: Amber"></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-[11px] font-mono">
+                <span class="text-neutral-500 dark:text-neutral-400">P: #2563EB</span>
+                <span class="text-neutral-300 dark:text-neutral-700">•</span>
+                <span class="text-neutral-500 dark:text-neutral-400">S: #D97706</span>
+              </div>
+            </div>
+
+            <!-- Palette 3: Andalusian Jade -->
+            <div id="palette-card-andalusian_jade" onclick="switchAccentPalette('andalusian_jade')" class="p-4 rounded-2xl bg-white dark:bg-[#141414] ring-1 ring-neutral-200 dark:ring-neutral-800 hover:ring-neutral-400 cursor-pointer transition-all space-y-2.5">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="font-bold text-sm text-neutral-900 dark:text-white block">Andalusian Jade</span>
+                  <span class="text-[10px] font-mono text-neutral-400">Cordoba Garden · Growth</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <div class="w-5 h-5 rounded-full bg-[#059669] dark:bg-[#10B981]" title="Primary: Jade"></div>
+                  <div class="w-5 h-5 rounded-full bg-[#D97706] dark:bg-[#F59E0B]" title="Secondary: Honey"></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-[11px] font-mono">
+                <span class="text-neutral-500 dark:text-neutral-400">P: #059669</span>
+                <span class="text-neutral-300 dark:text-neutral-700">•</span>
+                <span class="text-neutral-500 dark:text-neutral-400">S: #D97706</span>
+              </div>
+            </div>
+
+            <!-- Palette 4: Persian Teal -->
+            <div id="palette-card-persian_teal" onclick="switchAccentPalette('persian_teal')" class="p-4 rounded-2xl bg-white dark:bg-[#141414] ring-1 ring-neutral-200 dark:ring-neutral-800 hover:ring-neutral-400 cursor-pointer transition-all space-y-2.5">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="font-bold text-sm text-neutral-900 dark:text-white block">Persian Teal</span>
+                  <span class="text-[10px] font-mono text-neutral-400">Silk Road Ceramic · Agility</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <div class="w-5 h-5 rounded-full bg-[#0D9488] dark:bg-[#14B8A6]" title="Primary: Teal"></div>
+                  <div class="w-5 h-5 rounded-full bg-[#C2410C] dark:bg-[#EA580C]" title="Secondary: Terracotta"></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-[11px] font-mono">
+                <span class="text-neutral-500 dark:text-neutral-400">P: #0D9488</span>
+                <span class="text-neutral-300 dark:text-neutral-700">•</span>
+                <span class="text-neutral-500 dark:text-neutral-400">S: #C2410C</span>
+              </div>
+            </div>
+
+            <!-- Palette 5: Hijazi Olive -->
+            <div id="palette-card-hijazi_olive" onclick="switchAccentPalette('hijazi_olive')" class="p-4 rounded-2xl bg-white dark:bg-[#141414] ring-1 ring-neutral-200 dark:ring-neutral-800 hover:ring-neutral-400 cursor-pointer transition-all space-y-2.5">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="font-bold text-sm text-neutral-900 dark:text-white block">Hijazi Olive</span>
+                  <span class="text-[10px] font-mono text-neutral-400">Olive Grove · Zero Glare</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <div class="w-5 h-5 rounded-full bg-[#4D5B44] dark:bg-[#65775A]" title="Primary: Olive"></div>
+                  <div class="w-5 h-5 rounded-full bg-[#C28135] dark:bg-[#D99B4B]" title="Secondary: Ochre"></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-[11px] font-mono">
+                <span class="text-neutral-500 dark:text-neutral-400">P: #4D5B44</span>
+                <span class="text-neutral-300 dark:text-neutral-700">•</span>
+                <span class="text-neutral-500 dark:text-neutral-400">S: #C28135</span>
+              </div>
+            </div>
+
+            <!-- Palette 6: Monastic Cobalt -->
+            <div id="palette-card-monastic_cobalt" onclick="switchAccentPalette('monastic_cobalt')" class="p-4 rounded-2xl bg-white dark:bg-[#141414] ring-1 ring-neutral-200 dark:ring-neutral-800 hover:ring-neutral-400 cursor-pointer transition-all space-y-2.5">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="font-bold text-sm text-neutral-900 dark:text-white block">Monastic Cobalt</span>
+                  <span class="text-[10px] font-mono text-neutral-400">Apple / Linear · 1-Accent Focus</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <div class="w-5 h-5 rounded-full bg-[#1D4ED8] dark:bg-[#2563EB]" title="Primary: Cobalt"></div>
+                  <div class="w-5 h-5 rounded-full bg-[#475569] dark:bg-[#64748B]" title="Secondary: Slate"></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-[11px] font-mono">
+                <span class="text-neutral-500 dark:text-neutral-400">P: #1D4ED8</span>
+                <span class="text-neutral-300 dark:text-neutral-700">•</span>
+                <span class="text-neutral-500 dark:text-neutral-400">S: #475569</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Live Reactive Component Playground -->
+        <div class="p-6 rounded-3xl bg-neutral-100 dark:bg-[#1A1A1A] space-y-5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-neutral-400 uppercase tracking-wider">Live Component Behavior Under Active Palette:</span>
+            <span id="active-palette-name-badge" class="text-xs font-mono font-bold text-accent-primary">Theme: Kairouan Indigo</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+            
+            <!-- Primary Action Button -->
+            <button class="w-full pill-btn-plush rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-bold text-sm tactile-press">
+              <span>Primary Accent · التَّالِي</span>
+              <span class="ms-2">→</span>
+            </button>
+
+            <!-- Secondary Action Button -->
+            <button class="w-full pill-btn-plush rounded-full bg-accent-secondary hover:bg-accent-secondary-hover text-white font-bold text-sm tactile-press">
+              <span>Secondary Milestone · اسْتَمِرّ</span>
+              <span class="ms-2">★</span>
+            </button>
+
+            <!-- Active Grammar Chips -->
+            <div class="flex items-center justify-center gap-2">
+              <span class="px-4 py-2 rounded-xl bg-accent-primary text-white font-arabic font-bold text-sm tactile-press cursor-pointer">
+                مَفْتُوحٌ (Active)
+              </span>
+              <span class="px-4 py-2 rounded-xl bg-accent-primary-subtle text-accent-primary-text font-arabic font-bold text-sm tactile-press cursor-pointer">
+                كِتَابٌ (Subtle)
+              </span>
+            </div>
+
+          </div>
+
+          <!-- Progress Track -->
+          <div class="space-y-1.5 pt-1">
+            <div class="flex justify-between text-[11px] font-mono text-neutral-400">
+              <span>Lesson 1 Mastery Progress</span>
+              <span class="font-bold text-accent-primary">70%</span>
+            </div>
+            <div class="h-2.5 w-full rounded-full bg-neutral-200 dark:bg-neutral-800 overflow-hidden">
+              <div class="h-full rounded-full bg-accent-primary transition-all duration-300" style="width: 70%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Developer Implementation Snippet -->
+        <div class="p-5 rounded-2xl bg-white dark:bg-[#141414] space-y-2">
+          <span class="text-xs font-mono font-bold text-neutral-400 uppercase tracking-wider block">Developer Usage Specification:</span>
+          <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            In JSX / HTML, always write <code class="px-1.5 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 font-mono text-neutral-800 dark:text-neutral-200 text-[11px]">bg-accent-primary</code> or <code class="px-1.5 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 font-mono text-neutral-800 dark:text-neutral-200 text-[11px]">bg-accent-secondary</code>. Never use hardcoded hex codes. In React Native / mobile, import <code class="px-1.5 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 font-mono text-neutral-800 dark:text-neutral-200 text-[11px]">ACCENT_PALETTES</code> from <code class="px-1.5 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 font-mono text-neutral-800 dark:text-neutral-200 text-[11px]">@tariq/shared</code>.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- SECTION 2: TYPOGRAPHY & ARABIC SCRIPT HIERARCHY                   -->
+    <!-- ================================================================= -->
+    <section id="foundations" class="space-y-8">
+      <div>
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 block mb-1">Section 02</span>
+        <h3 class="text-2xl font-bold tracking-tight text-neutral-950 dark:text-white">Typography &amp; Script Hierarchy</h3>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">Bilingual balance between Latin UI copy and Tashkeel-preserved Arabic text.</p>
+      </div>
+
+      <div class="p-6 sm:p-8 rounded-4xl bg-white dark:bg-[#141414] space-y-8">
+        
+        <!-- Arabic Display Scale -->
+        <div class="space-y-4">
+          <span class="text-xs font-mono font-semibold text-neutral-400 uppercase tracking-wider">Arabic Display &amp; Focal Sizes</span>
+          
+          <div class="space-y-6">
+            <!-- 6xl Focal Word -->
+            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-neutral-100 dark:border-neutral-800/80 pb-4" dir="rtl">
+              <div class="font-arabic font-bold text-5xl sm:text-6xl text-neutral-950 dark:text-white leading-relaxed">
+                كِتَابٌ جَدِيدٌ
+              </div>
+              <div class="font-mono text-xs text-neutral-400 text-left" dir="ltr">
+                <span class="font-bold text-neutral-900 dark:text-white">text-6xl / Cairo Bold</span> • Hero Vocab (60px)
+              </div>
+            </div>
+
+            <!-- 4xl Card Word -->
+            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-neutral-100 dark:border-neutral-800/80 pb-4" dir="rtl">
+              <div class="font-arabic font-bold text-3xl sm:text-4xl text-neutral-950 dark:text-white leading-relaxed">
+                هَٰذَا بَيْتٌ، وَذَٰلِكَ مَسْجِدٌ
+              </div>
+              <div class="font-mono text-xs text-neutral-400 text-left" dir="ltr">
+                <span class="font-bold text-neutral-900 dark:text-white">text-4xl / Cairo Bold</span> • Flashcard &amp; Drill (36px)
+              </div>
+            </div>
+
+            <!-- 2xl Reading / Sentence -->
+            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-neutral-100 dark:border-neutral-800/80 pb-4" dir="rtl">
+              <div class="font-arabic font-semibold text-xl sm:text-2xl text-neutral-900 dark:text-neutral-100 leading-loose">
+                الْقَلَمُ عَلَى الْمَكْتَبِ، وَالسَّاعَةُ عَلَى السَّرِيرِ
+              </div>
+              <div class="font-mono text-xs text-neutral-400 text-left" dir="ltr">
+                <span class="font-bold text-neutral-900 dark:text-white">text-2xl / Cairo 600</span> • Reading Paragraphs (24px)
+              </div>
+            </div>
+
+            <!-- Amiri Quranic Naskh -->
+            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-2" dir="rtl">
+              <div class="font-quran text-2xl sm:text-3xl text-neutral-900 dark:text-neutral-100 leading-loose">
+                بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+              </div>
+              <div class="font-mono text-xs text-neutral-400 text-left" dir="ltr">
+                <span class="font-bold text-neutral-900 dark:text-white">font-quran / Amiri</span> • Scripture &amp; Mushaf (28px)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Latin English UI Scale -->
+        <div class="space-y-4 pt-4 border-t border-neutral-100 dark:border-neutral-800">
+          <span class="text-xs font-mono font-semibold text-neutral-400 uppercase tracking-wider">Latin English UI Typography (Plus Jakarta Sans)</span>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-2">
+            <div class="p-4 rounded-2xl bg-neutral-50 dark:bg-[#1A1A1A] space-y-1">
+              <div class="text-xs text-neutral-400 font-mono">Title / Screen</div>
+              <div class="text-xl font-extrabold text-neutral-950 dark:text-white">Display Title</div>
+              <div class="text-[11px] font-mono text-neutral-400">text-xl / 800 weight</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-neutral-50 dark:bg-[#1A1A1A] space-y-1">
+              <div class="text-xs text-neutral-400 font-mono">Body / Meaning</div>
+              <div class="text-sm font-semibold text-neutral-900 dark:text-white">A new book</div>
+              <div class="text-[11px] font-mono text-neutral-400">text-sm / 600 weight</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-neutral-50 dark:bg-[#1A1A1A] space-y-1">
+              <div class="text-xs text-neutral-400 font-mono">Transliteration</div>
+              <div class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold">kitābun jadīdun</div>
+              <div class="text-[11px] font-mono text-neutral-400">text-xs / Mono 700</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-neutral-50 dark:bg-[#1A1A1A] space-y-1">
+              <div class="text-xs text-neutral-400 font-mono">Caption / Meta</div>
+              <div class="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider">Lesson 1 • Step 4</div>
+              <div class="text-[11px] font-mono text-neutral-400">text-[11px] / 600 weight</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- SECTION 3: BUTTONS, CHIPS & INTERACTIVE CONTROLS                  -->
+    <!-- ================================================================= -->
+    <section id="buttons" class="space-y-8">
+      <div>
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 block mb-1">Section 03</span>
+        <h3 class="text-2xl font-bold tracking-tight text-neutral-950 dark:text-white">Buttons, Squircles &amp; Touch Controls</h3>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">Tactile ergonomics, plush padding, and zero-border states.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Primary & Secondary Action Buttons -->
+        <div class="p-6 sm:p-8 rounded-4xl bg-white dark:bg-[#141414] space-y-6">
+          <div class="space-y-1">
+            <span class="text-xs font-mono font-bold text-neutral-400 uppercase">Primary &amp; Secondary Buttons</span>
+            <h4 class="font-bold text-base text-neutral-900 dark:text-white">Plush 56px Action Pills</h4>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400">Strictly 56px minimum touch targets with py-[18px] px-[36px].</p>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Primary Dark Pill -->
+            <button class="w-full pill-btn-plush rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 font-bold text-sm tracking-wide tactile-press hover:opacity-95">
+              <span>Continue · التَّالِي</span>
+              <span class="ms-2">→</span>
+            </button>
+
+            <!-- Secondary Inset Pill -->
+            <button class="w-full pill-btn-plush rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white font-bold text-sm tactile-press hover:bg-neutral-200 dark:hover:bg-neutral-700">
+              <span>Review Previous · السَّابِق</span>
+            </button>
+
+            <!-- Disabled State -->
+            <button disabled class="w-full pill-btn-plush rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-600 font-bold text-sm cursor-not-allowed opacity-60">
+              <span>Complete Drill to Proceed</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Badges, Word Chips & Circular Buttons -->
+        <div class="p-6 sm:p-8 rounded-4xl bg-white dark:bg-[#141414] space-y-6">
+          <div class="space-y-1">
+            <span class="text-xs font-mono font-bold text-neutral-400 uppercase">Badges, Chips &amp; Steppers</span>
+            <h4 class="font-bold text-base text-neutral-900 dark:text-white">Squircle Badges &amp; Word Chips</h4>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400">Pure rounded squircles replacing old jagged polygons.</p>
+          </div>
+
+          <div class="space-y-5">
+            <!-- Squircles Badges -->
+            <div class="flex flex-wrap items-center gap-3">
+              <div class="px-6 py-3 rounded-2xl bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white font-arabic font-bold text-lg tactile-press cursor-pointer">
+                هَٰذَا كِتَابٌ
+              </div>
+              <div class="px-6 py-3 rounded-2xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 font-arabic font-bold text-lg tactile-press cursor-pointer">
+                ذَٰلِكَ قَلَمٌ
+              </div>
+            </div>
+
+            <!-- Sentence Scramble Chips -->
+            <div class="space-y-2">
+              <span class="text-xs font-mono text-neutral-400 block">Interactive Scramble Chips:</span>
+              <div class="flex flex-wrap items-center gap-2" dir="rtl">
+                <span class="px-4 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 font-arabic font-bold text-sm text-neutral-900 dark:text-white cursor-pointer tactile-press flex items-center gap-2">
+                  <span>هَٰذِهِ</span>
+                  <span class="text-xs text-neutral-400 font-mono">✕</span>
+                </span>
+                <span class="px-4 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 font-arabic font-bold text-sm text-neutral-900 dark:text-white cursor-pointer tactile-press flex items-center gap-2">
+                  <span>مَدْرَسَةٌ</span>
+                  <span class="text-xs text-neutral-400 font-mono">✕</span>
+                </span>
+                <span class="px-4 py-2 rounded-xl bg-neutral-50 dark:bg-neutral-900 font-arabic font-bold text-sm text-neutral-400 cursor-pointer">
+                  جَدِيدَةٌ
+                </span>
+              </div>
+            </div>
+
+            <!-- Circular Audio & Action Buttons -->
+            <div class="flex items-center gap-4 pt-1">
+              <button onclick="speakDemo('كِتَابٌ')" class="w-12 h-12 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center text-lg text-neutral-900 dark:text-white tactile-press" title="Audio Speaker">
+                🔊
+              </button>
+              <button class="w-12 h-12 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center text-sm font-bold text-neutral-900 dark:text-white tactile-press" title="Reset">
+                ↺
+              </button>
+              
+              <!-- Stepper Control -->
+              <div class="flex items-center gap-3 bg-neutral-100 dark:bg-neutral-800 px-4 py-2 rounded-full">
+                <button class="w-6 h-6 flex items-center justify-center font-bold text-neutral-900 dark:text-white tactile-press">+</button>
+                <span class="text-xs font-mono font-bold text-neutral-900 dark:text-white">1</span>
+                <button class="w-6 h-6 flex items-center justify-center font-bold text-neutral-900 dark:text-white tactile-press">-</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- SECTION 4: CORE PEDAGOGY PATTERNS & CARDS                         -->
+    <!-- ================================================================= -->
+    <section id="components" class="space-y-8">
+      <div>
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 block mb-1">Section 04</span>
+        <h3 class="text-2xl font-bold tracking-tight text-neutral-950 dark:text-white">Core Pedagogy Patterns</h3>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">Authentic pedagogical components built strictly to the Raw Neutral design system.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+        
+        <!-- PATTERN 1: SINGLE-WORD FOCUSED HERO VOCAB CARD -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-mono font-bold uppercase text-neutral-400">Pattern 01 • Lexical Priming</span>
+            <span class="font-mono text-emerald-600 dark:text-emerald-400 font-bold">good.png Inspired</span>
+          </div>
+
+          <div class="w-full bg-white dark:bg-[#141414] rounded-4xl p-7 space-y-6">
+            <!-- Top Stepper & Audio Button -->
+            <div class="flex items-center justify-between text-xs font-mono text-neutral-400">
+              <div class="flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800 px-3.5 py-1.5 rounded-full font-bold text-neutral-900 dark:text-white">
+                <span>Word 1 of 8</span>
+              </div>
+              <button onclick="speakDemo('كِتَابٌ')" class="w-10 h-10 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-900 dark:text-white text-base tactile-press">
+                🔊
+              </button>
+            </div>
+
+            <!-- Hero Cutout Well with Big Arabic Text -->
+            <div class="h-52 rounded-3xl bg-neutral-100 dark:bg-[#1F1F1F] flex flex-col items-center justify-center text-center p-6 space-y-1.5 relative overflow-hidden">
+              <span class="font-arabic font-bold text-6xl text-neutral-950 dark:text-white block py-1 leading-tight" dir="rtl">
+                كِتَابٌ
+              </span>
+              <span class="text-xs font-semibold text-neutral-400 font-mono block">kitābun</span>
+              <span class="text-base font-bold text-neutral-900 dark:text-white block">A Book</span>
+            </div>
+
+            <!-- Linguistic Specifications with vertical | dividers -->
+            <div class="p-3.5 rounded-2xl bg-neutral-50 dark:bg-[#181818] space-y-2 text-xs text-neutral-900 dark:text-neutral-100">
+              <div class="flex items-center justify-between text-[11px] font-semibold text-neutral-500 dark:text-neutral-400">
+                <span>Type: Ism</span>
+                <span>|</span>
+                <span>Gender: Masc</span>
+                <span>|</span>
+                <span>State: Nakirah</span>
+              </div>
+              <div class="h-0.5 w-full bg-neutral-100 dark:bg-neutral-800"></div>
+              <div class="flex items-center justify-between text-xs font-arabic pt-0.5" dir="rtl">
+                <span class="font-bold text-neutral-400">مِثَالٌ:</span>
+                <span class="font-semibold text-neutral-900 dark:text-white">هَٰذَا كِتَابٌ جَدِيدٌ</span>
+              </div>
+            </div>
+
+            <!-- Plush Action Pill Button -->
+            <button class="w-full pill-btn-plush rounded-full bg-neutral-900 dark:bg-white hover:bg-neutral-800 text-white dark:text-neutral-950 font-bold text-sm text-center tactile-press flex items-center justify-center gap-2.5">
+              <span>Continue · التَّالِي</span>
+              <span class="text-base">→</span>
+            </button>
+
+            <!-- Dot Stepper -->
+            <div class="flex items-center justify-center gap-2 pt-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-neutral-900 dark:bg-white"></span>
+              <span class="w-2 h-2 rounded-full bg-neutral-200 dark:bg-neutral-800"></span>
+              <span class="w-2 h-2 rounded-full bg-neutral-200 dark:bg-neutral-800"></span>
+              <span class="w-2 h-2 rounded-full bg-neutral-200 dark:bg-neutral-800"></span>
+              <span class="w-2 h-2 rounded-full bg-neutral-200 dark:bg-neutral-800"></span>
+              <span class="w-2 h-2 rounded-full bg-neutral-200 dark:bg-neutral-800"></span>
+              <span class="w-2 h-2 rounded-full bg-neutral-200 dark:bg-neutral-800"></span>
+              <span class="w-2 h-2 rounded-full bg-neutral-200 dark:bg-neutral-800"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PATTERN 2: DEICTIC SPATIAL POINTING DRILL -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-mono font-bold uppercase text-neutral-400">Pattern 02 • Spatial Pointing</span>
+            <span class="font-mono text-neutral-500">Book: Page 15</span>
+          </div>
+
+          <div class="w-full bg-white dark:bg-[#141414] rounded-4xl p-7 space-y-6">
+            <!-- Header with Title & Instruction -->
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="text-base font-bold text-neutral-900 dark:text-white">Spatial Pointing Drill</h4>
+                <p class="text-xs text-neutral-500 dark:text-neutral-400">Select the correct demonstrative pronoun for the distance.</p>
+              </div>
+              <span class="px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-[11px] font-bold text-neutral-600 dark:text-neutral-300">
+                Drill 01
+              </span>
+            </div>
+
+            <!-- Spatial Stage Box -->
+            <div class="p-6 rounded-3xl bg-neutral-100 dark:bg-[#1F1F1F] space-y-5">
+              <!-- Item 1: Near Object -->
+              <div class="flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-[#141414]" dir="rtl">
+                <div class="px-5 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 font-arabic font-bold text-base text-neutral-900 dark:text-white">
+                  هَٰذَا كِتَابٌ
+                </div>
+                <div class="flex items-center gap-3 pr-2">
+                  <div class="w-8 h-1.5 rounded-full bg-neutral-200 dark:bg-neutral-700"></div>
+                  <span class="text-2xl">📖</span>
+                </div>
+              </div>
+
+              <!-- Item 2: Far Object -->
+              <div class="flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-[#141414]" dir="rtl">
+                <div class="px-5 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 font-arabic font-bold text-base text-neutral-900 dark:text-white">
+                  ذَٰلِكَ قَلَمٌ
+                </div>
+                <div class="flex-1 flex items-center justify-end pl-3">
+                  <div class="flex-1 h-1.5 rounded-full bg-neutral-200 dark:bg-neutral-700 mx-4"></div>
+                  <span class="text-2xl opacity-75">🖊️</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Multiple Choice Response Pills -->
+            <div class="grid grid-cols-2 gap-3" dir="rtl">
+              <button class="py-4 px-5 rounded-2xl bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 font-arabic font-bold text-lg text-neutral-900 dark:text-white tactile-press">
+                هَٰذَا كِتَابٌ
+              </button>
+              <button class="py-4 px-5 rounded-2xl bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 font-arabic font-bold text-lg text-neutral-900 dark:text-white tactile-press">
+                ذَٰلِكَ كِتَابٌ
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- SECTION 5: APP CHROME & RESPONSIVE CONTAINERS                     -->
+    <!-- ================================================================= -->
+    <section class="space-y-8">
+      <div>
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 block mb-1">Section 05</span>
+        <h3 class="text-2xl font-bold tracking-tight text-neutral-950 dark:text-white">App Chrome &amp; Container Specs</h3>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">Standard lesson headers, progress tracking, and footer navigation.</p>
+      </div>
+
+      <div class="p-6 sm:p-8 rounded-4xl bg-white dark:bg-[#141414] space-y-6">
+        
+        <!-- Standard Lesson Header -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-bold text-neutral-400 uppercase">Standard Curriculum Header</span>
+          <div class="bg-neutral-50 dark:bg-[#1A1A1A] rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+              <div class="w-11 h-11 rounded-2xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 flex items-center justify-center font-arabic font-bold text-xl">
+                ١
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-neutral-900 dark:text-white">Lesson 1: Demonstratives</h4>
+                <span class="text-[11px] text-neutral-400 font-mono">Volume 1 • Esho Arbi Shikhi</span>
+              </div>
+            </div>
+            <div class="w-full sm:w-48 space-y-1.5">
+              <div class="flex justify-between text-xs font-mono text-neutral-500 dark:text-neutral-400">
+                <span>Step 2 of 10</span>
+                <span class="font-bold">20%</span>
+              </div>
+              <div class="h-2 rounded-full bg-neutral-200 dark:bg-neutral-800 overflow-hidden">
+                <div class="h-full bg-neutral-900 dark:bg-white w-[20%] rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Standard Footer Stage Navigation -->
+        <div class="space-y-2 pt-2">
+          <span class="text-xs font-mono font-bold text-neutral-400 uppercase">Standard Footer Navigation</span>
+          <div class="bg-neutral-50 dark:bg-[#1A1A1A] rounded-3xl p-3 sm:p-4 flex items-center justify-between">
+            <button class="px-5 py-2.5 bg-neutral-200 dark:bg-neutral-800 rounded-2xl text-xs font-bold text-neutral-400 dark:text-neutral-500 cursor-not-allowed">
+              ← Previous
+            </button>
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-neutral-900 dark:bg-white"></span>
+              <span class="w-2 h-2 rounded-full bg-neutral-200 dark:bg-neutral-800"></span>
+              <span class="w-2 h-2 rounded-full bg-neutral-200 dark:bg-neutral-800"></span>
+              <span class="w-2 h-2 rounded-full bg-neutral-200 dark:bg-neutral-800"></span>
+            </div>
+            <button class="px-6 py-2.5 bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 rounded-2xl text-xs font-bold tactile-press">
+              Next Step →
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- LIVE SCRIPT: THEME TOGGLE & AUDIO TTS                              -->
+  <!-- ================================================================= -->
+  <script>
+    const ACCENT_PALETTES = {
+      kairouan_indigo: {
+        name: "Kairouan Indigo",
+        light: {
+          p: '#4338CA', pHover: '#3730A3', pSubtle: '#EEF2FF', pText: '#3730A3', pGlow: 'rgba(67, 56, 202, 0.08)',
+          s: '#C28135', sHover: '#9A6321', sSubtle: '#FDF8F0', sText: '#7C4A14', sGlow: 'rgba(194, 129, 53, 0.08)'
+        },
+        dark: {
+          p: '#6366F1', pHover: '#4F46E5', pSubtle: 'rgba(67, 56, 202, 0.16)', pText: '#A5B4FC', pGlow: 'rgba(99, 102, 241, 0.24)',
+          s: '#D99B4B', sHover: '#C28135', sSubtle: 'rgba(194, 129, 53, 0.16)', sText: '#FDE68A', sGlow: 'rgba(217, 155, 75, 0.24)'
+        }
+      },
+      academic_lapis: {
+        name: "Academic Lapis",
+        light: {
+          p: '#2563EB', pHover: '#1D4ED8', pSubtle: '#EFF6FF', pText: '#1E40AF', pGlow: 'rgba(37, 99, 235, 0.08)',
+          s: '#D97706', sHover: '#B45309', sSubtle: '#FFFBEB', sText: '#92400E', sGlow: 'rgba(217, 119, 6, 0.08)'
+        },
+        dark: {
+          p: '#3B82F6', pHover: '#2563EB', pSubtle: 'rgba(37, 99, 235, 0.16)', pText: '#93C5FD', pGlow: 'rgba(59, 130, 246, 0.24)',
+          s: '#F59E0B', sHover: '#D97706', sSubtle: 'rgba(217, 119, 6, 0.16)', sText: '#FCD34D', sGlow: 'rgba(245, 158, 11, 0.24)'
+        }
+      },
+      andalusian_jade: {
+        name: "Andalusian Jade",
+        light: {
+          p: '#059669', pHover: '#047857', pSubtle: '#ECFDF5', pText: '#065F46', pGlow: 'rgba(5, 150, 105, 0.08)',
+          s: '#D97706', sHover: '#B45309', sSubtle: '#FFFBEB', sText: '#92400E', sGlow: 'rgba(217, 119, 6, 0.08)'
+        },
+        dark: {
+          p: '#10B981', pHover: '#059669', pSubtle: 'rgba(5, 150, 105, 0.16)', pText: '#6EE7B7', pGlow: 'rgba(16, 185, 129, 0.24)',
+          s: '#F59E0B', sHover: '#D97706', sSubtle: 'rgba(217, 119, 6, 0.16)', sText: '#FCD34D', sGlow: 'rgba(245, 158, 11, 0.24)'
+        }
+      },
+      persian_teal: {
+        name: "Persian Teal",
+        light: {
+          p: '#0D9488', pHover: '#0F766E', pSubtle: '#F0FDFA', pText: '#115E59', pGlow: 'rgba(13, 148, 136, 0.08)',
+          s: '#C2410C', sHover: '#9A3412', sSubtle: '#FFF7ED', sText: '#7C2D12', sGlow: 'rgba(194, 65, 12, 0.08)'
+        },
+        dark: {
+          p: '#14B8A6', pHover: '#0D9488', pSubtle: 'rgba(13, 148, 136, 0.16)', pText: '#5EEAD4', pGlow: 'rgba(20, 184, 166, 0.24)',
+          s: '#EA580C', sHover: '#C2410C', sSubtle: 'rgba(194, 65, 12, 0.16)', sText: '#FDBA74', sGlow: 'rgba(234, 88, 12, 0.24)'
+        }
+      },
+      hijazi_olive: {
+        name: "Hijazi Olive",
+        light: {
+          p: '#4D5B44', pHover: '#3E4A37', pSubtle: '#F4F5F3', pText: '#2E3728', pGlow: 'rgba(77, 91, 68, 0.08)',
+          s: '#C28135', sHover: '#9A6321', sSubtle: '#FDF8F0', sText: '#7C4A14', sGlow: 'rgba(194, 129, 53, 0.08)'
+        },
+        dark: {
+          p: '#65775A', pHover: '#4D5B44', pSubtle: 'rgba(77, 91, 68, 0.18)', pText: '#A3B19B', pGlow: 'rgba(101, 119, 90, 0.24)',
+          s: '#D99B4B', sHover: '#C28135', sSubtle: 'rgba(194, 129, 53, 0.16)', sText: '#FDE68A', sGlow: 'rgba(217, 155, 75, 0.24)'
+        }
+      },
+      monastic_cobalt: {
+        name: "Monastic Cobalt",
+        light: {
+          p: '#1D4ED8', pHover: '#1E40AF', pSubtle: '#EFF6FF', pText: '#1E40AF', pGlow: 'rgba(29, 78, 216, 0.08)',
+          s: '#475569', sHover: '#334155', sSubtle: '#F8FAFC', sText: '#1E293B', sGlow: 'rgba(71, 85, 105, 0.08)'
+        },
+        dark: {
+          p: '#2563EB', pHover: '#1D4ED8', pSubtle: 'rgba(29, 78, 216, 0.16)', pText: '#93C5FD', pGlow: 'rgba(37, 99, 235, 0.24)',
+          s: '#64748B', sHover: '#475569', sSubtle: 'rgba(71, 85, 105, 0.16)', sText: '#CBD5E1', sGlow: 'rgba(100, 116, 139, 0.24)'
+        }
+      }
+    };
+
+    let activeAccentPaletteId = 'kairouan_indigo';
+
+    function isDarkMode() {
+      return document.documentElement.classList.contains("dark");
+    }
+
+    function switchAccentPalette(paletteId) {
+      if (paletteId) activeAccentPaletteId = paletteId;
+      const palette = ACCENT_PALETTES[activeAccentPaletteId];
+      if (!palette) return;
+
+      const dark = isDarkMode();
+      const tokens = dark ? palette.dark : palette.light;
+
+      document.documentElement.style.setProperty('--accent-primary', tokens.p);
+      document.documentElement.style.setProperty('--accent-primary-hover', tokens.pHover);
+      document.documentElement.style.setProperty('--accent-primary-subtle', tokens.pSubtle);
+      document.documentElement.style.setProperty('--accent-primary-text', tokens.pText);
+      document.documentElement.style.setProperty('--accent-primary-glow', tokens.pGlow);
+
+      document.documentElement.style.setProperty('--accent-secondary', tokens.s);
+      document.documentElement.style.setProperty('--accent-secondary-hover', tokens.sHover);
+      document.documentElement.style.setProperty('--accent-secondary-subtle', tokens.sSubtle);
+      document.documentElement.style.setProperty('--accent-secondary-text', tokens.sText);
+      document.documentElement.style.setProperty('--accent-secondary-glow', tokens.sGlow);
+
+      // Update card active rings
+      Object.keys(ACCENT_PALETTES).forEach(k => {
+        const card = document.getElementById('palette-card-' + k);
+        if (card) {
+          if (k === activeAccentPaletteId) {
+            card.className = "p-4 rounded-2xl bg-white dark:bg-[#141414] ring-2 ring-accent-primary cursor-pointer transition-all space-y-2.5";
+          } else {
+            card.className = "p-4 rounded-2xl bg-white dark:bg-[#141414] ring-1 ring-neutral-200 dark:ring-neutral-800 hover:ring-neutral-400 cursor-pointer transition-all space-y-2.5";
+          }
+        }
+      });
+
+      const badge = document.getElementById('active-palette-name-badge');
+      if (badge) {
+        badge.textContent = `Theme: ${palette.name}`;
+      }
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const willBeDark = !html.classList.contains("dark");
+      if (willBeDark) {
+        html.classList.add("dark");
+        localStorage.setItem("tariq-theme", "dark");
+      } else {
+        html.classList.remove("dark");
+        localStorage.setItem("tariq-theme", "light");
+      }
+      switchAccentPalette(activeAccentPaletteId);
+    }
+
+    // Initialize Theme Preference & Default Palette
+    (function() {
+      const savedTheme = localStorage.getItem("tariq-theme");
+      if (savedTheme === "dark" || (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+      switchAccentPalette('kairouan_indigo');
+    })();
+
+    function speakDemo(text) {
+      if ("speechSynthesis" in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "ar-SA";
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+  </script>
+
+</body>
+</html>

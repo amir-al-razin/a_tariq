@@ -31,67 +31,64 @@ import { lesson02 as ch4lesson02 } from './ch4/lesson02';
 // ─────────────────────────────────────────────
 // Volume 3 - Pedagogical Data
 // Source: "Esho Arbi Shikhi" Vol 3
-// Language: English-primary, Bangla optional (bn? fields)
+// Language: English-only
 // ─────────────────────────────────────────────
 
 export const CHAPTERS_VOL3: ChapterData[] = [
-    {
-        id: 1,
-        titleAr: 'الباب الأول',
-        titleEn: 'Chapter One',
-        subtitle: 'Advanced verb forms and plural conjugations',
-        lessons: [
-            lesson01,
-            lesson02,
-            lesson03,
-            lesson04,
-            lesson05,
-            lesson06,
-            lesson07,
-            lesson08,
-            lesson09,
-        ],
-    },
-    {
-        id: 2,
-        titleAr: 'الباب الثاني',
-        titleEn: 'Chapter Two',
-        subtitle: 'Complex sentence structures and advanced grammar',
-        lessons: [
-            ch2lesson01,
-            ch2lesson02,
-            ch2lesson03,
-            ch2lesson04,
-            ch2lesson05,
-            ch2lesson06,
-            ch2lesson07,
-            ch2lesson08,
-        ],
-    },
-    {
-        id: 3,
-        titleAr: 'الباب الثالث',
-        titleEn: 'Chapter Three',
-        subtitle: 'Advanced grammar and linguistic structures',
-        lessons: [
-            ch3lesson01,
-            ch3lesson02,
-            ch3lesson03,
-            ch3lesson04,
-            ch3lesson05,
-            ch3lesson06,
-            ch3lesson07,
-        ],
-    },
+  {
+    id: 1,
+    titleAr: 'الباب الأول',
+    titleEn: 'Chapter One',
+    subtitle: 'Advanced verb forms and plural conjugations',
+    lessons: [
+      lesson01,
+      lesson02,
+      lesson03,
+      lesson04,
+      lesson05,
+      lesson06,
+      lesson07,
+      lesson08,
+      lesson09,
+    ],
+  },
+  {
+    id: 2,
+    titleAr: 'الباب الثاني',
+    titleEn: 'Chapter Two',
+    subtitle: 'Complex sentence structures and advanced grammar',
+    lessons: [
+      ch2lesson01,
+      ch2lesson02,
+      ch2lesson03,
+      ch2lesson04,
+      ch2lesson05,
+      ch2lesson06,
+      ch2lesson07,
+      ch2lesson08,
+    ],
+  },
+  {
+    id: 3,
+    titleAr: 'الباب الثالث',
+    titleEn: 'Chapter Three',
+    subtitle: 'Advanced grammar and linguistic structures',
+    lessons: [
+      ch3lesson01,
+      ch3lesson02,
+      ch3lesson03,
+      ch3lesson04,
+      ch3lesson05,
+      ch3lesson06,
+      ch3lesson07,
+    ],
+  },
 
-    {
-        id: 4,
-        titleAr: 'الباب الرابع',
-        titleEn: 'Chapter Four',
-        subtitle: 'From the Shades of the Quran and Prophetic Hadith',
-        lessons: [
-            ch4lesson01,
-            ch4lesson02,
-        ],
-    },
+  {
+    id: 4,
+    titleAr: 'الباب الرابع',
+    titleEn: 'Chapter Four',
+    subtitle: 'From the Shades of the Quran and Prophetic Hadith',
+    lessons: [ch4lesson01, ch4lesson02],
+  },
 ];

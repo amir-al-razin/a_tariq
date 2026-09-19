@@ -56,12 +56,14 @@ export const FontToggle: React.FC<FontToggleProps> = ({ variant = 'pill', classN
       <button
         type="button"
         onClick={() => setIsModalOpen(true)}
-        className={`flex items-center gap-2 px-3 py-2 rounded-full text-xs font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 bg-neutral-100/80 dark:bg-neutral-800/80 hover:bg-neutral-200/80 dark:hover:bg-neutral-700/80 transition-colors cursor-pointer outline-none ${className}`}
+        className={`h-9 flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-2 sm:px-3 py-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 outline-none cursor-pointer ${
+          isModalOpen ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100' : ''
+        } ${className}`}
         aria-label="Change Arabic font settings"
       >
-        <Type size={16} className="text-neutral-600 dark:text-neutral-400" />
+        <Type size={16} />
         <span className="hidden sm:inline font-english">{currentFontConfig.name}</span>
-        <span className={`text-base leading-none ${currentFontConfig.className}`} dir="rtl">
+        <span className={`text-sm leading-none text-neutral-500 dark:text-neutral-400 hidden sm:inline ${currentFontConfig.className}`} dir="rtl">
           خط
         </span>
       </button>

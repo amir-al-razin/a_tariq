@@ -2,7 +2,7 @@
 
 **Version:** 2.0 (Permanent Codification)  
 **Target Application:** Tariq (Interactive Quranic Arabic & *Esho Arbi Shikhi* Pedagogical Engine)  
-**Core Principles:** Tone-on-Tone Differentiation, Zero Borders & Shadows, Generous RTL Geometry, Harakat Fading, Living Mushaf Visual Integration.
+**Core Principles:** Tone-on-Tone Differentiation, Zero Borders & Shadows, Generous RTL Geometry, Full Harakat Standard (Fading Deferred), Living Mushaf Visual Integration.
 
 ---
 
@@ -30,15 +30,15 @@ Semantic accent colors (such as emerald primary tones or success/danger feedback
 
 | Element / Layer | Tailwind Class Token | Light Mode Hex / Usage | Dark Mode Hex / Usage |
 | :--- | :--- | :--- | :--- |
-| **Canvas Background** | `bg-white` / `bg-black` | `#FFFFFF` (Pure White Slate) | `#000000` / `#0D0C0A` (`neutral-950` or pure black) |
+| **Canvas Background** | `bg-white` / `bg-black` | `#FFFFFF` (Pure White Slate) | `#000000` / `#0A0A0A` (`neutral-950` or pure black) |
 | **Sticky Header Surface** | `bg-white/80` / `dark:bg-black/80` | `#FFFFFF` (80% opacity, Backdrop Blur) | `#000000` (80% opacity, Backdrop Blur) |
-| **Primary Container Layer 1** | `bg-neutral-100` / `dark:bg-neutral-900` | `#F0EEE8` (Base Squircles & Content Cards) | `#1A1815` (Base Squircles & Content Cards) |
-| **Elevated Child Layer 2** | `bg-white` / `dark:bg-[#141414]` | `#FFFFFF` (Nested Word Cells & Info Boxes) | `#141414` / `#161616` (Nested High-Contrast Card Cells) |
-| **Interactive Tonal Hover / Layer 3**| `bg-neutral-200/80` / `dark:bg-neutral-800`| `#E5E1D8` (Flipped Flashcards, Tonal Toggles) | `#22201B` (Flipped Cards, Selected Action Pills) |
-| **Primary Typography** | `text-neutral-900` / `dark:text-neutral-50` | `#1A1815` / `#0D0C0A` (High-Contrast Headers) | `#F8F7F4` / `#FFFFFF` (High-Contrast Arabic / Titles) |
-| **Secondary Typography** | `text-neutral-600` / `dark:text-neutral-300`| `#7D7463` (Subtitles & English Meanings) | `#D5CEBF` (Subtitles & English Meanings) |
-| **Muted Typography / Hints** | `text-neutral-500` / `dark:text-neutral-400`| `#9A8F7B` (Romanization & Instructional Hints) | `#B9AF9C` (Romanization & Instructional Hints) |
-| **High-Contrast Action Targets**| `bg-neutral-900 text-white` | `#1A1815` background / `#FFFFFF` text (Primary Action)| `#FFFFFF` background / `#000000` text (Primary Action) |
+| **Primary Container Layer 1** | `bg-neutral-100` / `dark:bg-neutral-900` | `#F5F5F5` (Base Squircles & Content Cards) | `#171717` (Base Squircles & Content Cards) |
+| **Elevated Child Layer 2** | `bg-white` / `dark:bg-[#141414]` | `#FFFFFF` (Nested Word Cells & Info Boxes) | `#141414` / `#171717` (Nested High-Contrast Card Cells) |
+| **Interactive Tonal Hover / Layer 3**| `bg-neutral-200` / `dark:bg-neutral-800`| `#E5E5E5` (Flipped Flashcards, Tonal Toggles) | `#262626` (Flipped Cards, Selected Action Pills) |
+| **Primary Typography** | `text-neutral-900` / `dark:text-neutral-50` | `#171717` (High-Contrast Headers) | `#FAFAFA` / `#FFFFFF` (High-Contrast Arabic / Titles) |
+| **Secondary Typography** | `text-neutral-600` / `dark:text-neutral-300`| `#525252` (Subtitles & English Meanings) | `#D4D4D4` (Subtitles & English Meanings) |
+| **Muted Typography / Hints** | `text-neutral-500` / `dark:text-neutral-400`| `#737373` (Romanization & Instructional Hints) | `#A3A3A3` (Romanization & Instructional Hints) |
+| **High-Contrast Action Targets**| `bg-neutral-900 text-white` | `#171717` background / `#FFFFFF` text (Primary Action)| `#FFFFFF` background / `#000000` text (Primary Action) |
 | **Functional Success Feedback**| `text-status-success` / Tonal Fill | `#2E7D32` (Quiz Correct Explanation) | `#2E7D32` (Quiz Correct Explanation) |
 
 ---
@@ -151,14 +151,14 @@ To ensure zero clipping of vocalic diacritics and effortless reading across mobi
 
 ---
 
-## 6. Harakat Fading & Comprehension Engine Visual Guidelines
+## 6. Harakat (Tashkeel) Standards & Comprehension Engine Visual Guidelines
 
-A core pedagogical innovation of **Tariq**—adapted directly from Maulana Abu Taher Misbah's classical methodology in *Esho Arbi Shikhi*—is solving the **"Illusion of Fluency"** caused by traditional language apps that leave full vowel marks turned on indefinitely. 
+> [!NOTE]
+> **Active Scope Limit (Full Harakat Standard):** Dynamic Harakat fading, regex stripping, and fading state machines are explicitly scoped out of current active development to avoid overhead. Modern printed Qurans (Mushaf) and foundational textbooks retain full vowel marks (Harakat). All active lessons, vocabulary steps, and drills render full Tashkeel directly by default. Dynamic fading or mimicking physical book fading will only be revisited in a future phase once the pedagogical foundation is rock-solid.
 
-Our pedagogical engine introduces systematic **Harakat Fading** and integrates user progression directly into a **Living Mushaf** visual interface.
+### The 5 Harakat Fading Stages (Deferred / Future Phase Specification)
+As a student advances across curriculum lessons in future phases, the rendering engine may systematically peel away vowel diacritics according to 5 programmed stages:
 
-### 1. The 5 Harakat Fading Stages
-As a student advances across curriculum lessons, the rendering engine systematically peels away vowel diacritics according to 5 programmed stages:
 
 | Stage Token | Pedagogical Stage Name | Diacritic Rules & Target State | Visual Styling & Engine Implementation |
 | :--- | :--- | :--- | :--- |

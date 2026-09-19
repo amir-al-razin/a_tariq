@@ -1,12 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       fontFamily: {
-        english: ['Quicksand', 'sans-serif'],
-        'english-medium': ['Quicksand', 'sans-serif'],
-        'english-semibold': ['Quicksand', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'Lexend', 'system-ui', 'sans-serif'],
+        english: ['"Plus Jakarta Sans"', 'Lexend', 'system-ui', 'sans-serif'],
+        'english-medium': ['"Plus Jakarta Sans"', 'Lexend', 'system-ui', 'sans-serif'],
+        'english-semibold': ['"Plus Jakarta Sans"', 'Lexend', 'system-ui', 'sans-serif'],
+        jakarta: ['"Plus Jakarta Sans"', 'sans-serif'],
+        lexend: ['Lexend', 'sans-serif'],
         arabic: ['var(--font-arabic-family, Cairo)', 'sans-serif'],
         'arabic-medium': ['var(--font-arabic-family, Cairo)', 'sans-serif'],
         'arabic-semibold': ['var(--font-arabic-family, Cairo)', 'sans-serif'],
@@ -30,6 +34,22 @@ export default {
         'arabic-body': ['18px', { lineHeight: '34px' }],
       },
       colors: {
+        accent: {
+          primary: {
+            DEFAULT: 'var(--accent-primary)',
+            hover: 'var(--accent-primary-hover)',
+            subtle: 'var(--accent-primary-subtle)',
+            text: 'var(--accent-primary-text)',
+            glow: 'var(--accent-primary-glow)',
+          },
+          secondary: {
+            DEFAULT: 'var(--accent-secondary)',
+            hover: 'var(--accent-secondary-hover)',
+            subtle: 'var(--accent-secondary-subtle)',
+            text: 'var(--accent-secondary-text)',
+            glow: 'var(--accent-secondary-glow)',
+          },
+        },
         primary: {
           50: '#ECFDF8',
           100: '#D1FAEF',

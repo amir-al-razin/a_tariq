@@ -21,6 +21,7 @@ android
 
 # Kiro configuration
 .kiro/
+.lavish/
 
 # Secrets & Environment variables
 .env
@@ -43,3 +44,4 @@ output/
 apps/web/public/downloads/*.mp4
 apps/web/public/downloads/*.mp3
 apps/web/public/downloads/*.wav
+

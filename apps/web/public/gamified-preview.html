@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tariq - Kinetic Serenity & Mindful Gamification Prototype</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Vazirmatn:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "sans-serif"],
+            arabic: ["Cairo", "Vazirmatn", "sans-serif"],
+            vazir: ["Vazirmatn", "sans-serif"],
+            quran: ["Amiri", "serif"],
+            mono: ["JetBrains Mono", "monospace"],
+          },
+          colors: {
+            // Raw Neutral System Tokens mapped to CSS variables
+            canvas: "var(--color-canvas)",
+            surface: "var(--color-surface)",
+            nested: "var(--color-nested)",
+            sunken: "var(--color-sunken)",
+            charcoal: "var(--color-charcoal)",
+            muted: "var(--color-muted)",
+            borderBase: "var(--color-border)",
+            
+            // Living Jewel Tones (Event-Driven Only)
+            emeraldSpark: "#10B981",
+            amberGlow: "#F59E0B",
+            sapphirePulse: "#3B82F6",
+            rubyMiss: "#EF4444",
+          },
+          borderRadius: {
+            "4xl": "2.25rem",
+            "3xl": "1.75rem",
+            "2xl": "1.25rem",
+            "xl": "0.875rem"
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    /* Strict Raw Neutral Mandate: Zero Drop Shadows, Zero Outline Borders */
+    *, *::before, *::after {
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      text-shadow: none !important;
+    }
+
+    /* Spring Physics for Kinetic Gamification */
+    .spring-bounce {
+      transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color 200ms ease, opacity 200ms ease;
+    }
+    .spring-bounce:active {
+      transform: scale(0.94);
+    }
+
+    /* Tactile Plush Button */
+    .pill-btn-plush {
+      padding-top: 18px !important;
+      padding-bottom: 18px !important;
+      padding-left: 36px !important;
+      padding-right: 36px !important;
+      min-height: 56px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      white-space: nowrap !important;
+    }
+
+    /* Celebration Canvas for Particle Physics */
+    #fx-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Living Lantern Glow Keyframes */
+    @keyframes lanternPulse {
+      0% { transform: scale(1); opacity: 0.85; filter: drop-shadow(0 0 0px #F59E0B); }
+      50% { transform: scale(1.04); opacity: 1; filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.4)); }
+      100% { transform: scale(1); opacity: 0.85; filter: drop-shadow(0 0 0px #F59E0B); }
+    }
+    /* ================================================================= */
+    /* THEME ENGINE: RAW NEUTRAL BASE + ACCENT CSS VARIABLES             */
+    /* ================================================================= */
+    :root {
+      /* Raw Neutral Light Mode Plane Luminance */
+      --color-canvas: #FAFAFA;
+      --color-surface: #FFFFFF;
+      --color-nested: #F5F5F5;
+      --color-sunken: #E5E5E5;
+      --color-charcoal: #171717;
+      --color-muted: #737373;
+      --color-border: #F0F0F0;
+
+      /* Active Accent Values (Academic Lapis in Light Mode) */
+      --accent-p: #2563EB;
+      --accent-p-hover: #1D4ED8;
+      --accent-p-light: #EFF6FF;
+      --accent-p-text: #1D4ED8;
+
+      --accent-s: #D97706;
+      --accent-s-hover: #B45309;
+      --accent-s-light: #FFFBEB;
+      --accent-s-text: #92400E;
+    }
+
+    .dark {
+      /* Raw Neutral Dark Mode Plane Luminance */
+      --color-canvas: #0A0A0E;
+      --color-surface: #141418;
+      --color-nested: #1E1E24;
+      --color-sunken: #282830;
+      --color-charcoal: #F5F5F7;
+      --color-muted: #9CA3AF;
+      --color-border: #24242C;
+
+      /* Active Accent Values (Academic Lapis in Dark Mode - Same Hue, Calibrated Luminance) */
+      --accent-p: #3B82F6;
+      --accent-p-hover: #2563EB;
+      --accent-p-light: rgba(37, 99, 235, 0.14);
+      --accent-p-text: #93C5FD;
+
+      --accent-s: #F59E0B;
+      --accent-s-hover: #D97706;
+      --accent-s-light: rgba(217, 119, 6, 0.14);
+      --accent-s-text: #FCD34D;
+    }
+
+    .dark ::-webkit-scrollbar-thumb { background: #282830; }
+
+    .bg-accent-p { background-color: var(--accent-p) !important; }
+    .hover-bg-accent-p:hover { background-color: var(--accent-p-hover) !important; }
+    .bg-accent-p-light { background-color: var(--accent-p-light) !important; }
+    .text-accent-p { color: var(--accent-p) !important; }
+    .text-accent-p-text { color: var(--accent-p-text) !important; }
+    .border-accent-p { border-color: var(--accent-p) !important; }
+
+    .bg-accent-s { background-color: var(--accent-s) !important; }
+    .hover-bg-accent-s:hover { background-color: var(--accent-s-hover) !important; }
+    .bg-accent-s-light { background-color: var(--accent-s-light) !important; }
+    .text-accent-s { color: var(--accent-s) !important; }
+    .text-accent-s-text { color: var(--accent-s-text) !important; }
+    .border-accent-s { border-color: var(--accent-s) !important; }
+
+    /* ================================================================= */
+    /* PARADIGM B: KINETIC SPRING & ACOUSTIC TACTILITY (MODERN FLAT)     */
+    /* ================================================================= */
+    .btn-kinetic {
+      transition: transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color 150ms ease, opacity 150ms ease;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+      border: none;
+    }
+    .btn-kinetic:hover {
+      transform: translateY(-1.5px);
+    }
+    .btn-kinetic:active {
+      transform: scale(0.96) translateY(0.5px);
+      transition-duration: 50ms;
+    }
+
+    .chip-kinetic {
+      transition: transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color 120ms ease;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+      border: none;
+    }
+    .chip-kinetic:hover {
+      transform: translateY(-1.5px) scale(1.02);
+    }
+    .chip-kinetic:active {
+      transform: scale(0.93) translateY(0);
+      transition-duration: 50ms;
+    }
+
+    .node-kinetic {
+      transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 150ms ease;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+      border: none;
+    }
+    .node-kinetic:hover {
+      transform: scale(1.07);
+    }
+    .node-kinetic:active {
+      transform: scale(0.90);
+      transition-duration: 50ms;
+    }
+
+    .slab-kinetic {
+      transition: transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color 150ms ease, box-shadow 150ms ease;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+      border: none;
+    }
+    .slab-kinetic:hover {
+      transform: translateY(-1.5px);
+    }
+    .slab-kinetic:active {
+      transform: scale(0.985);
+      transition-duration: 50ms;
+    }
+
+    @keyframes shake-gentle {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-5px); }
+      40% { transform: translateX(5px); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+    }
+    .animate-shake-gentle {
+      animation: shake-gentle 350ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+  </style>
+</head>
+<body class="bg-canvas text-charcoal font-sans antialiased min-h-screen pb-36 selection:bg-neutral-200 dark:selection:bg-neutral-800 transition-colors duration-200">
+
+  <!-- Celebration Particle Canvas -->
+  <canvas id="fx-canvas"></canvas>
+
+  <!-- ================================================================= -->
+  <!-- TOP NAVIGATION HEADER                                             -->
+  <!-- ================================================================= -->
+  <header class="sticky top-0 z-50 bg-surface/90 backdrop-blur-md px-6 sm:px-12 py-4 border-b border-sunken transition-colors duration-200">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-charcoal text-canvas flex items-center justify-center font-bold text-xl font-arabic shrink-0">
+          ط
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-base text-charcoal leading-none">Kinetic Serenity Prototype</h1>
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-accent-s-light text-accent-s-text transition-colors">
+              Mindful Gamification
+            </span>
+          </div>
+          <p class="text-xs text-muted mt-0.5">Flat &amp; Borderless + Living Micro-Interactions + Sound Design</p>
+        </div>
+      </div>
+
+      <!-- Navigation & Document Switcher & Dark Mode Toggle -->
+      <nav class="flex items-center gap-2 text-xs font-semibold overflow-x-auto py-1">
+        <a href="design-system.html" class="px-3.5 py-1.5 rounded-full bg-nested text-charcoal hover:bg-sunken transition-all whitespace-nowrap">
+          ← Design System
+        </a>
+        <a href="design-preview.html" class="px-3.5 py-1.5 rounded-full bg-nested text-charcoal hover:bg-sunken transition-all whitespace-nowrap">
+          Catalog
+        </a>
+        <a href="pedagogy-showcase.html" class="px-3.5 py-1.5 rounded-full bg-nested text-charcoal hover:bg-sunken transition-all whitespace-nowrap">
+          46 Modules
+        </a>
+        <span class="px-3.5 py-1.5 rounded-full bg-charcoal text-canvas whitespace-nowrap font-bold">
+          Sandbox ★
+        </span>
+        
+        <!-- Dark / Light Mode Toggle Button -->
+        <button id="themeToggleBtnHeader" onclick="toggleTheme()" class="px-3.5 py-1.5 rounded-full bg-nested hover:bg-sunken text-charcoal flex items-center gap-1.5 transition-all font-bold whitespace-nowrap ms-1" title="Toggle Light / Dark Mode">
+          <span class="dark:hidden">🌙 Dark</span>
+          <span class="hidden dark:inline">☀️ Light</span>
+        </button>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6 sm:px-12 space-y-24 pt-12">
+
+    <!-- ================================================================= -->
+    <!-- INTRO STATEMENT: WHY MINDFUL GAMIFICATION                          -->
+    <!-- ================================================================= -->
+    <section class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-mono font-bold">
+        <span>STRATEGIC PROTOTYPE</span>
+        <span>•</span>
+        <span>NO MASCOTS • NO CARTOON NOISE</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-charcoal leading-tight">
+        How do we make Tariq deeply enjoyable while keeping it 100% flat and borderless?
+      </h2>
+      <p class="text-sm sm:text-base text-muted max-w-3xl leading-relaxed">
+        You don't need a cartoon green owl crying on the screen to feel motivated. The greatest educational games (like <em>Brilliant.org</em>, <em>Monument Valley</em>, and <em>Apple HIG</em> apps) derive joy from <strong>tactile momentum, magnetic physics, rich audio resonance, and living jewel-tone feedback</strong>. Test the interactive modules below.
+      </p>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- MODULE 00: ACCENT COLOR STUDIO & KINETIC ENGINE                   -->
+    <!-- ================================================================= -->
+    <section id="section-color-studio" class="space-y-8">
+      
+      <!-- Studio Header & Controls -->
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-xs font-mono font-bold text-charcoal uppercase tracking-wider block">Module 00 • Accent Color Studio</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-nested text-charcoal font-bold">100% Flat · Light &amp; Dark Ready</span>
+          </div>
+          <h3 class="text-2xl font-bold text-charcoal">Accent Palette Studio &amp; Kinetic Tactility</h3>
+          <p class="text-xs text-muted mt-0.5 max-w-2xl">
+            Explore 6 historically grounded manuscript palettes (Indigo, Lapis, Slate, Azure, Teal, and Olive) across both Light Paper and Nocturnal Obsidian. Every button, chip, path node, and quiz card reacts live.
+          </p>
+        </div>
+
+        <!-- Mode Switcher & Custom Color Swatches -->
+        <div class="flex flex-wrap items-center gap-3">
+          
+          <!-- Light / Dark Preview Switcher -->
+          <div class="flex items-center gap-1 bg-nested p-1 rounded-full text-xs font-bold border border-sunken">
+            <button id="studio-mode-light" onclick="setMode('light')" class="px-3.5 py-1.5 rounded-full bg-surface text-charcoal shadow-sm transition-all flex items-center gap-1.5">
+              <span>☀️ Light Paper</span>
+            </button>
+            <button id="studio-mode-dark" onclick="setMode('dark')" class="px-3.5 py-1.5 rounded-full text-muted hover:text-charcoal transition-all flex items-center gap-1.5">
+              <span>🌙 Nocturnal Obsidian</span>
+            </button>
+          </div>
+
+          <!-- Live Color Swatches & Hex Indicators -->
+          <div class="flex items-center gap-3 bg-surface p-2 rounded-3xl border border-sunken">
+            <div class="flex items-center gap-2">
+              <label class="relative cursor-pointer flex items-center gap-2" title="Click to pick custom Primary Accent">
+                <span id="swatch-p" class="w-6 h-6 rounded-full bg-accent-p border-2 border-surface shadow-sm ring-1 ring-sunken block transition-colors"></span>
+                <input type="color" id="picker-p" value="#1E3A8A" oninput="handleCustomColor('p', this.value)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+                <div class="text-[11px] font-mono">
+                  <span class="text-muted block leading-none">Primary</span>
+                  <span id="hex-p" class="font-bold text-charcoal leading-none">#1E3A8A</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="w-px h-6 bg-sunken"></div>
+
+            <div class="flex items-center gap-2">
+              <label class="relative cursor-pointer flex items-center gap-2" title="Click to pick custom Secondary Accent">
+                <span id="swatch-s" class="w-6 h-6 rounded-full bg-accent-s border-2 border-surface shadow-sm ring-1 ring-sunken block transition-colors"></span>
+                <input type="color" id="picker-s" value="#D97706" oninput="handleCustomColor('s', this.value)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+                <div class="text-[11px] font-mono">
+                  <span class="text-muted block leading-none">Secondary</span>
+                  <span id="hex-s" class="font-bold text-charcoal leading-none">#D97706</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Curated Color Theme Cards (6 Research-Backed Palettes for EdTech + Quranic Pedagogy) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
+        
+        <!-- Theme 1: Academic Lapis & Solar Amber - Active Default -->
+        <button onclick="applyAccentTheme('academic_lapis', this)" id="preset-academic_lapis" class="theme-preset-btn p-4 rounded-3xl bg-surface border-2 border-charcoal text-left transition-all hover:bg-nested flex flex-col justify-between gap-3">
+          <div class="flex items-center justify-between w-full">
+            <div class="flex items-center gap-1.5">
+              <span class="w-3.5 h-3.5 rounded-full dot-p bg-[#2563EB]"></span>
+              <span class="w-3.5 h-3.5 rounded-full dot-s bg-[#D97706]"></span>
+            </div>
+            <span class="text-[9px] font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/60 text-blue-900 dark:text-blue-300">Tezhip · Focus</span>
+          </div>
+          <div>
+            <h4 class="font-bold text-xs text-charcoal">Academic Lapis</h4>
+            <p class="text-[11px] text-muted mt-0.5 leading-tight">Lapis &amp; Solar Amber. Coursera/Brilliant focus + Quranic illumination.</p>
+          </div>
+        </button>
+
+        <!-- Theme 2: Andalusian Jade & Honey Gold -->
+        <button onclick="applyAccentTheme('andalusian_jade', this)" id="preset-andalusian_jade" class="theme-preset-btn p-4 rounded-3xl bg-surface border-2 border-transparent text-left transition-all hover:bg-nested flex flex-col justify-between gap-3">
+          <div class="flex items-center justify-between w-full">
+            <div class="flex items-center gap-1.5">
+              <span class="w-3.5 h-3.5 rounded-full dot-p bg-[#059669]"></span>
+              <span class="w-3.5 h-3.5 rounded-full dot-s bg-[#D97706]"></span>
+            </div>
+            <span class="text-[9px] font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-300">Khan · Growth</span>
+          </div>
+          <div>
+            <h4 class="font-bold text-xs text-charcoal">Andalusian Jade</h4>
+            <p class="text-[11px] text-muted mt-0.5 leading-tight">Forest Jade &amp; Honey Gold. Duolingo/Khan growth + Cordoba garden heritage.</p>
+          </div>
+        </button>
+
+        <!-- Theme 3: Kairouan Indigo & Dune Sand -->
+        <button onclick="applyAccentTheme('kairouan_indigo', this)" id="preset-kairouan_indigo" class="theme-preset-btn p-4 rounded-3xl bg-surface border-2 border-transparent text-left transition-all hover:bg-nested flex flex-col justify-between gap-3">
+          <div class="flex items-center justify-between w-full">
+            <div class="flex items-center gap-1.5">
+              <span class="w-3.5 h-3.5 rounded-full dot-p bg-[#4338CA]"></span>
+              <span class="w-3.5 h-3.5 rounded-full dot-s bg-[#C28135]"></span>
+            </div>
+            <span class="text-[9px] font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-900 dark:text-indigo-300">9th-C Fatimid</span>
+          </div>
+          <div>
+            <h4 class="font-bold text-xs text-charcoal">Kairouan Indigo</h4>
+            <p class="text-[11px] text-muted mt-0.5 leading-tight">Blue Quran of Kairouan. High typographic acuity for Arabic vowels.</p>
+          </div>
+        </button>
+
+        <!-- Theme 4: Caspian Persian Teal & Terracotta -->
+        <button onclick="applyAccentTheme('persian_teal', this)" id="preset-persian_teal" class="theme-preset-btn p-4 rounded-3xl bg-surface border-2 border-transparent text-left transition-all hover:bg-nested flex flex-col justify-between gap-3">
+          <div class="flex items-center justify-between w-full">
+            <div class="flex items-center gap-1.5">
+              <span class="w-3.5 h-3.5 rounded-full dot-p bg-[#0D9488]"></span>
+              <span class="w-3.5 h-3.5 rounded-full dot-s bg-[#C2410C]"></span>
+            </div>
+            <span class="text-[9px] font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-teal-50 dark:bg-teal-950/60 text-teal-900 dark:text-teal-300">Babbel · Agility</span>
+          </div>
+          <div>
+            <h4 class="font-bold text-xs text-charcoal">Persian Teal</h4>
+            <p class="text-[11px] text-muted mt-0.5 leading-tight">Silk Teal &amp; Terracotta. Balances blue serenity with green vitality.</p>
+          </div>
+        </button>
+
+        <!-- Theme 5: Hijazi Olive & Desert Ochre -->
+        <button onclick="applyAccentTheme('hijazi_olive', this)" id="preset-hijazi_olive" class="theme-preset-btn p-4 rounded-3xl bg-surface border-2 border-transparent text-left transition-all hover:bg-nested flex flex-col justify-between gap-3">
+          <div class="flex items-center justify-between w-full">
+            <div class="flex items-center gap-1.5">
+              <span class="w-3.5 h-3.5 rounded-full dot-p bg-[#4D5B44]"></span>
+              <span class="w-3.5 h-3.5 rounded-full dot-s bg-[#C28135]"></span>
+            </div>
+            <span class="text-[9px] font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-300">Calm · Zero Glare</span>
+          </div>
+          <div>
+            <h4 class="font-bold text-xs text-charcoal">Hijazi Olive</h4>
+            <p class="text-[11px] text-muted mt-0.5 leading-tight">Olive Grove &amp; Ochre. Headspace/Pillars restraint for long study.</p>
+          </div>
+        </button>
+
+        <!-- Theme 6: Monastic Cobalt & Carbon Slate -->
+        <button onclick="applyAccentTheme('monastic_cobalt', this)" id="preset-monastic_cobalt" class="theme-preset-btn p-4 rounded-3xl bg-surface border-2 border-transparent text-left transition-all hover:bg-nested flex flex-col justify-between gap-3">
+          <div class="flex items-center justify-between w-full">
+            <div class="flex items-center gap-1.5">
+              <span class="w-3.5 h-3.5 rounded-full dot-p bg-[#1D4ED8]"></span>
+              <span class="w-3.5 h-3.5 rounded-full dot-s bg-[#475569]"></span>
+            </div>
+            <span class="text-[9px] font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/60 text-blue-900 dark:text-blue-300">Apple · 1-Accent</span>
+          </div>
+          <div>
+            <h4 class="font-bold text-xs text-charcoal">Monastic Cobalt</h4>
+            <p class="text-[11px] text-muted mt-0.5 leading-tight">Apple/Linear discipline. 98% neutral carbon with laser cobalt focus.</p>
+          </div>
+        </button>
+
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- SUB-SECTION A: KINETIC ACTION PILLS (56PX) -->
+        <div class="bg-surface rounded-4xl p-7 sm:p-8 space-y-6">
+          <div class="space-y-1">
+            <span class="text-xs font-mono font-bold text-muted uppercase">Spring Action Pills</span>
+            <h4 class="text-base font-bold text-charcoal">Crisp 56px Kinetic Action Buttons</h4>
+            <p class="text-xs text-muted">Click and press to feel the snappy scale-down compression and acoustic resonance.</p>
+          </div>
+
+          <div class="space-y-4">
+            
+            <!-- Charcoal Noir Pill -->
+            <button onclick="playChime(320, 'triangle', 0.12)" class="btn-kinetic w-full h-[56px] rounded-full bg-charcoal text-canvas hover:opacity-90 active:scale-95 font-bold text-sm tracking-wide flex items-center justify-center transition-all">
+              <span>Primary Charcoal · تَأْكِيد</span>
+              <span class="ms-2">→</span>
+            </button>
+
+            <!-- Primary Accent Pill -->
+            <button onclick="playChime(523, 'triangle', 0.12)" class="btn-kinetic w-full h-[56px] rounded-full bg-accent-p hover-bg-accent-p text-white font-bold text-sm tracking-wide flex items-center justify-center transition-colors duration-200">
+              <span id="label-btn-p">Primary Accent · التَّالِي</span>
+              <span class="ms-2">→</span>
+            </button>
+
+            <!-- Secondary Accent Pill -->
+            <button onclick="playChime(659, 'triangle', 0.12)" class="btn-kinetic w-full h-[56px] rounded-full bg-accent-s hover-bg-accent-s text-white font-bold text-sm tracking-wide flex items-center justify-center transition-colors duration-200">
+              <span id="label-btn-s">Secondary Accent · اسْتَمِرّ</span>
+              <span class="ms-2">→</span>
+            </button>
+
+            <!-- Secondary Soft Surface Pill (Raw Neutral) -->
+            <button onclick="playChime(440, 'triangle', 0.12)" class="btn-kinetic w-full h-[56px] rounded-full bg-nested text-charcoal hover:bg-sunken active:bg-sunken font-bold text-sm tracking-wide flex items-center justify-center border border-sunken transition-all">
+              <span>Secondary Neutral · السَّابِق</span>
+              <span class="ms-2">←</span>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- SUB-SECTION B: KINETIC CHIPS & CIRCULAR LEARNING PATH NODES -->
+        <div class="bg-surface rounded-4xl p-7 sm:p-8 space-y-6">
+          <div class="space-y-1">
+            <span class="text-xs font-mono font-bold text-muted uppercase">Spring Chips &amp; Glowing Nodes</span>
+            <h4 class="text-base font-bold text-charcoal">Word Chips &amp; 72px Breathing Path Nodes</h4>
+            <p class="text-xs text-muted">Subtle magnetic hover lift, scale-down press, and radiant jewel-tone aura.</p>
+          </div>
+
+          <!-- Kinetic Word Chips (Sentence Builder) -->
+          <div class="space-y-2">
+            <span class="text-xs font-mono text-muted block">Interactive Word Chips (Click to Press):</span>
+            <div class="flex flex-wrap items-center gap-3 pt-1" dir="rtl">
+              
+              <button onclick="playChime(440, 'triangle', 0.1)" class="chip-kinetic h-[50px] rounded-2xl bg-nested text-charcoal px-6 font-arabic font-bold text-lg hover:bg-sunken active:bg-sunken transition-all">
+                هَٰذَا
+              </button>
+
+              <button onclick="playChime(523, 'triangle', 0.1)" class="chip-kinetic h-[50px] rounded-2xl bg-nested text-charcoal px-6 font-arabic font-bold text-lg hover:bg-sunken active:bg-sunken transition-all">
+                كِتَابٌ
+              </button>
+
+              <button onclick="playChime(659, 'triangle', 0.1)" class="chip-kinetic h-[50px] rounded-2xl bg-nested text-charcoal px-6 font-arabic font-bold text-lg hover:bg-sunken active:bg-sunken transition-all">
+                جَدِيدٌ
+              </button>
+
+              <!-- Accent Pill Chip -->
+              <button onclick="playChime(784, 'triangle', 0.1)" class="chip-kinetic h-[50px] rounded-2xl bg-accent-p hover-bg-accent-p text-white px-6 font-arabic font-bold text-lg transition-colors duration-200">
+                مَفْتُوحٌ
+              </button>
+
+            </div>
+          </div>
+
+          <!-- Kinetic Circular Learning Path Nodes (72px) -->
+          <div class="space-y-2 pt-3 border-t border-sunken">
+            <span class="text-xs font-mono text-muted block">72px Circular Learning Path Nodes:</span>
+            <div class="flex items-center justify-around pt-2">
+              
+              <!-- Completed Node (Primary Accent) -->
+              <div class="text-center space-y-1.5">
+                <button onclick="playChime(587, 'sine', 0.2)" class="node-kinetic w-[72px] h-[72px] rounded-full bg-accent-p text-white font-bold text-2xl flex items-center justify-center transition-colors duration-200">
+                  ✓
+                </button>
+                <span class="text-[11px] font-mono text-muted block">Lesson 1</span>
+              </div>
+
+              <!-- Active Node (Secondary Accent Glow) -->
+              <div class="text-center space-y-1.5">
+                <button onclick="playChime(659, 'sine', 0.2)" class="node-kinetic w-[72px] h-[72px] rounded-full bg-accent-s text-white font-bold text-2xl flex items-center justify-center ring-8 ring-accent-s-light animate-pulse transition-colors duration-200">
+                  ★
+                </button>
+                <span class="text-[11px] font-mono font-bold text-charcoal block">Lesson 2</span>
+              </div>
+
+              <!-- Available Node (Neutral Surface) -->
+              <div class="text-center space-y-1.5">
+                <button onclick="playChime(440, 'sine', 0.2)" class="node-kinetic w-[72px] h-[72px] rounded-full bg-nested text-charcoal font-arabic font-bold text-2xl flex items-center justify-center hover:bg-sunken border border-sunken">
+                  ٣
+                </button>
+                <span class="text-[11px] font-mono text-muted block">Lesson 3</span>
+              </div>
+
+              <!-- Locked Node -->
+              <div class="text-center space-y-1.5 opacity-50">
+                <button disabled class="w-[72px] h-[72px] rounded-full bg-nested text-muted font-bold text-xl flex items-center justify-center cursor-not-allowed border border-sunken">
+                  🔒
+                </button>
+                <span class="text-[11px] font-mono text-muted block">Locked</span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- SUB-SECTION C: KINETIC MULTIPLE CHOICE QUIZ SLABS -->
+      <div class="bg-surface rounded-4xl p-7 sm:p-9 space-y-5">
+        <div class="space-y-1">
+          <span class="text-xs font-mono font-bold text-muted uppercase">Kinetic Choice Slabs</span>
+          <h4 class="text-base font-bold text-charcoal">Pure Flat Reactive Quiz Cards</h4>
+          <p class="text-xs text-muted">Clean single-surface card. Select an answer to see subtle spring feedback, gentle ring bloom, or horizontal vibration.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-1" dir="rtl">
+          
+          <!-- Choice Card 1 (Correct) -->
+          <button onclick="selectKineticSlab(this, true)" class="slab-kinetic kinetic-choice-slab w-full h-[90px] rounded-3xl bg-nested hover:bg-sunken p-5 flex items-center justify-between text-right border border-sunken transition-all">
+            <div class="flex items-center gap-4">
+              <span class="w-8 h-8 rounded-full bg-surface flex items-center justify-center font-bold text-xs text-charcoal">A</span>
+              <span class="font-arabic font-bold text-2xl text-charcoal">هَٰذَا كِتَابٌ مَفْتُوحٌ</span>
+            </div>
+            <span class="text-xs font-mono text-muted" dir="ltr">This is an open book</span>
+          </button>
+
+          <!-- Choice Card 2 (Incorrect) -->
+          <button onclick="selectKineticSlab(this, false)" class="slab-kinetic kinetic-choice-slab w-full h-[90px] rounded-3xl bg-nested hover:bg-sunken p-5 flex items-center justify-between text-right border border-sunken transition-all">
+            <div class="flex items-center gap-4">
+              <span class="w-8 h-8 rounded-full bg-surface flex items-center justify-center font-bold text-xs text-charcoal">B</span>
+              <span class="font-arabic font-bold text-2xl text-charcoal">ذَٰلِكَ قَلَمٌ مَكْسُورٌ</span>
+            </div>
+            <span class="text-xs font-mono text-muted" dir="ltr">That is a broken pen</span>
+          </button>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- MODULE 1: INTERACTIVE DRILL (AUSTERITY VS. KINETIC MODE)          -->
+    <!-- ================================================================= -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <span class="text-xs font-mono font-bold text-muted uppercase">Module 01 • Interactive Sentence Builder</span>
+          <h3 class="text-xl font-bold text-charcoal">Direct Tactile Comparison</h3>
+        </div>
+
+        <!-- Interactive Mode Toggle -->
+        <div class="flex items-center gap-1.5 bg-nested p-1.5 rounded-full text-xs font-bold">
+          <button id="mode-austerity-btn" onclick="setPlaygroundMode('austerity')" class="px-4 py-1.5 rounded-full text-muted hover:text-charcoal transition-all">
+            Static Austerity
+          </button>
+          <button id="mode-kinetic-btn" onclick="setPlaygroundMode('kinetic')" class="px-4 py-1.5 rounded-full bg-white text-charcoal shadow-none font-extrabold transition-all">
+            ✨ Kinetic Gamified
+          </button>
+        </div>
+      </div>
+
+      <!-- The Drill Card -->
+      <div id="drill-card" class="w-full bg-surface rounded-4xl p-7 sm:p-9 space-y-6 transition-colors duration-300">
+        
+        <!-- Header Info -->
+        <div class="flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-muted">Lesson 1 • Sentence Exercise</span>
+            <span id="streak-pill" class="px-2.5 py-0.5 rounded-full bg-nested text-charcoal font-bold font-mono text-[11px]">
+              +10 XP
+            </span>
+          </div>
+          <button onclick="playChime(440, 'sine')" class="w-9 h-9 rounded-full bg-nested hover:bg-sunken flex items-center justify-center text-sm spring-bounce">
+            🔊
+          </button>
+        </div>
+
+        <!-- Prompt Question -->
+        <div class="text-center space-y-1">
+          <div class="text-xs font-mono text-muted uppercase tracking-wider">Translate to Arabic</div>
+          <div class="text-xl font-bold text-charcoal">"This is a new book"</div>
+        </div>
+
+        <!-- Answer Tray Slot -->
+        <div id="answer-tray" class="min-h-[72px] p-3 rounded-2xl bg-nested flex items-center justify-center gap-2 flex-wrap transition-all duration-300" dir="rtl">
+          <span id="tray-hint" class="text-xs font-mono text-muted font-sans" dir="ltr">Tap word chips below to assemble...</span>
+        </div>
+
+        <!-- Word Bank Chips -->
+        <div class="space-y-2">
+          <div class="text-center text-[11px] font-mono text-muted">Available Words (Tap in order):</div>
+          <div class="flex flex-wrap items-center justify-center gap-2.5 pt-1" dir="rtl" id="word-bank">
+            <button onclick="tapChip(this, 'هَٰذَا')" class="chip-btn px-6 py-3 rounded-2xl bg-nested hover:bg-sunken font-arabic font-bold text-lg text-charcoal spring-bounce cursor-pointer">
+              هَٰذَا
+            </button>
+            <button onclick="tapChip(this, 'كِتَابٌ')" class="chip-btn px-6 py-3 rounded-2xl bg-nested hover:bg-sunken font-arabic font-bold text-lg text-charcoal spring-bounce cursor-pointer">
+              كِتَابٌ
+            </button>
+            <button onclick="tapChip(this, 'جَدِيدٌ')" class="chip-btn px-6 py-3 rounded-2xl bg-nested hover:bg-sunken font-arabic font-bold text-lg text-charcoal spring-bounce cursor-pointer">
+              جَدِيدٌ
+            </button>
+            <!-- Foil / Distractor -->
+            <button onclick="tapChip(this, 'مَسْجِدٌ')" class="chip-btn px-6 py-3 rounded-2xl bg-nested hover:bg-sunken font-arabic font-bold text-lg text-charcoal spring-bounce cursor-pointer opacity-80">
+              مَسْجِدٌ
+            </button>
+          </div>
+        </div>
+
+        <!-- Feedback & Action Bar -->
+        <div class="pt-3 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <button onclick="resetDrill()" class="text-xs font-bold text-muted hover:text-charcoal transition-all spring-bounce py-2">
+            ↺ Clear Tray
+          </button>
+          <button id="check-btn" onclick="checkDrill()" class="w-full sm:w-auto pill-btn-plush rounded-full bg-charcoal text-white font-bold text-sm tracking-wide spring-bounce hover:opacity-95">
+            <span>Check Answer · تَأْكِيد</span>
+            <span class="ms-2">→</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- MODULE 2: "MISHKAT" (THE LUMINOUS LANTERN) STREAK SYSTEM          -->
+    <!-- ================================================================= -->
+    <section class="space-y-6">
+      <div>
+        <span class="text-xs font-mono font-bold text-muted uppercase">Module 02 • Habit Loop &amp; Streak Metaphor</span>
+        <h3 class="text-xl font-bold text-charcoal">The "Mishkāt" (Luminous Lantern) Engine</h3>
+        <p class="text-xs text-muted max-w-2xl mt-1">
+          Instead of an aggressive cartoon flame that produces streak anxiety, Tariq uses the historic Quranic metaphor of the <em>Mishkāt</em> (Niche &amp; Lantern). Daily consistency adds radiant golden facets and illuminates the sanctuary.
+        </p>
+      </div>
+
+      <div class="w-full bg-surface rounded-4xl p-7 sm:p-9 flex flex-col md:flex-row items-center justify-between gap-8">
+        
+        <!-- Lantern Visual SVG -->
+        <div class="flex flex-col items-center justify-center space-y-3">
+          <div id="lantern-wrapper" class="w-36 h-48 rounded-3xl bg-nested flex items-center justify-center relative overflow-hidden transition-all duration-500">
+            <!-- Minimalist Islamic Lantern Vector -->
+            <svg id="lantern-svg" class="w-24 h-36 transition-all duration-500 text-charcoal" viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Top Ring -->
+              <circle cx="50" cy="15" r="8" stroke="currentColor" stroke-width="3" fill="none"/>
+              <!-- Dome / Roof -->
+              <path d="M25 45 C35 30 65 30 75 45 Z" fill="currentColor"/>
+              <!-- Lantern Body Columns -->
+              <line x1="25" y1="45" x2="30" y2="120" stroke="currentColor" stroke-width="3"/>
+              <line x1="75" y1="45" x2="70" y2="120" stroke="currentColor" stroke-width="3"/>
+              <line x1="50" y1="45" x2="50" y2="120" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <!-- Base -->
+              <path d="M25 120 L75 120 L65 135 L35 135 Z" fill="currentColor"/>
+              
+              <!-- Inner Glowing Flame / Crystal -->
+              <circle id="lantern-core" cx="50" cy="85" r="14" fill="#D4D4D4" class="transition-all duration-500"/>
+              <circle id="lantern-inner" cx="50" cy="85" r="7" fill="#E5E5E5" class="transition-all duration-500"/>
+            </svg>
+          </div>
+          <span id="lantern-status" class="text-xs font-mono font-bold text-muted">Status: Dormant (Day 0)</span>
+        </div>
+
+        <!-- Streak Control & Progress Steps -->
+        <div class="flex-1 space-y-5">
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold uppercase text-muted">Weekly Illumination Arc</span>
+              <span id="streak-count-text" class="text-sm font-bold text-charcoal font-mono">0 / 7 Days Lit</span>
+            </div>
+            <!-- Progress Track -->
+            <div class="h-2.5 rounded-full bg-nested overflow-hidden">
+              <div id="streak-bar" class="h-full bg-amberGlow w-[0%] rounded-full transition-all duration-500"></div>
+            </div>
+          </div>
+
+          <!-- Day Badges (Squircles) -->
+          <div class="grid grid-cols-7 gap-2" id="day-badges">
+            <div class="day-chip p-3 rounded-2xl bg-nested text-center space-y-1 transition-all">
+              <span class="text-[10px] font-mono text-muted block">Sat</span>
+              <span class="text-xs font-bold text-charcoal">١</span>
+            </div>
+            <div class="day-chip p-3 rounded-2xl bg-nested text-center space-y-1 transition-all">
+              <span class="text-[10px] font-mono text-muted block">Sun</span>
+              <span class="text-xs font-bold text-charcoal">٢</span>
+            </div>
+            <div class="day-chip p-3 rounded-2xl bg-nested text-center space-y-1 transition-all">
+              <span class="text-[10px] font-mono text-muted block">Mon</span>
+              <span class="text-xs font-bold text-charcoal">٣</span>
+            </div>
+            <div class="day-chip p-3 rounded-2xl bg-nested text-center space-y-1 transition-all">
+              <span class="text-[10px] font-mono text-muted block">Tue</span>
+              <span class="text-xs font-bold text-charcoal">٤</span>
+            </div>
+            <div class="day-chip p-3 rounded-2xl bg-nested text-center space-y-1 transition-all">
+              <span class="text-[10px] font-mono text-muted block">Wed</span>
+              <span class="text-xs font-bold text-charcoal">٥</span>
+            </div>
+            <div class="day-chip p-3 rounded-2xl bg-nested text-center space-y-1 transition-all">
+              <span class="text-[10px] font-mono text-muted block">Thu</span>
+              <span class="text-xs font-bold text-charcoal">٦</span>
+            </div>
+            <div class="day-chip p-3 rounded-2xl bg-nested text-center space-y-1 transition-all">
+              <span class="text-[10px] font-mono text-muted block">Fri</span>
+              <span class="text-xs font-bold text-charcoal">٧</span>
+            </div>
+          </div>
+
+          <!-- Tappable Simulation Action -->
+          <div class="flex items-center gap-3 pt-2">
+            <button onclick="advanceStreak()" class="pill-btn-plush rounded-full bg-charcoal text-white font-bold text-xs spring-bounce hover:bg-black">
+              <span>🔥 Log Today's Study (Ignite Lantern)</span>
+            </button>
+            <button onclick="resetStreak()" class="px-4 py-3 rounded-full bg-nested hover:bg-sunken text-xs font-bold text-muted spring-bounce">
+              ↺ Reset
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- MODULE 3: THE ARABIC "ROOT TREE" PUZZLE (BRILLIANT.ORG STYLE)     -->
+    <!-- ================================================================= -->
+    <section class="space-y-6">
+      <div>
+        <span class="text-xs font-mono font-bold text-muted uppercase">Module 03 • Morphology Puzzle</span>
+        <h3 class="text-xl font-bold text-charcoal">The 3-Letter Root Expansion Tree</h3>
+        <p class="text-xs text-muted max-w-2xl mt-1">
+          In Arabic, 85% of all vocabulary springs from a 3-letter triliteral root (جَذْر). Tapping derivative leaves reveals how patterns generate meaning like clockwork gears.
+        </p>
+      </div>
+
+      <div class="w-full bg-surface rounded-4xl p-7 sm:p-9 space-y-8">
+        
+        <!-- Central Root Node -->
+        <div class="flex flex-col items-center justify-center space-y-2">
+          <span class="text-xs font-mono text-muted uppercase">Primary Root Nucleus</span>
+          <div class="px-8 py-4 rounded-3xl bg-nested text-charcoal font-arabic font-bold text-3xl tracking-widest cursor-pointer spring-bounce">
+            ك - ت - ب
+          </div>
+          <span class="text-xs font-mono font-semibold text-muted">Core Concept: The act of writing / binding</span>
+        </div>
+
+        <!-- Derivative Branch Cards (4 Interactive Nodes) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4" dir="rtl">
+          
+          <!-- Node 1 -->
+          <div onclick="revealMorph(this, 'كِتَابٌ', 'Book (That which is written)', 523)" class="morph-card p-5 rounded-3xl bg-nested hover:bg-white active:scale-95 transition-all text-center space-y-2 cursor-pointer">
+            <div class="text-[10px] font-mono text-muted uppercase" dir="ltr">Form I · Noun</div>
+            <div class="font-arabic font-bold text-3xl text-charcoal py-1">كِتَابٌ</div>
+            <div class="text-xs font-bold text-charcoal" dir="ltr">A Book</div>
+            <div class="text-[11px] font-mono text-emeraldSpark font-semibold" dir="ltr">kitābun</div>
+          </div>
+
+          <!-- Node 2 -->
+          <div onclick="revealMorph(this, 'مَكْتَبَةٌ', 'Library (Place of books)', 587)" class="morph-card p-5 rounded-3xl bg-nested hover:bg-white active:scale-95 transition-all text-center space-y-2 cursor-pointer">
+            <div class="text-[10px] font-mono text-muted uppercase" dir="ltr">Place Noun · Ism Makān</div>
+            <div class="font-arabic font-bold text-3xl text-charcoal py-1">مَكْتَبَةٌ</div>
+            <div class="text-xs font-bold text-charcoal" dir="ltr">A Library / Desk</div>
+            <div class="text-[11px] font-mono text-emeraldSpark font-semibold" dir="ltr">maktabatun</div>
+          </div>
+
+          <!-- Node 3 -->
+          <div onclick="revealMorph(this, 'كَاتِبٌ', 'Author (One who writes)', 659)" class="morph-card p-5 rounded-3xl bg-nested hover:bg-white active:scale-95 transition-all text-center space-y-2 cursor-pointer">
+            <div class="text-[10px] font-mono text-muted uppercase" dir="ltr">Active Participle · Ism Fā‘il</div>
+            <div class="font-arabic font-bold text-3xl text-charcoal py-1">كَاتِبٌ</div>
+            <div class="text-xs font-bold text-charcoal" dir="ltr">A Writer / Scribe</div>
+            <div class="text-[11px] font-mono text-emeraldSpark font-semibold" dir="ltr">kātibun</div>
+          </div>
+
+          <!-- Node 4 -->
+          <div onclick="revealMorph(this, 'يَكْتُبُ', 'He writes (Present tense)', 784)" class="morph-card p-5 rounded-3xl bg-nested hover:bg-white active:scale-95 transition-all text-center space-y-2 cursor-pointer">
+            <div class="text-[10px] font-mono text-muted uppercase" dir="ltr">Present Verb · Mudāri‘</div>
+            <div class="font-arabic font-bold text-3xl text-charcoal py-1">يَكْتُبُ</div>
+            <div class="text-xs font-bold text-charcoal" dir="ltr">He Writes</div>
+            <div class="text-[11px] font-mono text-emeraldSpark font-semibold" dir="ltr">yaktubu</div>
+          </div>
+
+        </div>
+
+        <div class="text-center">
+          <p class="text-xs text-muted font-mono">
+            ★ Tap each derivative leaf to hear its pronunciation and trigger harmonic root resonance.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- JAVASCRIPT: SOUND SYNTHESIS & PARTICLE SYSTEM & GAME MECHANICS    -->
+  <!-- ================================================================= -->
+  <script>
+    // -------------------------------------------------------------
+    // 1. Zero-Asset Audio Synthesizer (Web Audio API)
+    // -------------------------------------------------------------
+    let audioCtx = null;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playChime(freq, type = 'sine', duration = 0.4) {
+      if (playgroundMode === 'austerity') return; // Silent in austerity mode
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+
+        // Exponential decay envelope
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+      } catch (e) {
+        console.warn("Audio Context blocked by autoplay policy", e);
+      }
+    }
+
+    function playSuccessChord() {
+      if (playgroundMode === 'austerity') return;
+      playChime(523.25, 'sine', 0.5); // C5
+      setTimeout(() => playChime(659.25, 'sine', 0.6), 80); // E5
+      setTimeout(() => playChime(783.99, 'sine', 0.8), 160); // G5
+      setTimeout(() => playChime(1046.50, 'sine', 1.0), 240); // C6
+    }
+
+    function playErrorBeep() {
+      if (playgroundMode === 'austerity') return;
+      playChime(220, 'triangle', 0.25);
+      setTimeout(() => playChime(196, 'triangle', 0.3), 100);
+    }
+
+    // -------------------------------------------------------------
+    // 2. Geometric Particle Bloom Engine (Canvas)
+    // -------------------------------------------------------------
+    const canvas = document.getElementById('fx-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function triggerCelebration(originX, originY) {
+      if (playgroundMode === 'austerity') return; // No particles in austerity mode
+      
+      const colors = ['#10B981', '#F59E0B', '#3B82F6', '#171717', '#D1D5DB'];
+      for (let i = 0; i < 48; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 3 + Math.random() * 7;
+        particles.push({
+          x: originX,
+          y: originY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 2,
+          radius: 3 + Math.random() * 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          decay: 0.015 + Math.random() * 0.02,
+          rotation: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 10
+        });
+      }
+      if (!isAnimating) animateParticles();
+    }
+
+    let isAnimating = false;
+    function animateParticles() {
+      isAnimating = true;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.15; // Gravity
+        p.alpha -= p.decay;
+        p.rotation += p.vRot;
+
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        
+        // Render crisp geometric diamond chips
+        ctx.beginPath();
+        ctx.moveTo(0, -p.radius);
+        ctx.lineTo(p.radius, 0);
+        ctx.lineTo(0, p.radius);
+        ctx.lineTo(-p.radius, 0);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      if (particles.length > 0) {
+        requestAnimationFrame(animateParticles);
+      } else {
+        isAnimating = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 3. Drill Logic & Mode Switching
+    // -------------------------------------------------------------
+    let playgroundMode = 'kinetic'; // 'austerity' or 'kinetic'
+    let trayWords = [];
+    const targetWords = ['هَٰذَا', 'كِتَابٌ', 'جَدِيدٌ'];
+
+    function setPlaygroundMode(mode) {
+      playgroundMode = mode;
+      const austBtn = document.getElementById('mode-austerity-btn');
+      const kinBtn = document.getElementById('mode-kinetic-btn');
+
+      if (mode === 'austerity') {
+        austBtn.className = "px-4 py-1.5 rounded-full bg-white text-charcoal shadow-none font-extrabold transition-all";
+        kinBtn.className = "px-4 py-1.5 rounded-full text-muted hover:text-charcoal transition-all";
+      } else {
+        kinBtn.className = "px-4 py-1.5 rounded-full bg-white text-charcoal shadow-none font-extrabold transition-all";
+        austBtn.className = "px-4 py-1.5 rounded-full text-muted hover:text-charcoal transition-all";
+        playChime(659.25, 'sine', 0.2);
+      }
+      resetDrill();
+    }
+
+    function tapChip(btn, word) {
+      playChime(440, 'triangle', 0.1);
+      btn.style.display = 'none';
+      trayWords.push({ word: word, originBtn: btn });
+      renderTray();
+    }
+
+    function renderTray() {
+      const tray = document.getElementById('answer-tray');
+      const hint = document.getElementById('tray-hint');
+
+      if (trayWords.length === 0) {
+        tray.innerHTML = '';
+        tray.appendChild(hint);
+        hint.style.display = 'block';
+        return;
+      }
+      hint.style.display = 'none';
+      tray.innerHTML = '';
+
+      trayWords.forEach((item, index) => {
+        const chip = document.createElement('button');
+        chip.className = "px-5 py-2.5 rounded-2xl bg-white text-charcoal font-arabic font-bold text-lg spring-bounce flex items-center gap-2";
+        chip.innerHTML = `<span>${item.word}</span><span class="text-xs text-muted font-mono">✕</span>`;
+        chip.onclick = () => removeTrayWord(index);
+        tray.appendChild(chip);
+      });
+    }
+
+    function removeTrayWord(index) {
+      playChime(330, 'triangle', 0.1);
+      const item = trayWords.splice(index, 1)[0];
+      item.originBtn.style.display = 'inline-flex';
+      renderTray();
+    }
+
+    function resetDrill() {
+      trayWords.forEach(item => item.originBtn.style.display = 'inline-flex');
+      trayWords = [];
+      renderTray();
+      const card = document.getElementById('drill-card');
+      card.classList.remove('bg-emerald-50', 'bg-red-50');
+      card.classList.add('bg-surface');
+      const tray = document.getElementById('answer-tray');
+      tray.classList.remove('bg-emerald-100', 'bg-red-100');
+      tray.classList.add('bg-nested');
+    }
+
+    function checkDrill() {
+      const currentWords = trayWords.map(item => item.word);
+      const isCorrect = currentWords.length === targetWords.length && 
+        currentWords.every((val, idx) => val === targetWords[idx]);
+
+      const card = document.getElementById('drill-card');
+      const tray = document.getElementById('answer-tray');
+      const rect = tray.getBoundingClientRect();
+
+      if (isCorrect) {
+        playSuccessChord();
+        triggerCelebration(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        
+        if (playgroundMode === 'kinetic') {
+          card.classList.remove('bg-surface', 'bg-red-50');
+          card.classList.add('bg-emerald-50');
+          tray.classList.remove('bg-nested', 'bg-red-100');
+          tray.classList.add('bg-emerald-100');
+        }
+      } else {
+        playErrorBeep();
+        if (playgroundMode === 'kinetic') {
+          card.classList.remove('bg-surface', 'bg-emerald-50');
+          card.classList.add('bg-red-50');
+          tray.classList.remove('bg-nested', 'bg-emerald-100');
+          tray.classList.add('bg-red-100');
+          
+          // Micro-shake animation
+          tray.style.transform = "translateX(-8px)";
+          setTimeout(() => tray.style.transform = "translateX(8px)", 60);
+          setTimeout(() => tray.style.transform = "translateX(-4px)", 120);
+          setTimeout(() => tray.style.transform = "translateX(0)", 180);
+        }
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 4. Mishkat (Lantern) Streak Engine
+    // -------------------------------------------------------------
+    let currentStreakDays = 0;
+
+    function advanceStreak() {
+      if (currentStreakDays >= 7) return;
+      currentStreakDays++;
+
+      playChime(300 + currentStreakDays * 80, 'sine', 0.4);
+
+      const bar = document.getElementById('streak-bar');
+      const text = document.getElementById('streak-count-text');
+      const pct = (currentStreakDays / 7) * 100;
+      bar.style.width = pct + '%';
+      text.innerText = `${currentStreakDays} / 7 Days Lit`;
+
+      // Illuminate Lantern
+      const lanternSvg = document.getElementById('lantern-svg');
+      const core = document.getElementById('lantern-core');
+      const inner = document.getElementById('lantern-inner');
+      const wrapper = document.getElementById('lantern-wrapper');
+      const statusText = document.getElementById('lantern-status');
+
+      core.setAttribute('fill', '#F59E0B');
+      inner.setAttribute('fill', '#FEF3C7');
+      wrapper.classList.add('lantern-active', 'bg-amber-50');
+      statusText.innerText = `Status: Radiant (${currentStreakDays} Day Streak)`;
+      statusText.className = "text-xs font-mono font-bold text-amber-700";
+
+      // Highlight day chip
+      const badges = document.querySelectorAll('.day-chip');
+      if (badges[currentStreakDays - 1]) {
+        badges[currentStreakDays - 1].className = "day-chip p-3 rounded-2xl bg-amber-100 text-center space-y-1 transition-all";
+      }
+
+      // Trigger sparks from lantern
+      const rect = wrapper.getBoundingClientRect();
+      triggerCelebration(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    }
+
+    function resetStreak() {
+      currentStreakDays = 0;
+      document.getElementById('streak-bar').style.width = '0%';
+      document.getElementById('streak-count-text').innerText = '0 / 7 Days Lit';
+      
+      const core = document.getElementById('lantern-core');
+      const inner = document.getElementById('lantern-inner');
+      const wrapper = document.getElementById('lantern-wrapper');
+      const statusText = document.getElementById('lantern-status');
+
+      core.setAttribute('fill', '#D4D4D4');
+      inner.setAttribute('fill', '#E5E5E5');
+      wrapper.classList.remove('lantern-active', 'bg-amber-50');
+      statusText.innerText = "Status: Dormant (Day 0)";
+      statusText.className = "text-xs font-mono font-bold text-muted";
+
+      document.querySelectorAll('.day-chip').forEach(c => {
+        c.className = "day-chip p-3 rounded-2xl bg-nested text-center space-y-1 transition-all";
+      });
+    }
+
+    // -------------------------------------------------------------
+    // 5. Arabic Morphology Leaf Reveal
+    // -------------------------------------------------------------
+    function revealMorph(card, arabicText, englishText, freq) {
+      playChime(freq, 'sine', 0.35);
+
+      // Flash highlight
+      card.classList.remove('bg-nested');
+      card.classList.add('bg-surface');
+
+      // Pronounce word
+      if ("speechSynthesis" in window) {
+        const u = new SpeechSynthesisUtterance(arabicText);
+        u.lang = "ar-SA";
+        window.speechSynthesis.speak(u);
+      }
+
+      const rect = card.getBoundingClientRect();
+      triggerCelebration(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    }
+
+    // -------------------------------------------------------------
+    // 6. Researched Accent Palettes & Dynamic Dark Mode Engine
+    // -------------------------------------------------------------
+    let currentThemeKey = 'academic_lapis';
+
+    const ACCENT_THEMES = {
+      academic_lapis: {
+        name: "Academic Lapis",
+        light: {
+          p: '#2563EB', // Lapis Blue (Coursera/Brilliant focus + Quranic Tezhip)
+          pHover: '#1D4ED8',
+          pLight: '#EFF6FF',
+          pText: '#1D4ED8',
+          s: '#D97706', // Solar Amber
+          sHover: '#B45309',
+          sLight: '#FFFBEB',
+          sText: '#92400E',
+        },
+        dark: {
+          p: '#3B82F6', // Same Lapis Blue hue, calibrated luminance to eliminate glare
+          pHover: '#2563EB',
+          pLight: 'rgba(37, 99, 235, 0.14)',
+          pText: '#93C5FD',
+          s: '#F59E0B', // Same Solar Amber hue, calibrated
+          sHover: '#D97706',
+          sLight: 'rgba(217, 119, 6, 0.14)',
+          sText: '#FCD34D',
+        }
+      },
+      andalusian_jade: {
+        name: "Andalusian Jade",
+        light: {
+          p: '#059669', // Forest Jade (Duolingo/Khan growth + Cordoba garden)
+          pHover: '#047857',
+          pLight: '#ECFDF5',
+          pText: '#065F46',
+          s: '#D97706', // Honey Gold
+          sHover: '#B45309',
+          sLight: '#FFFBEB',
+          sText: '#92400E',
+        },
+        dark: {
+          p: '#10B981', // Same Forest Jade hue, calibrated for dark card
+          pHover: '#059669',
+          pLight: 'rgba(5, 150, 105, 0.14)',
+          pText: '#6EE7B7',
+          s: '#F59E0B', // Same Honey Gold hue, calibrated
+          sHover: '#D97706',
+          sLight: 'rgba(217, 119, 6, 0.14)',
+          sText: '#FCD34D',
+        }
+      },
+      kairouan_indigo: {
+        name: "Kairouan Indigo",
+        light: {
+          p: '#4338CA', // Royal Indigo (9th-C Blue Quran of Kairouan)
+          pHover: '#3730A3',
+          pLight: '#EEF2FF',
+          pText: '#3730A3',
+          s: '#C28135', // Dune Sand
+          sHover: '#9A6321',
+          sLight: '#FDF8F0',
+          sText: '#7C4A14',
+        },
+        dark: {
+          p: '#6366F1', // Same Royal Indigo hue, softened
+          pHover: '#4F46E5',
+          pLight: 'rgba(67, 56, 202, 0.14)',
+          pText: '#A5B4FC',
+          s: '#D99B4B', // Same Dune Sand hue, calibrated
+          sHover: '#C28135',
+          sLight: 'rgba(194, 129, 53, 0.14)',
+          sText: '#FDE68A',
+        }
+      },
+      persian_teal: {
+        name: "Persian Teal",
+        light: {
+          p: '#0D9488', // Persian Teal (Babbel agility + Silk Road tilework)
+          pHover: '#0F766E',
+          pLight: '#F0FDFA',
+          pText: '#115E59',
+          s: '#C2410C', // Clay Terracotta
+          sHover: '#9A3412',
+          sLight: '#FFF7ED',
+          sText: '#7C2D12',
+        },
+        dark: {
+          p: '#14B8A6', // Same Persian Teal hue, softened for dark
+          pHover: '#0D9488',
+          pLight: 'rgba(13, 148, 136, 0.14)',
+          pText: '#5EEAD4',
+          s: '#EA580C', // Same Clay Terracotta hue
+          sHover: '#C2410C',
+          sLight: 'rgba(194, 65, 12, 0.14)',
+          sText: '#FDBA74',
+        }
+      },
+      hijazi_olive: {
+        name: "Hijazi Olive",
+        light: {
+          p: '#4D5B44', // Olive Grove (Headspace/Pillars low-fatigue calm)
+          pHover: '#3E4A37',
+          pLight: '#F4F5F3',
+          pText: '#2E3728',
+          s: '#C28135', // Desert Ochre
+          sHover: '#9A6321',
+          sLight: '#FDF8F0',
+          sText: '#7C4A14',
+        },
+        dark: {
+          p: '#65775A', // Same Olive Grove hue, desaturated zero glare
+          pHover: '#4D5B44',
+          pLight: 'rgba(77, 91, 68, 0.16)',
+          pText: '#A3B19B',
+          s: '#D99B4B', // Same Desert Ochre hue
+          sHover: '#C28135',
+          sLight: 'rgba(194, 129, 53, 0.14)',
+          sText: '#FDE68A',
+        }
+      },
+      monastic_cobalt: {
+        name: "Monastic Cobalt",
+        light: {
+          p: '#1D4ED8', // Cobalt Solo (Apple/Linear minimal cognitive load)
+          pHover: '#1E40AF',
+          pLight: '#EFF6FF',
+          pText: '#1E40AF',
+          s: '#475569', // Slate Carbon
+          sHover: '#334155',
+          sLight: '#F8FAFC',
+          sText: '#1E293B',
+        },
+        dark: {
+          p: '#2563EB', // Same Cobalt Solo hue, calibrated
+          pHover: '#1D4ED8',
+          pLight: 'rgba(29, 78, 216, 0.14)',
+          pText: '#93C5FD',
+          s: '#64748B', // Same Slate Carbon hue
+          sHover: '#475569',
+          sLight: 'rgba(71, 85, 105, 0.14)',
+          sText: '#CBD5E1',
+        }
+      }
+    };
+
+    function isDarkMode() {
+      return document.documentElement.classList.contains('dark');
+    }
+
+    function toggleTheme() {
+      const isDark = !isDarkMode();
+      setMode(isDark ? 'dark' : 'light');
+    }
+
+    function setMode(mode) {
+      const html = document.documentElement;
+      const isDark = mode === 'dark';
+      
+      if (isDark) {
+        html.classList.add('dark');
+        localStorage.setItem('tariq-theme', 'dark');
+      } else {
+        html.classList.remove('dark');
+        localStorage.setItem('tariq-theme', 'light');
+      }
+
+      // Update Studio mode switcher buttons
+      const btnLight = document.getElementById('studio-mode-light');
+      const btnDark = document.getElementById('studio-mode-dark');
+      if (btnLight && btnDark) {
+        if (isDark) {
+          btnDark.className = "px-3.5 py-1.5 rounded-full bg-surface text-charcoal shadow-sm transition-all flex items-center gap-1.5";
+          btnLight.className = "px-3.5 py-1.5 rounded-full text-muted hover:text-charcoal transition-all flex items-center gap-1.5";
+        } else {
+          btnLight.className = "px-3.5 py-1.5 rounded-full bg-surface text-charcoal shadow-sm transition-all flex items-center gap-1.5";
+          btnDark.className = "px-3.5 py-1.5 rounded-full text-muted hover:text-charcoal transition-all flex items-center gap-1.5";
+        }
+      }
+
+      // Reapply active accent theme with calibrated mode tokens
+      applyAccentTheme(currentThemeKey);
+      playChime(isDark ? 440 : 659, 'sine', 0.12);
+    }
+
+    function applyAccentTheme(themeKey, btn) {
+      if (themeKey) currentThemeKey = themeKey;
+      const theme = ACCENT_THEMES[currentThemeKey];
+      if (!theme) return;
+
+      const isDark = isDarkMode();
+      const vals = isDark ? theme.dark : theme.light;
+
+      document.documentElement.style.setProperty('--accent-p', vals.p);
+      document.documentElement.style.setProperty('--accent-p-hover', vals.pHover);
+      document.documentElement.style.setProperty('--accent-p-light', vals.pLight);
+      document.documentElement.style.setProperty('--accent-p-text', vals.pText);
+
+      document.documentElement.style.setProperty('--accent-s', vals.s);
+      document.documentElement.style.setProperty('--accent-s-hover', vals.sHover);
+      document.documentElement.style.setProperty('--accent-s-light', vals.sLight);
+      document.documentElement.style.setProperty('--accent-s-text', vals.sText);
+
+      // Update pickers and hex readouts
+      const pickerP = document.getElementById('picker-p');
+      const pickerS = document.getElementById('picker-s');
+      const hexP = document.getElementById('hex-p');
+      const hexS = document.getElementById('hex-s');
+      if (pickerP) pickerP.value = vals.p.startsWith('#') ? vals.p : '#60A5FA';
+      if (pickerS) pickerS.value = vals.s.startsWith('#') ? vals.s : '#FBBF24';
+      if (hexP) hexP.textContent = vals.p.toUpperCase();
+      if (hexS) hexS.textContent = vals.s.toUpperCase();
+
+      // Update active preset button styling
+      document.querySelectorAll('.theme-preset-btn').forEach(b => {
+        b.classList.remove('border-charcoal', 'bg-nested');
+        b.classList.add('border-transparent');
+      });
+      const activeBtn = btn || document.getElementById('preset-' + currentThemeKey);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-transparent');
+        activeBtn.classList.add('border-charcoal', 'bg-nested');
+      }
+
+      // Update color dots inside cards to match active mode
+      Object.keys(ACCENT_THEMES).forEach(k => {
+        const card = document.getElementById('preset-' + k);
+        if (card) {
+          const tVals = isDark ? ACCENT_THEMES[k].dark : ACCENT_THEMES[k].light;
+          const dotP = card.querySelector('.dot-p');
+          const dotS = card.querySelector('.dot-s');
+          if (dotP) dotP.style.backgroundColor = tVals.p;
+          if (dotS) dotS.style.backgroundColor = tVals.s;
+        }
+      });
+    }
+
+    function handleCustomColor(which, hex) {
+      const isDark = isDarkMode();
+      const tintAlpha = isDark ? '26' : '18'; // 15% vs 10%
+
+      if (which === 'p') {
+        document.documentElement.style.setProperty('--accent-p', hex);
+        document.documentElement.style.setProperty('--accent-p-hover', hex);
+        document.documentElement.style.setProperty('--accent-p-light', hex + tintAlpha);
+        document.documentElement.style.setProperty('--accent-p-text', hex);
+        const hexP = document.getElementById('hex-p');
+        if (hexP) hexP.textContent = hex.toUpperCase();
+      } else {
+        document.documentElement.style.setProperty('--accent-s', hex);
+        document.documentElement.style.setProperty('--accent-s-hover', hex);
+        document.documentElement.style.setProperty('--accent-s-light', hex + tintAlpha);
+        document.documentElement.style.setProperty('--accent-s-text', hex);
+        const hexS = document.getElementById('hex-s');
+        if (hexS) hexS.textContent = hex.toUpperCase();
+      }
+
+      document.querySelectorAll('.theme-preset-btn').forEach(b => {
+        b.classList.remove('border-charcoal', 'bg-nested');
+        b.classList.add('border-transparent');
+      });
+    }
+
+    // -------------------------------------------------------------
+    // 7. Kinetic Choice Slabs Handler
+    // -------------------------------------------------------------
+    function selectKineticSlab(btn, isCorrect) {
+      const rect = btn.getBoundingClientRect();
+
+      // Reset all kinetic choice slabs
+      document.querySelectorAll('.kinetic-choice-slab').forEach(s => {
+        s.className = "slab-kinetic kinetic-choice-slab w-full h-[90px] rounded-3xl bg-nested hover:bg-sunken p-5 flex items-center justify-between text-right border border-sunken transition-all";
+      });
+
+      if (isCorrect) {
+        playSuccessChord();
+        btn.className = "slab-kinetic kinetic-choice-slab w-full h-[90px] rounded-3xl bg-accent-p-light text-accent-p-text border-2 border-accent-p p-5 flex items-center justify-between text-right transition-all";
+        triggerCelebration(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      } else {
+        playErrorBeep();
+        btn.className = "slab-kinetic kinetic-choice-slab w-full h-[90px] rounded-3xl bg-red-50 dark:bg-red-950/40 text-red-900 dark:text-red-300 border-2 border-red-400/40 animate-shake-gentle p-5 flex items-center justify-between text-right transition-all";
+      }
+    }
+
+    // Initialize Theme Preference & Default Palette on page load
+    (function() {
+      const savedTheme = localStorage.getItem('tariq-theme');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+        const btnLight = document.getElementById('studio-mode-light');
+        const btnDark = document.getElementById('studio-mode-dark');
+        if (btnLight && btnDark) {
+          btnDark.className = "px-3.5 py-1.5 rounded-full bg-surface text-charcoal shadow-sm transition-all flex items-center gap-1.5";
+          btnLight.className = "px-3.5 py-1.5 rounded-full text-muted hover:text-charcoal transition-all flex items-center gap-1.5";
+        }
+      }
+      applyAccentTheme('academic_lapis');
+    })();
+  </script>
+
+</body>
+</html>

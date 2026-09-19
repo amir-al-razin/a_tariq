@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tariq Design System - Individual Components</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Vazirmatn:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "sans-serif"],
+            arabic: ["Cairo", "Vazirmatn", "sans-serif"],
+            vazir: ["Vazirmatn", "sans-serif"],
+            quran: ["Amiri", "serif"],
+            mono: ["JetBrains Mono", "monospace"],
+          },
+          colors: {
+            // True Web Project Palette (Pure White & Cool Neutral - Zero Yellow Tint)
+            canvas: "#FAFAFA",      // neutral-50 (pure bright digital neutral)
+            surface: "#FFFFFF",     // Pure 100% white
+            nested: "#F5F5F5",      // neutral-100 (clean, crisp, zero yellow)
+            sunken: "#E5E5E5",      // neutral-200
+            charcoal: "#171717",    // neutral-900
+            muted: "#737373",       // neutral-500
+            emeraldAccent: "#10B981", // Official accent
+          },
+          borderRadius: {
+            "4xl": "2.25rem",
+            "3xl": "1.75rem",
+            "2xl": "1.25rem",
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Strict Flat & Borderless Mandates */
+    *, *::before, *::after {
+      box-shadow: none !important;
+      text-shadow: none !important;
+      border-color: transparent !important;
+    }
+
+    /* RTL Price Tag Badge from current web codebase */
+    .price-tag-rtl {
+      position: relative;
+      clip-path: polygon(0% 50%, 14px 0%, 100% 0%, 100% 100%, 14px 100%);
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #E5E5E5; border-radius: 9999px; }
+
+    .tactile-press {
+      transition: transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color 140ms ease;
+    }
+    .tactile-press:active {
+      transform: scale(0.97);
+    }
+
+    .pill-btn-plush {
+      padding-top: 18px !important;
+      padding-bottom: 18px !important;
+      padding-left: 36px !important;
+      padding-right: 36px !important;
+      min-height: 56px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      white-space: nowrap !important;
+    }
+  </style>
+</head>
+<body class="bg-canvas text-charcoal font-sans antialiased min-h-screen pb-32">
+
+  <!-- MINIMAL STICKY HEADER -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md px-6 sm:px-12 py-4 mb-8">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-2xl bg-charcoal text-white flex items-center justify-center font-bold text-lg shrink-0">
+          ط
+        </div>
+        <div>
+          <h1 class="font-bold text-base text-charcoal leading-tight">Tariq Component Catalog</h1>
+          <p class="text-xs text-muted">True Web White Palette (#FFFFFF / #FAFAFA) • Zero Yellow Tint</p>
+        </div>
+      </div>
+
+      <nav class="flex items-center gap-2 text-xs font-semibold overflow-x-auto py-1">
+        <a href="design-system.html" class="px-3.5 py-1.5 rounded-full bg-nested text-charcoal hover:bg-sunken transition-all whitespace-nowrap flex items-center gap-1">
+          <span>Design System</span>
+          <span>→</span>
+        </a>
+        <a href="gamified-preview.html" class="px-3.5 py-1.5 rounded-full bg-amber-100 text-amber-900 hover:bg-amber-200 transition-all whitespace-nowrap flex items-center gap-1 font-bold">
+          <span>Gamified Sandbox</span>
+          <span>★</span>
+        </a>
+        <a href="#section-current" class="px-3.5 py-1.5 rounded-full bg-nested text-charcoal hover:bg-sunken transition-all whitespace-nowrap">
+          1. Current Components
+        </a>
+        <a href="#section-good" class="px-3.5 py-1.5 rounded-full bg-nested text-charcoal hover:bg-sunken transition-all whitespace-nowrap">
+          2. good.png Replicas
+        </a>
+        <a href="#section-comparisons" class="px-3.5 py-1.5 rounded-full bg-nested text-charcoal hover:bg-sunken transition-all whitespace-nowrap">
+          3. Direct Pairings
+        </a>
+        <a href="#section-pedagogy" class="px-4 py-1.5 rounded-full bg-charcoal text-white hover:bg-black transition-all whitespace-nowrap">
+          4. 1-Word Pedagogy
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 sm:px-12 space-y-24">
+
+    <!-- ================================================================= -->
+    <!-- 1. CURRENT WEB APP COMPONENTS (ISOLATED, NO WRAPPER BOXES)        -->
+    <!-- ================================================================= -->
+    <section id="section-current" class="space-y-8">
+      <div>
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-muted block mb-1">Section 01</span>
+        <h2 class="text-2xl font-bold tracking-tight text-charcoal">Current Web App Components</h2>
+        <p class="text-xs text-muted">Each component shown directly as it exists in code, with a clean label above it.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 items-start">
+
+        <!-- 1A. Vocabulary Flashcard (Default) -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-semibold text-muted block">Vocabulary Flashcard • Default</span>
+          <div onclick="speakWord('كِتَابٌ')" class="w-full max-w-[240px] bg-surface hover:bg-white/80 active:scale-95 transition-all p-6 rounded-3xl flex flex-col justify-between items-center text-center cursor-pointer min-h-[175px]">
+            <div class="w-full flex items-center justify-between text-[11px] font-mono text-muted">
+              <span>Card 01</span>
+              <span></span>
+            </div>
+            <div class="my-3">
+              <span class="font-arabic text-4xl font-bold text-charcoal block leading-relaxed">كِتَابٌ</span>
+            </div>
+            <div class="w-full pt-3">
+              <span class="text-sm font-semibold text-charcoal block">A book</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1B. Vocabulary Flashcard (Revealed) -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-semibold text-muted block">Vocabulary Flashcard • Revealed State</span>
+          <div onclick="speakWord('قَلَمٌ')" class="w-full max-w-[240px] bg-surface hover:bg-white/80 active:scale-95 transition-all p-6 rounded-3xl flex flex-col justify-between items-center text-center cursor-pointer min-h-[175px]">
+            <div class="w-full flex items-center justify-between text-[11px] font-mono text-muted">
+              <span>Card 02</span>
+              <span class="text-emeraldAccent font-bold">✓</span>
+            </div>
+            <div class="my-3">
+              <span class="font-arabic text-4xl font-bold text-charcoal block leading-relaxed">قَلَمٌ</span>
+            </div>
+            <div class="w-full pt-3">
+              <span class="text-sm font-semibold text-charcoal block">A pen</span>
+              <span class="text-xs font-mono text-emeraldAccent font-semibold block mt-1">qalamun</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1C. Demonstrative Badges -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-semibold text-muted block">Demonstrative Badges • price-tag-rtl</span>
+          <div class="flex flex-col gap-3 py-2 items-start">
+            <div class="px-6 py-3.5 price-tag-rtl rounded-r-2xl bg-nested text-charcoal cursor-pointer tactile-press" onclick="speakWord('هٰذَا كِتَابٌ')">
+              <span class="font-arabic font-bold text-xl pr-2">هٰذَا كِتَابٌ</span>
+            </div>
+            <div class="px-6 py-3.5 price-tag-rtl rounded-r-2xl bg-charcoal text-white cursor-pointer tactile-press" onclick="speakWord('ذٰلِكَ قَلَمٌ')">
+              <span class="font-arabic font-bold text-xl pr-2">ذٰلِكَ قَلَمٌ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1D. Pointing Drill Rows -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-semibold text-muted block">Pointing Drill Rows • Near &amp; Far</span>
+          <div class="space-y-2.5 max-w-sm" dir="rtl">
+            <div class="bg-surface p-3.5 rounded-2xl flex items-center justify-between">
+              <div class="px-4 py-2 price-tag-rtl rounded-r-xl bg-nested text-charcoal font-arabic font-bold text-sm">
+                هٰذَا كِتَابٌ
+              </div>
+              <div class="flex items-center gap-3 pr-4">
+                <div class="w-10 h-1 rounded-full bg-nested"></div>
+                <span class="text-2xl">📖</span>
+              </div>
+            </div>
+            <div class="bg-surface p-3.5 rounded-2xl flex items-center justify-between">
+              <div class="px-4 py-2 price-tag-rtl rounded-r-xl bg-nested text-charcoal font-arabic font-bold text-sm">
+                ذٰلِكَ قَلَمٌ
+              </div>
+              <div class="flex-1 flex items-center justify-end pl-4">
+                <div class="flex-1 h-1 rounded-full bg-nested mx-3"></div>
+                <span class="text-xl opacity-60">🖊️</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1E. Demonstrative Matrix Cell -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-semibold text-muted block">Demonstrative Matrix Cell</span>
+          <div onclick="speakWord('هٰذَا - هٰذِهِ')" class="w-full max-w-[240px] bg-surface p-6 rounded-3xl cursor-pointer flex flex-col items-center justify-center text-center tactile-press" dir="rtl">
+            <span class="text-[11px] text-muted font-mono block mb-1" dir="ltr">Near (Masc / Fem)</span>
+            <span class="font-arabic text-3xl font-bold text-charcoal block leading-relaxed">
+              هٰذَا - هٰذِهِ
+            </span>
+            <span class="text-xs font-semibold text-muted block mt-2" dir="ltr">
+              This
+            </span>
+          </div>
+        </div>
+
+        <!-- 1F. Word Chip Exercise -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-semibold text-muted block">Sentence Builder • Chips</span>
+          <div class="space-y-2.5 max-w-sm">
+            <div class="bg-surface p-3 rounded-2xl flex items-center justify-between" dir="rtl">
+              <span class="px-4 py-1.5 rounded-xl bg-nested font-arabic font-bold text-sm text-charcoal">مَا هٰذَا ؟</span>
+              <span class="text-2xl pr-2">🪑</span>
+            </div>
+            <div class="bg-surface min-h-[52px] rounded-2xl p-2 flex items-center justify-center gap-2" dir="rtl">
+              <span class="bg-nested text-charcoal font-arabic font-bold text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+                <span>هٰذَا</span>
+                <span class="text-[10px] text-muted font-mono">✕</span>
+              </span>
+              <span class="bg-nested text-charcoal font-arabic font-bold text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+                <span>كُرْسِيٌّ</span>
+                <span class="text-[10px] text-muted font-mono">✕</span>
+              </span>
+            </div>
+            <div class="flex items-center justify-center gap-2 pt-0.5" dir="rtl">
+              <span class="bg-surface text-charcoal font-arabic font-bold text-xs px-3.5 py-1.5 rounded-xl">ذٰلِكَ</span>
+              <span class="bg-surface text-charcoal font-arabic font-bold text-xs px-3.5 py-1.5 rounded-xl">بَيْتٌ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1G. Lesson Header Banner -->
+        <div class="space-y-2 md:col-span-2 lg:col-span-2">
+          <span class="text-xs font-mono font-semibold text-muted block">Lesson Header Banner</span>
+          <div class="bg-surface rounded-3xl p-4 flex items-center justify-between max-w-md">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-nested flex items-center justify-center font-arabic font-bold text-lg text-charcoal">
+                ١
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-charcoal">Lesson 1</h4>
+                <span class="text-[10px] text-muted font-mono">Volume 1</span>
+              </div>
+            </div>
+            <div class="w-32 space-y-1.5">
+              <div class="flex justify-between text-[10px] font-mono text-muted">
+                <span>Step 1</span>
+                <span>10%</span>
+              </div>
+              <div class="h-2 rounded-full bg-nested overflow-hidden">
+                <div class="h-full bg-charcoal w-[10%] rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1H. Footer Stage Navigation -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-semibold text-muted block">Footer Stage Controls</span>
+          <div class="bg-surface rounded-3xl p-3 flex items-center justify-between max-w-xs">
+            <button class="px-4 py-2 bg-nested rounded-2xl text-xs font-bold text-muted cursor-not-allowed">
+              ← Prev
+            </button>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-charcoal"></span>
+              <span class="w-2 h-2 rounded-full bg-nested"></span>
+              <span class="w-2 h-2 rounded-full bg-nested"></span>
+            </div>
+            <button class="px-5 py-2 bg-charcoal text-white rounded-2xl text-xs font-bold tactile-press">
+              Next →
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- 2. COMPONENTS EXTRACTED FROM good.png (IN WEB WHITE PALETTE)       -->
+    <!-- ================================================================= -->
+    <section id="section-good" class="space-y-8">
+      <div>
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-muted block mb-1">Section 02</span>
+        <h2 class="text-2xl font-bold tracking-tight text-charcoal">good.png Components in Web White Palette</h2>
+        <p class="text-xs text-muted">Direct replicas from the reference image, rendered with the web app true white and cool neutral tokens.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 items-start">
+
+        <!-- 2A. Hero Product Detail Card (Screen 2) -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-semibold text-muted block">good.png Hero Detail Card • Screen 2</span>
+          <div class="w-full max-w-[340px] bg-surface rounded-4xl p-6 space-y-4">
+            <!-- Arched cutout well -->
+            <div class="h-44 rounded-3xl bg-nested flex items-center justify-center relative overflow-hidden">
+              <div class="w-16 h-28 bg-neutral-800 rounded-2xl flex flex-col items-center justify-center text-white font-bold text-[10px] p-2 space-y-1">
+                <span class="text-base text-emeraldAccent">⚡</span>
+                <span class="tracking-wider">CHARGER</span>
+              </div>
+            </div>
+
+            <!-- 3 Thumbnails -->
+            <div class="flex justify-center gap-3">
+              <div class="w-11 h-11 rounded-2xl bg-nested flex items-center justify-center text-charcoal text-xs cursor-pointer tactile-press">🔌</div>
+              <div class="w-11 h-11 rounded-2xl bg-neutral-200 flex items-center justify-center text-charcoal text-xs cursor-pointer tactile-press">🔌</div>
+              <div class="w-11 h-11 rounded-2xl bg-nested flex items-center justify-center text-charcoal text-xs cursor-pointer tactile-press">🔌</div>
+            </div>
+
+            <!-- Title, Specs & Price -->
+            <div class="space-y-2 text-right" dir="rtl">
+              <div class="flex items-center justify-between gap-2">
+                <h4 class="font-arabic font-bold text-base text-charcoal">شارژر اکسینوس</h4>
+                <span class="text-xs font-bold text-charcoal font-mono bg-nested px-2.5 py-1 rounded-xl">۴۵۰,۰۰۰ تومان</span>
+              </div>
+              <p class="text-xs text-muted leading-relaxed">
+                ایستگاه شارژ دو درگاه تایپ‌سی و یک درگاه یواس‌بی
+              </p>
+              
+              <!-- 3-Column Spec Strip with | dividers -->
+              <div class="pt-2.5 text-[10px] font-semibold text-charcoal flex items-center justify-between border-t border-nested">
+                <span>قدرت: ۶۵ وات</span>
+                <span class="text-muted">|</span>
+                <span>وزن: ۳۵۰ گرم</span>
+                <span class="text-muted">|</span>
+                <span>درگاه: ۸ عدد</span>
+              </div>
+            </div>
+
+            <!-- Bottom Action Pill inside the card -->
+            <button class="w-full pill-btn-plush rounded-full bg-charcoal text-white font-bold text-xs tactile-press hover:bg-black">
+              اضافه به سبد خرید
+            </button>
+          </div>
+        </div>
+
+        <!-- 2B. Primary Charcoal Pill Button -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-semibold text-muted block">Primary Pill Button • Plush 56px Target</span>
+          <div class="space-y-4 max-w-xs pt-1">
+            <button class="w-full pill-btn-plush rounded-full bg-charcoal text-white font-bold text-sm text-center tactile-press hover:bg-black">
+              اضافه به سبد خرید
+            </button>
+            <button class="w-full pill-btn-plush rounded-full bg-charcoal text-white font-bold text-sm text-center tactile-press hover:bg-black">
+              صفحه بعدی
+            </button>
+          </div>
+        </div>
+
+        <!-- 2C. 2-Column Product Grid Tile (Screen 4) -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-semibold text-muted block">Product Grid Tile • Screen 4</span>
+          <div class="w-full max-w-[210px] bg-surface p-4 rounded-3xl space-y-4 flex flex-col justify-between min-h-[220px]">
+            <div class="h-28 rounded-2xl bg-nested flex items-center justify-center text-4xl">
+              🎧
+            </div>
+            <div class="flex items-center justify-between">
+              <button class="w-9 h-9 rounded-2xl bg-nested hover:bg-sunken flex items-center justify-center text-charcoal font-bold text-base tactile-press">
+                +
+              </button>
+              <button class="w-9 h-9 rounded-2xl bg-nested hover:bg-sunken flex items-center justify-center text-charcoal text-sm tactile-press">
+                ♡
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2D. Cart Item Row with Stepper (Screen 3) -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-semibold text-muted block">Cart Item Row &amp; Stepper • Screen 3</span>
+          <div class="w-full max-w-sm bg-surface p-4 rounded-3xl flex items-center justify-between" dir="rtl">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-nested flex items-center justify-center text-2xl">
+                🔌
+              </div>
+              <div class="text-right">
+                <div class="font-bold text-sm text-charcoal">شارژر دیواری لیتو</div>
+                <div class="text-xs text-muted">تعداد: ۱ عدد</div>
+              </div>
+            </div>
+
+            <!-- Stepper Control -->
+            <div class="flex items-center gap-3 bg-nested px-3.5 py-2 rounded-full" dir="ltr">
+              <button class="w-6 h-6 flex items-center justify-center text-sm font-bold text-charcoal tactile-press">+</button>
+              <span class="text-xs font-bold text-charcoal">1</span>
+              <button class="w-6 h-6 flex items-center justify-center text-sm font-bold text-charcoal tactile-press">-</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2E. Search Bar + Category Filter (Screen 4) -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-semibold text-muted block">Search Bar + Filter Pill • Screen 4</span>
+          <div class="flex items-center gap-2 max-w-sm" dir="rtl">
+            <div class="flex-1 bg-surface py-3.5 px-5 rounded-full flex items-center gap-3">
+              <svg class="w-4 h-4 text-muted shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              <input type="text" placeholder="جستجو ..." class="bg-transparent text-xs text-charcoal focus:outline-none w-full placeholder:text-muted">
+            </div>
+            <button class="py-3.5 px-5 rounded-full bg-charcoal text-white text-xs font-bold flex items-center gap-2 shrink-0 tactile-press">
+              <span>دسته‌بندی</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2F. Circular Chrome Nav Header (Screens 2, 3, 4) -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-semibold text-muted block">Chrome Navigation Header</span>
+          <div class="bg-surface rounded-3xl p-3 flex items-center justify-between max-w-sm">
+            <button class="w-11 h-11 rounded-full bg-nested flex items-center justify-center text-charcoal tactile-press">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            <span class="font-bold text-sm text-charcoal font-arabic">محصولات</span>
+            <button class="w-11 h-11 rounded-full bg-nested flex items-center justify-center text-charcoal tactile-press">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- 3. DIRECT COMPONENT PAIRINGS (CURRENT VS GOOD.PNG)                -->
+    <!-- ================================================================= -->
+    <section id="section-comparisons" class="space-y-8">
+      <div>
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-muted block mb-1">Section 03</span>
+        <h2 class="text-2xl font-bold tracking-tight text-charcoal">Direct Component Pairings</h2>
+        <p class="text-xs text-muted">Current implementation directly beside the good.png equivalent in crisp black &amp; white palette.</p>
+      </div>
+
+      <div class="space-y-12">
+
+        <!-- PAIR 1: ACTION BUTTONS -->
+        <div class="space-y-3">
+          <span class="text-xs font-mono font-bold text-muted uppercase tracking-wider block">Pairing 01 • Action Buttons (Thin 38px vs. Plush 56px)</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+            <div class="space-y-1.5">
+              <span class="text-[11px] font-mono text-red-500 font-bold block">CURRENT WEB APP</span>
+              <button class="px-6 py-2.5 bg-neutral-900 text-white rounded-2xl font-semibold text-xs min-h-[38px]">
+                Next →
+              </button>
+            </div>
+            <div class="space-y-1.5">
+              <span class="text-[11px] font-mono text-emeraldAccent font-bold block">GOOD.PNG REDESIGN</span>
+              <button class="pill-btn-plush rounded-full bg-charcoal text-white font-bold text-sm tactile-press hover:bg-black">
+                <span>Continue · التَّالِي</span>
+                <span class="ms-2">→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAIR 2: DEMONSTRATIVE BADGES -->
+        <div class="space-y-3">
+          <span class="text-xs font-mono font-bold text-muted uppercase tracking-wider block">Pairing 02 • Badge Shape (Jagged Polygon vs. Pure Squircle)</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+            <div class="space-y-1.5">
+              <span class="text-[11px] font-mono text-red-500 font-bold block">CURRENT WEB APP (price-tag-rtl)</span>
+              <div class="px-6 py-3.5 price-tag-rtl rounded-r-2xl bg-nested text-charcoal font-arabic font-bold text-xl inline-block">
+                هٰذَا كِتَابٌ
+              </div>
+            </div>
+            <div class="space-y-1.5">
+              <span class="text-[11px] font-mono text-emeraldAccent font-bold block">GOOD.PNG REDESIGN (Pure Squircle)</span>
+              <div class="px-7 py-3.5 rounded-2xl bg-surface text-charcoal font-arabic font-bold text-xl inline-block">
+                هٰذَا كِتَابٌ
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAIR 3: POINTING DRILL ROWS -->
+        <div class="space-y-3">
+          <span class="text-xs font-mono font-bold text-muted uppercase tracking-wider block">Pairing 03 • Pointing Drill Presentation</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+            <div class="space-y-1.5 max-w-sm">
+              <span class="text-[11px] font-mono text-red-500 font-bold block">CURRENT WEB APP</span>
+              <div class="bg-surface p-3.5 rounded-2xl flex items-center justify-between" dir="rtl">
+                <div class="px-4 py-2 price-tag-rtl rounded-r-xl bg-nested font-arabic font-bold text-sm">
+                  هٰذَا كِتَابٌ
+                </div>
+                <div class="flex items-center gap-2 pr-3">
+                  <div class="w-8 h-1 rounded-full bg-nested"></div>
+                  <span class="text-2xl">📖</span>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-1.5 max-w-sm">
+              <span class="text-[11px] font-mono text-emeraldAccent font-bold block">GOOD.PNG REDESIGN</span>
+              <div class="bg-surface p-3.5 rounded-2xl flex items-center justify-between" dir="rtl">
+                <div class="px-5 py-2.5 rounded-2xl bg-nested text-charcoal font-arabic font-bold text-base">
+                  هٰذَا كِتَابٌ
+                </div>
+                <div class="flex items-center gap-3.5 pr-4">
+                  <div class="w-12 h-1 rounded-full bg-nested"></div>
+                  <span class="text-2xl">📖</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- 4. FOCUSED 1-WORD HERO PEDAGOGY CARD                              -->
+    <!-- ================================================================= -->
+    <section id="section-pedagogy" class="space-y-6">
+      <div>
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-muted block mb-1">Section 04</span>
+        <h2 class="text-2xl font-bold tracking-tight text-charcoal">Focused Single-Word Pedagogy Card</h2>
+        <p class="text-xs text-muted">Direct adaptation of good.png hero card in crisp white &amp; cool neutral (no 8-word cramming).</p>
+      </div>
+
+      <!-- Single-Word Hero Component directly on canvas -->
+      <div class="flex justify-center py-4">
+        <div class="w-full max-w-[390px] bg-surface rounded-4xl p-7 space-y-6">
+          
+          <!-- Top Stepper & Audio Button -->
+          <div class="flex items-center justify-between text-xs font-mono text-muted">
+            <div class="flex items-center gap-2 bg-nested px-3.5 py-1.5 rounded-full font-bold text-charcoal">
+              <span>Word 1 of 8</span>
+            </div>
+            <button onclick="speakWord('كِتَابٌ')" class="w-10 h-10 rounded-full bg-nested hover:bg-sunken flex items-center justify-center text-charcoal text-base tactile-press">
+              🔊
+            </button>
+          </div>
+
+          <!-- Hero Cutout Well with Big Arabic Text -->
+          <div class="h-52 rounded-3xl bg-nested flex flex-col items-center justify-center text-center p-6 space-y-1.5 relative overflow-hidden">
+            <span class="font-arabic font-bold text-6xl text-charcoal block py-1 leading-tight" dir="rtl">
+              كِتَابٌ
+            </span>
+            <span class="text-xs font-semibold text-muted font-mono block">kitābun</span>
+            <span class="text-base font-bold text-charcoal block">A Book</span>
+          </div>
+
+          <!-- Linguistic Specifications with vertical | dividers -->
+          <div class="p-3.5 rounded-2xl bg-canvas space-y-2 text-xs text-charcoal">
+            <div class="flex items-center justify-between text-[11px] font-semibold text-muted">
+              <span>Type: Ism</span>
+              <span>|</span>
+              <span>Gender: Masc</span>
+              <span>|</span>
+              <span>State: Nakirah</span>
+            </div>
+            <div class="h-0.5 w-full bg-nested"></div>
+            <div class="flex items-center justify-between text-xs font-arabic pt-0.5" dir="rtl">
+              <span class="font-bold text-muted">مِثَالٌ:</span>
+              <span class="font-semibold text-charcoal">هٰذَا كِتَابٌ جَدِيدٌ</span>
+            </div>
+          </div>
+
+          <!-- Plush Action Pill Button (Verified 56px Height) -->
+          <button class="w-full pill-btn-plush rounded-full bg-charcoal hover:bg-black text-white font-bold text-sm text-center tactile-press flex items-center justify-center gap-2.5">
+            <span>Continue · التَّالِي</span>
+            <span class="text-base">→</span>
+          </button>
+
+          <!-- Dot Stepper -->
+          <div class="flex items-center justify-center gap-2 pt-1">
+            <span class="w-2.5 h-2.5 rounded-full bg-charcoal"></span>
+            <span class="w-2 h-2 rounded-full bg-nested"></span>
+            <span class="w-2 h-2 rounded-full bg-nested"></span>
+            <span class="w-2 h-2 rounded-full bg-nested"></span>
+            <span class="w-2 h-2 rounded-full bg-nested"></span>
+            <span class="w-2 h-2 rounded-full bg-nested"></span>
+            <span class="w-2 h-2 rounded-full bg-nested"></span>
+            <span class="w-2 h-2 rounded-full bg-nested"></span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function speakWord(text) {
+      if ("speechSynthesis" in window) {
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = "ar-SA";
+        window.speechSynthesis.speak(u);
+      }
+    }
+  </script>
+</body>
+</html>

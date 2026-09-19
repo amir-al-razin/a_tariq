@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tariq Pedagogical Engine - PRD & System Architecture</title>
+  
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Vazirmatn:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "sans-serif"],
+            arabic: ["Cairo", "Vazirmatn", "sans-serif"],
+            vazir: ["Vazirmatn", "sans-serif"],
+            quran: ["Amiri", "serif"],
+            mono: ["JetBrains Mono", "monospace"],
+          },
+          colors: {
+            canvas: {
+              light: "#FAFAFA",
+              dark: "#0A0A0A"
+            },
+            surface: {
+              light: "#FFFFFF",
+              dark: "#141414"
+            },
+            neutral: {
+              50: "#FBFBFB",
+              100: "#F4F4F5",
+              200: "#E4E4E7",
+              300: "#D4D4D8",
+              400: "#A1A1AA",
+              500: "#71717A",
+              600: "#52525B",
+              700: "#3F3F46",
+              800: "#27272A",
+              850: "#1E1E22",
+              900: "#18181B",
+              950: "#09090B",
+            },
+            accent: {
+              primary: "#3B82F6",
+              "primary-hover": "#2563EB",
+              "primary-subtle": "rgba(59, 130, 246, 0.12)",
+              secondary: "#10B981",
+              "secondary-subtle": "rgba(16, 185, 129, 0.12)",
+              amber: "#F59E0B",
+              "amber-subtle": "rgba(245, 158, 11, 0.12)",
+              purple: "#8B5CF6",
+              "purple-subtle": "rgba(139, 92, 246, 0.12)",
+              rose: "#F43F5E",
+              "rose-subtle": "rgba(244, 63, 94, 0.12)",
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #71717a40;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #71717a80;
+    }
+    /* Arabic typography baseline */
+    .ar-text {
+      font-family: 'Cairo', 'Vazirmatn', sans-serif;
+      direction: rtl;
+      letter-spacing: normal !important;
+      line-height: 1.8;
+    }
+    .quran-text {
+      font-family: 'Amiri', serif;
+      direction: rtl;
+      letter-spacing: normal !important;
+      line-height: 2.2;
+    }
+    /* Code highlight */
+    pre code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    /* Smooth Anchor Jumping */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body class="bg-canvas-light dark:bg-canvas-dark text-neutral-900 dark:text-neutral-100 font-sans antialiased min-h-full flex flex-col transition-colors duration-200">
+
+  <!-- TOP NAV / HEADER -->
+  <header class="sticky top-0 z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md border-b border-neutral-200/60 dark:border-neutral-800/60 transition-colors">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-2xl bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-950 flex items-center justify-center font-bold text-lg">
+          ط
+        </div>
+        <div>
+          <span class="font-bold tracking-tight text-neutral-900 dark:text-neutral-100 text-base">Tariq Architecture</span>
+          <span class="ml-2 px-2 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider bg-accent-primary-subtle text-accent-primary font-semibold">PRD & Engine Spec v1.0</span>
+        </div>
+      </div>
+
+      <!-- Nav links -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-neutral-600 dark:text-neutral-400">
+        <a href="#vision" class="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Vision</a>
+        <a href="#pillars" class="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Core Pillars</a>
+        <a href="#engines" class="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">9 Engines</a>
+        <a href="#retention" class="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Retention & SRS</a>
+        <a href="#mushaf" class="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Quran Mushaf Map</a>
+        <a href="#roadmap" class="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Roadmap & Tasks</a>
+      </nav>
+
+      <!-- Theme Toggle & Quick Actions -->
+      <div class="flex items-center gap-3">
+        <button id="themeToggle" class="w-9 h-9 rounded-full bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200 dark:hover:bg-neutral-800 flex items-center justify-center text-neutral-700 dark:text-neutral-300 transition-colors" title="Toggle Theme">
+          <svg id="themeIconSun" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+          <svg id="themeIconMoon" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+        </button>
+        <a href="/" class="hidden sm:flex items-center gap-1.5 px-4 h-9 rounded-full bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 font-semibold text-xs tracking-wide transition-all active:scale-95">
+          <span>Back to App</span>
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-12 space-y-20">
+
+    <!-- HERO SECTION -->
+    <section class="space-y-6 pt-4 text-center max-w-3xl mx-auto">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-primary-subtle text-accent-primary text-xs font-semibold">
+        <span class="w-2 h-2 rounded-full bg-accent-primary animate-pulse"></span>
+        System Specification & Architectural Masterplan
+      </div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-neutral-950 dark:text-white leading-tight">
+        Building the Revolutionary <br>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-emerald-500">Quranic Arabic Engine</span>
+      </h1>
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed">
+        Eliminating the passive scroll-to-finish anti-pattern. Transforming Allama Abu Taher Misbah’s direct-method curriculum into tactile, single-focus interactive engines, backed by item-level memory retention, and illuminated directly on the King Fahd digital Quran Mushaf.
+      </p>
+
+      <!-- Key Metrics Row -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 text-left">
+        <div class="p-5 rounded-3xl bg-neutral-100 dark:bg-neutral-900 space-y-1">
+          <div class="text-2xl font-bold text-neutral-950 dark:text-white">1 Focus</div>
+          <div class="text-xs font-medium text-neutral-500 dark:text-neutral-400">Cognitive Singularity per Screen</div>
+        </div>
+        <div class="p-5 rounded-3xl bg-neutral-100 dark:bg-neutral-900 space-y-1">
+          <div class="text-2xl font-bold text-accent-primary">9 Engines</div>
+          <div class="text-xs font-medium text-neutral-500 dark:text-neutral-400">Zero Ad-Hoc Bloat (Vols 1-3)</div>
+        </div>
+        <div class="p-5 rounded-3xl bg-neutral-100 dark:bg-neutral-900 space-y-1">
+          <div class="text-2xl font-bold text-accent-secondary">FSRS / SRS</div>
+          <div class="text-xs font-medium text-neutral-500 dark:text-neutral-400">Item-Level Retention & Error Queue</div>
+        </div>
+        <div class="p-5 rounded-3xl bg-neutral-100 dark:bg-neutral-900 space-y-1">
+          <div class="text-2xl font-bold text-accent-amber">604 Pages</div>
+          <div class="text-xs font-medium text-neutral-500 dark:text-neutral-400">Real-Time Mushaf Illumination</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: THE CRITICAL PROBLEM & THE ROOT CAUSE -->
+    <section id="vision" class="space-y-8">
+      <div class="border-b border-neutral-200 dark:border-neutral-800 pb-4">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">Problem Space</h2>
+        <h3 class="text-2xl font-bold text-neutral-950 dark:text-white mt-1">Diagnosing the Current Failures & The Anti-Regression Standard</h3>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Flaw 1 -->
+        <div class="p-6 rounded-3xl bg-neutral-100 dark:bg-neutral-900 space-y-3">
+          <div class="w-10 h-10 rounded-2xl bg-accent-rose-subtle text-accent-rose flex items-center justify-center font-bold">✕</div>
+          <h4 class="font-bold text-base text-neutral-900 dark:text-neutral-100">The "Scroll-to-Finish" Illusion</h4>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            In <code class="text-xs bg-neutral-200 dark:bg-neutral-800 px-1 py-0.5 rounded">lib/pedagogy.ts</code>, 7 chunk types were marked as <code class="text-xs">SCROLL_COMPLETE_TYPES</code>. Users reached within 80px of the bottom, and the app automatically marked the lesson completed. Zero active production. Zero learning.
+          </p>
+        </div>
+
+        <!-- Flaw 2 -->
+        <div class="p-6 rounded-3xl bg-neutral-100 dark:bg-neutral-900 space-y-3">
+          <div class="w-10 h-10 rounded-2xl bg-accent-amber-subtle text-accent-amber flex items-center justify-center font-bold">✕</div>
+          <h4 class="font-bold text-base text-neutral-900 dark:text-neutral-100">The "Fake Flashcard" Memorization</h4>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            In <code class="text-xs bg-neutral-200 dark:bg-neutral-800 px-1 py-0.5 rounded">VocabularyView.tsx</code>, tapping through the cards once marked the entire vocabulary list as mastered. No active recall challenge, no error retry queue, and no spaced repetition. 70% of vocabulary is forgotten within 24 hours.
+          </p>
+        </div>
+
+        <!-- Flaw 3 -->
+        <div class="p-6 rounded-3xl bg-neutral-100 dark:bg-neutral-900 space-y-3">
+          <div class="w-10 h-10 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center font-bold">✕</div>
+          <h4 class="font-bold text-base text-neutral-900 dark:text-neutral-100">Cognitive Bombardment & Passive Blocks</h4>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            The pedagogy lab became clogged with 18+ verbose widgets dumping multi-sentence tables, bilingual grammar rules, and linguistic meta-jargon. The user is overwhelmed with multiple things to read instead of one playful thing to solve.
+          </p>
+        </div>
+      </div>
+
+      <!-- The Law of Cognitive Singularity -->
+      <div class="p-8 rounded-4xl bg-neutral-950 text-white dark:bg-neutral-900 dark:text-white space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-full bg-accent-primary text-white text-xs font-bold uppercase tracking-wider">The Non-Negotiable Law</span>
+          <span class="text-neutral-400 text-sm font-medium">Core Pedagogical Contract</span>
+        </div>
+        <h4 class="text-2xl font-bold tracking-tight">The Principle of Cognitive Singularity</h4>
+        <p class="text-neutral-300 text-base leading-relaxed max-w-4xl">
+          Every screen in a lesson MUST present <strong>exactly ONE cognitive challenge</strong>. The user must never worry about grammar rules, vocabulary definitions, and translation all at once. They see a single clear visual cue or prompt, formulate an answer in their mind, execute a tactile physical action (tap, assemble, swipe), and receive instant sensory feedback.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION: THE 4 ARCHITECTURAL PILLARS -->
+    <section id="pillars" class="space-y-8">
+      <div class="border-b border-neutral-200 dark:border-neutral-800 pb-4">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">Core Architecture</h2>
+        <h3 class="text-2xl font-bold text-neutral-950 dark:text-white mt-1">The 4 Interlocking Pillars of the Application</h3>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8">
+        
+        <!-- Pillar 1 -->
+        <div class="p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-primary-subtle text-accent-primary text-xs font-bold uppercase tracking-wider">
+              Pillar I
+            </div>
+            <h4 class="text-xl font-bold text-neutral-950 dark:text-white">Playful Interactive Session Runner</h4>
+            <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              Replaces disconnected chunk router hops with a continuous, focused flow. Each lesson is a sequence of micro-challenges running inside a unified viewport.
+            </p>
+            <ul class="space-y-2 text-sm text-neutral-700 dark:text-neutral-300 pt-2">
+              <li class="flex items-start gap-2">
+                <span class="text-accent-primary font-bold">✓</span>
+                <span><strong>No Scroll Completion:</strong> Every step requires active tactile input to advance.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-accent-primary font-bold">✓</span>
+                <span><strong>In-Session Error Queue:</strong> Wrong answers are re-queued at the end of the lesson until cleared 100%.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-accent-primary font-bold">✓</span>
+                <span><strong>Fisher-Yates Shuffling:</strong> Word chips are always randomized with anti-identity checks.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-accent-primary font-bold">✓</span>
+                <span><strong>56px Touch Standards:</strong> Design system compliant tactile primary action footer.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-neutral-950 text-xs font-mono text-neutral-500 dark:text-neutral-400 mt-4">
+            Component: <span class="text-accent-primary font-bold">apps/web/src/components/runner/LessonSessionRunner.tsx</span>
+          </div>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-secondary-subtle text-accent-secondary text-xs font-bold uppercase tracking-wider">
+              Pillar II
+            </div>
+            <h4 class="text-xl font-bold text-neutral-950 dark:text-white">Item-Level Retention Engine (SRS)</h4>
+            <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              Upgrades the binary "completed" string in progressStore to a scientifically grounded spaced repetition system tracking every word, phrase, and grammar pattern.
+            </p>
+            <ul class="space-y-2 text-sm text-neutral-700 dark:text-neutral-300 pt-2">
+              <li class="flex items-start gap-2">
+                <span class="text-accent-secondary font-bold">✓</span>
+                <span><strong>Granular Tracking:</strong> Tracks <code class="text-xs">vocab:id</code>, <code class="text-xs">phrase:id</code>, and <code class="text-xs">pattern:id</code>.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-accent-secondary font-bold">✓</span>
+                <span><strong>Memory Decay & Intervals:</strong> Calculates next review dates (1d, 3d, 7d, 16d, 35d).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-accent-secondary font-bold">✓</span>
+                <span><strong>Dynamic Lesson Rings:</strong> Completed lessons decay when items are due, triggering review badges.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-accent-secondary font-bold">✓</span>
+                <span><strong>90s Daily Spaced Review:</strong> Instant rapid-fire queue of items needing refresh.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-neutral-950 text-xs font-mono text-neutral-500 dark:text-neutral-400 mt-4">
+            Store: <span class="text-accent-secondary font-bold">apps/web/src/state/retentionStore.ts</span>
+          </div>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-amber-subtle text-accent-amber text-xs font-bold uppercase tracking-wider">
+              Pillar III
+            </div>
+            <h4 class="text-xl font-bold text-neutral-950 dark:text-white">Lexical Vault & Words Analysis Page</h4>
+            <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              A dedicated mastery dashboard where learners inspect their entire vocabulary repertoire, trilateral root networks, and Quranic frequency distributions.
+            </p>
+            <ul class="space-y-2 text-sm text-neutral-700 dark:text-neutral-300 pt-2">
+              <li class="flex items-start gap-2">
+                <span class="text-accent-amber font-bold">✓</span>
+                <span><strong>Vocabulary Inventory:</strong> Filter by volume, chapter, root, or mastery level.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-accent-amber font-bold">✓</span>
+                <span><strong>Root Morphology Inspector:</strong> Explore words derived from the same trilateral root (e.g. <span class="ar-text text-sm">ك-ت-ب</span>).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-accent-amber font-bold">✓</span>
+                <span><strong>Quran Frequency Badges:</strong> Shows how many times each learned word occurs in the Mushaf.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-accent-amber font-bold">✓</span>
+                <span><strong>Audio & Harakat Player:</strong> Crisp pronunciation clips and morphological breakdown.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-neutral-950 text-xs font-mono text-neutral-500 dark:text-neutral-400 mt-4">
+            Route: <span class="text-accent-amber font-bold">apps/web/src/routes/words/index.tsx</span>
+          </div>
+        </div>
+
+        <!-- Pillar 4 -->
+        <div class="p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-purple-subtle text-accent-purple text-xs font-bold uppercase tracking-wider">
+              Pillar IV
+            </div>
+            <h4 class="text-xl font-bold text-neutral-950 dark:text-white">Real-Time Quran Mushaf Illumination</h4>
+            <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              The crown-jewel feature. Every word and grammar pattern mastered in the curriculum is dynamically mapped onto the 604 pages of the King Fahd QCF v2 digital Mushaf.
+            </p>
+            <ul class="space-y-2 text-sm text-neutral-700 dark:text-neutral-300 pt-2">
+              <li class="flex items-start gap-2">
+                <span class="text-accent-purple font-bold">✓</span>
+                <span><strong>Uthmani Word Matching:</strong> Exact token normalization matching curriculum lemmas to Quranic tokens.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-accent-purple font-bold">✓</span>
+                <span><strong>Visual Illumination:</strong> Mastered words glow softly in gold/emerald; unknown words stay neutral.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-accent-purple font-bold">✓</span>
+                <span><strong>Surah & Page Comprehension %:</strong> "You now understand 42% of Surah Al-Baqarah".</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-accent-purple font-bold">✓</span>
+                <span><strong>Tap-to-Inspect Quran Word:</strong> Shows lemma, translation, and links to the lesson where it was learned.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-neutral-950 text-xs font-mono text-neutral-500 dark:text-neutral-400 mt-4">
+            Route: <span class="text-accent-purple font-bold">apps/web/src/routes/mushaf-v2/index.tsx</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION: THE 9 UNIFIED INTERACTION ENGINES -->
+    <section id="engines" class="space-y-8">
+      <div class="border-b border-neutral-200 dark:border-neutral-800 pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <h2 class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">Interaction Primitives</h2>
+          <h3 class="text-2xl font-bold text-neutral-950 dark:text-white mt-1">The 9 Unified Engines (Zero Fragmented Bloat)</h3>
+        </div>
+        <span class="text-xs text-neutral-500 dark:text-neutral-400">Covers 100% of Volumes 1, 2, and 3</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm border-collapse">
+          <thead>
+            <tr class="border-b border-neutral-200 dark:border-neutral-800 text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400">
+              <th class="py-3 px-4">#</th>
+              <th class="py-3 px-4">Engine Archetype</th>
+              <th class="py-3 px-4">Book Scope</th>
+              <th class="py-3 px-4">Cognitive Singularity (User's Single Concern)</th>
+              <th class="py-3 px-4">Interaction Mechanic</th>
+              <th class="py-3 px-4">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-neutral-200 dark:divide-neutral-800/60 font-sans">
+            <!-- Engine 1 -->
+            <tr class="hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50 transition-colors">
+              <td class="py-4 px-4 font-mono text-xs font-bold text-accent-primary">01</td>
+              <td class="py-4 px-4 font-bold text-neutral-950 dark:text-white">HeroWordPrime</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-neutral-200 dark:bg-neutral-800 font-mono">Vol 1, 2, 3</span></td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Prime 1 new word from bottom of textbook page</td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Audio trigger + Arabic glyph + meaning imprint. 1 tap.</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-accent-secondary-subtle text-accent-secondary font-bold">Standardized</span></td>
+            </tr>
+            <!-- Engine 2 -->
+            <tr class="hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50 transition-colors">
+              <td class="py-4 px-4 font-mono text-xs font-bold text-accent-primary">02</td>
+              <td class="py-4 px-4 font-bold text-neutral-950 dark:text-white">WordChipAssembly</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-neutral-200 dark:bg-neutral-800 font-mono">Vol 1, 2, 3</span></td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Synthesize Arabic sentence from prompt</td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Tap Fisher-Yates shuffled chips into dropzone. Instant check.</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-accent-secondary-subtle text-accent-secondary font-bold">Standardized</span></td>
+            </tr>
+            <!-- Engine 3 -->
+            <tr class="hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50 transition-colors">
+              <td class="py-4 px-4 font-mono text-xs font-bold text-accent-primary">03</td>
+              <td class="py-4 px-4 font-bold text-neutral-950 dark:text-white">ClozeFillDrill</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-neutral-200 dark:bg-neutral-800 font-mono">Vol 1, 2, 3</span></td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Identify missing particle, preposition, or adjective</td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Sentence with single slot + 3-4 options.</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-accent-secondary-subtle text-accent-secondary font-bold">Standardized</span></td>
+            </tr>
+            <!-- Engine 4 -->
+            <tr class="hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50 transition-colors">
+              <td class="py-4 px-4 font-mono text-xs font-bold text-accent-primary">04</td>
+              <td class="py-4 px-4 font-bold text-neutral-950 dark:text-white">BinaryPolarSort</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-neutral-200 dark:bg-neutral-800 font-mono">Vol 1, 2</span></td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Categorize proximity (هذا/ذلك) or gender (مذكر/مؤنث)</td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Two target buckets. Tap or swipe to categorize.</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-accent-secondary-subtle text-accent-secondary font-bold">Standardized</span></td>
+            </tr>
+            <!-- Engine 5 -->
+            <tr class="hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50 transition-colors">
+              <td class="py-4 px-4 font-mono text-xs font-bold text-accent-primary">05</td>
+              <td class="py-4 px-4 font-bold text-neutral-950 dark:text-white">SpeedPairMatch</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-neutral-200 dark:bg-neutral-800 font-mono">Vol 1, 2, 3</span></td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Rapid synaptic binding of word pairs & broken plurals</td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">4x4 or 3x3 tiles. Tap matching pairs to clear board.</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-accent-amber-subtle text-accent-amber font-bold">In Progress</span></td>
+            </tr>
+            <!-- Engine 6 -->
+            <tr class="hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50 transition-colors">
+              <td class="py-4 px-4 font-mono text-xs font-bold text-accent-primary">06</td>
+              <td class="py-4 px-4 font-bold text-neutral-950 dark:text-white">ConjugationMatrix</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-neutral-200 dark:bg-neutral-800 font-mono">Vol 2, 3</span></td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Master verb paradigms (فعل - فعلت - فعلت - فعلت - فعلت)</td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Person-masked paradigm grid. Select target verb inflection.</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-bold">Planned (Vol 2)</span></td>
+            </tr>
+            <!-- Engine 7 -->
+            <tr class="hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50 transition-colors">
+              <td class="py-4 px-4 font-mono text-xs font-bold text-accent-primary">07</td>
+              <td class="py-4 px-4 font-bold text-neutral-950 dark:text-white">CaseEndingSelector</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-neutral-200 dark:bg-neutral-800 font-mono">Vol 2, 3</span></td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Train I'rab (مرفوع - منصوب - مجرور - مجزوم)</td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Target terminal letter harakah selection based on syntax.</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-bold">Planned (Vol 2)</span></td>
+            </tr>
+            <!-- Engine 8 -->
+            <tr class="hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50 transition-colors">
+              <td class="py-4 px-4 font-mono text-xs font-bold text-accent-primary">08</td>
+              <td class="py-4 px-4 font-bold text-neutral-950 dark:text-white">RootMorphologyDeriver</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-neutral-200 dark:bg-neutral-800 font-mono">Vol 3</span></td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Unlock 10 words from 1 trilateral root via Awzan</td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Slot root radicals (ف - ع - ل) into morphological templates.</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-bold">Planned (Vol 3)</span></td>
+            </tr>
+            <!-- Engine 9 -->
+            <tr class="hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50 transition-colors">
+              <td class="py-4 px-4 font-mono text-xs font-bold text-accent-primary">09</td>
+              <td class="py-4 px-4 font-bold text-neutral-950 dark:text-white">PassageReader</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-neutral-200 dark:bg-neutral-800 font-mono">Vol 2, 3</span></td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Continuous narrative & Hadith discourse comprehension</td>
+              <td class="py-4 px-4 text-neutral-600 dark:text-neutral-400">Interactive text with tap-to-inspect + inline micro-drills.</td>
+              <td class="py-4 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-bold">Planned (Vol 2/3)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION: RETENTION & SPTS ARCHITECTURE -->
+    <section id="retention" class="space-y-8">
+      <div class="border-b border-neutral-200 dark:border-neutral-800 pb-4">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">Memory Science</h2>
+        <h3 class="text-2xl font-bold text-neutral-950 dark:text-white mt-1">Item-Level Retention Engine & Spaced Repetition (SRS)</h3>
+      </div>
+
+      <!-- Architecture Diagram Flow -->
+      <div class="p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 space-y-6">
+        <h4 class="text-lg font-bold text-neutral-950 dark:text-white">The Active Recall & Mistake Recycling Loop</h4>
+        
+        <div class="grid md:grid-cols-5 gap-3 text-center text-xs font-semibold">
+          <div class="p-4 rounded-2xl bg-white dark:bg-neutral-950 space-y-2 border-t-4 border-blue-500">
+            <div class="text-neutral-400 uppercase font-mono text-[10px]">Step 1</div>
+            <div class="font-bold text-neutral-900 dark:text-neutral-100 text-sm">Priming</div>
+            <div class="text-neutral-500 font-normal">Audio + Glyph + Meaning. Single glance.</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-neutral-950 space-y-2 border-t-4 border-emerald-500">
+            <div class="text-neutral-400 uppercase font-mono text-[10px]">Step 2</div>
+            <div class="font-bold text-neutral-900 dark:text-neutral-100 text-sm">Production</div>
+            <div class="text-neutral-500 font-normal">Assemble or select in under 5 seconds.</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-neutral-950 space-y-2 border-t-4 border-rose-500">
+            <div class="text-neutral-400 uppercase font-mono text-[10px]">Step 3</div>
+            <div class="font-bold text-neutral-900 dark:text-neutral-100 text-sm">Error Queue</div>
+            <div class="text-neutral-500 font-normal">Wrong answer? Added to recycle queue immediately.</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-neutral-950 space-y-2 border-t-4 border-amber-500">
+            <div class="text-neutral-400 uppercase font-mono text-[10px]">Step 4</div>
+            <div class="font-bold text-neutral-900 dark:text-neutral-100 text-sm">End-of-Session Recovery</div>
+            <div class="text-neutral-500 font-normal">Must clear 100% of error queue to pass.</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-neutral-950 space-y-2 border-t-4 border-purple-500">
+            <div class="text-neutral-400 uppercase font-mono text-[10px]">Step 5</div>
+            <div class="font-bold text-neutral-900 dark:text-neutral-100 text-sm">SRS Interval</div>
+            <div class="text-neutral-500 font-normal">Interval scheduled: Day 1 → 3 → 7 → 16 → 35.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TypeScript Schema Code Snippet -->
+      <div class="p-6 rounded-3xl bg-neutral-950 text-neutral-100 font-mono text-xs overflow-x-auto space-y-3">
+        <div class="text-neutral-400 font-sans text-xs uppercase tracking-wider">ItemRetention Data Model (packages/shared/src/types/retention.ts)</div>
+        <pre><code class="text-neutral-300"><span class="text-blue-400">export interface</span> <span class="text-emerald-400">ItemRetention</span> {
+  itemId: <span class="text-amber-400">string</span>;             <span class="text-neutral-500">// e.g., "vocab:v1_c1_kitab", "pattern:haza_ism"</span>
+  itemType: <span class="text-purple-400">'word'</span> | <span class="text-purple-400">'phrase'</span> | <span class="text-purple-400">'grammar_pattern'</span>;
+  arabic: <span class="text-amber-400">string</span>;               <span class="text-neutral-500">// Full Tashkeel Arabic</span>
+  lemma: <span class="text-amber-400">string</span>;                <span class="text-neutral-500">// Normalized base form for Quran token matching</span>
+  meaningEn: <span class="text-amber-400">string</span>;
+  meaningBn: <span class="text-amber-400">string</span>;
+  volume: <span class="text-amber-400">number</span>; chapter: <span class="text-amber-400">number</span>; lesson: <span class="text-amber-400">number</span>;
+
+  <span class="text-neutral-500">// Spaced Repetition State</span>
+  box: <span class="text-amber-400">number</span>;                  <span class="text-neutral-500">// 0: New, 1: Learning, 2: Familiar, 3: Proficient, 4: Mastered</span>
+  consecutiveCorrect: <span class="text-amber-400">number</span>;   <span class="text-neutral-500">// Active streak</span>
+  totalAttempts: <span class="text-amber-400">number</span>;
+  totalErrors: <span class="text-amber-400">number</span>;
+  lastPracticedAt: <span class="text-amber-400">number</span>;      <span class="text-neutral-500">// Unix timestamp (ms)</span>
+  nextReviewDue: <span class="text-amber-400">number</span>;        <span class="text-neutral-500">// Unix timestamp (ms)</span>
+  stability: <span class="text-amber-400">number</span>;            <span class="text-neutral-500">// Memory half-life in days</span>
+}
+
+<span class="text-blue-400">export interface</span> <span class="text-emerald-400">LessonSessionSummary</span> {
+  volumeId: <span class="text-amber-400">number</span>; chapterId: <span class="text-amber-400">number</span>; lessonNum: <span class="text-amber-400">number</span>;
+  accuracyRate: <span class="text-amber-400">number</span>;         <span class="text-neutral-500">// e.g. 94.2%</span>
+  firstTryCorrectCount: <span class="text-amber-400">number</span>;
+  recycledErrorsResolved: <span class="text-amber-400">number</span>;
+  durationSeconds: <span class="text-amber-400">number</span>;
+  newWordsLearned: <span class="text-amber-400">string</span>[];
+  wordsReinforced: <span class="text-amber-400">string</span>[];
+  quranicEchoUnlocked?: {
+    surahNumber: <span class="text-amber-400">number</span>; ayahNumber: <span class="text-amber-400">number</span>;
+    arabicText: <span class="text-amber-400">string</span>; translation: <span class="text-amber-400">string</span>;
+  };
+}</code></pre>
+      </div>
+    </section>
+
+    <!-- SECTION: QURAN MUSHAF ILLUMINATION -->
+    <section id="mushaf" class="space-y-8">
+      <div class="border-b border-neutral-200 dark:border-neutral-800 pb-4">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">The Culmination</h2>
+        <h3 class="text-2xl font-bold text-neutral-950 dark:text-white mt-1">Real-Time Quran Mushaf Illumination & Comprehension</h3>
+      </div>
+
+      <div class="p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 space-y-6">
+        <div class="max-w-3xl space-y-3">
+          <h4 class="text-xl font-bold text-neutral-950 dark:text-white">Connecting Every Drill Directly to the Book of Allah</h4>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            Using the existing King Fahd Complex QCF v2 fonts and token metadata in <code class="text-xs bg-neutral-200 dark:bg-neutral-800 px-1 py-0.5 rounded">apps/web/src/routes/mushaf-v2/</code>, the app matches every word the learner masters against the 77,430 words of the Quran.
+          </p>
+        </div>
+
+        <!-- Visual Mockup of Mushaf Page Illumination -->
+        <div class="p-8 rounded-3xl bg-neutral-950 text-white space-y-6">
+          <div class="flex items-center justify-between border-b border-neutral-800 pb-4">
+            <div class="flex items-center gap-3">
+              <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+              <span class="font-english-semibold text-sm">Surah Al-Baqarah (Page 2) - Live Comprehension Heatmap</span>
+            </div>
+            <div class="px-3 py-1 rounded-full bg-accent-secondary-subtle text-accent-secondary font-mono text-xs font-bold">
+              34.8% Comprehended
+            </div>
+          </div>
+
+          <!-- Sample Quran Page Lines with Highlighted Words -->
+          <div class="space-y-6 text-center py-6">
+            <div class="quran-text text-2xl md:text-3xl text-neutral-400 leading-loose">
+              <span class="text-accent-secondary bg-accent-secondary/10 px-2 py-1 rounded-lg cursor-pointer" title="Learned in Vol 1, Lesson 1: That">ذَٰلِكَ</span>
+              <span class="text-accent-secondary bg-accent-secondary/10 px-2 py-1 rounded-lg cursor-pointer" title="Learned in Vol 1, Lesson 1: The Book">الْكِتَابُ</span>
+              <span class="text-neutral-500">لَا</span>
+              <span class="text-neutral-500">رَيْبَ</span>
+              <span class="text-accent-secondary bg-accent-secondary/10 px-2 py-1 rounded-lg cursor-pointer" title="Learned in Vol 2, Lesson 1: In it">فِيهِ</span>
+              <span class="text-neutral-500">هُدًى</span>
+              <span class="text-neutral-500">لِّلْمُتَّقِينَ</span>
+              <span class="text-neutral-600 font-mono text-sm px-1">۝٢</span>
+            </div>
+            <div class="quran-text text-2xl md:text-3xl text-neutral-400 leading-loose">
+              <span class="text-neutral-500">الَّذِينَ</span>
+              <span class="text-neutral-500">يُؤْمِنُونَ</span>
+              <span class="text-neutral-500">بِالْغَيْبِ</span>
+              <span class="text-neutral-500">وَيُقِيمُونَ</span>
+              <span class="text-neutral-500">الصَّلَاةَ</span>
+              <span class="text-neutral-500">وَمِمَّا</span>
+              <span class="text-neutral-500">رَزَقْنَاهُمْ</span>
+              <span class="text-neutral-500">يُنفِقُونَ</span>
+              <span class="text-neutral-600 font-mono text-sm px-1">۝٣</span>
+            </div>
+          </div>
+
+          <!-- Legend -->
+          <div class="flex flex-wrap items-center justify-center gap-6 pt-4 border-t border-neutral-800/80 text-xs text-neutral-400">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded bg-accent-secondary"></span>
+              <span>Mastered (Box 3-4): Confident Comprehension</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded bg-accent-primary"></span>
+              <span>Learning (Box 1-2): Recent Practice</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded bg-neutral-700"></span>
+              <span>Unencountered (Curriculum Ahead)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: ROADMAP & LIVING TASK MATRIX -->
+    <section id="roadmap" class="space-y-8">
+      <div class="border-b border-neutral-200 dark:border-neutral-800 pb-4">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">Execution Plan</h2>
+        <h3 class="text-2xl font-bold text-neutral-950 dark:text-white mt-1">Phased Implementation & Living Task Matrix</h3>
+      </div>
+
+      <div class="space-y-6">
+
+        <!-- Phase 1: Core Retention Engine -->
+        <div class="p-6 rounded-3xl bg-neutral-100 dark:bg-neutral-900 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-accent-primary-subtle text-accent-primary uppercase tracking-wider">Phase 1</span>
+            <span class="text-xs font-semibold text-accent-secondary">Ready to Implement</span>
+          </div>
+          <h4 class="text-lg font-bold text-neutral-950 dark:text-white">Retention Store & Single-Focus Primitives</h4>
+          
+          <div class="space-y-2 text-sm">
+            <div class="p-3 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+              <span class="font-medium text-neutral-800 dark:text-neutral-200">1.1 Build <code class="text-xs font-mono text-accent-primary">retentionStore.ts</code> (Item-level FSRS/SRS with interval decay)</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-500">Pending</span>
+            </div>
+            <div class="p-3 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+              <span class="font-medium text-neutral-800 dark:text-neutral-200">1.2 Standardize 5 Tier-1 Engines (<code class="text-xs font-mono text-accent-primary">HeroWordPrime</code>, <code class="text-xs font-mono text-accent-primary">WordChipAssembly</code>, etc.)</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-500">In Progress</span>
+            </div>
+            <div class="p-3 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+              <span class="font-medium text-neutral-800 dark:text-neutral-200">1.3 Purge <code class="text-xs font-mono text-rose-500">SCROLL_COMPLETE_TYPES</code> from <code class="text-xs font-mono">pedagogy.ts</code></span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-500">Pending</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 2: Lesson Session Runner -->
+        <div class="p-6 rounded-3xl bg-neutral-100 dark:bg-neutral-900 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-accent-primary-subtle text-accent-primary uppercase tracking-wider">Phase 2</span>
+            <span class="text-xs font-semibold text-neutral-500">Next Up</span>
+          </div>
+          <h4 class="text-lg font-bold text-neutral-950 dark:text-white">Unified Session Runner & Mistake Recovery</h4>
+          
+          <div class="space-y-2 text-sm">
+            <div class="p-3 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+              <span class="font-medium text-neutral-800 dark:text-neutral-200">2.1 Build <code class="text-xs font-mono text-accent-primary">LessonSessionRunner.tsx</code> with active queue & error queue</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200 dark:bg-neutral-800 text-neutral-500">Queued</span>
+            </div>
+            <div class="p-3 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+              <span class="font-medium text-neutral-800 dark:text-neutral-200">2.2 End-of-Session Summary Card (Accuracy %, Mistakes Cleared, Words Mastered)</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200 dark:bg-neutral-800 text-neutral-500">Queued</span>
+            </div>
+            <div class="p-3 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+              <span class="font-medium text-neutral-800 dark:text-neutral-200">2.3 Volume 1 Lesson 1 Vertical Slice (Verified against book scan pages 15-19)</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200 dark:bg-neutral-800 text-neutral-500">Queued</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 3: Words Analysis & Vault -->
+        <div class="p-6 rounded-3xl bg-neutral-100 dark:bg-neutral-900 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-accent-primary-subtle text-accent-primary uppercase tracking-wider">Phase 3</span>
+            <span class="text-xs font-semibold text-neutral-500">Queued</span>
+          </div>
+          <h4 class="text-lg font-bold text-neutral-950 dark:text-white">Lexical Vault & Words Analysis Page</h4>
+          
+          <div class="space-y-2 text-sm">
+            <div class="p-3 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+              <span class="font-medium text-neutral-800 dark:text-neutral-200">3.1 Create route <code class="text-xs font-mono text-accent-primary">/words</code> with vocabulary inventory and search</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200 dark:bg-neutral-800 text-neutral-500">Queued</span>
+            </div>
+            <div class="p-3 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+              <span class="font-medium text-neutral-800 dark:text-neutral-200">3.2 Trilateral root clustering and Quranic frequency tagging</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200 dark:bg-neutral-800 text-neutral-500">Queued</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 4: Mushaf Illumination Engine -->
+        <div class="p-6 rounded-3xl bg-neutral-100 dark:bg-neutral-900 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-accent-primary-subtle text-accent-primary uppercase tracking-wider">Phase 4</span>
+            <span class="text-xs font-semibold text-neutral-500">Queued</span>
+          </div>
+          <h4 class="text-lg font-bold text-neutral-950 dark:text-white">Quran Mushaf Heatmap & Illumination</h4>
+          
+          <div class="space-y-2 text-sm">
+            <div class="p-3 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+              <span class="font-medium text-neutral-800 dark:text-neutral-200">4.1 Lemma matching engine connecting curriculum items to <code class="text-xs font-mono">WordAPI.text_uthmani</code></span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200 dark:bg-neutral-800 text-neutral-500">Queued</span>
+            </div>
+            <div class="p-3 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+              <span class="font-medium text-neutral-800 dark:text-neutral-200">4.2 Mushaf UI highlights in <code class="text-xs font-mono">apps/web/src/routes/mushaf-v2/</code> with page % score</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200 dark:bg-neutral-800 text-neutral-500">Queued</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 5: Verbal & Advanced Morphology -->
+        <div class="p-6 rounded-3xl bg-neutral-100 dark:bg-neutral-900 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-accent-primary-subtle text-accent-primary uppercase tracking-wider">Phase 5</span>
+            <span class="text-xs font-semibold text-neutral-500">Volumes 2 & 3</span>
+          </div>
+          <h4 class="text-lg font-bold text-neutral-950 dark:text-white">Verbal Conjugation & Classical Discourse Engines</h4>
+          
+          <div class="space-y-2 text-sm">
+            <div class="p-3 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+              <span class="font-medium text-neutral-800 dark:text-neutral-200">5.1 <code class="text-xs font-mono text-accent-primary">ConjugationMatrix</code> & <code class="text-xs font-mono text-accent-primary">CaseEndingSelector</code> for Vol 2 verbs and I'rab</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200 dark:bg-neutral-800 text-neutral-500">Queued</span>
+            </div>
+            <div class="p-3 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+              <span class="font-medium text-neutral-800 dark:text-neutral-200">5.2 <code class="text-xs font-mono text-accent-primary">RootMorphologyDeriver</code> & <code class="text-xs font-mono text-accent-primary">PassageReader</code> for Vol 3 texts</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200 dark:bg-neutral-800 text-neutral-500">Queued</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-20 border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 py-10 transition-colors">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500 dark:text-neutral-400">
+      <div>Tariq Arabic Pedagogical Engine · Raw Neutral Architecture</div>
+      <div class="font-mono">Single Source of Truth: resources/pages/ · Verified Design System</div>
+    </div>
+  </footer>
+
+  <!-- Interactive Dark Mode Script -->
+  <script>
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const sunIcon = document.getElementById('themeIconSun');
+    const moonIcon = document.getElementById('themeIconMoon');
+
+    function updateIcons(isDark) {
+      if (isDark) {
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+      } else {
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+      }
+    }
+
+    const isInitiallyDark = document.documentElement.classList.contains('dark') || 
+      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+      localStorage.theme === 'dark';
+
+    if (isInitiallyDark) {
+      document.documentElement.classList.add('dark');
+      updateIcons(true);
+    } else {
+      document.documentElement.classList.remove('dark');
+      updateIcons(false);
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateIcons(isDark);
+    });
+  </script>
+</body>
+</html>

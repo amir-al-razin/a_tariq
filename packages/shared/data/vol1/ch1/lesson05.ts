@@ -1,136 +1,278 @@
 import type { LessonData } from '../../curriculum';
 
 export const lesson05: LessonData = {
-                darsNumber: 5,
-                chunks: [
-                    {
-                        id: '1-5-1',
-                        type: 'grammar_rule',
-                        titleEn: 'Singular Possessive Pronouns (My / Your / His / Her)',
-                        titleAr: 'ضَمَائِر المِلْكِيَّة المُفْرَدَة',
-                        payload: {
-                            rules: [
-                                { label: 'My (ـِي)', arabic: 'كِتَابِي', romanized: 'kitābī', meaning: 'My book', examples: [{ ar: 'قَلَمِي', en: 'My pen' }, { ar: 'مُعَلِّمِي', en: 'My teacher' }] },
-                                { label: 'Your - male (ـُكَ)', arabic: 'كِتَابُكَ', romanized: 'kitābuka', meaning: 'Your book (m)', examples: [{ ar: 'قَلَمُكَ', en: 'Your pen (m)' }] },
-                                { label: 'Your - female (ـُكِ)', arabic: 'كِتَابُكِ', romanized: 'kitābuki', meaning: 'Your book (f)', examples: [{ ar: 'سَاعَتُكِ', en: 'Your watch (f)' }] },
-                                { label: 'His (ـُهُ)', arabic: 'كِتَابُهُ', romanized: 'kitābuhu', meaning: 'His book', examples: [{ ar: 'مُعَلِّمُهُ', en: 'His teacher' }] },
-                                { label: 'Her (ـُهَا)', arabic: 'كِتَابُهَا', romanized: 'kitābuhā', meaning: 'Her book', examples: [{ ar: 'سَاعَتُهَا', en: 'Her watch' }] },
-                            ],
-                        },
-                    },
-                    {
-                        id: '1-5-2',
-                        type: 'vocabulary',
-                        titleEn: 'Family Members',
-                        titleAr: 'أَفْرَاد الأُسْرَة',
-                        payload: {
-                            words: [
-                                { id: 1, ar: 'أَبٌ', romanized: 'abun', en: 'Father', bn: 'আব্বা', emoji: '👨' },
-                                { id: 2, ar: 'أُمٌّ', romanized: 'ummun', en: 'Mother', bn: 'আম্মা', emoji: '👩' },
-                                { id: 3, ar: 'أَخٌ', romanized: 'akhun', en: 'Brother', bn: 'ভাই', emoji: '👦' },
-                                { id: 4, ar: 'أُخْتٌ', romanized: 'ukhtun', en: 'Sister', bn: 'বোন', emoji: '👧' },
-                                { id: 5, ar: 'عَمٌّ', romanized: "'ammun", en: 'Paternal Uncle', bn: 'চাচা', emoji: '👴' },
-                                { id: 6, ar: 'عَمَّةٌ', romanized: "'ammatun", en: 'Paternal Aunt', bn: 'ফুফু', emoji: '👵' },
-                                { id: 7, ar: 'خَالٌ', romanized: 'khālun', en: 'Maternal Uncle', bn: 'মামা', emoji: '🧔' },
-                                { id: 8, ar: 'خَالَةٌ', romanized: 'khālatun', en: 'Maternal Aunt', bn: 'খালা', emoji: '👱‍♀️' },
-                                { id: 9, ar: 'جَدٌّ', romanized: 'jaddun', en: 'Grandfather', bn: 'দাদা/নানা', emoji: '🧓' },
-                                { id: 10, ar: 'جَدَّةٌ', romanized: 'jaddatun', en: 'Grandmother', bn: 'দাদী/নানী', emoji: '👵' },
-                                { id: 11, ar: 'صَدِيقٌ', romanized: 'ṣadīqun', en: 'Friend', bn: 'বন্ধু', emoji: '🤝' },
-                                { id: 12, ar: 'اِسْمٌ', romanized: 'ismun', en: 'Name', bn: 'নাম', emoji: '🏷️' },
-                            ],
-                        },
-                    },
-                    {
-                        id: '1-5-3',
-                        type: 'grammar_rule',
-                        titleEn: 'Irregular: Father (أَبٌ) & Brother (أَخٌ)',
-                        titleAr: 'الأَسْمَاء الخَمْسَة: أَبٌ وَأَخٌ',
-                        payload: {
-                            rules: [
-                                {
-                                    label: 'Father with possessive pronouns',
-                                    arabic: 'أَبُوكَ',
-                                    romanized: 'abūka',
-                                    meaning: 'Your father (م adds و for non-my forms)',
-                                    examples: [
-                                        { ar: 'أَبِي (my father)', en: 'abī - My father' },
-                                        { ar: 'أَبُوكَ (your father)', en: 'abūka - Your father (m)' },
-                                        { ar: 'أَبُوهُ (his father)', en: 'abūhu - His father' },
-                                    ],
-                                },
-                                {
-                                    label: 'Brother with possessive pronouns',
-                                    arabic: 'أَخُوكَ',
-                                    romanized: 'akhūka',
-                                    meaning: 'Your brother (adds و for non-my forms)',
-                                    examples: [
-                                        { ar: 'أَخِي (my brother)', en: 'akhī - My brother' },
-                                        { ar: 'أَخُوكَ (your brother)', en: 'akhūka - Your brother (m)' },
-                                        { ar: 'أَخُوهَا (her brother)', en: 'akhūhā - Her brother' },
-                                    ],
-                                },
-                            ],
-                        },
-                    },
-                    {
-                        id: '1-5-4',
-                        type: 'q_and_a',
-                        titleEn: 'Possessive Pronoun Q&A',
-                        titleAr: 'أَسْئِلَة الضَّمَائِر المِلْكِيَّة',
-                        payload: {
-                            instruction: 'Read the Q&A and say the meaning',
-                            questions: [
-                                { emoji: '👦', question_ar: 'مَا اسْمُكَ يَا وَلَدُ ؟', question_en: 'What is your name, O boy?', correct_ar: 'اِسْمِي شَاهِدٌ', correct_en: 'My name is Shahid.', options_ar: ['اِسْمِي شَاهِدٌ', 'اِسْمُهُ شَاهِدٌ', 'اِسْمُكَ شَاهِدٌ'] },
-                                { emoji: '🖊️', question_ar: 'كَيْفَ قَلَمُكَ ؟', question_en: 'How is your pen?', correct_ar: 'قَلَمِي جَيِّدٌ', correct_en: 'My pen is good.', options_ar: ['قَلَمِي جَيِّدٌ', 'قَلَمُهُ كَبِيرٌ', 'قَلَمُكَ جَدِيدٌ'] },
-                                { emoji: '👧', question_ar: 'هَلْ فَاطِمَةُ أُخْتُكَ ؟', question_en: 'Is Fatima your sister?', correct_ar: 'نَعَمْ، هِيَ أُخْتِي', correct_en: 'Yes, she is my sister.', options_ar: ['نَعَمْ، هِيَ أُخْتِي', 'لَا، هِيَ أُمِّي', 'بَلْ هِيَ أُخْتُهُ'] },
-                            ],
-                        },
-                    },
-                    {
-                        id: '1-5-5',
-                        type: 'grammar_rule',
-                        titleEn: 'Plural Possessive Pronouns (Our / Your [pl] / Their)',
-                        titleAr: 'ضَمَائِر المِلْكِيَّة الجَمْع',
-                        payload: {
-                            rules: [
-                                { label: 'Our (ـُنَا)', arabic: 'كِتَابُنَا', romanized: 'kitābunā', meaning: 'Our book', examples: [{ ar: 'اللهُ رَبُّنَا', en: 'Allah is our Lord' }, { ar: 'الْإِسْلَامُ دِيْنُنَا', en: 'Islam is our religion' }] },
-                                { label: 'Your plural - male (ـُكُمْ)', arabic: 'كِتَابُكُمْ', romanized: 'kitābukum', meaning: 'Your book (pl. m)', examples: [{ ar: 'رَبُّكُمْ', en: 'Your Lord (pl)' }] },
-                                { label: 'Their - male (ـُهُمْ)', arabic: 'كِتَابُهُمْ', romanized: 'kitābuhum', meaning: 'Their book (m)', examples: [{ ar: 'مُعَلِّمُهُمْ', en: 'Their teacher (m)' }] },
-                            ],
-                        },
-                    },
-                    {
-                        id: '1-5-6',
-                        type: 'application',
-                        titleEn: 'Possessive Reading Passage',
-                        titleAr: 'قِرَاءَة تَطْبِيقِيَّة لِلْمِلْكِيَّة',
-                        payload: {
-                            items: [
-                                { emoji: '🏷️', ar: 'اِسْمِي شَاهِدٌ - هٰذَا كِتَابِي وَذٰلِكَ قَلَمِي', en: 'My name is Shahid - this is my book and that is my pen.' },
-                                { emoji: '🎒', ar: 'هٰذِهِ حَقِيبَتِي وَتِلْكَ كُرَّاسَتِي', en: 'This is my bag and that is my notebook.' },
-                                { emoji: '👧', ar: 'فَاطِمَةُ أُخْتِي وَأَنَا أَخُوهَا', en: 'Fatima is my sister and I am her brother.' },
-                                { emoji: '🚪', ar: 'غُرْفَتِي نَظِيفَةٌ وَبَابُهَا مَفْتُوحٌ', en: 'My room is clean and its door is open.' },
-                                { emoji: '👨‍🏫', ar: 'بَشِيرٌ مُعَلِّمِي وَأَنَا تِلْمِيذُهُ', en: 'Bashir is my teacher and I am his student.' },
-                                { emoji: '👨‍👩‍👧', ar: 'أَبُونَا رَجُلٌ طَيِّبٌ وَأُمُّنَا امْرَأَةٌ طَيِّبَةٌ', en: 'Our father is a good man and our mother is a good woman.' },
-                                { emoji: '🕌', ar: 'اللهُ رَبُّنَا وَرَبُّكُمْ - الإِسْلَامُ دِينُنَا وَدِينُكُمْ', en: 'Allah is our Lord and your Lord - Islam is our religion and your religion.' },
-                            ],
-                        },
-                    },
-                    {
-                        id: '1-5-7',
-                        type: 'assessment',
-                        titleEn: 'Possessive Pronoun Assessment',
-                        titleAr: 'تَقْيِيم ضَمَائِر المِلْكِيَّة',
-                        payload: {
-                            instruction: 'Pick the correct possessive form based on Lesson 5 patterns.',
-                            questions: [
-                                { emoji: '🖊️', question_ar: 'هَلْ هٰذَا قَلَمُكَ ؟', question_en: 'Is this your pen?', correct_ar: 'نَعَمْ، هٰذَا قَلَمِي', correct_en: 'Yes, this is my pen.', options_ar: ['نَعَمْ، هٰذَا قَلَمِي', 'نَعَمْ، هٰذَا قَلَمُهُ', 'لَا، هُوَ قَلَمُكَ'] },
-                                { emoji: '👧', question_ar: 'هَلْ فَاطِمَةُ أُخْتُكَ ؟', question_en: 'Is Fatima your sister?', correct_ar: 'نَعَمْ، هِيَ أُخْتِي', correct_en: 'Yes, she is my sister.', options_ar: ['نَعَمْ، هِيَ أُخْتِي', 'لَا، هِيَ أُمِّي', 'هِيَ أُخْتُهُ'] },
-                                { emoji: '📿', question_ar: 'يَا زَيْنَبُ! هَلْ هٰذَا عِقْدُكِ ؟', question_en: 'O Zainab! Is this your necklace?', correct_ar: 'نَعَمْ، هٰذَا عِقْدِي', correct_en: 'Yes, this is my necklace.', options_ar: ['نَعَمْ، هٰذَا عِقْدِي', 'نَعَمْ، هٰذَا عِقْدُهَا', 'لَا، هٰذَا عِقْدُكَ'] },
-                                { emoji: '🌙', question_ar: 'مَنْ رَبُّكَ يَا مُسْلِمُ ؟', question_en: 'Who is your Lord, O Muslim?', correct_ar: 'رَبِّيَ اللهُ', correct_en: 'My Lord is Allah.', options_ar: ['رَبِّيَ اللهُ', 'دِينِي الإِسْلَامُ', 'هُوَ تِلْمِيذٌ'] },
-                                { emoji: '🕋', question_ar: 'مَا قِبْلَتُنَا وَقِبْلَتُكُمْ ؟', question_en: 'What is our and your qiblah?', correct_ar: 'الْكَعْبَةُ قِبْلَتُنَا وَقِبْلَتُكُمْ', correct_en: 'The Kaaba is our qiblah and your qiblah.', options_ar: ['الْكَعْبَةُ قِبْلَتُنَا وَقِبْلَتُكُمْ', 'الْقُرْآنُ كِتَابُنَا', 'الْجَنَّةُ دَارُنَا'] },
-                            ],
-                        },
-                    },
-                ],
-            };
+  darsNumber: 5,
+  chunks: [
+    {
+      id: '1-5-1',
+      type: 'grammar_rule',
+      titleEn: 'Singular Possessive Pronouns (My / Your / His / Her)',
+      titleAr: 'ضَمَائِر المِلْكِيَّة المُفْرَدَة',
+      payload: {
+        rules: [
+          {
+            label: 'My (ـِي)',
+            arabic: 'كِتَابِي',
+            romanized: 'kitābī',
+            meaning: 'My book',
+            examples: [
+              { ar: 'قَلَمِي', en: 'My pen' },
+              { ar: 'مُعَلِّمِي', en: 'My teacher' },
+            ],
+          },
+          {
+            label: 'Your - male (ـُكَ)',
+            arabic: 'كِتَابُكَ',
+            romanized: 'kitābuka',
+            meaning: 'Your book (m)',
+            examples: [{ ar: 'قَلَمُكَ', en: 'Your pen (m)' }],
+          },
+          {
+            label: 'Your - female (ـُكِ)',
+            arabic: 'كِتَابُكِ',
+            romanized: 'kitābuki',
+            meaning: 'Your book (f)',
+            examples: [{ ar: 'سَاعَتُكِ', en: 'Your watch (f)' }],
+          },
+          {
+            label: 'His (ـُهُ)',
+            arabic: 'كِتَابُهُ',
+            romanized: 'kitābuhu',
+            meaning: 'His book',
+            examples: [{ ar: 'مُعَلِّمُهُ', en: 'His teacher' }],
+          },
+          {
+            label: 'Her (ـُهَا)',
+            arabic: 'كِتَابُهَا',
+            romanized: 'kitābuhā',
+            meaning: 'Her book',
+            examples: [{ ar: 'سَاعَتُهَا', en: 'Her watch' }],
+          },
+        ],
+      },
+    },
+    {
+      id: '1-5-2',
+      type: 'vocabulary',
+      titleEn: 'Family Members',
+      titleAr: 'أَفْرَاد الأُسْرَة',
+      payload: {
+        words: [
+          { id: 1, ar: 'أَبٌ', romanized: 'abun', en: 'Father', emoji: '👨' },
+          { id: 2, ar: 'أُمٌّ', romanized: 'ummun', en: 'Mother', emoji: '👩' },
+          { id: 3, ar: 'أَخٌ', romanized: 'akhun', en: 'Brother', emoji: '👦' },
+          { id: 4, ar: 'أُخْتٌ', romanized: 'ukhtun', en: 'Sister', emoji: '👧' },
+          { id: 5, ar: 'عَمٌّ', romanized: "'ammun", en: 'Paternal Uncle', emoji: '👴' },
+          { id: 6, ar: 'عَمَّةٌ', romanized: "'ammatun", en: 'Paternal Aunt', emoji: '👵' },
+          { id: 7, ar: 'خَالٌ', romanized: 'khālun', en: 'Maternal Uncle', emoji: '🧔' },
+          { id: 8, ar: 'خَالَةٌ', romanized: 'khālatun', en: 'Maternal Aunt', emoji: '👱‍♀️' },
+          { id: 9, ar: 'جَدٌّ', romanized: 'jaddun', en: 'Grandfather', emoji: '🧓' },
+          { id: 10, ar: 'جَدَّةٌ', romanized: 'jaddatun', en: 'Grandmother', emoji: '👵' },
+          { id: 11, ar: 'صَدِيقٌ', romanized: 'ṣadīqun', en: 'Friend', emoji: '🤝' },
+          { id: 12, ar: 'اِسْمٌ', romanized: 'ismun', en: 'Name', emoji: '🏷️' },
+        ],
+      },
+    },
+    {
+      id: '1-5-3',
+      type: 'grammar_rule',
+      titleEn: 'Irregular: Father (أَبٌ) & Brother (أَخٌ)',
+      titleAr: 'الأَسْمَاء الخَمْسَة: أَبٌ وَأَخٌ',
+      payload: {
+        rules: [
+          {
+            label: 'Father with possessive pronouns',
+            arabic: 'أَبُوكَ',
+            romanized: 'abūka',
+            meaning: 'Your father (م adds و for non-my forms)',
+            examples: [
+              { ar: 'أَبِي (my father)', en: 'abī - My father' },
+              { ar: 'أَبُوكَ (your father)', en: 'abūka - Your father (m)' },
+              { ar: 'أَبُوهُ (his father)', en: 'abūhu - His father' },
+            ],
+          },
+          {
+            label: 'Brother with possessive pronouns',
+            arabic: 'أَخُوكَ',
+            romanized: 'akhūka',
+            meaning: 'Your brother (adds و for non-my forms)',
+            examples: [
+              { ar: 'أَخِي (my brother)', en: 'akhī - My brother' },
+              { ar: 'أَخُوكَ (your brother)', en: 'akhūka - Your brother (m)' },
+              { ar: 'أَخُوهَا (her brother)', en: 'akhūhā - Her brother' },
+            ],
+          },
+        ],
+      },
+    },
+    {
+      id: '1-5-4',
+      type: 'q_and_a',
+      titleEn: 'Possessive Pronoun Q&A',
+      titleAr: 'أَسْئِلَة الضَّمَائِر المِلْكِيَّة',
+      payload: {
+        instruction: 'Read the Q&A and say the meaning',
+        questions: [
+          {
+            emoji: '👦',
+            question_ar: 'مَا اسْمُكَ يَا وَلَدُ ؟',
+            question_en: 'What is your name, O boy?',
+            correct_ar: 'اِسْمِي شَاهِدٌ',
+            correct_en: 'My name is Shahid.',
+            options_ar: ['اِسْمِي شَاهِدٌ', 'اِسْمُهُ شَاهِدٌ', 'اِسْمُكَ شَاهِدٌ'],
+          },
+          {
+            emoji: '🖊️',
+            question_ar: 'كَيْفَ قَلَمُكَ ؟',
+            question_en: 'How is your pen?',
+            correct_ar: 'قَلَمِي جَيِّدٌ',
+            correct_en: 'My pen is good.',
+            options_ar: ['قَلَمِي جَيِّدٌ', 'قَلَمُهُ كَبِيرٌ', 'قَلَمُكَ جَدِيدٌ'],
+          },
+          {
+            emoji: '👧',
+            question_ar: 'هَلْ فَاطِمَةُ أُخْتُكَ ؟',
+            question_en: 'Is Fatima your sister?',
+            correct_ar: 'نَعَمْ، هِيَ أُخْتِي',
+            correct_en: 'Yes, she is my sister.',
+            options_ar: ['نَعَمْ، هِيَ أُخْتِي', 'لَا، هِيَ أُمِّي', 'بَلْ هِيَ أُخْتُهُ'],
+          },
+        ],
+      },
+    },
+    {
+      id: '1-5-5',
+      type: 'grammar_rule',
+      titleEn: 'Plural Possessive Pronouns (Our / Your [pl] / Their)',
+      titleAr: 'ضَمَائِر المِلْكِيَّة الجَمْع',
+      payload: {
+        rules: [
+          {
+            label: 'Our (ـُنَا)',
+            arabic: 'كِتَابُنَا',
+            romanized: 'kitābunā',
+            meaning: 'Our book',
+            examples: [
+              { ar: 'اللهُ رَبُّنَا', en: 'Allah is our Lord' },
+              { ar: 'الْإِسْلَامُ دِيْنُنَا', en: 'Islam is our religion' },
+            ],
+          },
+          {
+            label: 'Your plural - male (ـُكُمْ)',
+            arabic: 'كِتَابُكُمْ',
+            romanized: 'kitābukum',
+            meaning: 'Your book (pl. m)',
+            examples: [{ ar: 'رَبُّكُمْ', en: 'Your Lord (pl)' }],
+          },
+          {
+            label: 'Their - male (ـُهُمْ)',
+            arabic: 'كِتَابُهُمْ',
+            romanized: 'kitābuhum',
+            meaning: 'Their book (m)',
+            examples: [{ ar: 'مُعَلِّمُهُمْ', en: 'Their teacher (m)' }],
+          },
+        ],
+      },
+    },
+    {
+      id: '1-5-6',
+      type: 'application',
+      titleEn: 'Possessive Reading Passage',
+      titleAr: 'قِرَاءَة تَطْبِيقِيَّة لِلْمِلْكِيَّة',
+      payload: {
+        items: [
+          {
+            emoji: '🏷️',
+            ar: 'اِسْمِي شَاهِدٌ - هٰذَا كِتَابِي وَذٰلِكَ قَلَمِي',
+            en: 'My name is Shahid - this is my book and that is my pen.',
+          },
+          {
+            emoji: '🎒',
+            ar: 'هٰذِهِ حَقِيبَتِي وَتِلْكَ كُرَّاسَتِي',
+            en: 'This is my bag and that is my notebook.',
+          },
+          {
+            emoji: '👧',
+            ar: 'فَاطِمَةُ أُخْتِي وَأَنَا أَخُوهَا',
+            en: 'Fatima is my sister and I am her brother.',
+          },
+          {
+            emoji: '🚪',
+            ar: 'غُرْفَتِي نَظِيفَةٌ وَبَابُهَا مَفْتُوحٌ',
+            en: 'My room is clean and its door is open.',
+          },
+          {
+            emoji: '👨‍🏫',
+            ar: 'بَشِيرٌ مُعَلِّمِي وَأَنَا تِلْمِيذُهُ',
+            en: 'Bashir is my teacher and I am his student.',
+          },
+          {
+            emoji: '👨‍👩‍👧',
+            ar: 'أَبُونَا رَجُلٌ طَيِّبٌ وَأُمُّنَا امْرَأَةٌ طَيِّبَةٌ',
+            en: 'Our father is a good man and our mother is a good woman.',
+          },
+          {
+            emoji: '🕌',
+            ar: 'اللهُ رَبُّنَا وَرَبُّكُمْ - الإِسْلَامُ دِينُنَا وَدِينُكُمْ',
+            en: 'Allah is our Lord and your Lord - Islam is our religion and your religion.',
+          },
+        ],
+      },
+    },
+    {
+      id: '1-5-7',
+      type: 'assessment',
+      titleEn: 'Possessive Pronoun Assessment',
+      titleAr: 'تَقْيِيم ضَمَائِر المِلْكِيَّة',
+      payload: {
+        instruction: 'Pick the correct possessive form based on Lesson 5 patterns.',
+        questions: [
+          {
+            emoji: '🖊️',
+            question_ar: 'هَلْ هٰذَا قَلَمُكَ ؟',
+            question_en: 'Is this your pen?',
+            correct_ar: 'نَعَمْ، هٰذَا قَلَمِي',
+            correct_en: 'Yes, this is my pen.',
+            options_ar: ['نَعَمْ، هٰذَا قَلَمِي', 'نَعَمْ، هٰذَا قَلَمُهُ', 'لَا، هُوَ قَلَمُكَ'],
+          },
+          {
+            emoji: '👧',
+            question_ar: 'هَلْ فَاطِمَةُ أُخْتُكَ ؟',
+            question_en: 'Is Fatima your sister?',
+            correct_ar: 'نَعَمْ، هِيَ أُخْتِي',
+            correct_en: 'Yes, she is my sister.',
+            options_ar: ['نَعَمْ، هِيَ أُخْتِي', 'لَا، هِيَ أُمِّي', 'هِيَ أُخْتُهُ'],
+          },
+          {
+            emoji: '📿',
+            question_ar: 'يَا زَيْنَبُ! هَلْ هٰذَا عِقْدُكِ ؟',
+            question_en: 'O Zainab! Is this your necklace?',
+            correct_ar: 'نَعَمْ، هٰذَا عِقْدِي',
+            correct_en: 'Yes, this is my necklace.',
+            options_ar: ['نَعَمْ، هٰذَا عِقْدِي', 'نَعَمْ، هٰذَا عِقْدُهَا', 'لَا، هٰذَا عِقْدُكَ'],
+          },
+          {
+            emoji: '🌙',
+            question_ar: 'مَنْ رَبُّكَ يَا مُسْلِمُ ؟',
+            question_en: 'Who is your Lord, O Muslim?',
+            correct_ar: 'رَبِّيَ اللهُ',
+            correct_en: 'My Lord is Allah.',
+            options_ar: ['رَبِّيَ اللهُ', 'دِينِي الإِسْلَامُ', 'هُوَ تِلْمِيذٌ'],
+          },
+          {
+            emoji: '🕋',
+            question_ar: 'مَا قِبْلَتُنَا وَقِبْلَتُكُمْ ؟',
+            question_en: 'What is our and your qiblah?',
+            correct_ar: 'الْكَعْبَةُ قِبْلَتُنَا وَقِبْلَتُكُمْ',
+            correct_en: 'The Kaaba is our qiblah and your qiblah.',
+            options_ar: [
+              'الْكَعْبَةُ قِبْلَتُنَا وَقِبْلَتُكُمْ',
+              'الْقُرْآنُ كِتَابُنَا',
+              'الْجَنَّةُ دَارُنَا',
+            ],
+          },
+        ],
+      },
+    },
+  ],
+};

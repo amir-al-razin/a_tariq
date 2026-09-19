@@ -1,0 +1,642 @@
+// Chapter 3 Lesson 1 Interactive Session Steps (Idafah with Demonstrative Pointers & The Sacred House)
+import type { LessonSessionData, SessionStep } from './lessonSessionTypes';
+
+export const CH3_LESSON_01_STEPS: SessionStep[] = [
+  // 1. Spatial Pointing Anchor: Demonstrative with the Sacred House
+  {
+    id: 'ch3-l1-step-1-spatial-house',
+    type: 'spatial_pointing',
+    pageNumber: 90,
+    titleEn: 'Spatial Anchor: Demonstrative with Definite House',
+    titleAr: 'الإِشَارَةُ المَكَانِيَّةُ: هَذَا البَيْتُ الْمُقَدَّسُ',
+    instructionEn: 'Point to this sacred House standing before you.',
+    instructionBn: 'আপনার সামনে অবস্থিত এই বরকতময় ঘরের দিকে ইঙ্গিত করুন।',
+    spatialPointingPayload: {
+      objectAr: 'الْبَيْتُ',
+      distance: 'near',
+      gender: 'masculine',
+      correctAnswer: 'هَذَا الْبَيْتُ',
+      options: ['هَذَا الْبَيْتُ', 'هَذِهِ الْبَيْتُ', 'ذَلِكَ الْبَيْتُ', 'تِلْكَ الْبَيْتُ'],
+      emoji: '🕋',
+    },
+  },
+
+  // 2. Primary Vocabulary Priming: The Sacred House & Royalty
+  {
+    id: 'ch3-l1-step-2-vocab-sacred',
+    type: 'vocab_prime',
+    pageNumber: 90,
+    titleEn: 'The Sacred House, Custodianship & Royalty',
+    titleAr: 'مُفْرَدَاتُ البَيْتِ الحَرَامِ وَالسِّيَادَةِ',
+    instructionEn: 'Listen to classical Arabic terms for coverings, custodianship, tranquility, and kingship.',
+    instructionBn: 'পবিত্র কাবাঘর, গিলাফ, সেবক, ছায়া ও বাদশাহ সম্পর্কিত আরবি শব্দগুলো শুনুন।',
+    vocabPayload: {
+      words: [
+        {
+          id: 'c3l1-ghilaf',
+          ar: 'غِلَافٌ',
+          en: 'A cover / drape / Kiswah',
+          bn: 'একটি গিলাফ বা আবরণ',
+          romanized: 'ghilāfun',
+          emoji: '🕋',
+        },
+        {
+          id: 'c3l1-zill',
+          ar: 'ظِلٌّ',
+          en: 'Shade / shadow',
+          bn: 'ছায়া',
+          romanized: 'ẓillun',
+          emoji: '🌤️',
+        },
+        {
+          id: 'c3l1-khadim',
+          ar: 'خَادِمٌ',
+          en: 'A servant / caretaker',
+          bn: 'একজন সেবক বা খাদেম',
+          romanized: 'khādimun',
+          emoji: '🙇',
+        },
+        {
+          id: 'c3l1-salih',
+          ar: 'صَالِحٌ',
+          en: 'Pious / righteous',
+          bn: 'নেককার বা সৎকর্মশীল',
+          romanized: 'ṣāliḥun',
+          emoji: '✨',
+        },
+        {
+          id: 'c3l1-malik',
+          ar: 'مَلِكٌ',
+          en: 'A king / ruler',
+          bn: 'একজন রাজা বা বাদশাহ',
+          romanized: 'malikun',
+          emoji: '👑',
+        },
+        {
+          id: 'c3l1-murih',
+          ar: 'مُرِيحٌ',
+          en: 'Comfortable / restful',
+          bn: 'আরামদায়ক',
+          romanized: 'murīḥun',
+          emoji: '😌',
+        },
+      ],
+    },
+  },
+
+  // 3. Secondary Vocabulary Priming: Aesthetics, Administration & Media
+  {
+    id: 'ch3-l1-step-3-vocab-media',
+    type: 'vocab_prime',
+    pageNumber: 90,
+    titleEn: 'Aesthetics, Leadership & Media',
+    titleAr: 'مُفْرَدَاتُ الإِدَارَةِ وَالإِعْلَامِ وَالرَّاحَةِ',
+    instructionEn: 'Learn essential terms for leadership, community figures, literature, and inner peace.',
+    instructionBn: 'নেতৃত্ব, আলেম, পরিচালক, সংবাদপত্র ও প্রশান্তির আরবি শব্দগুলো জানুন।',
+    vocabPayload: {
+      words: [
+        {
+          id: 'c3l1-surah',
+          ar: 'صُورَةٌ',
+          en: 'A picture / portrait',
+          bn: 'একটি ছবি',
+          romanized: 'ṣūratun',
+          emoji: '🖼️',
+        },
+        {
+          id: 'c3l1-rahah',
+          ar: 'رَاحَةٌ',
+          en: 'Peace / rest / tranquility',
+          bn: 'শান্তি বা প্রশান্তি',
+          romanized: 'rāḥatun',
+          emoji: '🕊️',
+        },
+        {
+          id: 'c3l1-mudir',
+          ar: 'مُدِيرٌ',
+          en: 'A director / principal',
+          bn: 'একজন পরিচালক বা প্রধান শিক্ষক',
+          romanized: 'mudīrun',
+          emoji: '👔',
+        },
+        {
+          id: 'c3l1-muadhdhin',
+          ar: 'مُؤَذِّنٌ',
+          en: 'A caller to prayer / muezzin',
+          bn: 'মুয়াজ্জিন',
+          romanized: "mu'adhdhinun",
+          emoji: '📢',
+        },
+        {
+          id: 'c3l1-jaridah',
+          ar: 'جَرِيدَةٌ',
+          en: 'A newspaper',
+          bn: 'একটি পত্রিকা',
+          romanized: 'jarīdatun',
+          emoji: '📰',
+        },
+        {
+          id: 'c3l1-katib',
+          ar: 'كَاتِبٌ',
+          en: 'A writer / author',
+          bn: 'একজন লেখক',
+          romanized: 'kātibun',
+          emoji: '✍️',
+        },
+      ],
+    },
+  },
+
+  // 4. Synaptic Speed Match: Sacred & Civic Terminology
+  {
+    id: 'ch3-l1-step-4-speed-sacred',
+    type: 'speed_pair',
+    pageNumber: 90,
+    titleEn: 'Synaptic Speed Pairing: Sacred & Leadership Lexicon',
+    titleAr: 'التَّطَابُقُ السَّرِيعُ: مُفْرَدَاتُ الشَّرَفِ',
+    instructionEn: 'Quickly match the Arabic vocabulary with their English meanings.',
+    instructionBn: 'মর্যাদা ও সমাজ সম্পর্কিত আরবি শব্দের সাথে অর্থের দ্রুত মিল করুন।',
+    pairPayload: {
+      pairs: [
+        { id: 'p-c3l1-1', ar: 'غِلَافٌ', meaning: 'Drape / Kiswah' },
+        { id: 'p-c3l1-2', ar: 'خَادِمٌ', meaning: 'Caretaker / servant' },
+        { id: 'p-c3l1-3', ar: 'مَلِكٌ', meaning: 'King' },
+        { id: 'p-c3l1-4', ar: 'ظِلٌّ', meaning: 'Shade / shadow' },
+        { id: 'p-c3l1-5', ar: 'صَالِحٌ', meaning: 'Righteous' },
+        { id: 'p-c3l1-6', ar: 'رَاحَةٌ', meaning: 'Peace / rest' },
+      ],
+    },
+  },
+
+  // 5. Concept Discovery: Idafah with Demonstrative Pointer and Badal
+  {
+    id: 'ch3-l1-step-5-concept-pointer-idafah',
+    type: 'concept_intro',
+    pageNumber: 90,
+    titleEn: 'Grammar Paradigm: Idafah with Demonstrative Pointer & Badal',
+    titleAr: 'قَاعِدَةٌ: الإِضَافَةُ إِلَى اسْمِ الإِشَارَةِ وَالبَدَلِ',
+    instructionEn: 'When a noun attaches to a demonstrative phrase («بَابُ هَذَا الْبَيْتِ»), the demonstrative serves as the Mudaf Ilayh while the definite noun functions as Badal taking explicit Kasrah (ـِ).',
+    instructionBn: 'যখন কোনো পদ ইশারাবিশিষ্ট বিশেষ্যের সাথে সম্বন্ধযুক্ত হয় («بَابُ هَذَا الْبَيْتِ»), তখন ইশারাটি মুদাফ ইলাইহি হয় এবং পরবর্তী নির্দিষ্ট বিশেষ্যটি বদল হিসেবে কাসরাহ (যের) গ্রহণ করে।',
+    conceptPayload: {
+      concepts: [
+        {
+          id: 'cp-c3l1-door-house',
+          ar: 'بَابُ هَذَا الْبَيْتِ',
+          romanized: 'bābu hādhā al-bayti',
+          meaningEn: 'The door of this house (Mudaf + Pointer + Badal).',
+          meaningBn: 'এই ঘরের দরজা।',
+          exampleAr: 'بَابُ هَذَا الْبَيْتِ مَفْتُوحٌ',
+          exampleEn: 'The door of this house is open.',
+          exampleBn: 'এই ঘরের দরজা খোলা।',
+          audioKey: 'babu_hadha_al_bayti',
+          exampleAudioKey: 'babu_hadha_al_bayti_maftuh',
+          emoji: '🚪',
+        },
+        {
+          id: 'cp-c3l1-imam-masjid',
+          ar: 'إِمَامُ هَذَا الْمَسْجِدِ',
+          romanized: 'imāmu hādhā al-masjidi',
+          meaningEn: 'The imam of this mosque.',
+          meaningBn: 'এই মসজিদের ইমাম।',
+          exampleAr: 'إِمَامُ هَذَا الْمَسْجِدِ عَالِمٌ كَبِيرٌ',
+          exampleEn: 'The imam of this mosque is a great scholar.',
+          exampleBn: 'এই মসজিদের ইমাম একজন বড় আলেম।',
+          audioKey: 'imamu_hadha_al_masjidi',
+          exampleAudioKey: 'imamu_hadha_al_masjidi_alimun_kabir',
+          emoji: '🕌',
+        },
+      ],
+    },
+  },
+
+  // 6. Deep Pedagogical Concept: Creedal & Custodial Proclamations
+  {
+    id: 'ch3-l1-step-6-concept-sacred-creed',
+    type: 'concept_intro',
+    pageNumber: 90,
+    titleEn: 'Syntactic Mastery: The Architecture of the Holy Sanctuary',
+    titleAr: 'قَاعِدَةٌ: التَّرْكِيبُ فِي تَعْظِيمِ البَيْتِ الحَرَامِ',
+    instructionEn: 'Observe how the demonstrative possessive construct exalts the sanctuary in nominal assertions of sovereignty, custodianship, and sanctuary comfort.',
+    instructionBn: 'পবিত্র কাবাঘরের ক্ষেত্রে কীভাবে মুদাফ ও ইশারার সমন্বয়ে সার্বভৌমত্ব, সেবকের মর্যাদা ও প্রশান্তির বাক্য গঠিত হয় তা লক্ষ্য করুন।',
+    conceptPayload: {
+      concepts: [
+        {
+          id: 'cp-c3l1-lord-house',
+          ar: 'اللَّهُ رَبُّ هَذَا الْبَيْتِ',
+          romanized: 'Allāhu rabbu hādhā al-bayti',
+          meaningEn: 'Allah is the Lord of this House.',
+          meaningBn: 'আল্লাহ এই ঘরের প্রতিপালক।',
+          exampleAr: 'اللَّهُ رَبُّ هَذَا الْبَيْتِ ، وَالْمَلِكُ خَادِمُ هَذَا الْبَيْتِ',
+          exampleEn: 'Allah is the Lord of this House, and the king is the servant of this House.',
+          exampleBn: 'আল্লাহ এই ঘরের প্রতিপালক, এবং বাদশাহ এই ঘরের সেবক।',
+          audioKey: 'allahu_rabbu_hadha_al_bayti',
+          exampleAudioKey: 'allahu_rabbu_hadha_al_bayti_wa_al_maliku_khadim',
+          emoji: '🕋',
+        },
+        {
+          id: 'cp-c3l1-shade-house',
+          ar: 'فِي ظِلِّ هَذَا الْبَيْتِ رَاحَةٌ',
+          romanized: 'fī ẓilli hādhā al-bayti rāḥatun',
+          meaningEn: 'In the shade of this House is peace.',
+          meaningBn: 'এই ঘরের ছায়ায় রয়েছে পরম শান্তি।',
+          exampleAr: 'ظِلُّ هَذَا الْبَيْتِ مُرِيحٌ ، فِي ظِلِّهِ رَاحَةٌ',
+          exampleEn: 'The shade of this House is restful; in its shade is peace.',
+          exampleBn: 'এই ঘরের ছায়া আরামদায়ক; এর ছায়ায় শান্তি রয়েছে।',
+          audioKey: 'fi_zilli_hadha_al_bayti_rahah',
+          exampleAudioKey: 'zillu_hadha_al_bayti_murih_fi_zillihi_rahah',
+          emoji: '🌤️',
+        },
+      ],
+    },
+  },
+
+  // 7. Polar Sort 1: Gender Concord of Demonstrative in Idafah
+  {
+    id: 'ch3-l1-step-7-polar-gender-idafah',
+    type: 'polar_sort',
+    pageNumber: 91,
+    titleEn: 'Binary Gender Concord: Demonstrative Pointer in Idafah',
+    titleAr: 'تَطَابُقُ التَّذْكِيرِ وَالتَّأْنِيثِ فِي الإِضَافَةِ',
+    instructionEn: 'Select the correct feminine demonstrative pointer for: "The door of this room" («بَابُ ... الْغُرْفَةِ»).',
+    instructionBn: '"এই কামরার দরজা" («بَابُ ... الْغُرْفَةِ») বাক্যাংশের জন্য সঠিক স্ত্রীলিঙ্গ ইশারাটি নির্বাচন করুন।',
+    polarPayload: {
+      arabicSubject: 'الْغُرْفَةِ',
+      meaningEn: 'The room (feminine noun)',
+      meaningBn: 'কামরাটি (স্ত্রীবাচক বিশেষ্য)',
+      gender: 'feminine',
+      correctAnswer: 'بَابُ هَذِهِ الْغُرْفَةِ',
+      options: ['بَابُ هَذَا الْغُرْفَةِ', 'بَابُ هَذِهِ الْغُرْفَةِ'],
+      emoji: '🚪',
+    },
+  },
+
+  // 8. Polar Sort 2: Distance Pointer Concord in Idafah
+  {
+    id: 'ch3-l1-step-8-polar-distance-idafah',
+    type: 'polar_sort',
+    pageNumber: 90,
+    titleEn: 'Binary Distance Concord: Far vs Near Pointer in Idafah',
+    titleAr: 'تَمْيِيزُ الإِشَارَةِ لِلْقَرِيبِ وَالبَعِيدِ',
+    instructionEn: 'Select the distant masculine pointer to form "The key to that lock": «مِفْتَاحُ ... الْقُفْلِ».',
+    instructionBn: '"ওই তালার চাবি" বোঝাতে দূরবর্তী পুংলিঙ্গ ইশারাটি নির্বাচন করুন: «مِفْتَاحُ ... الْقُفْلِ»।',
+    polarPayload: {
+      arabicSubject: 'الْقُفْلِ',
+      meaningEn: 'That lock (distant)',
+      meaningBn: 'ওই তালা (দূরবর্তী)',
+      gender: 'masculine',
+      correctAnswer: 'مِفْتَاحُ ذَلِكَ الْقُفْلِ',
+      options: ['مِفْتَاحُ هَذَا الْقُفْلِ', 'مِفْتَاحُ ذَلِكَ الْقُفْلِ'],
+      emoji: '🗝️',
+    },
+  },
+
+  // 9. Cloze Choice Drill 1: Creedal Declaration of the House
+  {
+    id: 'ch3-l1-step-9-cloze-sacred-creed',
+    type: 'cloze_choice',
+    pageNumber: 90,
+    titleEn: 'Contextual Selection: Sovereignty of the Sanctuary',
+    titleAr: 'اخْتِيَارُ الاسْمِ: رَبُّ هَذَا البَيْتِ',
+    instructionEn: 'Complete the declaration: "Allah is the ... of this House."',
+    instructionBn: '"আল্লাহ এই ঘরের ..." বাক্যটি সঠিক শব্দ দিয়ে পূর্ণ করুন।',
+    clozePayload: {
+      questionAr: 'اللَّهُ ... هَذَا الْبَيْتِ',
+      questionEn: 'Allah is the Lord of this House.',
+      questionBn: 'আল্লাহ এই ঘরের প্রতিপালক।',
+      partialAnswerAr: 'اللَّهُ ... هَذَا الْبَيْتِ',
+      correctAnswer: 'رَبُّ',
+      options: ['رَبُّ', 'خَادِمُ', 'مَلِكُ', 'إِمَامُ'],
+      emoji: '🕋',
+    },
+  },
+
+  // 10. Cloze Choice Drill 2: Righteous Custodian of the Key
+  {
+    id: 'ch3-l1-step-10-cloze-key-custodian',
+    type: 'cloze_choice',
+    pageNumber: 91,
+    titleEn: 'Syntactic Case Ending: Righteous Man with Key',
+    titleAr: 'إِعْرَابُ النَّعْتِ: عِنْدَ رَجُلٍ صَالِحٍ',
+    instructionEn: 'Choose the matching genitive adjective: "The key of this House is with a ... man."',
+    instructionBn: '"এই ঘরের চাবি একজন সৎ লোকের কাছে" বাক্যে সৎ বিশেষণের মাজরুর রূপ নির্বাচন করুন।',
+    clozePayload: {
+      questionAr: 'مِفْتَاحُ هَذَا الْبَيْتِ عِنْدَ رَجُلٍ ...',
+      questionEn: 'The key of this House is with a righteous man.',
+      questionBn: 'এই ঘরের চাবি একজন নেককার ব্যক্তির কাছে।',
+      partialAnswerAr: 'مِفْتَاحُ هَذَا الْبَيْتِ عِنْدَ رَجُلٍ ...',
+      correctAnswer: 'صَالِحٍ',
+      options: ['صَالِحٍ', 'صَالِحٌ', 'صَالِحًا', 'الصَّالِحِ'],
+      emoji: '🗝️',
+    },
+  },
+
+  // 11. Dialogic Alternative Q&A Battery 1: The Sanctuary & Its Custodians
+  {
+    id: 'ch3-l1-step-11-dialogue-sanctuary-custodians',
+    type: 'alternative_qa',
+    pageNumber: 92,
+    titleEn: 'Dialogic Battery: The Sanctuary & Its Custodians',
+    titleAr: 'حِوَارُ التَّعْيِينِ: بَيْتُ اللَّهِ وَخُدَّامُهُ',
+    instructionEn: 'Answer alternative questions concerning the Kaaba and its custodians based on the visual cues.',
+    instructionBn: 'পবিত্র কাবাঘর ও এর সেবক সম্পর্কিত প্রশ্নগুলোর উত্তর দৃশ্যায়নের আলোকে নির্বাচন করুন।',
+    alternativeQAPayload: {
+      questions: [
+        {
+          id: 'qa-c3l1-1',
+          questionAr: 'مَنْ رَبُّ هَذَا الْبَيْتِ ؟ (🕋)',
+          optionsAr: ['اللَّهُ', 'الْمَلِكُ'],
+          correctAnswerAr: 'اللَّهُ',
+        },
+        {
+          id: 'qa-c3l1-2',
+          questionAr: 'أَ مَلِكٌ خَادِمُ هَذَا الْبَيْتِ أَمْ تَاجِرٌ ؟ (👑 خَادِمُ الْحَرَمَيْنِ)',
+          optionsAr: ['مَلِكٌ', 'تَاجِرٌ'],
+          correctAnswerAr: 'مَلِكٌ',
+        },
+        {
+          id: 'qa-c3l1-3',
+          questionAr: 'أَ مَفْتُوحٌ بَابُ هَذَا الْبَيْتِ أَمْ مُغْلَقٌ ؟ (🚪🔓 مَفْتُوحٌ)',
+          optionsAr: ['مَفْتُوحٌ', 'مُغْلَقٌ'],
+          correctAnswerAr: 'مَفْتُوحٌ',
+        },
+        {
+          id: 'qa-c3l1-4',
+          questionAr: 'أَ جَمِيلَةٌ صُورَةُ هَذَا الْبَيْتِ أَمْ قَبِيحَةٌ ؟ (🖼️✨ جَمِيلَةٌ)',
+          optionsAr: ['جَمِيلَةٌ', 'قَبِيحَةٌ'],
+          correctAnswerAr: 'جَمِيلَةٌ',
+        },
+        {
+          id: 'qa-c3l1-5',
+          questionAr: 'أَ فِي ظِلِّ هَذَا الْبَيْتِ رَاحَةٌ ؟ (🕋)',
+          optionsAr: ['نَعَمْ .. فِي ظِلِّهِ رَاحَةٌ', 'لَا .. لَيْسَتْ فِيهِ رَاحَةٌ'],
+          correctAnswerAr: 'نَعَمْ .. فِي ظِلِّهِ رَاحَةٌ',
+        },
+      ],
+    },
+  },
+
+  // 12. Dialogic Alternative Q&A Battery 2: Community Leaders & Schools
+  {
+    id: 'ch3-l1-step-12-dialogue-community-figures',
+    type: 'alternative_qa',
+    pageNumber: 92,
+    titleEn: 'Dialogic Battery: Imam, Teacher & School',
+    titleAr: 'حِوَارُ التَّعْيِينِ: إِمَامُ المَسْجِدِ وَمُعَلِّمُ المَدْرَسَةِ',
+    instructionEn: 'Dissect the roles of the imam, the village school teacher, and the muezzin based on the visual cue without using yes or no.',
+    instructionBn: 'হ্যাঁ বা না ছাড়া দৃশ্যায়ন অনুযায়ী মসজিদের ইমাম, শিক্ষক এবং মুয়াজ্জিন সম্পর্কিত প্রশ্নগুলোর সঠিক বিকল্প বেছে নিন।',
+    alternativeQAPayload: {
+      questions: [
+        {
+          id: 'qa-c3l1-6',
+          questionAr: 'أَ خَالِدٌ إِمَامُ هَذَا الْمَسْجِدِ أَمْ رَاشِدٌ ؟ (🕌 رَاشِدٌ)',
+          optionsAr: ['رَاشِدٌ', 'خَالِدٌ'],
+          correctAnswerAr: 'رَاشِدٌ',
+        },
+        {
+          id: 'qa-c3l1-7',
+          questionAr: 'أَ عَالِمٌ إِمَامُ هَذَا الْمَسْجِدِ أَمْ جَاهِلٌ ؟ (📚 عَالِمٌ)',
+          optionsAr: ['عَالِمٌ', 'جَاهِلٌ'],
+          correctAnswerAr: 'عَالِمٌ',
+        },
+        {
+          id: 'qa-c3l1-8',
+          questionAr: 'أَ أَبُو رَاشِدٍ مُعَلِّمُ تِلْكَ الْمَدْرَسَةِ أَمْ عَمُّهُ ؟ (👨‍🏫 أَبُو رَاشِدٍ)',
+          optionsAr: ['أَبُو رَاشِدٍ', 'عَمُّهُ'],
+          correctAnswerAr: 'أَبُو رَاشِدٍ',
+        },
+        {
+          id: 'qa-c3l1-9',
+          questionAr: 'أَ مُعَلِّمُ تِلْكَ الْمَدْرَسَةِ أَبُو رَاشِدٍ أَمْ مُدِيرُهَا ؟ (👨‍🏫 مُعَلِّمُهَا)',
+          optionsAr: ['مُعَلِّمُهَا', 'مُدِيرُهَا'],
+          correctAnswerAr: 'مُعَلِّمُهَا',
+        },
+        {
+          id: 'qa-c3l1-10',
+          questionAr: 'أَ بَابُ هَذَا الْبَيْتِ مَفْتُوحٌ أَمْ بَابُ ذَلِكَ الْبَيْتِ ؟ (🚪🔓 [هَذَا])',
+          optionsAr: ['بَابُ هَذَا الْبَيْتِ', 'بَابُ ذَلِكَ الْبَيْتِ'],
+          correctAnswerAr: 'بَابُ هَذَا الْبَيْتِ',
+        },
+      ],
+    },
+  },
+
+  // 13. Speed Pair Matching 2: Pointed Idafah Constructs
+  {
+    id: 'ch3-l1-step-13-speed-pointed-idafah',
+    type: 'speed_pair',
+    pageNumber: 91,
+    titleEn: 'Synaptic Speed Pairing: Pointed Possessive Constructs',
+    titleAr: 'التَّطَابُقُ السَّرِيعُ: تَرَاكِيبُ الإِضَافَةِ الإِشَارِيَّةِ',
+    instructionEn: 'Pair the Arabic possessive demonstrative phrases with their English equivalents.',
+    instructionBn: 'ইশারাসহ সম্বন্ধযুক্ত আরবি শব্দগুচ্ছের সাথে তাদের অনুবাদের দ্রুত মিল করুন।',
+    pairPayload: {
+      pairs: [
+        { id: 'p-c3l1-7', ar: 'إِمَامُ هَذَا الْمَسْجِدِ', meaning: 'The imam of this mosque' },
+        { id: 'p-c3l1-8', ar: 'مُعَلِّمُ هَذِهِ الْمَدْرَسَةِ', meaning: 'The teacher of this school' },
+        { id: 'p-c3l1-9', ar: 'فَلَّاحُ تِلْكَ الْقَرْيَةِ', meaning: 'The farmer of that village' },
+        { id: 'p-c3l1-10', ar: 'مِفْتَاحُ ذَلِكَ الْقُفْلِ', meaning: 'The key of that lock' },
+        { id: 'p-c3l1-11', ar: 'خَادِمُ هَذَا الْبَيْتِ', meaning: 'The caretaker of this house' },
+      ],
+    },
+  },
+
+  // 14. Page 90: Authentic Reading & Translation Drill 1: Sacred Declaration of the House
+  {
+    id: 'ch3-l1-step-14-assembly-creed-declaration',
+    type: 'sentence_assembly',
+    pageNumber: 90,
+    titleEn: 'Textbook Translation: Lord & Caretaker of the House',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: رَبُّ هَذَا البَيْتِ',
+    instructionEn: 'Read the sacred sentence and assemble the translation.',
+    instructionBn: 'পবিত্র বাক্যটি পড়ুন এবং সঠিক অনুবাদ তৈরি করুন।',
+    assemblyPayload: {
+      promptAr: 'اللَّهُ رَبُّ هَذَا الْبَيْتِ ، وَخَادِمُ هَذَا الْبَيْتِ مَلِكٌ',
+      promptEn: 'Allah is the Lord of this house and the servant of this house is a king',
+      promptBn: 'আল্লাহ এই ঘরের প্রতিপালক এবং এই ঘরের সেবক একজন বাদশাহ',
+      expectedAnswer: ['Allah is the Lord of this house', 'and the servant of this house', 'is a king'],
+      chips: ['Allah is the Lord of this house', 'and the servant of this house', 'is a king', 'a merchant', 'an imam'],
+      expectedAnswerBn: ['আল্লাহ এই ঘরের প্রতিপালক', 'এবং এই ঘরের সেবক', 'একজন বাদশাহ'],
+      chipsBn: ['আল্লাহ এই ঘরের প্রতিপালক', 'এবং এই ঘরের সেবক', 'একজন বাদশাহ', 'ব্যবসায়ী', 'ইমাম'],
+      emoji: '🕋',
+    },
+  },
+
+  // 15. Page 91: Authentic Reading & Translation Drill 2: Shade & Comfort
+  {
+    id: 'ch3-l1-step-15-assembly-shade-peace',
+    type: 'sentence_assembly',
+    pageNumber: 91,
+    titleEn: 'Textbook Translation: Shade & Comfort of Sanctuary',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: ظِلُّ هَذَا البَيْتِ',
+    instructionEn: 'Read the sentence and assemble the translation.',
+    instructionBn: 'আরবি বাক্যটি পড়ুন এবং সঠিক অনুবাদ তৈরি করুন।',
+    assemblyPayload: {
+      promptAr: 'ظِلُّ هَذَا الْبَيْتِ مُرِيحٌ ، وَفِي ظِلِّهِ رَاحَةٌ',
+      promptEn: 'The shade of this house is comfortable and in its shade is rest',
+      promptBn: 'এই ঘরের ছায়া আরামদায়ক এবং এর ছায়ায় শান্তি রয়েছে',
+      expectedAnswer: ['The shade of this house is comfortable', 'and in its shade', 'is rest'],
+      chips: ['The shade of this house is comfortable', 'and in its shade', 'is rest', 'exhaustion', 'heat'],
+      expectedAnswerBn: ['এই ঘরের ছায়া আরামদায়ক', 'এবং এর ছায়ায়', 'রয়েছে শান্তি'],
+      chipsBn: ['এই ঘরের ছায়া আরামদায়ক', 'এবং এর ছায়ায়', 'রয়েছে শান্তি', 'ক্লান্তি', 'উত্তাপ'],
+      emoji: '🌤️',
+    },
+  },
+
+  // 16. Page 91: Authentic Reading & Translation Drill 3: Key with Righteous Custodian
+  {
+    id: 'ch3-l1-step-16-assembly-key-custodian',
+    type: 'sentence_assembly',
+    pageNumber: 91,
+    titleEn: 'Textbook Translation: Key with Righteous Custodian',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: مِفْتَاحُ هَذَا البَيْتِ',
+    instructionEn: 'Read the Arabic sentence and assemble the translation.',
+    instructionBn: 'আরবি বাক্যটি পড়ুন এবং সঠিক অনুবাদ সাজিয়ে তুলুন।',
+    assemblyPayload: {
+      promptAr: 'مِفْتَاحُ هَذَا الْبَيْتِ عِنْدَ رَجُلٍ صَالِحٍ',
+      promptEn: 'The key of this house is with a righteous man',
+      promptBn: 'এই ঘরের চাবি একজন সৎ লোকের কাছে রয়েছে',
+      expectedAnswer: ['The key of this house', 'is with', 'a righteous man'],
+      chips: ['The key of this house', 'is with', 'a righteous man', 'a rich trader', 'in the mosque'],
+      expectedAnswerBn: ['এই ঘরের চাবি', 'একজন সৎ লোকের কাছে', 'রয়েছে'],
+      chipsBn: ['এই ঘরের চাবি', 'একজন সৎ লোকের কাছে', 'রয়েছে', 'ধনী ব্যবসায়ীর কাছে', 'মসজিদে'],
+      emoji: '🗝️',
+    },
+  },
+
+  // 17. Syntactic Tarkib Dissector: Demonstrative Possessive Architecture
+  {
+    id: 'ch3-l1-step-17-tarkib-dissector',
+    type: 'tarkib_dissector',
+    pageNumber: 90,
+    titleEn: 'Syntactic Tarkib Dissector: Mudaf + Pointer + Badal Architecture',
+    titleAr: 'التَّرْكِيبُ النَّحْوِيُّ: بِنَاءُ المُضَافِ مَعَ اسْمِ الإِشَارَةِ وَالبَدَلِ',
+    instructionEn: 'Dissect the multi-tiered structure where a possessed noun governs a demonstrative pronoun followed by its genitive Badal.',
+    instructionBn: 'মুদাফ কীভাবে ইশারা ও বদল সমন্বিত পদকে শাসন করে তা ব্যাকরণগত উপাদানভিত্তিক আলাদা করুন।',
+    tarkibPayload: {
+      sentences: [
+        {
+          id: 'tarkib-c3l1-s1',
+          sentenceAr: 'اللَّهُ رَبُّ هَذَا الْبَيْتِ',
+          sentenceTypeAr: 'جُمْلَةٌ اسْمِيَّةٌ (مُبْتَدَأٌ + خَبَرٌ مُرَكَّبٌ إِضَافِيٌّ إِشَارِيٌّ)',
+          sentenceTypeEn: 'Nominal Sentence (Subject + Demonstrative Possessive Predicate)',
+          sentenceTypeBn: 'নামবাচক বাক্য (মুবতাদা + ইশারাযুক্ত মুদাফ খবর)',
+          slots: [
+            {
+              roleAr: 'مُبْتَدَأٌ (لَفْظُ الجَلَالَةِ)',
+              roleEn: 'Subject / Divine Name',
+              roleBn: 'মুবতাদা (আল্লাহ)',
+              expectedWordAr: 'اللَّهُ',
+            },
+            {
+              roleAr: 'خَبَرٌ وَمُضَافٌ',
+              roleEn: 'Predicate & Mudaf',
+              roleBn: 'খবর ও মুদাফ',
+              expectedWordAr: 'رَبُّ',
+            },
+            {
+              roleAr: 'مُضَافٌ إِلَيْهِ (اسْمُ إِشَارَةٍ)',
+              roleEn: 'Demonstrative Possessor',
+              roleBn: 'মুদাফ ইলাইহি (ইশারা)',
+              expectedWordAr: 'هَذَا',
+            },
+            {
+              roleAr: 'بَدَلٌ (مَجْرُورٌ)',
+              roleEn: 'Appositive Substitute (Badal)',
+              roleBn: 'বদল (মাজরুর)',
+              expectedWordAr: 'الْبَيْتِ',
+            },
+          ],
+          availableWordsAr: ['هَذَا', 'الْبَيْتِ', 'اللَّهُ', 'رَبُّ'],
+        },
+        {
+          id: 'tarkib-c3l1-s2',
+          sentenceAr: 'إِمَامُ هَذَا الْمَسْجِدِ عَالِمٌ',
+          sentenceTypeAr: 'جُمْلَةٌ اسْمِيَّةٌ (مُبْتَدَأٌ مُرَكَّبٌ إِضَافِيٌّ إِشَارِيٌّ + خَبَرٌ)',
+          sentenceTypeEn: 'Nominal Sentence (Demonstrative Possessive Subject + Predicate)',
+          sentenceTypeBn: 'নামবাচক বাক্য (ইশারাযুক্ত মুদাফ মুবতাদা + খবর)',
+          slots: [
+            {
+              roleAr: 'مُضَافٌ (مُبْتَدَأٌ)',
+              roleEn: 'Possessed Noun (Mubtada)',
+              roleBn: 'মুদাফ (মুবতাদা)',
+              expectedWordAr: 'إِمَامُ',
+            },
+            {
+              roleAr: 'مُضَافٌ إِلَيْهِ (اسْمُ إِشَارَةٍ)',
+              roleEn: 'Demonstrative Possessor',
+              roleBn: 'মুদাফ ইলাইহি (ইশারা)',
+              expectedWordAr: 'هَذَا',
+            },
+            {
+              roleAr: 'بَدَلٌ (مَجْرُورٌ)',
+              roleEn: 'Appositive Substitute (Badal)',
+              roleBn: 'বদল (মাজরুর)',
+              expectedWordAr: 'الْمَسْجِدِ',
+            },
+            {
+              roleAr: 'خَبَرٌ (مَرْفُوعٌ)',
+              roleEn: 'Predicate (Nominative)',
+              roleBn: 'খবর (মারফু)',
+              expectedWordAr: 'عَالِمٌ',
+            },
+          ],
+          availableWordsAr: ['عَالِمٌ', 'الْمَسْجِدِ', 'هَذَا', 'إِمَامُ'],
+        },
+      ],
+    },
+  },
+
+  // 18. Sacred Milestone: Quranic Echo (Surah Quraysh 106:3)
+  {
+    id: 'ch3-l1-step-18-quranic-echo',
+    type: 'quranic_echo',
+    pageNumber: 90,
+    titleEn: 'Sacred Reflection: Idafah with Demonstrative Pointer in Surah Quraysh',
+    titleAr: 'الأَثَرُ القُرْآنِيُّ: الإِضَافَةُ الإِشَارِيَّةُ فِي سُورَةِ قُرَيْشٍ',
+    instructionEn: 'Witness how Idafah with a demonstrative pointer commands supreme devotion in Surah Quraysh (106:3).',
+    instructionBn: 'সূরা কুরাইশে ইশারা সমন্বিত ইযাফাত দ্বারা মহান তাওহীদের ঐশী নির্দেশ প্রত্যক্ষ করুন।',
+    echoPayload: {
+      surahNumber: 106,
+      ayahNumber: 3,
+      surahNameAr: 'قريش',
+      surahNameEn: 'Quraysh',
+      arabicText: 'فَلْيَعْبُدُوا رَبَّ هَذَا الْبَيْتِ',
+      translationEn: 'Let them worship the Lord of this House.',
+      translationBn: 'অতএব তারা যেন ইবাদত করে এই ঘরের রবের।',
+      highlightedWords: ['رَبَّ', 'هَذَا', 'الْبَيْتِ'],
+      patternNameEn: 'Idafah with Demonstrative Pointer (مُضَاف + اسْم إِشَارَة + بَدَل)',
+      patternNameBn: 'ইশারা ও বদল সমন্বিত সম্বন্ধ পদ (মুদাফ ও মুদাফ ইলাইহি)',
+      lessonPatternAr: 'اللَّهُ رَبُّ هَذَا الْبَيْتِ',
+      lessonPatternEn: 'Allah is the Lord of this house',
+      lessonPatternBn: 'আল্লাহ এই ঘরের প্রতিপালক',
+      quranPatternAr: 'رَبَّ هَذَا الْبَيْتِ',
+      quranPatternEn: 'The Lord of this House',
+      quranPatternBn: 'এই ঘরের প্রতিপালক',
+      reflection: 'In Arabic, a possessed noun (مُضَاف) can govern a demonstrative pointer (اسْم إِشَارَة) as its Mudaf Ilayh, which in turn points directly to a definite noun serving as its explanatory substitute (بَدَل). In your lesson, you learned «رَبُّ هَذَا الْبَيْتِ». In Surah Quraysh, Allah uses this exact syntactic construction to call humanity to single-hearted worship of the Lord of the Kaaba.',
+      audioKey: 'quran_106003',
+    },
+  },
+];
+
+export const CH3_LESSON_01_SESSION: LessonSessionData = {
+  volumeId: 1,
+  chapterId: 3,
+  lessonNum: 1,
+  titleEn: 'Idafah with Demonstratives & The Sacred House',
+  titleAr: 'الإِضَافَةُ مَعَ أَسْمَاءِ الإِشَارَةِ وَالبَيْتُ الحَرَامُ',
+  wordsLearned: [
+    'غِلَافٌ',
+    'ظِلٌّ',
+    'خَادِمٌ',
+    'صَالِحٌ',
+    'مَلِكٌ',
+    'صُورَةٌ',
+    'مُرِيحٌ',
+    'رَاحَةٌ',
+    'مُدِيرٌ',
+    'عِنْدَ',
+    'مُؤَذِّنٌ',
+    'جَرِيدَةٌ',
+  ],
+  steps: CH3_LESSON_01_STEPS,
+};

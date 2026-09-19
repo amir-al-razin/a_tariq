@@ -1,0 +1,583 @@
+// Lesson 3 Interactive Session Data (Directly mapped from textbook Volume 1 Chapter 1 Lesson 3, pages 23-26)
+import type { LessonSessionData, SessionStep } from './lessonSessionTypes';
+
+export const LESSON_03_STEPS: SessionStep[] = [
+  // 1. Page 23: People & Roles Vocabulary Priming
+  {
+    id: 'step-1-vocab-people',
+    type: 'vocab_prime',
+    pageNumber: 23,
+    titleEn: 'People & Roles',
+    titleAr: 'الأَشْخَاصُ وَالأَدْوَارُ',
+    instructionEn: 'Listen and familiarize yourself with people and relationship terms.',
+    instructionBn: 'মানুষের পরিচয় ও পারস্পরিক সম্পর্কের আরবি শব্দগুলো মনোযোগ দিয়ে শুনুন।',
+    vocabPayload: {
+      words: [
+        { id: 'v1_c3_tilmidh', ar: 'تِلْمِيذٌ', en: 'A student (m)', bn: 'একজন ছাত্র', romanized: 'tilmīdhun', emoji: '👦' },
+        { id: 'v1_c3_tilmidhah', ar: 'تِلْمِيذَةٌ', en: 'A student (f)', bn: 'একজন ছাত্রী', romanized: 'tilmīdhatun', emoji: '👧' },
+        { id: 'v1_c3_muallim', ar: 'مُعَلِّمٌ', en: 'A teacher (m)', bn: 'একজন শিক্ষক', romanized: 'mu‘allimun', emoji: '👨‍🏫' },
+        { id: 'v1_c3_muallimah', ar: 'مُعَلِّمَةٌ', en: 'A teacher (f)', bn: 'একজন শিক্ষিকা', romanized: 'mu‘allimatun', emoji: '👩‍🏫' },
+        { id: 'v1_c3_walad', ar: 'وَلَدٌ', en: 'A boy', bn: 'একটি ছেলে', romanized: 'waladun', emoji: '🧒' },
+        { id: 'v1_c3_bint', ar: 'بِنْتٌ', en: 'A girl', bn: 'একটি মেয়ে', romanized: 'bintun', emoji: '👧' },
+        { id: 'v1_c3_tifl', ar: 'طِفْلٌ', en: 'A child (m)', bn: 'একটি শিশু (ছেলে)', romanized: 'ṭiflun', emoji: '👶' },
+        { id: 'v1_c3_tiflah', ar: 'طِفْلَةٌ', en: 'A child (f)', bn: 'একটি শিশু (মেয়ে)', romanized: 'ṭiflatun', emoji: '👶' },
+        { id: 'v1_c3_muaddab', ar: 'مُؤَدَّبٌ', en: 'Polite / Well-mannered (m)', bn: 'ভদ্র / শিষ্ট', romanized: 'mu’addabun', emoji: '🤝' },
+        { id: 'v1_c3_muaddabah', ar: 'مُؤَدَّبَةٌ', en: 'Polite / Well-mannered (f)', bn: 'ভদ্রা / শিষ্টা', romanized: 'mu’addabatun', emoji: '🤝' },
+      ],
+    },
+  },
+
+  // 2. Page 23: Active Recall Matching: People & Roles
+  {
+    id: 'step-2-pair-people',
+    type: 'speed_pair',
+    pageNumber: 23,
+    titleEn: 'Pair Matching',
+    titleAr: 'تَطْبِيقُ الكَلِمَاتِ',
+    instructionEn: 'Match each Arabic word to its correct meaning.',
+    instructionBn: 'প্রতিটি আরবি শব্দের সাথে তার সঠিক অর্থ মিলিয়ে দিন।',
+    pairPayload: {
+      pairs: [
+        { id: 'v1_c3_tilmidh', ar: 'تِلْمِيذٌ', meaning: 'A student (m)' },
+        { id: 'v1_c3_muallim', ar: 'مُعَلِّمٌ', meaning: 'A teacher (m)' },
+        { id: 'v1_c3_walad', ar: 'وَلَدٌ', meaning: 'A boy' },
+        { id: 'v1_c3_bint', ar: 'بِنْتٌ', meaning: 'A girl' },
+      ],
+    },
+  },
+
+  // 3. Page 23: Concept Discovery - Personal Pronouns (الضَّمَائِرُ المُنْفَصِلَةُ)
+  {
+    id: 'step-3-concept-pronouns',
+    type: 'concept_intro',
+    pageNumber: 23,
+    titleEn: 'Personal Pronouns',
+    titleAr: 'الضَّمَائِرُ المُنْفَصِلَةُ',
+    instructionEn: 'Observe how Arabic distinguishes gender in second and third person pronouns.',
+    instructionBn: 'পুরুষ ও স্ত্রীবাচক সর্বনামগুলোর রূপভেদ লক্ষ্য করুন।',
+    conceptPayload: {
+      concepts: [
+        {
+          id: 'concept-ana',
+          ar: 'أَنَا',
+          romanized: 'ana',
+          meaningEn: 'I (Speaker - Male or Female)',
+          meaningBn: 'আমি (পুরুষ ও নারী উভয়ের জন্য)',
+          descriptionEn: 'The 1st person pronoun is shared identically between masculine and feminine.',
+          exampleAr: 'أَنَا تِلْمِيذٌ',
+          exampleEn: 'I am a student',
+          exampleBn: 'আমি একজন ছাত্র',
+          audioKey: 'ana',
+          exampleAudioKey: 'ana_tilmidh_jadid',
+          emoji: '🙋',
+        },
+        {
+          id: 'concept-anta',
+          ar: 'أَنْتَ',
+          romanized: 'anta',
+          meaningEn: 'You (Masculine Singular)',
+          meaningBn: 'তুমি (পুরুষ)',
+          descriptionEn: 'Used when speaking directly to a single male.',
+          exampleAr: 'أَنْتَ مُعَلِّمٌ',
+          exampleEn: 'You are a teacher',
+          exampleBn: 'তুমি একজন শিক্ষক',
+          audioKey: 'anta',
+          exampleAudioKey: 'hal_anta_muallim',
+          emoji: '👉👨',
+        },
+        {
+          id: 'concept-anti',
+          ar: 'أَنْتِ',
+          romanized: 'anti',
+          meaningEn: 'You (Feminine Singular)',
+          meaningBn: 'তুমি (স্ত্রী)',
+          descriptionEn: 'Takes a kasrah (i sound) when addressing a single female.',
+          exampleAr: 'أَنْتِ مُعَلِّمَةٌ',
+          exampleEn: 'You are a teacher',
+          exampleBn: 'তুমি একজন শিক্ষিকা',
+          audioKey: 'anti',
+          exampleAudioKey: 'muallimah',
+          emoji: '👉👩',
+        },
+        {
+          id: 'concept-huwa',
+          ar: 'هُوَ',
+          romanized: 'huwa',
+          meaningEn: 'He (3rd Person Masculine)',
+          meaningBn: 'সে (পুরুষ)',
+          descriptionEn: 'Refers to an absent or referenced male.',
+          exampleAr: 'هُوَ وَلَدٌ مُؤَدَّبٌ',
+          exampleEn: 'He is a polite boy',
+          exampleBn: 'সে একটি ভদ্র ছেলে',
+          audioKey: 'huwa',
+          exampleAudioKey: 'huwa_walad_muaddab',
+          emoji: '👤',
+        },
+        {
+          id: 'concept-hiya',
+          ar: 'هِيَ',
+          romanized: 'hiya',
+          meaningEn: 'She (3rd Person Feminine)',
+          meaningBn: 'সে (স্ত্রী)',
+          descriptionEn: 'Refers to an absent or referenced female.',
+          exampleAr: 'هِيَ بِنْتٌ مُؤَدَّبَةٌ',
+          exampleEn: 'She is a polite girl',
+          exampleBn: 'সে একটি ভদ্র মেয়ে',
+          audioKey: 'hiya',
+          exampleAudioKey: 'hiya_bint_muaddabah',
+          emoji: '👤',
+        },
+      ],
+    },
+  },
+
+  // 4. Page 23: Proper Names & Tanween Rule (Diptote rule)
+  {
+    id: 'step-4-concept-names',
+    type: 'concept_intro',
+    pageNumber: 23,
+    titleEn: 'Proper Names & Tanween',
+    titleAr: 'تَنْوِينُ الأَسْمَاءِ',
+    instructionEn: 'Male proper names generally take Tanween; female names take a single Dammah.',
+    instructionBn: 'সাধারণ পুরুষবাচক নাম তানভীন গ্রহণ করে, কিন্তু নারীবাচক নাম কেবল এক পেশ গ্রহণ করে।',
+    conceptPayload: {
+      concepts: [
+        {
+          id: 'concept-masc-name',
+          ar: 'مَحْمُودٌ / بِلَالٌ',
+          romanized: 'Maḥmūdun / Bilālun',
+          meaningEn: 'Mahmud / Bilal (Masculine Names)',
+          meaningBn: 'মাহমুদ / বিলাল (পুরুষের নাম)',
+          descriptionEn: 'Standard Arabic male proper names carry regular Tanween: مَحْمُودٌ، رَاشِدٌ، خَالِدٌ، سَعِيدٌ.',
+          exampleAr: 'أَنَا بِلَالٌ',
+          exampleEn: 'I am Bilal',
+          exampleBn: 'আমি বিলাল',
+          audioKey: 'bilal',
+          exampleAudioKey: 'bilal',
+          emoji: '👦',
+        },
+        {
+          id: 'concept-fem-name',
+          ar: 'عَائِشَةُ / زَيْنَبُ',
+          romanized: '‘Ā’ishatu / Zaynabu',
+          meaningEn: 'Aishah / Zaynab (Feminine Names)',
+          meaningBn: 'আয়েশা / যায়নাব (নারীর নাম)',
+          descriptionEn: 'Female proper names are diptotes (ممنوع من الصرف) and end in a single dammah: خَدِيجَةُ، فَرْحَانَةُ، فَاطِمَةُ.',
+          exampleAr: 'أَنَا عَائِشَةُ',
+          exampleEn: 'I am Aishah',
+          exampleBn: 'আমি আয়েশা',
+          audioKey: 'aishah',
+          exampleAudioKey: 'aishah',
+          emoji: '👧',
+        },
+      ],
+    },
+  },
+
+  // 5. Page 23: Polar Discrimination - Pronoun Gender Agreement
+  {
+    id: 'step-5-polar-pronoun',
+    type: 'polar_sort',
+    pageNumber: 23,
+    titleEn: 'Pronoun Agreement',
+    titleAr: 'مُطَابَقَةُ الضَّمِيرِ',
+    instructionEn: 'Choose the correct second-person pronoun for the addressed subject.',
+    instructionBn: 'উপযুক্ত সর্বনামটি নির্বাচন করুন।',
+    polarPayload: {
+      arabicSubject: 'مُعَلِّمٌ جَيِّدٌ',
+      meaningEn: 'a good male teacher',
+      meaningBn: 'একজন ভালো শিক্ষক',
+      gender: 'masculine',
+      correctAnswer: 'أَنْتَ',
+      options: ['أَنْتَ', 'أَنْتِ'],
+      emoji: '👨‍🏫',
+    },
+  },
+
+  // 6. Page 23: Sentence Assembly - Self Introduction (Masculine)
+  {
+    id: 'step-6-assembly-1',
+    type: 'sentence_assembly',
+    pageNumber: 23,
+    titleEn: 'Sentence Synthesis',
+    titleAr: 'تَرْكِيبُ الجُمْلَةِ',
+    instructionEn: 'Assemble: "I am a new student (m)"',
+    instructionBn: 'বাক্যটি সাজান: "আমি একজন নতুন ছাত্র"',
+    assemblyPayload: {
+      promptEn: 'I am a new student',
+      promptBn: 'আমি একজন নতুন ছাত্র',
+      expectedAnswer: ['أَنَا', 'تِلْمِيذٌ', 'جَدِيدٌ'],
+      chips: ['تِلْمِيذٌ', 'أَنَا', 'جَدِيدٌ', 'مُعَلِّمٌ'],
+      emoji: '👦',
+    },
+  },
+
+  // 7. Page 24: Sentence Assembly - Third Person Attribute
+  {
+    id: 'step-7-assembly-2',
+    type: 'sentence_assembly',
+    pageNumber: 24,
+    titleEn: 'Sentence Synthesis',
+    titleAr: 'تَرْكِيبُ الجُمْلَةِ',
+    instructionEn: 'Assemble: "He is a polite boy"',
+    instructionBn: 'বাক্যটি সাজান: "সে একটি ভদ্র ছেলে"',
+    assemblyPayload: {
+      promptEn: 'He is a polite boy',
+      promptBn: 'সে একটি ভদ্র ছেলে',
+      expectedAnswer: ['هُوَ', 'وَلَدٌ', 'مُؤَدَّبٌ'],
+      chips: ['وَلَدٌ', 'هِيَ', 'هُوَ', 'مُؤَدَّبٌ'],
+      emoji: '🧒',
+    },
+  },
+
+  // 8. Page 24: Concept Discovery - The Vocative Particle (حَرْفُ النِّدَاءِ: يَا)
+  {
+    id: 'step-8-concept-nida',
+    type: 'concept_intro',
+    pageNumber: 24,
+    titleEn: 'Calling with "Yā" (يَا)',
+    titleAr: 'حَرْفُ النِّدَاءِ (يَا)',
+    instructionEn: 'When calling someone with "يَا" (O...), the Tanween changes into a single Dammah.',
+    instructionBn: '"ইয়া" (হে / ওহে) দ্বারা সম্বোধন করলে শব্দের শেষের তানভীন এক পেশে রূপান্তরিত হয়।',
+    conceptPayload: {
+      concepts: [
+        {
+          id: 'concept-nida-walad',
+          ar: 'يَا وَلَدُ !',
+          romanized: 'yā waladu',
+          meaningEn: 'O boy!',
+          meaningBn: 'হে ছেলে!',
+          descriptionEn: 'The word وَلَدٌ drops its tanween when preceded by the vocative particle يَا.',
+          exampleAr: 'مَنْ أَنْتَ يَا وَلَدُ ؟',
+          exampleEn: 'Who are you, O boy?',
+          exampleBn: 'তুমি কে, হে ছেলে?',
+          audioKey: 'ya_walad',
+          exampleAudioKey: 'man_anta_ya_walad',
+          emoji: '🗣️',
+        },
+        {
+          id: 'concept-nida-bilal',
+          ar: 'يَا بِلَالُ !',
+          romanized: 'yā Bilālu',
+          meaningEn: 'O Bilal!',
+          meaningBn: 'হে বিলাল!',
+          descriptionEn: 'Even masculine names with tanween drop it upon direct call: بِلَالٌ becomes يَا بِلَالُ.',
+          exampleAr: 'يَا بِلَالُ ! أَنْتَ تِلْمِيذٌ',
+          exampleEn: 'O Bilal! You are a student',
+          exampleBn: 'হে বিলাল! তুমি একজন ছাত্র',
+          audioKey: 'ya_bilalu',
+          exampleAudioKey: 'bilal',
+          emoji: '🗣️',
+        },
+      ],
+    },
+  },
+
+  // 9. Page 24: Concept Discovery - Contrastive Answer (لَا ، بَلْ...)
+  {
+    id: 'step-9-concept-bal',
+    type: 'concept_intro',
+    pageNumber: 24,
+    titleEn: 'Contrastive Answer (لَا ، بَلْ)',
+    titleAr: 'أُسْلُوبُ الإِضْرَابِ (بَلْ)',
+    instructionEn: 'Learn how to answer with corrective contrast: "No, rather I am..."',
+    instructionBn: '"না, বরং..." দিয়ে সংশোধনসূচক জবাব দিতে "بَلْ" ব্যবহৃত হয়।',
+    conceptPayload: {
+      concepts: [
+        {
+          id: 'concept-bal-formula',
+          ar: 'لَا ، بَلْ أَنَا تِلْمِيذٌ',
+          romanized: 'lā, bal ana tilmīdhun',
+          meaningEn: 'No, rather I am a student',
+          meaningBn: 'না, বরং আমি একজন ছাত্র',
+          descriptionEn: 'Use "بَلْ" (rather / nay) to politely correct an erroneous question premise.',
+          exampleAr: 'هَلْ أَنْتَ مُعَلِّمٌ ؟ ⬅ لَا ، بَلْ أَنَا تِلْمِيذٌ',
+          exampleEn: 'Are you a teacher? - No, rather I am a student',
+          exampleBn: 'তুমি কি একজন শিক্ষক? - না, বরং আমি একজন ছাত্র',
+          audioKey: 'la_bal_ana_tilmidh',
+          exampleAudioKey: 'la_bal_ana_tilmidh',
+          emoji: '🔄',
+        },
+      ],
+    },
+  },
+
+  // 10. Pages 24-25: Dialogic Battery Part 1 (First person & Vocative Q&A)
+  {
+    id: 'step-10-battery-dialogue1',
+    type: 'alternative_qa',
+    pageNumber: 24,
+    titleEn: 'Dialogic Practice Battery 1',
+    titleAr: 'حِوَارُ التَّعَارُفِ (١)',
+    instructionEn: 'Select the grammatically accurate response matching each dialogic question.',
+    instructionBn: 'প্রতিটি কথোপকথনমূলক প্রশ্নের ব্যাকরণগতভাবে সঠিক উত্তর নির্বাচন করুন।',
+    alternativeQAPayload: {
+      questions: [
+        {
+          id: 'qa-1',
+          questionAr: 'مَنْ أَنْتَ يَا وَلَدُ ؟',
+          optionsAr: ['أَنَا بِلَالٌ', 'أَنَا زَيْنَبُ'],
+          correctAnswerAr: 'أَنَا بِلَالٌ',
+        },
+        {
+          id: 'qa-2',
+          questionAr: 'هَلْ أَنْتَ مُعَلِّمٌ ؟ (👦🎒)',
+          optionsAr: ['لَا .. بَلْ أَنَا تِلْمِيذٌ', 'لَا .. بَلْ هُوَ تِلْمِيذٌ'],
+          correctAnswerAr: 'لَا .. بَلْ أَنَا تِلْمِيذٌ',
+        },
+        {
+          id: 'qa-3',
+          questionAr: 'مَنْ أَنْتِ يَا بِنْتُ ؟',
+          optionsAr: ['أَنَا زَيْنَبُ', 'أَنَا بِلَالٌ'],
+          correctAnswerAr: 'أَنَا زَيْنَبُ',
+        },
+        {
+          id: 'qa-4',
+          questionAr: 'هَلْ أَنْتِ مُعَلِّمَةٌ ؟ (👧🎒)',
+          optionsAr: ['لَا .. بَلْ أَنَا تِلْمِيذَةٌ', 'لَا .. بَلْ هِيَ تِلْمِيذَةٌ'],
+          correctAnswerAr: 'لَا .. بَلْ أَنَا تِلْمِيذَةٌ',
+        },
+      ],
+    },
+  },
+
+  // 11. Page 25: Vocabulary Block 2 (Professions, Status & Attributes)
+  {
+    id: 'step-11-vocab-professions',
+    type: 'vocab_prime',
+    pageNumber: 25,
+    titleEn: 'Professions & Attributes',
+    titleAr: 'المِهَنُ وَالصِّفَاتُ الجَدِيدَةُ',
+    instructionEn: 'Listen and familiarize yourself with new professions, character traits, and descriptive words.',
+    instructionBn: 'নতুন পেশা ও গুণবাচক শব্দগুলোর উচ্চারণ শুনুন এবং অর্থ লক্ষ্য করুন।',
+    vocabPayload: {
+      words: [
+        { id: 'v1_c3_tajir', ar: 'تَاجِرٌ', en: 'A merchant / trader', bn: 'একজন ব্যবসায়ী', romanized: 'tājirun', emoji: '🏬' },
+        { id: 'v1_c3_fallah', ar: 'فَلَّاحٌ', en: 'A farmer', bn: 'একজন কৃষক', romanized: 'fallāḥun', emoji: '🌾' },
+        { id: 'v1_c3_ghaniyy', ar: 'غَنِيٌّ', en: 'Rich / Wealthy', bn: 'ধনী', romanized: 'ghaniyyun', emoji: '💰' },
+        { id: 'v1_c3_faqir', ar: 'فَقِيرٌ', en: 'Poor / Needy', bn: 'দরিদ্র / অভাবী', romanized: 'faqīrun', emoji: '🤲' },
+        { id: 'v1_c3_dhakiyy', ar: 'ذَكِيٌّ', en: 'Intelligent / Sharp', bn: 'মেধাবী / বুদ্ধিমান', romanized: 'dhakiyyun', emoji: '💡' },
+        { id: 'v1_c3_ghabiyy', ar: 'غَبِيٌّ', en: 'Foolish / Dull', bn: 'নির্বোধ', romanized: 'ghabiyyun', emoji: '😶' },
+        { id: 'v1_c3_rajul', ar: 'رَجُلٌ', en: 'A man', bn: 'একজন পুরুষ', romanized: 'rajulun', emoji: '👨' },
+        { id: 'v1_c3_imraah', ar: 'اِمْرَأَةٌ', en: 'A woman', bn: 'একজন নারী', romanized: 'imra’atun', emoji: '👩' },
+        { id: 'v1_c3_sharif', ar: 'شَرِيفٌ', en: 'Noble / Respectable', bn: 'ভদ্র / সম্ভ্রান্ত', romanized: 'sharīfun', emoji: '🎖️' },
+        { id: 'v1_c3_jiddan', ar: 'جِدًّا', en: 'Very / Exceedingly', bn: 'খুবই / অত্যন্ত', romanized: 'jiddan', emoji: '⚡' },
+      ],
+    },
+  },
+
+  // 12. Page 25: Active Recall Matching: Professions & Qualities
+  {
+    id: 'step-12-pair-professions',
+    type: 'speed_pair',
+    pageNumber: 25,
+    titleEn: 'Pair Matching',
+    titleAr: 'تَطْبِيقُ المَفَاهِيمِ',
+    instructionEn: 'Match each Arabic attribute to its correct English meaning.',
+    instructionBn: 'শব্দার্থগুলো সঠিকভাবে মিলিয়ে দিন।',
+    pairPayload: {
+      pairs: [
+        { id: 'v1_c3_tajir', ar: 'تَاجِرٌ', meaning: 'A merchant' },
+        { id: 'v1_c3_fallah', ar: 'فَلَّاحٌ', meaning: 'A farmer' },
+        { id: 'v1_c3_ghaniyy', ar: 'غَنِيٌّ', meaning: 'Rich / Wealthy' },
+        { id: 'v1_c3_faqir', ar: 'فَقِيرٌ', meaning: 'Poor / Needy' },
+      ],
+    },
+  },
+
+  // 13. Pages 25-26: Dialogic Battery Part 2 (Third Person & Descriptive Exchanges)
+  {
+    id: 'step-13-battery-dialogue2',
+    type: 'alternative_qa',
+    pageNumber: 25,
+    titleEn: 'Dialogic Practice Battery 2',
+    titleAr: 'حِوَارُ الشَّخْصِيَّاتِ (٢)',
+    instructionEn: 'Select the grammatically accurate third-person response.',
+    instructionBn: 'তৃতীয় ব্যক্তি সম্পর্কিত ব্যাকরণসম্মত সঠিক উত্তর নির্বাচন করুন।',
+    alternativeQAPayload: {
+      questions: [
+        {
+          id: 'qa-5',
+          questionAr: 'مَنْ هُوَ يَا بِلَالُ ؟',
+          optionsAr: ['هُوَ رَاشِدٌ', 'هُوَ زَيْنَبُ'],
+          correctAnswerAr: 'هُوَ رَاشِدٌ',
+        },
+        {
+          id: 'qa-6',
+          questionAr: 'هَلْ زَيْنَبُ تِلْمِيذَةٌ غَبِيَّةٌ ؟',
+          optionsAr: ['لَا .. بَلْ هِيَ تِلْمِيذَةٌ ذَكِيَّةٌ جِدًّا', 'نَعَمْ .. هُوَ تِلْمِيذٌ ذَكِيٌّ'],
+          correctAnswerAr: 'لَا .. بَلْ هِيَ تِلْمِيذَةٌ ذَكِيَّةٌ جِدًّا',
+        },
+        {
+          id: 'qa-7',
+          questionAr: 'هَلْ مَحْمُودٌ تَاجِرٌ ؟',
+          optionsAr: ['نَعَمْ .. هُوَ تَاجِرٌ', 'نَعَمْ .. هِيَ تَاجِرٌ'],
+          correctAnswerAr: 'نَعَمْ .. هُوَ تَاجِرٌ',
+        },
+        {
+          id: 'qa-8',
+          questionAr: 'هَلْ زَيْنَبُ بِنْتٌ مُؤَدَّبَةٌ ؟',
+          optionsAr: ['نَعَمْ .. هِيَ بِنْتٌ مُؤَدَّبَةٌ', 'نَعَمْ .. هُوَ بِنْتٌ مُؤَدَّبَةٌ'],
+          correctAnswerAr: 'نَعَمْ .. هِيَ بِنْتٌ مُؤَدَّبَةٌ',
+        },
+      ],
+    },
+  },
+
+  // 14. Page 26: Authentic Reading & Translation Drill 1 (اقْرَأْ وَتَرْجِمْ)
+  {
+    id: 'step-14-assembly-3',
+    type: 'sentence_assembly',
+    pageNumber: 26,
+    titleEn: 'Textbook Translation: Mahmud & The Farmer',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: مَحْمُودٌ وَالفَلَّاحُ',
+    instructionEn: 'Read the Arabic passage and assemble the accurate translation using word chips.',
+    instructionBn: 'আরবি বাক্যটি পড়ুন এবং শব্দ চিপস সাজিয়ে সঠিক অনুবাদ তৈরি করুন।',
+    assemblyPayload: {
+      promptAr: 'مَحْمُودٌ تَاجِرٌ غَنِيٌّ وَأَنَا فَلَّاحٌ فَقِيرٌ',
+      promptEn: 'Mahmud is a rich merchant and I am a poor farmer',
+      promptBn: 'মাহমুদ একজন ধনী ব্যবসায়ী এবং আমি একজন দরিদ্র কৃষক',
+      expectedAnswer: ['Mahmud', 'is', 'a rich merchant', 'and', 'I am', 'a poor farmer'],
+      chips: ['Mahmud', 'is', 'a rich merchant', 'and', 'I am', 'a poor farmer', 'a teacher', 'lazy'],
+      expectedAnswerBn: ['মাহমুদ', 'একজন ধনী ব্যবসায়ী', 'এবং', 'আমি', 'একজন দরিদ্র কৃষক'],
+      chipsBn: ['মাহমুদ', 'একজন ধনী ব্যবসায়ী', 'এবং', 'আমি', 'একজন দরিদ্র কৃষক', 'শিক্ষক', 'অলস'],
+      emoji: '🏬',
+    },
+  },
+
+  // 15. Page 26: Authentic Reading & Translation Drill 2 (اقْرَأْ وَتَرْجِمْ)
+  {
+    id: 'step-15-assembly-4',
+    type: 'sentence_assembly',
+    pageNumber: 26,
+    titleEn: 'Textbook Translation: Bilal & Zainab',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: بِلَالٌ وَزَيْنَبُ',
+    instructionEn: 'Read the Arabic passage and assemble the translation.',
+    instructionBn: 'আরবি বাক্যটি পড়ুন এবং সঠিক অনুবাদ সাজিয়ে তুলুন।',
+    assemblyPayload: {
+      promptAr: 'بِلَالٌ تِلْمِيذٌ ذَكِيٌّ وَزَيْنَبُ تِلْمِيذَةٌ ذَكِيَّةٌ',
+      promptEn: 'Bilal is an intelligent student and Zainab is an intelligent student',
+      promptBn: 'বিলাল একজন মেধাবী ছাত্র এবং যায়নাব একজন মেধাবী ছাত্রী',
+      expectedAnswer: ['Bilal', 'is', 'an intelligent student', 'and', 'Zainab', 'is', 'an intelligent student'],
+      chips: ['Bilal', 'is', 'an intelligent student', 'and', 'Zainab', 'is', 'an intelligent student', 'a foolish boy'],
+      expectedAnswerBn: ['বিলাল', 'একজন মেধাবী ছাত্র', 'এবং', 'যায়নাব', 'একজন মেধাবী ছাত্রী'],
+      chipsBn: ['বিলাল', 'একজন মেধাবী ছাত্র', 'এবং', 'যায়নাব', 'একজন মেধাবী ছাত্রী', 'একজন নির্বোধ বালক'],
+      emoji: '💡',
+    },
+  },
+
+  // 16. Page 26: Syntactic Tarkib Dissector: Subject + Predicate (Mawsoof + Sifah)
+  {
+    id: 'step-16-tarkib-dissector',
+    type: 'tarkib_dissector',
+    pageNumber: 26,
+    titleEn: 'Syntactic Dissector',
+    titleAr: 'التَّرْكِيبُ النَّحْوِيُّ',
+    instructionEn: 'Inspect the syntactic structure: Subject (Mubtada) followed by a Descriptive Predicate (Khabar).',
+    instructionBn: 'বাক্যের ব্যাকরণগত বিন্যাসটি লক্ষ্য করুন: মুক্তাদা এবং খবর (মাউসুফ ও সিফাত)।',
+    tarkibPayload: {
+      sentences: [
+        {
+          id: 'tarkib-1',
+          sentenceAr: 'سَعِيدٌ رَجُلٌ شَرِيفٌ',
+          sentenceTypeAr: 'جُمْلَةٌ اسْمِيَّةٌ (مُبْتَدَأٌ وَخَبَرٌ)',
+          sentenceTypeEn: 'Nominal Sentence (Subject + Predicate)',
+          sentenceTypeBn: 'নামবাচক বাক্য (মুক্তাদা ও খবর)',
+          slots: [
+            {
+              roleAr: 'مُبْتَدَأٌ',
+              roleEn: 'Subject',
+              roleBn: 'মুক্তাদা (উদ্দেশ্য)',
+              expectedWordAr: 'سَعِيدٌ',
+            },
+            {
+              roleAr: 'مَوْصُوفٌ',
+              roleEn: 'Qualified Noun',
+              roleBn: 'মাওসূফ (বর্ণিত সত্ত্বা)',
+              expectedWordAr: 'رَجُلٌ',
+            },
+            {
+              roleAr: 'صِفَةٌ',
+              roleEn: 'Descriptive Attribute',
+              roleBn: 'সিফাত (গুণবাচক পদ)',
+              expectedWordAr: 'شَرِيفٌ',
+            },
+          ],
+          availableWordsAr: ['رَجُلٌ', 'سَعِيدٌ', 'شَرِيفٌ'],
+        },
+      ],
+    },
+  },
+
+  // 17. Pages 24-26: Speed Pair Matching - Complete Sentences
+  {
+    id: 'step-17-pair-sentences',
+    type: 'speed_pair',
+    pageNumber: 26,
+    titleEn: 'Sentence Reading Recall',
+    titleAr: 'مُطَابَقَةُ الجُمَلِ',
+    instructionEn: 'Match each Arabic sentence to its translation.',
+    instructionBn: 'আরবি বাক্যগুলোর সঠিক অর্থ মিলিয়ে নিন।',
+    pairPayload: {
+      pairs: [
+        { id: 'p1', ar: 'تَاجِرٌ غَنِيٌّ', meaning: 'A wealthy merchant' },
+        { id: 'p2', ar: 'فَلَّاحٌ فَقِيرٌ', meaning: 'A poor farmer' },
+        { id: 'p3', ar: 'تِلْمِيذٌ ذَكِيٌّ', meaning: 'An intelligent student' },
+        { id: 'p4', ar: 'أَنَا تِلْمِيذٌ جَدِيدٌ', meaning: 'I am a new student' },
+      ],
+    },
+  },
+
+  // 18. Sacred Milestone: Quranic Echo (Surah Muhammad 47:38)
+  {
+    id: 'step-18-quranic-echo',
+    type: 'quranic_echo',
+    pageNumber: 26,
+    titleEn: 'Quranic Milestone',
+    titleAr: 'صَدَى القُرْآنِ الكَرِيمِ',
+    instructionEn: 'Witness the divine contrasting balance between rich and needy in Surah Muhammad.',
+    instructionBn: 'সূরা মুহাম্মাদে ধনী ও অভাবীর চিরন্তন ঐশী ভারসাম্য শ্রবণ করুন।',
+    echoPayload: {
+      surahNumber: 47,
+      ayahNumber: 38,
+      surahNameAr: 'سُورَةُ مُحَمَّدٍ',
+      surahNameEn: 'Muhammad',
+      arabicText: 'وَاللَّهُ الْغَنِيُّ وَأَنتُمُ الْفُقَرَاءُ',
+      translationEn: 'And Allah is the Free of need, while you are the needy.',
+      translationBn: 'আর আল্লাহ হলেন অভাবমুক্ত, আর তোমরা সবাই মুখাপেক্ষী ও অভাবী।',
+      highlightedWords: ['الْغَنِيُّ', 'الْفُقَرَاءُ'],
+      patternNameEn: 'Contrasting Attributes as Predicates',
+      patternNameBn: 'বিপরীতার্থক গুণবাচক পদের খবর গঠন',
+      lessonPatternAr: 'أَنَا غَنِيٌّ / أَنْتَ فَقِيرٌ',
+      lessonPatternEn: 'I am rich / You are needy',
+      lessonPatternBn: 'আমি ধনী / আপনি অভাবী',
+      quranPatternAr: 'وَاللَّهُ الْغَنِيُّ وَأَنتُمُ الْفُقَرَاءُ',
+      quranPatternEn: 'And Allah is the Free of need, while you are the needy',
+      quranPatternBn: 'আর আল্লাহ হলেন অভাবমুক্ত, আর তোমরা সবাই মুখাপেক্ষী ও অভাবী',
+      reflection: 'In this lesson, you learned "غَنِيٌّ" (rich / independent) and "فَقِيرٌ" (poor / needy). In the Quran, Allah attributes absolute self-sufficiency (الْغَنِيُّ) to Himself, while reminding all humanity of their profound poverty and total need of Him (الْفُقَرَاءُ).',
+      audioKey: 'quran_047038',
+    },
+  },
+];
+
+export const LESSON_03_SESSION: LessonSessionData = {
+  volumeId: 1,
+  chapterId: 1,
+  lessonNum: 3,
+  titleEn: 'Lesson 3: Identity, Pronouns & Vocative',
+  titleAr: 'الدَّرْسُ الثَّالِثُ: الضَّمَائِرُ وَالنِّدَاءُ',
+  wordsLearned: [
+    'تِلْمِيذٌ', 'تِلْمِيذَةٌ',
+    'مُعَلِّمٌ', 'مُعَلِّمَةٌ',
+    'وَلَدٌ', 'بِنْتٌ',
+    'طِفْلٌ', 'طِفْلَةٌ',
+    'مُؤَدَّبٌ', 'مُؤَدَّبَةٌ',
+    'أَنَا', 'أَنْتَ', 'أَنْتِ', 'هُوَ', 'هِيَ',
+    'تَاجِرٌ', 'فَلَّاحٌ',
+    'غَنِيٌّ', 'فَقِيرٌ',
+    'ذَكِيٌّ', 'غَبِيٌّ',
+    'رَجُلٌ', 'اِمْرَأَةٌ',
+    'شَرِيفٌ', 'جِدًّا',
+  ],
+  steps: LESSON_03_STEPS,
+};

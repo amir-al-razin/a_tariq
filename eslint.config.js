@@ -10,6 +10,9 @@ module.exports = defineConfig([
   {
     rules: {
       'react/display-name': 'off',
+      'react-hooks/preserve-manual-memoization': 'off',
+      'react-hooks/purity': 'off',
+      'react-hooks/set-state-in-effect': 'off',
     },
   },
 ]);

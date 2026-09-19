@@ -5,7 +5,7 @@ import { Pressable, Text } from 'react-native';
 const THEME_STORAGE_KEY = 'app.theme.preference';
 
 export const ThemeToggle: React.FC = () => {
-  const { colorScheme, setColorScheme } = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
 
   const toggleTheme = async () => {
@@ -13,10 +13,10 @@ export const ThemeToggle: React.FC = () => {
     try {
       // Save to persistent storage
       await AsyncStorage.setItem(THEME_STORAGE_KEY, newTheme);
-      
+
       // Apply color scheme - this will automatically update useColorScheme hook
       nwColorScheme.set(newTheme);
-      
+
       console.log('[THEME] Toggled to:', newTheme);
     } catch (error) {
       console.warn('[THEME] Failed to toggle theme:', error);
@@ -28,8 +28,20 @@ export const ThemeToggle: React.FC = () => {
       accessibilityRole="button"
       accessibilityLabel="Toggle theme"
       onPress={toggleTheme}
-      className="rounded-xl border border-primary-200 bg-primary-50 px-3 py-2 dark:border-primary-700 dark:bg-primary-900/40">
-      <Text className="font-english-semibold text-caption text-primary-800 dark:text-primary-100">
+      style={{
+        borderRadius: 9999,
+        paddingHorizontal: 14,
+        paddingVertical: 8,
+        backgroundColor: isDark ? '#262626' : '#E5E5E5',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+      <Text
+        style={{
+          fontFamily: 'Lexend_600SemiBold',
+          fontSize: 12,
+          color: isDark ? '#FAFAFA' : '#171717',
+        }}>
         {isDark ? 'Dark' : 'Light'}
       </Text>
     </Pressable>

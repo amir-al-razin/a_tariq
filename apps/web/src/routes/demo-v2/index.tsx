@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
+import { cn } from '@/lib/utils';
 import ThemeToggle from '../../components/ThemeToggle';
 import {
   ApplicationView,
@@ -16,6 +17,8 @@ import {
   TranslationToggle,
   VerbTableView,
   VocabularyView,
+  VocabularyHeroCard,
+  WordChipExercise,
 } from '../../components/pedagogy-v2';
 
 export const Route = createFileRoute('/demo-v2/')({
@@ -24,6 +27,7 @@ export const Route = createFileRoute('/demo-v2/')({
 
 function DemoV2Page() {
   const [headerProgress, setHeaderProgress] = useState(0.4);
+  const [vocabCondition, setVocabCondition] = useState<'good_design' | 'standard_flip'>('good_design');
 
   return (
     <div className="min-h-screen pb-24 bg-white dark:bg-black text-neutral-900 dark:text-neutral-50 transition-colors">
@@ -78,21 +82,102 @@ function DemoV2Page() {
           </div>
         </section>
 
-        {/* VocabularyView */}
+        {/* Vocabulary Pedagogy Component (Design Condition Comparison) */}
         <section className="space-y-6">
-          <h2 className="text-2xl font-english-semibold text-neutral-900 dark:text-neutral-100">
-            VocabularyView
-          </h2>
-          <div className="p-8 rounded-3xl bg-white dark:bg-[#0a0a0a]">
-            <VocabularyView
-              payload={{
-                words: [
-                  { id: 1, ar: 'كِتَابٌ', romanized: 'kitābun', en: 'A book', bn: 'একটি বই', emoji: '📖' },
-                  { id: 2, ar: 'قَلَمٌ', romanized: 'qalamun', en: 'A pen', bn: 'একটি কলম', emoji: '🖊️' },
-                  { id: 3, ar: 'مَدْرَسَةٌ', romanized: 'madrasatun', en: 'A school', bn: 'একটি স্কুল', emoji: '🏫' }
-                ],
-              }}
-            />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-2xl font-english-semibold text-neutral-900 dark:text-neutral-100">
+                Vocabulary Pedagogy Component
+              </h2>
+              <p className="text-sm font-english text-neutral-500 dark:text-neutral-400 mt-1">
+                Single-word focus comparison: Good Design Squircle (good.png inspired) vs. Standard Flip-Card
+              </p>
+            </div>
+            {/* Condition Switcher Pill Group */}
+            <div className="inline-flex p-1.5 rounded-full bg-neutral-100 dark:bg-neutral-900 self-start sm:self-auto">
+              <button
+                onClick={() => setVocabCondition('good_design')}
+                className={cn(
+                  'px-4 py-2 rounded-full text-xs font-english-semibold transition-all cursor-pointer outline-none',
+                  vocabCondition === 'good_design'
+                    ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 shadow-sm'
+                    : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+                )}
+              >
+                Condition B: good.png Squircle Focus
+              </button>
+              <button
+                onClick={() => setVocabCondition('standard_flip')}
+                className={cn(
+                  'px-4 py-2 rounded-full text-xs font-english-semibold transition-all cursor-pointer outline-none',
+                  vocabCondition === 'standard_flip'
+                    ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 shadow-sm'
+                    : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+                )}
+              >
+                Condition A: Standard Flip Card
+              </button>
+            </div>
+          </div>
+
+          <div className="p-6 sm:p-10 rounded-3xl bg-neutral-50/70 dark:bg-[#0c0c0c] flex justify-center">
+            {vocabCondition === 'good_design' ? (
+              <VocabularyHeroCard
+                words={[
+                  {
+                    id: 1,
+                    ar: 'كِتَابٌ',
+                    romanized: 'kitābun',
+                    en: 'A book',
+                    bn: 'একটি বই',
+                    emoji: '📖',
+                    gender: 'masculine',
+                    category: 'noun',
+                  },
+                  {
+                    id: 2,
+                    ar: 'قَلَمٌ',
+                    romanized: 'qalamun',
+                    en: 'A pen',
+                    bn: 'একটি কলম',
+                    emoji: '🖊️',
+                    gender: 'masculine',
+                    category: 'noun',
+                  },
+                  {
+                    id: 3,
+                    ar: 'مَدْرَسَةٌ',
+                    romanized: 'madrasatun',
+                    en: 'A school',
+                    bn: 'একটি বিদ্যালয়',
+                    emoji: '🏫',
+                    gender: 'feminine',
+                    category: 'noun',
+                  },
+                  {
+                    id: 4,
+                    ar: 'بَيْتٌ',
+                    romanized: 'baytun',
+                    en: 'A house',
+                    bn: 'একটি বাড়ি',
+                    emoji: '🏠',
+                    gender: 'masculine',
+                    category: 'noun',
+                  },
+                ]}
+              />
+            ) : (
+              <VocabularyView
+                payload={{
+                  words: [
+                    { id: 1, ar: 'كِتَابٌ', romanized: 'kitābun', en: 'A book', bn: 'একটি বই', emoji: '📖' },
+                    { id: 2, ar: 'قَلَمٌ', romanized: 'qalamun', en: 'A pen', bn: 'একটি কলম', emoji: '🖊️' },
+                    { id: 3, ar: 'مَدْرَسَةٌ', romanized: 'madrasatun', en: 'A school', bn: 'একটি স্কুল', emoji: '🏫' },
+                    { id: 4, ar: 'بَيْتٌ', romanized: 'baytun', en: 'A house', bn: 'একটি বাড়ি', emoji: '🏠' },
+                  ],
+                }}
+              />
+            )}
           </div>
         </section>
 
@@ -317,6 +402,33 @@ function DemoV2Page() {
               ]
             }}
           />
+        </section>
+
+        {/* WordChipExercise */}
+        <section className="space-y-6">
+          <h2 className="text-2xl font-english-semibold text-neutral-900 dark:text-neutral-100">
+            WordChipExercise (Interactive Sentence Assembly)
+          </h2>
+          <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#0a0a0a]">
+            <WordChipExercise
+              exercises={[
+                {
+                  id: 1,
+                  questionAr: 'مَا هَٰذَا؟ (What is this?)',
+                  emoji: '📖',
+                  expectedAnswer: ['هَٰذَا', 'كِتَابٌ'],
+                  chips: ['هَٰذَا', 'كِتَابٌ', 'مَدْرَسَةٌ', 'قَلَمٌ'],
+                },
+                {
+                  id: 2,
+                  questionAr: 'مَا هَٰذِهِ؟ (What is this?)',
+                  emoji: '🏫',
+                  expectedAnswer: ['هَٰذِهِ', 'مَدْرَسَةٌ'],
+                  chips: ['هَٰذِهِ', 'مَدْرَسَةٌ', 'كِتَابٌ', 'بَيْتٌ'],
+                },
+              ]}
+            />
+          </div>
         </section>
 
       </div>

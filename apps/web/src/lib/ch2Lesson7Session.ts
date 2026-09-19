@@ -1,0 +1,630 @@
+// Chapter 2 Lesson 7 Interactive Session Steps (Spatial Locatives & Syntactic Inversion)
+import type { LessonSessionData, SessionStep } from './lessonSessionTypes';
+
+export const CH2_LESSON_07_STEPS: SessionStep[] = [
+  // 1. Spatial Pointing Anchor: Classroom Furniture
+  {
+    id: 'ch2-l7-step-1-spatial-table',
+    type: 'spatial_pointing',
+    pageNumber: 82,
+    titleEn: 'Spatial Anchor: Classroom Furniture',
+    titleAr: 'الإِشَارَةُ المَكَانِيَّةُ: طَاوِلَةٌ قَرِيبَةٌ',
+    instructionEn: 'Point to this table standing near you.',
+    instructionBn: 'নিকটের এই টেবিলটির দিকে নির্দেশ করুন।',
+    spatialPointingPayload: {
+      objectAr: 'طَاوِلَةٌ',
+      distance: 'near',
+      gender: 'feminine',
+      correctAnswer: 'هَذِهِ طَاوِلَةٌ',
+      options: ['هَذَا طَاوِلَةٌ', 'هَذِهِ طَاوِلَةٌ', 'ذَلِكَ طَاوِلَةٌ', 'تِلْكَ طَاوِلَةٌ'],
+      emoji: '🪵',
+    },
+  },
+
+  // 2. Primary Vocabulary Priming: Directional Adverbs & Classroom
+  {
+    id: 'ch2-l7-step-2-vocab-locatives',
+    type: 'vocab_prime',
+    pageNumber: 82,
+    titleEn: 'Directional Adverbs & Classroom',
+    titleAr: 'ظُرُوفُ المَكَانِ وَأَدَوَاتُ الفَصْلِ',
+    instructionEn: 'Listen to the 4 primary classical Arabic directional adverbs and classroom furniture.',
+    instructionBn: 'দিক ও অবস্থান নির্দেশক প্রধান চারটি জরফ এবং শ্রেণিকক্ষের মৌলিক শব্দগুলো শুনুন।',
+    vocabPayload: {
+      words: [
+        {
+          id: 'c2l7-fawqa',
+          ar: 'فَوْقَ',
+          en: 'Above / on / over',
+          bn: 'উপরে',
+          romanized: 'fawqa',
+          emoji: '⬆️',
+        },
+        {
+          id: 'c2l7-tahta',
+          ar: 'تَحْتَ',
+          en: 'Under / below / beneath',
+          bn: 'নিচে',
+          romanized: 'taḥta',
+          emoji: '⬇️',
+        },
+        {
+          id: 'c2l7-amama',
+          ar: 'أَمَامَ',
+          en: 'In front of / before',
+          bn: 'সামনে',
+          romanized: 'amāma',
+          emoji: '👉',
+        },
+        {
+          id: 'c2l7-khalfa',
+          ar: 'خَلْفَ',
+          en: 'Behind / in back of',
+          bn: 'পেছনে',
+          romanized: 'khalfa',
+          emoji: '👈',
+        },
+        {
+          id: 'c2l7-tawilah',
+          ar: 'طَاوِلَةٌ',
+          en: 'A table',
+          bn: 'একটি টেবিল',
+          romanized: 'ṭāwilatun',
+          emoji: '🪵',
+        },
+        {
+          id: 'c2l7-missahah',
+          ar: 'مِسَّاحَةٌ',
+          en: 'A duster / eraser',
+          bn: 'একটি ডাস্টার',
+          romanized: 'missāḥatun',
+          emoji: '🧹',
+        },
+      ],
+    },
+  },
+
+  // 3. Secondary Vocabulary Priming: Waterways & Structures
+  {
+    id: 'ch2-l7-step-3-vocab-waters',
+    type: 'vocab_prime',
+    pageNumber: 82,
+    titleEn: 'Waterways, Traversals & Fixtures',
+    titleAr: 'مُفْرَدَاتُ المِيَاهِ وَالجُسُورِ وَالأَدَوَاتِ',
+    instructionEn: 'Learn classical nouns for bodies of water, bridges, vessels, and household fixtures.',
+    instructionBn: 'নদী, সাগর, সেতু, নৌকা এবং গৃহস্থালি সরঞ্জামের আরবি শব্দগুলো জানুন।',
+    vocabPayload: {
+      words: [
+        {
+          id: 'c2l7-nahr',
+          ar: 'نَهْرٌ',
+          en: 'A river',
+          bn: 'একটি নদী',
+          romanized: 'nahrun',
+          emoji: '🌊',
+        },
+        {
+          id: 'c2l7-bahr',
+          ar: 'بَحْرٌ',
+          en: 'A sea / ocean',
+          bn: 'একটি সাগর / সমুদ্র',
+          romanized: 'baḥrun',
+          emoji: '🌊',
+        },
+        {
+          id: 'c2l7-jisr',
+          ar: 'جِسْرٌ',
+          en: 'A bridge',
+          bn: 'একটি সেতু / ব্রিজ',
+          romanized: 'jisrun',
+          emoji: '🌉',
+        },
+        {
+          id: 'c2l7-zawraq',
+          ar: 'زَوْرَقٌ',
+          en: 'A boat / skiff',
+          bn: 'একটি নৌকা',
+          romanized: 'zawraqun',
+          emoji: '⛵',
+        },
+        {
+          id: 'c2l7-mizallah',
+          ar: 'مِظَلَّةٌ',
+          en: 'An umbrella',
+          bn: 'একটি ছাতা',
+          romanized: 'miẓallatun',
+          emoji: '☂️',
+        },
+        {
+          id: 'c2l7-mirwahah',
+          ar: 'مِرْوَحَةٌ',
+          en: 'A fan',
+          bn: 'একটি পাখা',
+          romanized: 'mirwaḥatun',
+          emoji: '🪭',
+        },
+      ],
+    },
+  },
+
+  // 4. Synaptic Speed Match: Spatial & Natural Terms
+  {
+    id: 'ch2-l7-step-4-speed-spatial',
+    type: 'speed_pair',
+    pageNumber: 82,
+    titleEn: 'Synaptic Speed Pairing: Directional Coordinates',
+    titleAr: 'التَّطَابُقُ السَّرِيعُ: ظُرُوفُ المَكَانِ',
+    instructionEn: 'Rapidly connect each Arabic directional adverb and natural element to its meaning.',
+    instructionBn: 'দিক নির্দেশক ও প্রাকৃতিক বৈশিষ্ট্যের আরবি শব্দের সাথে দ্রুত অর্থের মিল করুন।',
+    pairPayload: {
+      pairs: [
+        { id: 'p-c2l7-1', ar: 'فَوْقَ', meaning: 'Above / on' },
+        { id: 'p-c2l7-2', ar: 'تَحْتَ', meaning: 'Under / below' },
+        { id: 'p-c2l7-3', ar: 'أَمَامَ', meaning: 'In front of' },
+        { id: 'p-c2l7-4', ar: 'خَلْفَ', meaning: 'Behind' },
+        { id: 'p-c2l7-5', ar: 'نَهْرٌ', meaning: 'River' },
+        { id: 'p-c2l7-6', ar: 'جِسْرٌ', meaning: 'Bridge' },
+      ],
+    },
+  },
+
+  // 5. Concept Discovery: Genitive Case Governed by Spatial Adverbs
+  {
+    id: 'ch2-l7-step-5-concept-adverb-governance',
+    type: 'concept_intro',
+    pageNumber: 82,
+    titleEn: 'Grammar Paradigm: Genitive Case Governed by Adverbs',
+    titleAr: 'قَاعِدَةٌ: جَرُّ الاسْمِ بَعْدَ ظَرْفِ الْمَكَانِ',
+    instructionEn: 'Spatial adverbs (ظُرُوفُ المَكَانِ) such as «فَوْقَ» and «تَحْتَ» act as Mudaf, causing the following noun to take a Kasrah (ـِ).',
+    instructionBn: 'স্থান নির্দেশক জরফ (فَوْقَ, تَحْتَ ইত্যাদি) মুদাফ হিসেবে ব্যবহৃত হয় এবং পরবর্তী বিশেষ্যকে যের (কাসরাহ) প্রদান করে মাজরুর করে।',
+    conceptPayload: {
+      concepts: [
+        {
+          id: 'cp-c2l7-fawqa-table',
+          ar: 'فَوْقَ الطَّاوِلَةِ كِتَابٌ',
+          romanized: 'fawqa aṭ-ṭāwilati kitābun',
+          meaningEn: 'On the table is a book.',
+          meaningBn: 'টেবিলের উপরে একটি বই আছে।',
+          exampleAr: 'اَلْكِتَابُ فَوْقَ الطَّاوِلَةِ',
+          exampleEn: 'The book is on the table.',
+          exampleBn: 'বইটি টেবিলের উপরে আছে।',
+          audioKey: 'fawqa_at_tawilah',
+          exampleAudioKey: 'al_kitabu_fawqa_at_tawilah',
+          emoji: '📖',
+        },
+        {
+          id: 'cp-c2l7-tahta-bridge',
+          ar: 'تَحْتَ الْجِسْرِ زَوْرَقٌ',
+          romanized: 'taḥta al-jisri zawraqun',
+          meaningEn: 'Under the bridge is a boat.',
+          meaningBn: 'সেতুর নিচে একটি নৌকা আছে।',
+          exampleAr: 'اَلزَّوْرَقُ تَحْتَ الْجِسْرِ',
+          exampleEn: 'The boat is under the bridge.',
+          exampleBn: 'নৌকাটি সেতুর নিচে আছে।',
+          audioKey: 'tahta_al_jisr_zawraq',
+          exampleAudioKey: 'al_zawraqu_tahta_al_jisr',
+          emoji: '⛵',
+        },
+      ],
+    },
+  },
+
+  // 6. Deep Pedagogical Concept: Inversion of Subject and Prepositional Predicate
+  {
+    id: 'ch2-l7-step-6-concept-inversion',
+    type: 'concept_intro',
+    pageNumber: 82,
+    titleEn: 'Syntactic Rule: Word Order Inversion with Locative Predicates',
+    titleAr: 'قَاعِدَةٌ: تَقْدِيمُ الخَبَرِ الظَّرْفِيِّ عَلَى المُبْتَدَأِ',
+    instructionEn: 'Compare: An indefinite subject is introduced after the adverb («فَوْقَ الطَّاوِلَةِ كِتَابٌ»), while a definite subject stands at the front («اَلْكِتَابُ فَوْقَ الطَّاوِلَةِ»).',
+    instructionBn: 'তুলনা করুন: অনির্দিষ্ট বিশেষ্য জরফের পরে বসে («فَوْقَ الطَّاوِلَةِ كِتَابٌ»), কিন্তু নির্দিষ্ট বিশেষ্য বাক্যের শুরুতে বসে («اَلْكِتَابُ فَوْقَ الطَّاوِلَةِ»)।',
+    conceptPayload: {
+      concepts: [
+        {
+          id: 'cp-c2l7-indef-intro',
+          ar: 'فَوْقَ الطَّاوِلَةِ كِتَابٌ وَ قَلَمٌ',
+          romanized: 'fawqa aṭ-ṭāwilati kitābun wa qalamun',
+          meaningEn: 'On the table are a book and a pen (Indefinite Subject Delayed).',
+          meaningBn: 'টেবিলের উপর একটি বই ও একটি কলম রয়েছে (অনির্দিষ্ট মুবতাদা বিলম্বে)।',
+          exampleAr: 'فَوْقَ الطَّاوِلَةِ كِتَابٌ وَ قَلَمٌ',
+          exampleEn: 'On the table is a book and a pen.',
+          exampleBn: 'টেবিলের উপরে একটি বই এবং একটি কলম রয়েছে।',
+          audioKey: 'fawqa_tawilah_kitab_wa_qalam',
+          exampleAudioKey: 'fawqa_tawilah_kitab_wa_qalam',
+          emoji: '📝',
+        },
+        {
+          id: 'cp-c2l7-def-front',
+          ar: 'الْكِتَابُ وَ الْقَلَمُ فَوْقَ الطَّاوِلَةِ',
+          romanized: 'al-kitābu wa al-qalamu fawqa aṭ-ṭāwilati',
+          meaningEn: 'The book and the pen are on the table (Definite Subject First).',
+          meaningBn: 'বইটি এবং কলমটি টেবিলের উপরে আছে (নির্দিষ্ট মুবতাদা শুরুতে)।',
+          exampleAr: 'الْكِتَابُ وَ الْقَلَمُ فَوْقَ الطَّاوِلَةِ',
+          exampleEn: 'The book and the pen are on the table.',
+          exampleBn: 'বইটি এবং কলমটি টেবিলের উপরে আছে।',
+          audioKey: 'al_kitabu_wa_al_qalamu_fawqa_tawilah',
+          exampleAudioKey: 'al_kitabu_wa_al_qalamu_fawqa_tawilah',
+          emoji: '📚',
+        },
+      ],
+    },
+  },
+
+  // 7. Polar Sort 1: Spatial Perspective: Above vs Below
+  {
+    id: 'ch2-l7-step-7-polar-fawqa-tahta',
+    type: 'polar_sort',
+    pageNumber: 82,
+    titleEn: 'Binary Spatial Sort: Elevation Perspective',
+    titleAr: 'تَمْيِيزُ فَوْقَ وَتَحْتَ فِي العَلَاقَاتِ المَكَانِيَّةِ',
+    instructionEn: 'A bridge traverses across a river. Which directional relationship accurately describes its physical location?',
+    instructionBn: 'নদীর উপর সেতু অবস্থিত হলে কোন স্থান নির্দেশক সম্পর্কটি সঠিক?',
+    polarPayload: {
+      arabicSubject: 'اَلْجِسْرُ',
+      meaningEn: 'The bridge is...',
+      meaningBn: 'সেতুটি নদীর...',
+      gender: 'masculine',
+      correctAnswer: 'فَوْقَ النَّهْرِ',
+      options: ['فَوْقَ النَّهْرِ', 'تَحْتَ النَّهْرِ'],
+      emoji: '🌉',
+    },
+  },
+
+  // 8. Polar Sort 2: Case Ending Following Directional Adverbs
+  {
+    id: 'ch2-l7-step-8-polar-adverb-case',
+    type: 'polar_sort',
+    pageNumber: 82,
+    titleEn: 'Binary Case Sort: Noun Desinence after Adverb',
+    titleAr: 'تَمْيِيزُ حَرَكَةِ الاسْمِ بَعْدَ الظَّرْفِ',
+    instructionEn: 'Select the grammatically correct ending for the noun directly following the adverb «فَوْقَ».',
+    instructionBn: '«فَوْقَ» জরফের পরে আগত বিশেষ্যের ব্যাকরণগত সঠিক হরকতযুক্ত রূপটি বাছাই করুন।',
+    polarPayload: {
+      arabicSubject: 'فَوْقَ',
+      meaningEn: 'Above the table...',
+      meaningBn: 'টেবিলের উপরে...',
+      gender: 'feminine',
+      correctAnswer: 'فَوْقَ الطَّاوِلَةِ',
+      options: ['فَوْقَ الطَّاوِلَةُ', 'فَوْقَ الطَّاوِلَةِ'],
+      emoji: '🪵',
+    },
+  },
+
+  // 9. Cloze Choice Drill 1: Classroom Blackboard Position
+  {
+    id: 'ch2-l7-step-9-cloze-blackboard',
+    type: 'cloze_choice',
+    pageNumber: 82,
+    titleEn: 'Contextual Selection: Blackboard Placement',
+    titleAr: 'اخْتِيَارُ الاسْمِ: سَبُّورَةُ الفَصْلِ',
+    instructionEn: 'Complete the sentence: "In front of the teacher is a blackboard."',
+    instructionBn: '"শিক্ষকের সামনে একটি ব্ল্যাকবোর্ড আছে" বাক্যটি সঠিক শব্দ দিয়ে পূর্ণ করুন।',
+    clozePayload: {
+      questionAr: 'أَمَامَ الْمُعَلِّمِ ...',
+      questionEn: 'In front of the teacher is a blackboard.',
+      questionBn: 'শিক্ষকের সামনে একটি ব্ল্যাকবোর্ড আছে।',
+      partialAnswerAr: 'أَمَامَ الْمُعَلِّمِ ...',
+      correctAnswer: 'سَبُّورَةٌ',
+      options: ['سَبُّورَةٌ', 'مِرْوَحَةٌ', 'مِصْبَاحٌ', 'زَوْرَقٌ'],
+      emoji: '🧑‍🏫',
+    },
+  },
+
+  // 10. Cloze Choice Drill 2: Ceiling Fan Placement
+  {
+    id: 'ch2-l7-step-10-cloze-ceiling-fan',
+    type: 'cloze_choice',
+    pageNumber: 83,
+    titleEn: 'Syntactic Selection: Under the Ceiling',
+    titleAr: 'اخْتِيَارُ الظَّرْفِ: مَوْقِعُ المِرْوَحَةِ',
+    instructionEn: 'Select the correct adverb: "... the ceiling is a fan."',
+    instructionBn: '"ছাদের নিচে একটি পাখা আছে" বাক্যের জন্য সঠিক জরফটি নির্বাচন করুন।',
+    clozePayload: {
+      questionAr: '... السَّقْفِ مِرْوَحَةٌ',
+      questionEn: 'Under the ceiling is a fan.',
+      questionBn: 'ছাদের নিচে একটি পাখা আছে।',
+      partialAnswerAr: '... السَّقْفِ مِرْوَحَةٌ',
+      correctAnswer: 'تَحْتَ',
+      options: ['تَحْتَ', 'فَوْقَ', 'أَمَامَ', 'خَلْفَ'],
+      emoji: '🪭',
+    },
+  },
+
+  // 11. Dialogic Alternative Q&A Battery 1: Table & Classroom Objects
+  {
+    id: 'ch2-l7-step-11-dialogue-classroom-table',
+    type: 'alternative_qa',
+    pageNumber: 83,
+    titleEn: 'Dialogic Battery: Classroom Objects & Locative Inversion',
+    titleAr: 'حِوَارُ التَّعْيِينِ: الطَّاوِلَةُ وَأَدَوَاتُ الفَصْلِ',
+    instructionEn: 'Select the precise item situated on and under the classroom table based on the visual cue without using yes or no.',
+    instructionBn: 'হ্যাঁ বা না ছাড়া দৃশ্যায়ন অনুযায়ী টেবিলের উপরে ও নিচে থাকা বস্তুগুলোর সঠিক অবস্থান নির্দেশ করুন।',
+    alternativeQAPayload: {
+      questions: [
+        {
+          id: 'qa-c2l7-1',
+          questionAr: 'أَ كِتَابٌ فَوْقَ الطَّاوِلَةِ أَمْ كُرَّاسَةٌ ؟ (📖 كِتَابٌ)',
+          optionsAr: ['كِتَابٌ', 'كُرَّاسَةٌ'],
+          correctAnswerAr: 'كِتَابٌ',
+        },
+        {
+          id: 'qa-c2l7-2',
+          questionAr: 'أَ قَلَمٌ فَوْقَ الطَّاوِلَةِ أَمْ مِفْتَاحٌ ؟ (🖊️ قَلَمٌ)',
+          optionsAr: ['قَلَمٌ', 'مِفْتَاحٌ'],
+          correctAnswerAr: 'قَلَمٌ',
+        },
+        {
+          id: 'qa-c2l7-3',
+          questionAr: 'أَ فَوْقَ الطَّاوِلَةِ الْكِتَابُ وَ الْقَلَمُ أَمْ تَحْتَهَا ؟ (⬆️ فَوْقَ)',
+          optionsAr: ['فَوْقَ الطَّاوِلَةِ', 'تَحْتَهَا'],
+          correctAnswerAr: 'فَوْقَ الطَّاوِلَةِ',
+        },
+        {
+          id: 'qa-c2l7-4',
+          questionAr: 'أَ تَحْتَ الطَّاوِلَةِ السَّاعَةُ وَ الْمِسْطَرَةُ أَمْ فَوْقَهَا ؟ (⬆️ فَوْقَهَا)',
+          optionsAr: ['فَوْقَهَا', 'تَحْتَ الطَّاوِلَةِ'],
+          correctAnswerAr: 'فَوْقَهَا',
+        },
+        {
+          id: 'qa-c2l7-5',
+          questionAr: 'أَ مِسَّاحَةٌ فَوْقَهَا أَمْ مِسْطَرَةٌ ؟ (🧹 مِسَّاحَةٌ)',
+          optionsAr: ['مِسَّاحَةٌ', 'مِسْطَرَةٌ'],
+          correctAnswerAr: 'مِسَّاحَةٌ',
+        },
+      ],
+    },
+  },
+
+  // 12. Dialogic Alternative Q&A Battery 2: Ceiling & River Navigation
+  {
+    id: 'ch2-l7-step-12-dialogue-river-ceiling',
+    type: 'alternative_qa',
+    pageNumber: 83,
+    titleEn: 'Dialogic Battery: Ceiling Fixtures & River Bridge',
+    titleAr: 'حِوَارُ التَّعْيِينِ: المِرْوَحَةُ وَالجِسْرُ وَالزَّوْرَقُ',
+    instructionEn: 'Dissect spatial placements of structural fixtures, river bridges, and navigating vessels based on the visual cue.',
+    instructionBn: 'দৃশ্যায়ন অনুযায়ী সিলিং ফ্যান, নদী, সেতু এবং নৌকার আপেক্ষিক অবস্থান নির্ণয় করুন।',
+    alternativeQAPayload: {
+      questions: [
+        {
+          id: 'qa-c2l7-6',
+          questionAr: 'أَ مِرْوَحَةٌ تَحْتَ السَّقْفِ أَمْ مِصْبَاحٌ ؟ (🪭 مِرْوَحَةٌ)',
+          optionsAr: ['مِرْوَحَةٌ', 'مِصْبَاحٌ'],
+          correctAnswerAr: 'مِرْوَحَةٌ',
+        },
+        {
+          id: 'qa-c2l7-7',
+          questionAr: 'أَ فَوْقَ السَّقْفِ هِيَ أَمْ تَحْتَ السَّقْفِ ؟ (⬇️ تَحْتَ السَّقْفِ)',
+          optionsAr: ['تَحْتَ السَّقْفِ', 'فَوْقَ السَّقْفِ'],
+          correctAnswerAr: 'تَحْتَ السَّقْفِ',
+        },
+        {
+          id: 'qa-c2l7-8',
+          questionAr: 'أَ طَوِيلٌ هَذَا الْجِسْرُ أَمْ قَصِيرٌ ؟ (🌉 طَوِيلٌ)',
+          optionsAr: ['طَوِيلٌ', 'قَصِيرٌ'],
+          correctAnswerAr: 'طَوِيلٌ',
+        },
+        {
+          id: 'qa-c2l7-9',
+          questionAr: 'أَ تَحْتَ الْجِسْرِ الزَّوْرَقُ أَمْ فَوْقَهُ ؟ (⛵ تَحْتَ الْجِسْرِ)',
+          optionsAr: ['تَحْتَ الْجِسْرِ', 'فَوْقَهُ'],
+          correctAnswerAr: 'تَحْتَ الْجِسْرِ',
+        },
+        {
+          id: 'qa-c2l7-10',
+          questionAr: 'أَ صَغِيرٌ هَذَا الزَّوْرَقُ أَمْ كَبِيرٌ ؟ (⛵ صَغِيرٌ)',
+          optionsAr: ['صَغِيرٌ', 'كَبِيرٌ'],
+          correctAnswerAr: 'صَغِيرٌ',
+        },
+      ],
+    },
+  },
+
+  // 13. Speed Pair Matching 2: Spatial Clauses
+  {
+    id: 'ch2-l7-step-13-speed-clauses',
+    type: 'speed_pair',
+    pageNumber: 82,
+    titleEn: 'Synaptic Speed Pairing: Locative Phrases',
+    titleAr: 'التَّطَابُقُ السَّرِيعُ: الجُمَلُ الظَّرْفِيَّةُ',
+    instructionEn: 'Pair the locative Arabic phrases with their fluent English translations.',
+    instructionBn: 'স্থানবাচক আরবি বাক্যাংশের সাথে তাদের অনুবাদের দ্রুত সংযোগ স্থাপন করুন।',
+    pairPayload: {
+      pairs: [
+        { id: 'p-c2l7-7', ar: 'فَوْقَ الطَّاوِلَةِ', meaning: 'Above the table' },
+        { id: 'p-c2l7-8', ar: 'تَحْتَ الْجِسْرِ', meaning: 'Under the bridge' },
+        { id: 'p-c2l7-9', ar: 'أَمَامَ السَّبُّورَةِ', meaning: 'In front of the board' },
+        { id: 'p-c2l7-10', ar: 'فَوْقَ السَّقْفِ', meaning: 'Above the roof' },
+        { id: 'p-c2l7-11', ar: 'تَحْتَ السَّقْفِ', meaning: 'Under the ceiling' },
+      ],
+    },
+  },
+
+  // 14. Authentic Reading & Translation Drill: Table Items
+  {
+    id: 'ch2-l7-step-14-assembly-table-items',
+    type: 'sentence_assembly',
+    pageNumber: 82,
+    titleEn: 'Textbook Translation: Items Upon Table',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: فَوْقَ الطَّاوِلَةِ كِتَابٌ وَقَلَمٌ',
+    instructionEn: 'Read the Arabic sentence and assemble the translation.',
+    instructionBn: 'আরবি বাক্যটি পড়ুন এবং সঠিক অনুবাদ সাজিয়ে তুলুন।',
+    assemblyPayload: {
+      promptAr: 'فَوْقَ الطَّاوِلَةِ كِتَابٌ وَقَلَمٌ',
+      promptEn: 'On the table is a book and a pen.',
+      promptBn: 'টেবিলের উপরে একটি বই এবং একটি কলম আছে।',
+      expectedAnswer: ['On the table is', 'a book and', 'a pen'],
+      chips: ['On the table is', 'a book and', 'a pen', 'under the chair', 'a duster'],
+      expectedAnswerBn: ['টেবিলের উপরে রয়েছে', 'একটি বই এবং', 'একটি কলম'],
+      chipsBn: ['টেবিলের উপরে রয়েছে', 'একটি বই এবং', 'একটি কলম', 'চেয়ারের নিচে', 'একটি ডাস্টার'],
+      emoji: '📝',
+    },
+  },
+
+  // 15. Authentic Reading & Translation Drill: Teacher & Blackboard
+  {
+    id: 'ch2-l7-step-15-assembly-teacher-board',
+    type: 'sentence_assembly',
+    pageNumber: 82,
+    titleEn: 'Textbook Translation: Teacher & Duster Positions',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: الْمُعَلِّمُ أَمَامَ السَّبُّورَةِ',
+    instructionEn: 'Read the Arabic sentence and assemble the translation.',
+    instructionBn: 'আরবি বাক্যটি পড়ুন এবং সঠিক অনুবাদ সাজিয়ে তুলুন।',
+    assemblyPayload: {
+      promptAr: 'الْمُعَلِّمُ أَمَامَ السَّبُّورَةِ وَالْمِسَّاحَةُ فَوْقَ الطَّاوِلَةِ',
+      promptEn: 'The teacher is in front of the blackboard and the duster is on the table.',
+      promptBn: 'শিক্ষক ব্ল্যাকবোর্ডের সামনে এবং ডাস্টারটি টেবিলের উপরে।',
+      expectedAnswer: ['The teacher is in front of the board', 'and the duster is', 'on the table'],
+      chips: ['The teacher is in front of the board', 'and the duster is', 'on the table', 'behind the room', 'under the roof'],
+      expectedAnswerBn: ['শিক্ষক বোর্ডের সামনে', 'এবং ডাস্টারটি', 'টেবিলের উপরে'],
+      chipsBn: ['শিক্ষক বোর্ডের সামনে', 'এবং ডাস্টারটি', 'টেবিলের উপরে', 'ঘরের পেছনে', 'ছাদের নিচে'],
+      emoji: '🧑‍🏫',
+    },
+  },
+
+  // 16. Authentic Reading & Translation Drill: River, Bridge & Boat
+  {
+    id: 'ch2-l7-step-16-assembly-bridge-boat',
+    type: 'sentence_assembly',
+    pageNumber: 83,
+    titleEn: 'Textbook Translation: Bridge & Navigating Boat',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: فَوْقَ النَّهْرِ جِسْرٌ وَتَحْتَ الْجِسْرِ زَوْرَقٌ',
+    instructionEn: 'Read the Arabic sentence and assemble the translation.',
+    instructionBn: 'আরবি বাক্যটি পড়ুন এবং সঠিক অনুবাদ সাজিয়ে তুলুন।',
+    assemblyPayload: {
+      promptAr: 'فَوْقَ النَّهْرِ جِسْرٌ وَتَحْتَ الْجِسْرِ زَوْرَقٌ',
+      promptEn: 'Above the river is a bridge and under the bridge is a boat.',
+      promptBn: 'নদীর উপরে একটি সেতু এবং সেতুর নিচে একটি নৌকা রয়েছে।',
+      expectedAnswer: ['Above the river is a bridge', 'and under the bridge is', 'a boat'],
+      chips: ['Above the river is a bridge', 'and under the bridge is', 'a boat', 'a big ship', 'in the river'],
+      expectedAnswerBn: ['নদীর উপরে একটি সেতু', 'এবং সেতুর নিচে', 'একটি নৌকা'],
+      chipsBn: ['নদীর উপরে একটি সেতু', 'এবং সেতুর নিচে', 'একটি নৌকা', 'একটি বড় জাহাজ', 'নদীতে'],
+      emoji: '🌉',
+    },
+  },
+
+  // 17. Syntactic Tarkib Dissector: Locative Adverbial Architecture
+  {
+    id: 'ch2-l7-step-17-tarkib-dissector',
+    type: 'tarkib_dissector',
+    pageNumber: 82,
+    titleEn: 'Syntactic Tarkib Dissector: Adverbial Predicate & Subject',
+    titleAr: 'التَّرْكِيبُ النَّحْوِيُّ: بِنَاءُ الخَبَرِ الظَّرْفِيِّ وَالمُبْتَدَأِ',
+    instructionEn: 'Deconstruct how a spatial adverb acts as Mudaf governing the genitive, forming a locative predicate alongside the subject.',
+    instructionBn: 'স্থান নির্দেশক জরফ কীভাবে মুদাফ হয়ে মাজরুর বিশিষ্ট পদসহ খবর গঠন করে তা ব্যাকরণগতভাবে বিশ্লেষণ করুন।',
+    tarkibPayload: {
+      sentences: [
+        {
+          id: 'tarkib-c2l7-s1',
+          sentenceAr: 'فَوْقَ الطَّاوِلَةِ كِتَابٌ',
+          sentenceTypeAr: 'جُمْلَةٌ اسْمِيَّةٌ (خَبَرٌ مُقَدَّمٌ ظَرْفِيٌّ + مُبْتَدَأٌ مُؤَخَّرٌ)',
+          sentenceTypeEn: 'Nominal Sentence (Fronted Locative Predicate + Delayed Subject)',
+          sentenceTypeBn: 'নামবাচক বাক্য (অগ্রবর্তী জরফি খবর + বিলম্বিত মুবতাদা)',
+          slots: [
+            {
+              roleAr: 'ظَرْفُ مَكَانٍ (مُضَافٌ)',
+              roleEn: 'Spatial Adverb / Mudaf',
+              roleBn: 'স্থানবাচক জরফ (মুদাফ)',
+              expectedWordAr: 'فَوْقَ',
+            },
+            {
+              roleAr: 'مُضَافٌ إِلَيْهِ (مَجْرُورٌ)',
+              roleEn: 'Genitive Object of Adverb',
+              roleBn: 'মুদাফ ইলাইহি (মাজরুর)',
+              expectedWordAr: 'الطَّاوِلَةِ',
+            },
+            {
+              roleAr: 'مُبْتَدَأٌ مُؤَخَّرٌ',
+              roleEn: 'Delayed Indefinite Subject',
+              roleBn: 'বিলম্বিত অনির্দিষ্ট মুবতাদা',
+              expectedWordAr: 'كِتَابٌ',
+            },
+          ],
+          availableWordsAr: ['كِتَابٌ', 'الطَّاوِلَةِ', 'فَوْقَ'],
+        },
+        {
+          id: 'tarkib-c2l7-s2',
+          sentenceAr: 'الْجِسْرُ فَوْقَ النَّهْرِ',
+          sentenceTypeAr: 'جُمْلَةٌ اسْمِيَّةٌ (مُبْتَدَأٌ مَعْرِفَةٌ + خَبَرٌ ظَرْفِيٌّ)',
+          sentenceTypeEn: 'Nominal Sentence (Definite Subject + Locative Predicate)',
+          sentenceTypeBn: 'নামবাচক বাক্য (নির্দিষ্ট মুবতাদা + জরফি খবর)',
+          slots: [
+            {
+              roleAr: 'مُبْتَدَأٌ (مَعْرِفَةٌ)',
+              roleEn: 'Definite Subject (Mubtada)',
+              roleBn: 'নির্দিষ্ট উদ্দেশ্য (মুবতাদা)',
+              expectedWordAr: 'الْجِسْرُ',
+            },
+            {
+              roleAr: 'ظَرْفُ مَكَانٍ (مُضَافٌ)',
+              roleEn: 'Spatial Adverb / Mudaf',
+              roleBn: 'স্থানবাচক জরফ (মুদাফ)',
+              expectedWordAr: 'فَوْقَ',
+            },
+            {
+              roleAr: 'مُضَافٌ إِلَيْهِ (مَجْرُورٌ)',
+              roleEn: 'Genitive Object of Adverb',
+              roleBn: 'মুদাফ ইলাইহি (মাজরুর)',
+              expectedWordAr: 'النَّهْرِ',
+            },
+          ],
+          availableWordsAr: ['النَّهْرِ', 'فَوْقَ', 'الْجِسْرُ'],
+        },
+      ],
+    },
+  },
+
+  // 18. Sacred Milestone: Quranic Echo (Surah Al-Baqarah 2:25)
+  {
+    id: 'ch2-l7-step-18-quranic-echo',
+    type: 'quranic_echo',
+    pageNumber: 86,
+    titleEn: 'Sacred Reflection: Spatial Locatives & Rivers in Paradise',
+    titleAr: 'الأَثَرُ القُرْآنِيُّ: تَحْتَ الأَنْهَارِ فِي الجَنَّاتِ النَّعِيمِ',
+    instructionEn: 'Witness how the spatial locative «تَحْتَ» combines with rivers («الأَنْهَارُ») in the promise of Gardens in Surah Al-Baqarah (2:25).',
+    instructionBn: 'সূরা আল-বাকারার আয়াতে জান্নাতের বর্ণনায় স্থানবাচক জরফ «تَحْتَ» ও নদীসমূহের («الأَنْهَارُ») অপূর্ব সংযোগ প্রত্যক্ষ করুন।',
+    echoPayload: {
+      surahNumber: 2,
+      ayahNumber: 25,
+      surahNameAr: 'البقرة',
+      surahNameEn: 'Al-Baqarah',
+      arabicText: 'أَنَّ لَهُمْ جَنَّاتٍ تَجْرِي مِن تَحْتِهَا الْأَنْهَارُ',
+      translationEn: 'That for them will be Gardens beneath which rivers flow.',
+      translationBn: 'তাদের জন্য রয়েছে জান্নাতসমূহ, যার তলদেশ দিয়ে নদীসমূহ প্রবাহিত।',
+      highlightedWords: ['تَحْتِهَا', 'الْأَنْهَارُ'],
+      patternNameEn: 'Spatial Locative Governing Genitive (ظَرْفُ مَكَانٍ + مُضَاف إِلَيْهِ)',
+      patternNameBn: 'স্থানবাচক জরফ ও পরবর্তী মাজরুর পদ',
+      lessonPatternAr: 'تَحْتَ الْجِسْرِ زَوْرَقٌ / فَوْقَ النَّهْرِ',
+      lessonPatternEn: 'Under the bridge is a boat / Above the river',
+      lessonPatternBn: 'সেতুর নিচে নৌকা / নদীর উপরে',
+      quranPatternAr: 'تَجْرِي مِن تَحْتِهَا الْأَنْهَارُ',
+      quranPatternEn: 'Flowing beneath them are rivers',
+      quranPatternBn: 'যার তলদেশ দিয়ে নদীসমূহ প্রবাহিত',
+      reflection: 'Spatial adverbs (ظُرُوفُ المَكَانِ) establish spatial orientation and govern genitive objects. In this lesson, you mastered how «تَحْتَ» means beneath or under, paired with «نَهْرٌ» (river). In Surah Al-Baqarah, Allah describes the everlasting gardens of Paradise through this exact spatial and aquatic relationship: «تَجْرِي مِن تَحْتِهَا الْأَنْهَارُ» (rivers flowing beneath them).',
+      audioKey: 'quran_002025',
+    },
+  },
+];
+
+export const CH2_LESSON_07_SESSION: LessonSessionData = {
+  volumeId: 1,
+  chapterId: 2,
+  lessonNum: 7,
+  titleEn: 'Spatial Locatives & Directional Coordinates',
+  titleAr: 'ظُرُوفُ الْمَكَانِ وَالاتِّجَاهَاتُ',
+  wordsLearned: [
+    'فَوْقَ',
+    'تَحْتَ',
+    'أَمَامَ',
+    'خَلْفَ',
+    'طَاوِلَةٌ',
+    'مِسَّاحَةٌ',
+    'نَهْرٌ',
+    'بَحْرٌ',
+    'جِسْرٌ',
+    'زَوْرَقٌ',
+    'مِظَلَّةٌ',
+    'مِرْوَحَةٌ',
+  ],
+  steps: CH2_LESSON_07_STEPS,
+};

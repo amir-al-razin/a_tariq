@@ -1,125 +1,269 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { IdafahPair } from '@tariq/shared';
+import type { IdafahPair } from '@tariq/shared';
 
-interface Props {
-    isDark: boolean;
-    C: Record<string, string>;
-    payload?: { idafahPairs?: IdafahPair[]; instruction?: string; instructionBn?: string };
-    onProgress: (v: number) => void;
-    onComplete: () => void;
-}
-
-export const IdafahDrillView: React.FC<Props> = ({ isDark, C, payload, onProgress, onComplete }) => {
-    const { t } = useTranslation();
-    const { t_content } = useLanguage();
-    const pairs = payload?.idafahPairs ?? [];
-    const [revealed, setRevealed] = useState<boolean[]>(Array(pairs.length).fill(false));
-
-    // Report initial progress on mount — never call setState during render
-    useEffect(() => { onProgress(0); }, []);
-
-    const revealAll = useCallback(() => {
-        setRevealed(Array(pairs.length).fill(true));
-        onProgress(1);
-        onComplete();
-    }, [pairs.length, onProgress, onComplete]);
-
-    const toggle = useCallback((i: number) => {
-        setRevealed(prev => {
-            const next = [...prev];
-            next[i] = !next[i];
-            const doneCount = next.filter(Boolean).length;
-            onProgress(doneCount / pairs.length);
-            if (doneCount === pairs.length) onComplete();
-            return next;
-        });
-    }, [pairs.length, onProgress, onComplete]);
-
-    if (pairs.length === 0) {
-        const fallbackText = payload?.instruction;
-        if (fallbackText) {
-            return (
-                <View style={{ width: '100%', paddingVertical: 8 }}>
-                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.neutral100 : C.neutral800, textAlign: 'right', lineHeight: 32 }}>
-                        {fallbackText}
-                    </Text>
-                </View>
-            );
-        }
-        return null;
-    }
-
-    const textSub = isDark ? C.neutral400 : C.neutral500;
-    const cardBg = isDark ? C.neutral800 : '#fff';
-    const border = isDark ? C.neutral700 : C.neutral200;
-
-    return (
-        <View style={{ width: '100%', gap: 12 }}>
-            {payload?.instruction && (
-                <View style={{ backgroundColor: isDark ? '#0D775F22' : '#D1FAF0', borderRadius: 8, padding: 10, marginBottom: 4 }}>
-                    <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 12, color: isDark ? C.primary400 : C.primary700, textAlign: 'center' }}>
-                        {t_content(payload.instruction, payload.instructionBn)}
-                    </Text>
-                </View>
-            )}
-
-            {/* Header row */}
-            <View style={{ flexDirection: 'row', gap: 8 }}>
-                <View style={{ flex: 1, backgroundColor: isDark ? C.neutral700 : C.neutral200, borderRadius: 8, padding: 8, alignItems: 'center' }}>
-                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 11, color: textSub }}>{t('idafah.basePhrase')}</Text>
-                </View>
-                <View style={{ flex: 1, backgroundColor: isDark ? C.neutral700 : C.neutral200, borderRadius: 8, padding: 8, alignItems: 'center' }}>
-                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 11, color: textSub }}>{t('idafah.possessionPhrase')}</Text>
-                </View>
-            </View>
-
-            {pairs.map((pair, i) => (
-                <Pressable key={i} onPress={() => toggle(i)}>
-                    <View style={{ flexDirection: 'row', gap: 8 }}>
-                        {/* Base */}
-                        <View style={{ flex: 1, borderRadius: 10, borderWidth: 1, borderColor: border, backgroundColor: cardBg, padding: 12, alignItems: 'center', gap: 4 }}>
-                            <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 16, color: isDark ? C.primary400 : C.primary700, textAlign: 'center' }}>
-                                {pair.baseAr}
-                            </Text>
-                            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 11, color: textSub, textAlign: 'center' }}>
-                                {t_content(pair.baseEn, pair.baseBn)}
-                            </Text>
-                        </View>
-                        {/* Expanded — tap to reveal */}
-                        <View style={{
-                            flex: 1, borderRadius: 10, borderWidth: 1.5,
-                            borderColor: revealed[i] ? (isDark ? C.primary400 : C.primary700) : border,
-                            backgroundColor: revealed[i] ? (isDark ? '#0D775F22' : '#D1FAF0') : (isDark ? C.neutral700 : C.neutral100),
-                            padding: 12, alignItems: 'center', justifyContent: 'center', gap: 4,
-                        }}>
-                            {revealed[i] ? (
-                                <>
-                                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 16, color: isDark ? C.primary400 : C.primary700, textAlign: 'center' }}>
-                                        {pair.expandedAr}
-                                    </Text>
-                                    <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 11, color: textSub, textAlign: 'center' }}>
-                                        {t_content(pair.expandedEn, pair.expandedBn)}
-                                    </Text>
-                                </>
-                            ) : (
-                                <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 12, color: textSub }}>
-                                    {t('idafah.tapToReveal')}
-                                </Text>
-                            )}
-                        </View>
-                    </View>
-                </Pressable>
-            ))}
-
-            {/* Reveal all shortcut */}
-            {revealed.some(r => !r) && (
-                <Pressable onPress={revealAll} style={{ alignSelf: 'center', marginTop: 4, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, borderWidth: 1, borderColor: isDark ? C.neutral600 : C.neutral300 }}>
-                    <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 12, color: textSub }}>{t('idafah.revealAll')}</Text>
-                </Pressable>
-            )}
-        </View>
-    );
+type Props = {
+  isDark: boolean;
+  C: any;
+  payload?: any;
+  onProgress?: (v: number) => void;
+  onComplete?: () => void;
 };
+
+export const IdafahDrillView: React.FC<Props> = ({
+  isDark,
+  C,
+  payload,
+  onProgress,
+  onComplete,
+}) => {
+  const { t } = useTranslation();
+  const { t_content } = useLanguage();
+  const pairs: IdafahPair[] = payload?.idafahPairs ?? payload?.pairs ?? [];
+  const [revealed, setRevealed] = useState<boolean[]>(() => Array(pairs.length).fill(false));
+
+  const toggle = useCallback(
+    (i: number) => {
+      setRevealed((prev) => {
+        const next = [...prev];
+        next[i] = !next[i];
+        const doneCount = next.filter(Boolean).length;
+        onProgress?.(doneCount / pairs.length);
+        if (doneCount === pairs.length) onComplete?.();
+        return next;
+      });
+    },
+    [pairs.length, onProgress, onComplete]
+  );
+
+  const revealAll = useCallback(() => {
+    setRevealed(Array(pairs.length).fill(true));
+    onProgress?.(1);
+    onComplete?.();
+  }, [pairs.length, onProgress, onComplete]);
+
+  if (pairs.length === 0) {
+    const fallbackText = payload?.instruction;
+    if (fallbackText) {
+      return (
+        <View
+          style={{
+            width: '100%',
+            borderRadius: 24,
+            backgroundColor: isDark ? C.neutral900 : C.neutral100,
+            padding: 24,
+          }}>
+          <Text
+            style={{
+              fontFamily: 'NotoSansArabic_600SemiBold',
+              fontSize: 20,
+              color: isDark ? C.neutral100 : C.neutral900,
+              textAlign: 'right',
+              writingDirection: 'rtl',
+              lineHeight: 34,
+            }}>
+            {fallbackText}
+          </Text>
+        </View>
+      );
+    }
+    return null;
+  }
+
+  return (
+    <View style={{ width: '100%', gap: 16 }}>
+      {/* Optional Instruction */}
+      {payload?.instruction && (
+        <View
+          style={{
+            borderRadius: 24,
+            backgroundColor: isDark ? C.neutral900 : C.neutral100,
+            padding: 16,
+          }}>
+          <Text
+            style={{
+              fontFamily: 'Lexend_400Regular',
+              fontSize: 13,
+              color: isDark ? C.neutral300 : C.neutral700,
+              textAlign: 'center',
+            }}>
+            {t_content(payload.instruction, payload.instructionBn)}
+          </Text>
+        </View>
+      )}
+
+      {/* Header labels */}
+      <View style={{ flexDirection: 'row', gap: 12, paddingHorizontal: 4 }}>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Text
+            style={{
+              fontFamily: 'Lexend_600SemiBold',
+              fontSize: 11,
+              color: isDark ? C.neutral500 : C.neutral400,
+              textTransform: 'uppercase',
+              letterSpacing: 0.8,
+            }}>
+            {t('idafah.basePhrase') ?? 'Base Phrase'}
+          </Text>
+        </View>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Text
+            style={{
+              fontFamily: 'Lexend_600SemiBold',
+              fontSize: 11,
+              color: isDark ? C.neutral500 : C.neutral400,
+              textTransform: 'uppercase',
+              letterSpacing: 0.8,
+            }}>
+            {t('idafah.possessionPhrase') ?? 'Possession Phrase'}
+          </Text>
+        </View>
+      </View>
+
+      {/* Idafah Pairs */}
+      <View style={{ gap: 14 }}>
+        {pairs.map((pair, i) => (
+          <Pressable
+            key={i}
+            onPress={() => toggle(i)}
+            style={({ pressed }) => ({
+              borderRadius: 24,
+              backgroundColor: isDark ? C.neutral900 : C.neutral100,
+              padding: 14,
+              opacity: pressed ? 0.95 : 1,
+            })}>
+            <View style={{ flexDirection: 'row', gap: 10 }}>
+              {/* Base Phrase Card */}
+              <View
+                style={{
+                  flex: 1,
+                  borderRadius: 20,
+                  backgroundColor: isDark ? '#141414' : '#FFFFFF',
+                  paddingVertical: 18,
+                  paddingHorizontal: 12,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 4,
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'NotoSansArabic_600SemiBold',
+                    fontSize: 20,
+                    color: isDark ? C.neutral100 : C.neutral900,
+                    textAlign: 'center',
+                    writingDirection: 'rtl',
+                  }}>
+                  {pair.baseAr}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: 'Lexend_400Regular',
+                    fontSize: 12,
+                    color: isDark ? C.neutral400 : C.neutral500,
+                    textAlign: 'center',
+                  }}>
+                  {t_content(pair.baseEn, pair.baseBn)}
+                </Text>
+              </View>
+
+              {/* Possession Phrase Card (Tap to reveal with inverted contrast) */}
+              <View
+                style={{
+                  flex: 1,
+                  borderRadius: 20,
+                  backgroundColor: revealed[i]
+                    ? isDark
+                      ? '#FFFFFF'
+                      : '#0A0A0A'
+                    : isDark
+                      ? C.neutral800
+                      : C.neutral200,
+                  paddingVertical: 18,
+                  paddingHorizontal: 12,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 4,
+                }}>
+                {revealed[i] ? (
+                  <>
+                    <Text
+                      style={{
+                        fontFamily: 'NotoSansArabic_600SemiBold',
+                        fontSize: 20,
+                        color: revealed[i]
+                          ? isDark
+                            ? '#0A0A0A'
+                            : '#FFFFFF'
+                          : isDark
+                            ? C.neutral100
+                            : C.neutral900,
+                        textAlign: 'center',
+                        writingDirection: 'rtl',
+                      }}>
+                      {pair.expandedAr}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Lexend_400Regular',
+                        fontSize: 12,
+                        color: revealed[i]
+                          ? isDark
+                            ? '#525252'
+                            : '#D4D4D4'
+                          : isDark
+                            ? C.neutral400
+                            : C.neutral500,
+                        textAlign: 'center',
+                      }}>
+                      {t_content(pair.expandedEn, pair.expandedBn)}
+                    </Text>
+                  </>
+                ) : (
+                  <Text
+                    style={{
+                      fontFamily: 'Lexend_600SemiBold',
+                      fontSize: 13,
+                      color: isDark ? C.neutral300 : C.neutral600,
+                      textAlign: 'center',
+                    }}>
+                    {t('idafah.tapToReveal') ?? 'Tap to reveal'}
+                  </Text>
+                )}
+              </View>
+            </View>
+          </Pressable>
+        ))}
+      </View>
+
+      {/* Reveal All Shortcut Pill */}
+      {revealed.some((r) => !r) && (
+        <Pressable
+          onPress={revealAll}
+          style={({ pressed }) => ({
+            alignSelf: 'center',
+            marginTop: 8,
+            height: 48,
+            paddingHorizontal: 28,
+            borderRadius: 24,
+            backgroundColor: isDark ? '#FFFFFF' : '#0A0A0A',
+            alignItems: 'center',
+            justifyContent: 'center',
+            opacity: pressed ? 0.9 : 1,
+          })}>
+          <Text
+            style={{
+              fontFamily: 'Lexend_600SemiBold',
+              fontSize: 13,
+              color: isDark ? '#0A0A0A' : '#FFFFFF',
+            }}>
+            {t('idafah.revealAll') ?? 'Reveal All'}
+          </Text>
+        </Pressable>
+      )}
+    </View>
+  );
+};
+
+export { IdafahDrillView as IdafahView };

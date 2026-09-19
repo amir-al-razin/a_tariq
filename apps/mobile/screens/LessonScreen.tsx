@@ -1,286 +1,321 @@
+import React, { useState, useMemo } from 'react';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { MotiView } from 'moti';
-import { useColorScheme } from 'nativewind';
-import { Pressable, Text, View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-
-const C = {
-    primary50: '#ECFDF8',
-    primary100: '#D1FAEF',
-    primary200: '#A7F3DE',
-    primary300: '#6EE7C8',
-    primary400: '#34D3AA',
-    primary500: '#16B78E',
-    primary600: '#0F9373',
-    primary700: '#0D775F',
-    primary800: '#0F5F4D',
-    primary900: '#0A4134',
-    neutral50: '#F8F7F4',
-    neutral100: '#F0EEE8',
-    neutral200: '#E5E1D8',
-    neutral300: '#D5CEBF',
-    neutral400: '#B9AF9C',
-    neutral500: '#9A8F7B',
-    neutral600: '#7D7463',
-    neutral700: '#4F4A40',
-    neutral800: '#22201B',
-    neutral900: '#1A1815',
-};
-
-import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared';
-
-// Volume accent palettes — matches VolumeOneScreen / VolumeTwoScreen / VolumeThreeScreen
-const VOLUME_ACCENT = {
-    1: { // teal
-        accent100: '#D1FAEF', accent300: '#6EE7C8', accent400: '#34D3AA',
-        accent500: '#16B78E', accent600: '#0F9373', accent700: '#0D775F',
-        accent800: '#0F5F4D', accent900: '#0A4134',
-    },
-    2: { // amber
-        accent100: '#FEF3C7', accent300: '#FCD34D', accent400: '#FBBF24',
-        accent500: '#F59E0B', accent600: '#D97706', accent700: '#B45309',
-        accent800: '#92400E', accent900: '#78350F',
-    },
-    3: { // violet
-        accent100: '#EDE9FE', accent300: '#C4B5FD', accent400: '#A78BFA',
-        accent500: '#8B5CF6', accent600: '#7C3AED', accent700: '#6D28D9',
-        accent800: '#5B21B6', accent900: '#4C1D95',
-    },
-} as const;
+import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3, getLessonSession } from '@tariq/shared';
+import { useProgressStore, LESSON_KEY } from '../state/progressStore';
+import { useRetentionStore } from '../state/retentionStore';
+import { useLearningSettingsStore } from '../state/learningSettingsStore';
+import { useThemeTokens } from '../theme/colors';
+import { playTapSound } from '../lib/sound';
+import { LessonSessionRunner } from '../components/runner/LessonSessionRunner';
 
 type LessonScreenProps = {
-    route: {
-        params: {
-            volumeNumber: number;
-            chapterId: number;
-            chapterTitleAr: string;
-            chapterTitleEn: string;
-            darsNumber: number;
-        };
+  route: {
+    params: {
+      volumeNumber: number;
+      chapterId: number;
+      chapterTitleAr?: string;
+      chapterTitleEn?: string;
+      darsNumber: number;
+      autoStart?: boolean;
     };
-    navigation: {
-        goBack: () => void;
-        navigate: (screen: string, params: any) => void;
-    };
+  };
+  navigation: {
+    goBack: () => void;
+    navigate: (screen: string, params: any) => void;
+  };
 };
 
-type ChunkStatus = 'current' | 'completed' | 'locked' | 'open';
-
-// Circular layout constants
-const CHUNK_SIZE = 64;
-
-const progressKey = (chapterId: number, darsNumber: number) =>
-    `lesson_progress_${chapterId}_${darsNumber}`;
+function toArabicNumerals(n: number): string {
+  const digits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+  return n
+    .toString()
+    .split('')
+    .map((d) => digits[parseInt(d, 10)] || d)
+    .join('');
+}
 
 export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation }) => {
-    const { chapterId, chapterTitleAr, chapterTitleEn, darsNumber, volumeNumber = 1 } = route.params;
-    const { colorScheme } = useColorScheme();
-    const isDark = colorScheme === 'dark';
-    const { t } = useTranslation();
+  const { volumeNumber = 1, chapterId, darsNumber, autoStart } = route.params;
+  const theme = useThemeTokens();
+  const [isRunningSession, setIsRunningSession] = useState(Boolean(autoStart));
 
-    const accent = VOLUME_ACCENT[(volumeNumber as 1 | 2 | 3)] ?? VOLUME_ACCENT[1];
-    const allChapters = volumeNumber === 2 ? CHAPTERS_VOL2 : volumeNumber === 3 ? CHAPTERS_VOL3 : CHAPTERS;
+  const progressStore = useProgressStore((state) => state.progress);
+  const sessions = useRetentionStore((state) => state.sessions);
+  const { showTransliteration, toggleTransliteration } = useLearningSettingsStore();
 
-    // Last-visited chunk index (persisted)
-    const [lastVisited, setLastVisited] = useState<number | null>(null);
+  const dataMap = {
+    1: CHAPTERS,
+    2: CHAPTERS_VOL2,
+    3: CHAPTERS_VOL3,
+  };
 
-    useEffect(() => {
-        AsyncStorage.getItem(progressKey(chapterId, darsNumber)).then(val => {
-            if (val !== null) setLastVisited(parseInt(val, 10));
-        });
-    }, [chapterId, darsNumber]);
+  const chapters = dataMap[volumeNumber as 1 | 2 | 3] || CHAPTERS;
+  const chapter = useMemo(() => chapters.find((c) => c.id === chapterId), [chapters, chapterId]);
+  const lesson = useMemo(
+    () => chapter?.lessons.find((l) => l.darsNumber === darsNumber),
+    [chapter, darsNumber]
+  );
+  const firstChunk = lesson?.chunks?.[0];
 
-    const chapterData = allChapters.find(c => c.id === chapterId);
-    const lessonData = chapterData?.lessons.find(l => l.darsNumber === darsNumber);
-    const rawChunks = lessonData?.chunks || [];
+  const registeredSession = useMemo(() => {
+    return getLessonSession(volumeNumber, chapterId, darsNumber);
+  }, [volumeNumber, chapterId, darsNumber]);
 
-    // Fallback if chunks are empty (e.g. for lessons not yet filled out)
-    const displayChunks = rawChunks.length > 0 ? rawChunks : Array.from({ length: 3 }, (_, i) => ({
-        id: `mock-${i}`,
-        type: 'mixed',
-        titleEn: 'Pending lesson data',
-        titleAr: 'جاري العمل'
-    }));
-
-    const numChunks = displayChunks.length;
-
-    const chunks = displayChunks.map((chunkItem, idx) => {
-        const status = 'open' as ChunkStatus;
-        return { ...chunkItem, status };
-    });
-
-    const handleChunkPress = (chunkId: string, idx: number) => {
-        // Persist last-visited index
-        setLastVisited(idx);
-        AsyncStorage.setItem(progressKey(chapterId, darsNumber), String(idx));
-        navigation.navigate('ChunkEngine', { chunkId, volumeNumber, chapterId, darsNumber });
-    };
-
-    return (
-        <View style={{ flex: 1, backgroundColor: isDark ? C.neutral900 : C.neutral50 }}>
-            {/* ── Custom Header ── */}
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 8,
-                    borderBottomWidth: 1,
-                    borderBottomColor: isDark ? C.neutral800 : C.neutral200,
-                    paddingHorizontal: 16,
-                    paddingVertical: 16,
-                }}>
-                <Pressable
-                    onPress={() => navigation.goBack()}
-                    accessibilityRole="button"
-                    accessibilityLabel="Go back"
-                    style={{ padding: 8, marginLeft: -8, marginRight: 4 }}>
-                    <Ionicons name="arrow-back" size={24} color={isDark ? C.neutral200 : C.neutral800} />
-                </Pressable>
-
-                <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 17, color: isDark ? C.neutral100 : C.neutral900 }}>
-                        Lesson {darsNumber} · {chapterTitleEn}
-                    </Text>
-                </View>
-            </View>
-
-            {/* ── Circular Chunks Layout ── */}
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                {/* Removed redundant dot legend */}
-
-
-
-                {/* Orbiting Chunks */}
-                {chunks.map((chunk, idx) => {
-                    const isCurrent = chunk.status === 'current';
-                    const isCompleted = chunk.status === 'completed';
-                    const isLocked = chunk.status === 'locked';
-                    const isLastVisited = lastVisited === idx;
-                    const isInteractive = !isLocked;
-
-                    const dynamicRadius = Math.max(90, (numChunks * 85) / (2 * Math.PI));
-                    const angle = -Math.PI / 2 + (idx * 2 * Math.PI) / numChunks;
-                    const x = dynamicRadius * Math.cos(angle);
-                    const y = dynamicRadius * Math.sin(angle);
-
-                    const circleBg = isLastVisited
-                        ? accent.accent500
-                        : (isCurrent || isCompleted) ? accent.accent500
-                            : isLocked ? (isDark ? C.neutral700 : C.neutral300)
-                                : (isDark ? accent.accent800 : accent.accent100);
-
-                    const circleBorder = isLastVisited
-                        ? accent.accent700
-                        : (isCurrent || isCompleted) ? (isDark ? accent.accent700 : accent.accent600)
-                            : isLocked ? (isDark ? C.neutral600 : C.neutral500)
-                                : (isDark ? accent.accent900 : accent.accent300);
-
-                    const iconColor = isLastVisited || isCurrent || isCompleted ? '#fff'
-                        : isLocked ? (isDark ? C.neutral800 : C.neutral700)
-                            : (isDark ? accent.accent300 : accent.accent600);
-
-                    return (
-                        <View
-                            key={chunk.id}
-                            style={{
-                                position: 'absolute',
-                                transform: [{ translateX: x }, { translateY: y }],
-                                width: CHUNK_SIZE,
-                                height: CHUNK_SIZE + 6,
-                                alignItems: 'center',
-                                justifyContent: 'flex-end',
-                                zIndex: (isLastVisited || (isCurrent && lastVisited === null && idx === 0)) ? 100 : (isInteractive ? 5 : 1),
-                            }}>
-                            <MotiView
-                                from={{ opacity: 0, scale: 0.4 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ type: 'spring', delay: 100 + idx * 40, damping: 20, stiffness: 250 }}
-                                style={{ width: '100%', height: '100%' }}>
-                                <Pressable
-                                    disabled={isLocked}
-                                    onPress={() => handleChunkPress(chunk.id, idx)}
-                                    style={{ width: '100%', height: '100%', justifyContent: 'flex-end' }}>
-                                    {({ pressed }) => {
-                                        const pushDepth = pressed && isInteractive ? 0 : -6;
-                                        return (
-                                            <View style={{ width: CHUNK_SIZE, height: CHUNK_SIZE + 6, justifyContent: 'flex-end' }}>
-                                                {/* Shadow Base Layer (True Cylinder Wall) */}
-                                                <View style={{
-                                                    position: 'absolute',
-                                                    bottom: 0,
-                                                    width: CHUNK_SIZE,
-                                                    height: CHUNK_SIZE + (pressed && isInteractive ? 0 : 6),
-                                                    borderRadius: CHUNK_SIZE / 2,
-                                                    backgroundColor: circleBorder,
-                                                }} />
-
-                                                {/* Top Face Layer */}
-                                                <View style={{
-                                                    width: CHUNK_SIZE,
-                                                    height: CHUNK_SIZE,
-                                                    borderRadius: CHUNK_SIZE / 2,
-                                                    backgroundColor: circleBg,
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    transform: [{ translateY: pushDepth }],
-                                                }}>
-                                                    {isLocked ? (
-                                                        <Ionicons name="lock-closed" size={24} color={iconColor} />
-                                                    ) : isCompleted ? (
-                                                        <Ionicons name="checkmark" size={28} color={iconColor} />
-                                                    ) : (
-                                                        <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 28, color: iconColor, marginTop: 4 }}>
-                                                            {idx + 1}
-                                                        </Text>
-                                                    )}
-
-                                                    {/* Dot indicator removed for clarity */}
-
-                                                    {/* "RESUME" badge for last-visited, "START" for first chunk with no history */}
-                                                    {(isLastVisited || (isCurrent && lastVisited === null && idx === 0)) && (
-                                                        <MotiView
-                                                            from={{ scale: 1, translateY: 0 }}
-                                                            animate={{ scale: 1.03, translateY: -3 }}
-                                                            transition={{ type: 'timing', duration: 1000, loop: true, repeatReverse: true }}
-                                                            style={{
-                                                                position: 'absolute',
-                                                                top: -30,
-                                                                alignSelf: 'center',
-                                                                backgroundColor: isLastVisited ? accent.accent700 : accent.accent100,
-                                                                borderColor: isLastVisited ? accent.accent400 : accent.accent400,
-                                                                borderWidth: 1.5,
-                                                                borderRadius: 8,
-                                                                paddingHorizontal: 8,
-                                                                paddingVertical: 3,
-                                                            }}>
-                                                            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 10, color: isLastVisited ? '#fff' : accent.accent700 }}>
-                                                                {isLastVisited ? 'RESUME' : 'START'}
-                                                            </Text>
-                                                            <View style={{
-                                                                position: 'absolute',
-                                                                bottom: -4,
-                                                                alignSelf: 'center',
-                                                                width: 6, height: 6,
-                                                                backgroundColor: isLastVisited ? accent.accent700 : accent.accent100,
-                                                                borderRightWidth: 1.5,
-                                                                borderBottomWidth: 1.5,
-                                                                borderColor: accent.accent400,
-                                                                transform: [{ rotate: '45deg' }],
-                                                            }} />
-                                                        </MotiView>
-                                                    )}
-                                                </View>
-                                            </View>
-                                        );
-                                    }}
-                                </Pressable>
-                            </MotiView>
-                        </View>
-                    );
-                })}
-            </View>
-        </View>
+  const isCompleted = useMemo(() => {
+    const hasSession = sessions.some(
+      (s) => s.volumeId === volumeNumber && s.chapterId === chapterId && s.lessonNum === darsNumber
     );
+    if (hasSession) return true;
+    return progressStore[LESSON_KEY(volumeNumber, chapterId, darsNumber)] === 'completed';
+  }, [sessions, progressStore, volumeNumber, chapterId, darsNumber]);
+
+  // If session is running, render the interactive runner!
+  if (isRunningSession) {
+    return (
+      <LessonSessionRunner
+        volumeId={volumeNumber}
+        chapterId={chapterId}
+        lessonNum={darsNumber}
+        onExit={() => setIsRunningSession(false)}
+      />
+    );
+  }
+
+  return (
+    <View style={{ flex: 1, backgroundColor: theme.canvas }}>
+      {/* Top Header */}
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingHorizontal: 20,
+          paddingTop: 16,
+          paddingBottom: 12,
+        }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          accessibilityRole="button"
+          accessibilityLabel="Go back"
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            backgroundColor: theme.surfaceWell,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Ionicons name="arrow-back" size={20} color={theme.textPrimary} />
+        </TouchableOpacity>
+
+        <View style={{ flex: 1, alignItems: 'center', marginHorizontal: 12 }}>
+          <Text
+            numberOfLines={1}
+            style={{
+              fontFamily: 'Lexend_600SemiBold',
+              fontSize: 16,
+              color: theme.textPrimary,
+            }}>
+            Lesson {darsNumber} · {chapter?.titleEn || 'Curriculum'}
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          onPress={toggleTransliteration}
+          accessibilityRole="button"
+          accessibilityLabel="Toggle transliteration"
+          style={{
+            height: 36,
+            paddingHorizontal: 12,
+            borderRadius: 18,
+            backgroundColor: showTransliteration ? theme.accentPrimarySubtle : theme.surfaceWell,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              fontFamily: 'Lexend_600SemiBold',
+              fontSize: 12,
+              color: showTransliteration ? theme.accentPrimaryText : theme.textMuted,
+            }}>
+            {showTransliteration ? 'Aa ON' : 'Aa OFF'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Main Launch Stage Container */}
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingHorizontal: 20,
+          paddingVertical: 32,
+        }}
+        showsVerticalScrollIndicator={false}>
+        <View
+          style={{
+            width: '100%',
+            maxWidth: 420,
+            borderRadius: 32,
+            backgroundColor: theme.surfaceWell,
+            padding: 32,
+            alignItems: 'center',
+          }}>
+          {/* Central Commanding Lesson Node */}
+          <View
+            style={{
+              width: 104,
+              height: 104,
+              borderRadius: 52,
+              backgroundColor: isCompleted ? theme.accentPrimarySubtle : theme.accentPrimary,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 24,
+            }}>
+            {isCompleted ? (
+              <View style={{ alignItems: 'center' }}>
+                <Ionicons name="checkmark" size={40} color={theme.accentPrimary} />
+                <Text
+                  style={{
+                    fontFamily: 'Lexend_600SemiBold',
+                    fontSize: 12,
+                    color: theme.accentPrimary,
+                    marginTop: 2,
+                  }}>
+                  {toArabicNumerals(darsNumber)}
+                </Text>
+              </View>
+            ) : (
+              <Text
+                style={{
+                  fontFamily: 'NotoSansArabic_600SemiBold',
+                  fontSize: 48,
+                  lineHeight: 60,
+                  color: '#FFFFFF',
+                }}>
+                {toArabicNumerals(darsNumber)}
+              </Text>
+            )}
+          </View>
+
+          {/* Titles & Concepts */}
+          <Text
+            style={{
+              fontFamily: 'Lexend_600SemiBold',
+              fontSize: 11,
+              letterSpacing: 2,
+              textTransform: 'uppercase',
+              color: theme.accentPrimary,
+              marginBottom: 6,
+            }}>
+            {isCompleted ? 'Mastered Lesson' : 'Interactive Session'}
+          </Text>
+
+          <Text
+            style={{
+              fontFamily: 'NotoSansArabic_600SemiBold',
+              fontSize: 32,
+              color: theme.textPrimary,
+              textAlign: 'center',
+              marginBottom: 6,
+            }}>
+            {registeredSession?.titleAr ||
+              firstChunk?.titleAr ||
+              `الدَّرْسُ ${toArabicNumerals(darsNumber)}`}
+          </Text>
+
+          <Text
+            style={{
+              fontFamily: 'Lexend_600SemiBold',
+              fontSize: 18,
+              color: theme.textSecondary,
+              textAlign: 'center',
+              marginBottom: 6,
+            }}>
+            {registeredSession?.titleEn || firstChunk?.titleEn || `Lesson ${darsNumber}`}
+          </Text>
+
+          <Text
+            style={{
+              fontFamily: 'Lexend_400Regular',
+              fontSize: 13,
+              color: theme.textMuted,
+              textAlign: 'center',
+              marginBottom: 24,
+            }}>
+            {registeredSession?.steps?.length || 10} Micro-Steps · 100% Mastery Drill
+          </Text>
+
+          {/* Words Preview Chips */}
+          {registeredSession?.wordsLearned && registeredSession.wordsLearned.length > 0 && (
+            <View style={{ width: '100%', alignItems: 'center', marginBottom: 28 }}>
+              <Text
+                style={{
+                  fontFamily: 'Lexend_600SemiBold',
+                  fontSize: 11,
+                  letterSpacing: 1,
+                  textTransform: 'uppercase',
+                  color: theme.textMuted,
+                  marginBottom: 10,
+                }}>
+                Key Vocabulary Covered
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row-reverse',
+                  flexWrap: 'wrap',
+                  justifyContent: 'center',
+                  gap: 8,
+                }}>
+                {registeredSession.wordsLearned.slice(0, 6).map((word, idx) => (
+                  <View
+                    key={`word-${idx}`}
+                    style={{
+                      paddingHorizontal: 12,
+                      paddingVertical: 6,
+                      borderRadius: 12,
+                      backgroundColor: theme.surfaceRaised,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'NotoSansArabic_500Medium',
+                        fontSize: 14,
+                        color: theme.textPrimary,
+                      }}>
+                      {word}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          )}
+
+          {/* 56px Action Button */}
+          <TouchableOpacity
+            activeOpacity={0.88}
+            onPress={() => {
+              playTapSound();
+              setIsRunningSession(true);
+            }}
+            style={{
+              width: '100%',
+              height: 56,
+              borderRadius: 9999,
+              backgroundColor: theme.accentPrimary,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 10,
+            }}>
+            <Ionicons name="play" size={18} color="#FFFFFF" />
+            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 16, color: '#FFFFFF' }}>
+              {isCompleted ? 'Practice Again' : 'Start Interactive Session'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
+  );
 };

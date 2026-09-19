@@ -2,117 +2,200 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { ParagraphBlock } from '@tariq/shared';
+import type { ParagraphBlock } from '@tariq/shared';
 
 interface Props {
-    isDark: boolean;
-    C: Record<string, string>;
-    payload?: { paragraphs?: ParagraphBlock[]; instruction?: string; instructionBn?: string; text?: string };
-    onProgress: (v: number) => void;
-    onComplete: () => void;
+  isDark: boolean;
+  C: Record<string, string>;
+  payload?: {
+    paragraphs?: ParagraphBlock[];
+    instruction?: string;
+    instructionBn?: string;
+    text?: string;
+  };
+  onProgress: (v: number) => void;
+  onComplete: () => void;
 }
 
-export const ParagraphView: React.FC<Props> = ({ payload, onProgress }) => {
-    const { t } = useTranslation();
-    const { t_content } = useLanguage();
-    const blocks = payload?.paragraphs ?? [];
-    const [revealed, setRevealed] = useState<Record<number, boolean>>({});
+export const ParagraphView: React.FC<Props> = ({ isDark, C, payload, onProgress, onComplete }) => {
+  const { t } = useTranslation();
+  const { t_content } = useLanguage();
+  const blocks = payload?.paragraphs ?? [];
+  const [revealed, setRevealed] = useState<Record<number, boolean>>({});
 
-    // Scroll-based completion handled by ChunkEngineScreen
-    useEffect(() => { onProgress(0); }, []);
+  useEffect(() => {
+    onProgress(1);
+    onComplete();
+  }, [onProgress, onComplete]);
 
-    if (blocks.length === 0) {
-        const fallbackText = payload?.text || payload?.instruction;
-        if (!fallbackText) return null;
-        return (
-            <View className="w-full gap-4">
-                <View className="rounded-2xl border border-neutral-200 bg-neutral-100 p-4 dark:border-neutral-700 dark:bg-neutral-800">
-                    <Text className="font-arabic-semibold text-arabic-body text-neutral-800 dark:text-neutral-100 text-right leading-8" style={{ writingDirection: 'rtl' }}>
-                        {fallbackText}
-                    </Text>
-                </View>
-            </View>
-        );
-    }
-
+  if (blocks.length === 0) {
+    const fallbackText = payload?.text || payload?.instruction;
+    if (!fallbackText) return null;
     return (
-        <View className="w-full gap-6">
-            {payload?.instruction && (
-                <View className="rounded-xl bg-primary-50 dark:bg-primary-900/30 p-3">
-                    <Text className="font-english text-caption text-primary-700 dark:text-primary-200 text-center">
-                        {t_content(payload.instruction, payload.instructionBn)}
+      <View style={{ width: '100%' }}>
+        <View
+          style={{
+            borderRadius: 24,
+            backgroundColor: isDark ? C.neutral900 : C.neutral100,
+            padding: 24,
+          }}>
+          <Text
+            style={{
+              fontFamily: 'NotoSansArabic_600SemiBold',
+              fontSize: 22,
+              color: isDark ? C.neutral100 : C.neutral900,
+              textAlign: 'right',
+              writingDirection: 'rtl',
+              lineHeight: 38,
+            }}>
+            {fallbackText}
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
+  return (
+    <View style={{ width: '100%', gap: 24 }}>
+      {payload?.instruction && (
+        <View
+          style={{
+            borderRadius: 24,
+            backgroundColor: isDark ? C.neutral900 : C.neutral100,
+            padding: 16,
+          }}>
+          <Text
+            style={{
+              fontFamily: 'Lexend_400Regular',
+              fontSize: 13,
+              color: isDark ? C.neutral300 : C.neutral700,
+              textAlign: 'center',
+            }}>
+            {t_content(payload.instruction, payload.instructionBn)}
+          </Text>
+        </View>
+      )}
+
+      {blocks.map((block, bi) => {
+        const translationText = block.translationEn
+          ? t_content(block.translationEn, block.translationBn)
+          : block.translationBn;
+
+        return (
+          <View
+            key={bi}
+            style={{
+              borderRadius: 24,
+              backgroundColor: isDark ? C.neutral900 : C.neutral100,
+              padding: 20,
+              gap: 16,
+            }}>
+            {/* Block title */}
+            {block.title && (
+              <View style={{ alignItems: 'center', gap: 4 }}>
+                <Text
+                  style={{
+                    fontFamily: 'NotoSansArabic_600SemiBold',
+                    fontSize: 24,
+                    color: isDark ? '#FFFFFF' : '#0A0A0A',
+                    textAlign: 'center',
+                    writingDirection: 'rtl',
+                  }}>
+                  {block.title}
+                </Text>
+                {(() => {
+                  const titleLocalized = block.titleEn
+                    ? t_content(block.titleEn, block.titleBn)
+                    : block.titleBn;
+                  return titleLocalized ? (
+                    <Text
+                      style={{
+                        fontFamily: 'Lexend_400Regular',
+                        fontSize: 13,
+                        color: isDark ? C.neutral400 : C.neutral500,
+                        textAlign: 'center',
+                      }}>
+                      {titleLocalized}
                     </Text>
-                </View>
+                  ) : null;
+                })()}
+              </View>
             )}
 
-            {blocks.map((block, bi) => (
-                <View key={bi} className="gap-3">
-                    {/* Block title */}
-                    {block.title && (
-                        <View className="items-center gap-1">
-                            <Text className="font-arabic-semibold text-h2 text-primary-700 dark:text-primary-200 text-center">
-                                {block.title}
-                            </Text>
-                            {(() => {
-                                const titleLocalized = block.titleEn
-                                    ? t_content(block.titleEn, block.titleBn)
-                                    : block.titleBn;
-                                return titleLocalized ? (
-                                    <Text className="font-english text-caption text-neutral-600 dark:text-neutral-300 text-center">
-                                        {titleLocalized}
-                                    </Text>
-                                ) : null;
-                            })()}
-                        </View>
-                    )}
+            {/* Paragraph lines card */}
+            <View
+              style={{
+                borderRadius: 20,
+                backgroundColor: isDark ? '#141414' : '#FFFFFF',
+                padding: 20,
+                gap: 12,
+              }}>
+              {block.lines.map((line, li) => (
+                <Text
+                  key={li}
+                  style={{
+                    fontFamily: 'NotoSansArabic_600SemiBold',
+                    fontSize: 20,
+                    color: isDark ? C.neutral100 : C.neutral900,
+                    textAlign: 'right',
+                    writingDirection: 'rtl',
+                    lineHeight: 36,
+                  }}>
+                  {line}
+                </Text>
+              ))}
+            </View>
 
-                    {/* Paragraph lines */}
-                    <View className="rounded-2xl border border-neutral-200 bg-neutral-100 p-4 gap-3 dark:border-neutral-700 dark:bg-neutral-800">
-                        {block.lines.map((line, li) => (
-                            <Text
-                                key={li}
-                                className="font-arabic-semibold text-arabic-body text-neutral-800 dark:text-neutral-100 text-right leading-8"
-                                style={{ writingDirection: 'rtl' }}
-                            >
-                                {line}
-                            </Text>
-                        ))}
-                    </View>
+            {/* Reveal translation 56px action pill */}
+            {translationText && (
+              <View style={{ gap: 12 }}>
+                <Pressable
+                  onPress={() => setRevealed((prev) => ({ ...prev, [bi]: !prev[bi] }))}
+                  style={({ pressed }) => ({
+                    height: 56,
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 28,
+                    backgroundColor: isDark ? C.neutral800 : C.neutral200,
+                    opacity: pressed ? 0.9 : 1,
+                  })}>
+                  <Text
+                    style={{
+                      fontFamily: 'Lexend_600SemiBold',
+                      fontSize: 14,
+                      color: isDark ? C.neutral100 : C.neutral900,
+                    }}>
+                    {revealed[bi]
+                      ? (t('paragraph.hideTranslation') ?? 'Hide Translation')
+                      : (t('paragraph.revealTranslation') ?? 'Reveal Translation')}
+                  </Text>
+                </Pressable>
 
-                    {/* Reveal translation button + English translation (hidden by default) */}
-                    {(() => {
-                        const translationText = block.translationEn
-                            ? t_content(block.translationEn, block.translationBn)
-                            : block.translationBn;
-                        return translationText ? (
-                            <View className="gap-3">
-                                <Pressable
-                                    accessibilityRole="button"
-                                    onPress={() => setRevealed(prev => ({ ...prev, [bi]: !prev[bi] }))}
-                                    className="w-full rounded-2xl border border-primary-200 bg-primary-50 p-4 items-center dark:border-primary-700 dark:bg-primary-900/30"
-                                >
-                                    <Text className="font-english-semibold text-body text-primary-800 dark:text-primary-100">
-                                        {revealed[bi] ? t('paragraph.hideTranslation') : t('paragraph.revealTranslation')}
-                                    </Text>
-                                </Pressable>
-
-                                {revealed[bi] && (
-                                    <View className="w-full rounded-2xl border border-neutral-200 bg-neutral-100 p-4 dark:border-neutral-700 dark:bg-neutral-800">
-                                        <Text className="font-english text-body text-neutral-700 dark:text-neutral-200 leading-7">
-                                            {translationText}
-                                        </Text>
-                                    </View>
-                                )}
-                            </View>
-                        ) : null;
-                    })()}
-
-                    {/* Divider between blocks */}
-                    {bi < blocks.length - 1 && (
-                        <View className="h-px bg-neutral-200 dark:bg-neutral-700 mt-1" />
-                    )}
-                </View>
-            ))}
-        </View>
-    );
+                {revealed[bi] && (
+                  <View
+                    style={{
+                      width: '100%',
+                      borderRadius: 20,
+                      backgroundColor: isDark ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.7)',
+                      padding: 18,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'Lexend_400Regular',
+                        fontSize: 15,
+                        color: isDark ? C.neutral200 : C.neutral700,
+                        lineHeight: 24,
+                      }}>
+                      {translationText}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            )}
+          </View>
+        );
+      })}
+    </View>
+  );
 };

@@ -2,175 +2,354 @@ import React, { useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { VerbTableRow } from '@tariq/shared';
+import type { VerbTableRow } from '@tariq/shared';
 
-interface Props {
-    isDark: boolean;
-    C: Record<string, string>;
-    payload?: { verbTable?: VerbTableRow[]; verbTense?: 'past' | 'present' | 'imperative'; instruction?: string; sourceText?: string; text?: string; isPlural?: boolean; isDual?: boolean; };
-    onProgress: (v: number) => void;
-    onComplete: () => void;
-}
-
-const TENSE_LABELS = {
-    past: { labelKey: 'verbTable.tense.past', ar: 'الْمَاضِي' },
-    present: { labelKey: 'verbTable.tense.present', ar: 'الْمُضَارِع' },
-    imperative: { labelKey: 'verbTable.tense.imperative', ar: 'الْأَمْرُ وَالنَّهْيُ' },
+type Props = {
+  isDark: boolean;
+  C: any;
+  payload?: any;
+  onProgress?: (v: number) => void;
+  onComplete?: () => void;
 };
 
-const getColHeaders = (isPlural?: boolean, isDual?: boolean) => {
-    if (isDual) {
-        return [
-            { ar: 'هُمَا', labelKey: 'verbTable.pronoun.theyM' }, // Using theyM as base translation and we'll append (Dual) in UI if needed, or rely on Arabic
-            { ar: 'هُمَا', labelKey: 'verbTable.pronoun.theyF' },
-            { ar: 'أَنْتُمَا', labelKey: 'verbTable.pronoun.youM' },
-            { ar: 'أَنْتُمَا', labelKey: 'verbTable.pronoun.youF' },
-            { ar: 'نَحْنُ', labelKey: 'verbTable.pronoun.we' },
-        ];
-    }
-    if (isPlural) {
-        return [
-            { ar: 'هُمْ', labelKey: 'verbTable.pronoun.theyM' },
-            { ar: 'هُنَّ', labelKey: 'verbTable.pronoun.theyF' },
-            { ar: 'أَنْتُمْ', labelKey: 'verbTable.pronoun.youPluralM' },
-            { ar: 'أَنْتُنَّ', labelKey: 'verbTable.pronoun.youPluralF' },
-            { ar: 'نَحْنُ', labelKey: 'verbTable.pronoun.we' },
-        ];
-    }
+const getTenseLabel = (tense: string, t: any) => {
+  switch (tense) {
+    case 'past':
+      return {
+        label: t('verbTable.tense.past') ?? 'Past Tense',
+        ar: 'الْمَاضِي',
+      };
+    case 'present':
+      return {
+        label: t('verbTable.tense.present') ?? 'Present Tense',
+        ar: 'الْمُضَارِع',
+      };
+    case 'imperative':
+      return {
+        label: t('verbTable.tense.imperative') ?? 'Command & Prohibition',
+        ar: 'الْأَمْرُ وَالنَّهْيُ',
+      };
+    default:
+      return {
+        label: t('verbTable.tense.past') ?? 'Past Tense',
+        ar: 'الْمَاضِي',
+      };
+  }
+};
+
+const getColHeaders = (isPlural?: boolean, isDual?: boolean, t?: any) => {
+  if (isDual) {
     return [
-        { ar: 'هُوَ', labelKey: 'verbTable.pronoun.he' },
-        { ar: 'هِيَ', labelKey: 'verbTable.pronoun.she' },
-        { ar: 'أَنْتَ', labelKey: 'verbTable.pronoun.youM' },
-        { ar: 'أَنْتِ', labelKey: 'verbTable.pronoun.youF' },
-        { ar: 'أَنَا', labelKey: 'verbTable.pronoun.i' },
+      { ar: 'هُمَا', label: (t?.('verbTable.pronoun.theyM') ?? 'They') + ' (Dual, M)' },
+      { ar: 'هُمَا', label: (t?.('verbTable.pronoun.theyF') ?? 'They') + ' (Dual, F)' },
+      { ar: 'أَنْتُمَا', label: (t?.('verbTable.pronoun.youM') ?? 'You') + ' (Dual, M)' },
+      { ar: 'أَنْتُمَا', label: (t?.('verbTable.pronoun.youF') ?? 'You') + ' (Dual, F)' },
+      { ar: 'نَحْنُ', label: t?.('verbTable.pronoun.we') ?? 'We' },
     ];
+  }
+  if (isPlural) {
+    return [
+      { ar: 'هُمْ', label: t?.('verbTable.pronoun.theyM') ?? 'They (M)' },
+      { ar: 'هُنَّ', label: t?.('verbTable.pronoun.theyF') ?? 'They (F)' },
+      { ar: 'أَنْتُمْ', label: t?.('verbTable.pronoun.youPluralM') ?? 'You All (M)' },
+      { ar: 'أَنْتُنَّ', label: t?.('verbTable.pronoun.youPluralF') ?? 'You All (F)' },
+      { ar: 'نَحْنُ', label: t?.('verbTable.pronoun.we') ?? 'We' },
+    ];
+  }
+  return [
+    { ar: 'هُوَ', label: t?.('verbTable.pronoun.he') ?? 'He' },
+    { ar: 'هِيَ', label: t?.('verbTable.pronoun.she') ?? 'She' },
+    { ar: 'أَنْتَ', label: t?.('verbTable.pronoun.youM') ?? 'You (M)' },
+    { ar: 'أَنْتِ', label: t?.('verbTable.pronoun.youF') ?? 'You (F)' },
+    { ar: 'أَنَا', label: t?.('verbTable.pronoun.i') ?? 'I' },
+  ];
 };
 
 export const VerbTableView: React.FC<Props> = ({ isDark, C, payload, onProgress, onComplete }) => {
-    const { t } = useTranslation();
-    const { t_content } = useLanguage();
-    const rows = payload?.verbTable ?? [];
-    const tense = payload?.verbTense ?? 'past';
-    const tenseLabel = TENSE_LABELS[tense];
-    const isPlural = payload?.isPlural ?? false;
-    const isDual = payload?.isDual ?? false;
-    const COL_HEADERS = getColHeaders(isPlural, isDual);
+  const { t } = useTranslation();
+  const { t_content } = useLanguage();
 
-    useEffect(() => {
-        onProgress(0);
-    }, []);
+  const rows: VerbTableRow[] = payload?.verbTable ?? payload?.verbs ?? [];
+  const tense = payload?.verbTense ?? payload?.tense ?? 'past';
+  const isDual = payload?.isDual ?? payload?.number === 'dual';
+  const isPlural = payload?.isPlural ?? payload?.number === 'plural';
 
-    if (rows.length === 0) {
-        const fallbackText = payload?.sourceText || payload?.text || payload?.instruction;
-        if (fallbackText) {
-            const lines = fallbackText.split('\n');
-            return (
-                <View style={{ width: '100%', gap: 16 }}>
-                    {payload?.instruction && (
-                        <View style={{ backgroundColor: isDark ? '#0D775F22' : '#D1FAF0', borderRadius: 8, padding: 10 }}>
-                            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 12, color: isDark ? C.primary400 : C.primary700, textAlign: 'center' }}>
-                                {payload.instruction}
-                            </Text>
-                        </View>
-                    )}
-                    {payload?.verbTense && (
-                        <View style={{ alignItems: 'center', marginBottom: 4 }}>
-                            <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.primary400 : C.primary700 }}>
-                                {tenseLabel.ar}
-                            </Text>
-                            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: isDark ? C.neutral300 : C.neutral600 }}>
-                                {t(tenseLabel.labelKey)}
-                            </Text>
-                        </View>
-                    )}
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -24 }} contentContainerStyle={{ paddingHorizontal: 24 }}>
-                        <View style={{ gap: 12, paddingBottom: 8, minWidth: '100%' }}>
-                            {lines.map((line, idx) => {
-                                if (!line.trim()) return null;
-                                const parts = line.split('-').map(p => p.trim()).filter(Boolean);
-                                return (
-                                    <View key={idx} style={{ flexDirection: 'row-reverse', justifyContent: 'center', gap: 8 }}>
-                                        {parts.map((part, pIdx) => (
-                                            <View key={pIdx} style={{ flex: 1, minWidth: 80, backgroundColor: isDark ? C.neutral800 : '#fff', borderRadius: 8, borderWidth: 1, borderColor: isDark ? C.neutral700 : C.neutral200, paddingVertical: 10, paddingHorizontal: 12, alignItems: 'center', justifyContent: 'center' }}>
-                                                <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 16, color: isDark ? C.neutral100 : C.neutral900, textAlign: 'center' }}>{part}</Text>
-                                            </View>
-                                        ))}
-                                    </View>
-                                );
-                            })}
-                        </View>
-                    </ScrollView>
-                </View>
-            );
-        }
-        return <Text style={{ color: isDark ? C.neutral400 : C.neutral500 }}>{t('verbTable.noData')}</Text>;
-    }
+  const tenseLabel = getTenseLabel(tense, t);
+  const COL_HEADERS = getColHeaders(isPlural, isDual, t);
 
-    const cellBg = isDark ? C.neutral800 : '#fff';
-    const headerBg = isDark ? C.neutral700 : C.neutral200;
-    const border = isDark ? C.neutral700 : C.neutral200;
-    const textMain = isDark ? C.neutral100 : C.neutral900;
-    const textSub = isDark ? C.neutral400 : C.neutral500;
+  useEffect(() => {
+    onProgress?.(1);
+    onComplete?.();
+  }, [onProgress, onComplete]);
 
-    return (
+  if (rows.length === 0) {
+    const fallbackText = payload?.sourceText || payload?.text || payload?.instruction;
+    if (fallbackText) {
+      const lines = fallbackText.split('\n').filter((l: string) => l.trim().length > 0);
+      return (
         <View style={{ width: '100%', gap: 16 }}>
-            {/* Instruction note */}
-            {payload?.instruction && (
-                <View style={{ backgroundColor: isDark ? '#0D775F22' : '#D1FAF0', borderRadius: 8, padding: 10 }}>
-                    <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 12, color: isDark ? C.primary400 : C.primary700, textAlign: 'center' }}>
-                        {payload.instruction}
-                    </Text>
-                </View>
-            )}
+          {payload?.instruction && (
+            <View
+              style={{
+                borderRadius: 24,
+                backgroundColor: isDark ? C.neutral900 : C.neutral100,
+                padding: 16,
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'Lexend_400Regular',
+                  fontSize: 13,
+                  color: isDark ? C.neutral300 : C.neutral700,
+                  textAlign: 'center',
+                }}>
+                {t_content(payload.instruction, payload.instructionBn)}
+              </Text>
+            </View>
+          )}
 
-            {/* Tense header */}
-            <View style={{ alignItems: 'center', marginBottom: 4 }}>
-                <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.primary400 : C.primary700 }}>
-                    {tenseLabel.ar}
-                </Text>
-                <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: isDark ? C.neutral300 : C.neutral600 }}>
-                    {t(tenseLabel.labelKey)}
-                </Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View style={{ gap: 10 }}>
+              {lines.map((line: string, idx: number) => {
+                const parts = line
+                  .split('-')
+                  .map((p) => p.trim())
+                  .filter(Boolean);
+                return (
+                  <View key={idx} style={{ flexDirection: 'row', gap: 10 }}>
+                    {parts.map((part, pIdx) => (
+                      <View
+                        key={pIdx}
+                        style={{
+                          minWidth: 100,
+                          borderRadius: 20,
+                          backgroundColor: isDark ? C.neutral900 : C.neutral100,
+                          paddingVertical: 14,
+                          paddingHorizontal: 16,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            fontFamily: 'NotoSansArabic_600SemiBold',
+                            fontSize: 18,
+                            color: isDark ? C.neutral100 : C.neutral900,
+                            textAlign: 'center',
+                            writingDirection: 'rtl',
+                          }}>
+                          {part}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                );
+              })}
+            </View>
+          </ScrollView>
+        </View>
+      );
+    }
+    return (
+      <View style={{ width: '100%', padding: 24, alignItems: 'center' }}>
+        <Text style={{ fontFamily: 'Lexend_400Regular', color: C.neutral400, fontSize: 14 }}>
+          {t('verbTable.noData') ?? 'No data available'}
+        </Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={{ width: '100%', gap: 18 }}>
+      {/* Instruction block */}
+      {payload?.instruction && (
+        <View
+          style={{
+            borderRadius: 24,
+            backgroundColor: isDark ? C.neutral900 : C.neutral100,
+            padding: 16,
+          }}>
+          <Text
+            style={{
+              fontFamily: 'Lexend_400Regular',
+              fontSize: 13,
+              color: isDark ? C.neutral300 : C.neutral700,
+              textAlign: 'center',
+            }}>
+            {t_content(payload.instruction, payload.instructionBn)}
+          </Text>
+        </View>
+      )}
+
+      {/* Tense header */}
+      <View style={{ alignItems: 'center', gap: 4 }}>
+        <Text
+          style={{
+            fontFamily: 'NotoSansArabic_600SemiBold',
+            fontSize: 24,
+            color: isDark ? '#FFFFFF' : '#0A0A0A',
+            textAlign: 'center',
+            writingDirection: 'rtl',
+          }}>
+          {tenseLabel.ar}
+        </Text>
+        <Text
+          style={{
+            fontFamily: 'Lexend_600SemiBold',
+            fontSize: 12,
+            color: isDark ? C.neutral400 : C.neutral500,
+            textTransform: 'uppercase',
+            letterSpacing: 1,
+          }}>
+          {tenseLabel.label}
+        </Text>
+      </View>
+
+      {/* Borderless Tone-on-Tone Verb Table Scroll View */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingVertical: 4 }}>
+        <View style={{ gap: 10 }}>
+          {/* Header Row */}
+          <View style={{ flexDirection: 'row', gap: 10 }}>
+            {/* Root column header cell */}
+            <View
+              style={{
+                width: 100,
+                borderRadius: 20,
+                backgroundColor: isDark ? C.neutral800 : C.neutral200,
+                paddingVertical: 12,
+                paddingHorizontal: 8,
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 2,
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'Lexend_600SemiBold',
+                  fontSize: 11,
+                  color: isDark ? C.neutral300 : C.neutral700,
+                  textTransform: 'uppercase',
+                }}>
+                {t('verbTable.root') ?? 'Root'}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: 'Lexend_400Regular',
+                  fontSize: 10,
+                  color: isDark ? C.neutral400 : C.neutral500,
+                }}>
+                {t('verbTable.meaning') ?? 'Meaning'}
+              </Text>
             </View>
 
-            {/* Verb Table Scrollable Container */}
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -24 }} contentContainerStyle={{ paddingHorizontal: 24 }}>
-                <View style={{ gap: 16, paddingBottom: 8 }}>
-                    {/* Column headers */}
-                    <View style={{ flexDirection: 'row', borderRadius: 8, overflow: 'hidden', borderWidth: 1, borderColor: border }}>
-                        {/* Root column header */}
-                        <View style={{ width: 80, backgroundColor: headerBg, padding: 6, alignItems: 'center', justifyContent: 'center', borderRightWidth: 1, borderRightColor: border }}>
-                            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 10, color: textSub }}>{t('verbTable.root')}</Text>
-                            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 9, color: textSub }}>{t('verbTable.meaning')}</Text>
-                        </View>
-                        {COL_HEADERS.map((h, i) => (
-                            <View key={i} style={{ width: 85, backgroundColor: headerBg, padding: 4, alignItems: 'center', borderRightWidth: i < COL_HEADERS.length - 1 ? 1 : 0, borderRightColor: border }}>
-                                <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 14, color: textMain }}>{h.ar}</Text>
-                                <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 8, color: textSub }}>{t(h.labelKey)}</Text>
-                            </View>
-                        ))}
-                    </View>
+            {/* Conjugation column headers */}
+            {COL_HEADERS.map((h, i) => (
+              <View
+                key={i}
+                style={{
+                  minWidth: 100,
+                  borderRadius: 20,
+                  backgroundColor: isDark ? C.neutral800 : C.neutral200,
+                  paddingVertical: 12,
+                  paddingHorizontal: 12,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 2,
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'NotoSansArabic_600SemiBold',
+                    fontSize: 16,
+                    color: isDark ? '#FFFFFF' : '#0A0A0A',
+                    writingDirection: 'rtl',
+                  }}>
+                  {h.ar}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: 'Lexend_400Regular',
+                    fontSize: 10,
+                    color: isDark ? C.neutral400 : C.neutral500,
+                    textTransform: 'uppercase',
+                  }}>
+                  {h.label}
+                </Text>
+              </View>
+            ))}
+          </View>
 
-                    {/* Rows */}
-                    {rows.map((row, idx) => (
-                        <View key={idx} style={{ flexDirection: 'row', borderRadius: 8, overflow: 'hidden', borderWidth: 1, borderColor: border }}>
-                            {/* Root + meaning */}
-                            <View style={{ width: 80, backgroundColor: cellBg, padding: 6, alignItems: 'center', justifyContent: 'center', borderRightWidth: 1, borderRightColor: border }}>
-                                <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 15, color: isDark ? C.primary400 : C.primary700 }}>{row.root}</Text>
-                                <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 9, color: textSub, textAlign: 'center' }}>{t_content(row.meaning, row.meaningBn)}</Text>
-                            </View>
-                            {(isDual || isPlural 
-                                ? [row.theyM, row.theyF, row.youPluralM, row.youPluralF, row.we] 
-                                : [row.he, row.she, row.youM, row.youF, row.i]
-                            ).map((form, i) => (
-                                <View key={i} style={{ width: 85, backgroundColor: cellBg, padding: 6, alignItems: 'center', justifyContent: 'center', borderRightWidth: i < 4 ? 1 : 0, borderRightColor: border }}>
-                                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 14, color: textMain, textAlign: 'center' }}>{form || '-'}</Text>
-                                </View>
-                            ))}
-                        </View>
-                    ))}
+          {/* Table Data Rows */}
+          {rows.map((row, idx) => {
+            const forms =
+              isDual || isPlural
+                ? [row.theyM, row.theyF, row.youPluralM, row.youPluralF, row.we]
+                : [row.he, row.she, row.youM, row.youF, row.i];
+
+            return (
+              <View key={idx} style={{ flexDirection: 'row', gap: 10 }}>
+                {/* Root + meaning cell */}
+                <View
+                  style={{
+                    width: 100,
+                    borderRadius: 20,
+                    backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : C.neutral200,
+                    paddingVertical: 14,
+                    paddingHorizontal: 8,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 3,
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: 'NotoSansArabic_600SemiBold',
+                      fontSize: 18,
+                      color: isDark ? '#FFFFFF' : '#0A0A0A',
+                      writingDirection: 'rtl',
+                    }}>
+                    {row.root}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'Lexend_400Regular',
+                      fontSize: 11,
+                      color: isDark ? C.neutral400 : C.neutral500,
+                      textAlign: 'center',
+                    }}>
+                    {t_content(row.meaning, row.meaningBn)}
+                  </Text>
                 </View>
-            </ScrollView>
+
+                {/* Forms */}
+                {forms.map((form, fIdx) => (
+                  <View
+                    key={fIdx}
+                    style={{
+                      minWidth: 100,
+                      borderRadius: 20,
+                      backgroundColor: isDark ? '#141414' : '#FFFFFF',
+                      paddingVertical: 14,
+                      paddingHorizontal: 12,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'NotoSansArabic_600SemiBold',
+                        fontSize: 18,
+                        color: isDark ? C.neutral100 : C.neutral900,
+                        textAlign: 'center',
+                        writingDirection: 'rtl',
+                        lineHeight: 26,
+                      }}>
+                      {form || '-'}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            );
+          })}
         </View>
-    );
+      </ScrollView>
+    </View>
+  );
 };

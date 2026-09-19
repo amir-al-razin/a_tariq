@@ -1,4 +1,4 @@
-# AI Agent Rules — Universal (Jules + Local IDE)
+# AI Agent Rules - Universal (Jules + Local IDE)
 
 ## Project Context
 
@@ -12,7 +12,7 @@
 
 ---
 
-## Jules Execution Rules (CRITICAL — Jules Must Follow)
+## Jules Execution Rules (CRITICAL - Jules Must Follow)
 
 ### 1. Plan-First Execution
 - **BEFORE writing any code**: Read the plan file specified in your task prompt
@@ -32,7 +32,7 @@
 ### 4. Validation Before PR
 - **Run ALL validation commands** listed in the plan before opening PR
 - Common validation commands:
-  - `npx tsc --noEmit` (type check — ALWAYS run this)
+  - `npx tsc --noEmit` (type check - ALWAYS run this)
   - `pnpm run lint`
   - `pnpm run build` (if specified)
   - `pnpm test` (if specified)
@@ -61,27 +61,31 @@
 - Example: `import { lesson01 } from '@arabic-app/shared'`
 
 ### 9. Design System Compliance
-- **Read `docs/design-system.md`** before building any UI component
-- Follow existing component patterns from mobile app
-- Match visual design language (colors, spacing, typography)
+- **Mandatory Blueprint**: BEFORE creating or editing any UI component, you MUST read `docs/design-system.md` and inspect the interactive workbench at `apps/web/src/components/design-system/DesignSystemWorkbench.tsx`.
+- **Zero Hardcoded Colors**: Strictly prohibited to write raw hex codes (`#...`, `bg-[#...]`) or ad-hoc Tailwind colors (`bg-blue-600`, `text-green-500`). All UI components must strictly consume designated tokens (`bg-accent-primary`, `bg-accent-secondary`, `bg-neutral-100`, etc.) specified in `docs/design-system.md`.
+- **Zero 1px Borders & Zero Shadows**: Depth is 100% luminance-based. Outlines and drop shadows (`shadow-*`) are strictly prohibited (dashed borders permitted only on empty assembly drop target slots).
+- **Geometric & Touch Mandates**: Strictly follow the 5-tier corner radius hierarchy (`rounded-4xl` to `rounded-full`) and 56px (`h-14`) touch target standards specified in `docs/design-system.md`.
+- **Arabic Typography Invariants**: Strictly `tracking-normal` (zero letter-spacing on Arabic cursive) and `leading-relaxed` or `leading-loose` (Harakat vertical clearance).
 
 ### 10. i18n Requirements
 - Use `t()` function for ALL user-facing strings
 - **No hardcoded Arabic, English, or Bangla text** in components
 - Translation keys must exist in `messages/` directory
+- **Strict Script Isolation**: `en` fields must contain only clean English; `bn` fields must contain only natural Bangla. Never mix scripts or English words into Bangla fields.
+- **Arabic Tashkeel Fidelity**: Every Arabic word in curriculum data must have complete, accurate Harakat (never guess or drop grammatical vowel endings).
 
 ---
 
 ## Code Style & Conventions
 
 ### TypeScript
-- **Strict mode enabled** — no `any` types
+- **Strict mode enabled** - no `any` types
 - Use `type` for object shapes, `interface` for extensible contracts
 - Prefer named exports over default exports
 - Use `import type` for type-only imports
 
 ### React Components
-- **Functional components only** — no class components
+- **Functional components only** - no class components
 - Use hooks for state and side effects
 - Component file naming: `PascalCase.tsx`
 - Utility file naming: `kebab-case.ts`
@@ -243,15 +247,31 @@ payload: {
 - Branch from `main` (branch from integration branch)
 - Skip validation commands
 - Touch files not listed in the plan
+- Use shadow CSS utilities (`shadow-*`) anywhere in UI components (strictly prohibited by Raw Neutral design system)
+- Add inline theme toggle buttons or local theme state variables in lesson engines (managed globally by navbar)
+- Invent new UI components, wrappers, or emojis for curriculum lessons (restrict to authorized existing modules)
+- Combine introductory familiarization examples and interactive student practice into a single mixed lesson step
+- Write static translations for textbook practice dialogues/sentences (put them into interactive translation drills)
+- Render word chip options in static answer order (always use Fisher-Yates shuffling memoized with `useMemo`)
+- Hardcode hex colors or arbitrary Tailwind color classes (strictly use designated tokens like `bg-accent-primary`, `bg-neutral-100`, etc.)
+- Use 1px solid outline borders or drop shadows (`shadow-*`) anywhere in UI components (strictly prohibited by Raw Neutral)
+- Use arbitrary border radii (strictly follow the 5-tier radius hierarchy: `rounded-4xl` to `rounded-full`)
+- Mix languages across content fields (no Bengali script in English fields or English words in Bangla fields)
+- Output Arabic words without complete, accurate Harakat (never guess or drop vowel endings)
 
 ### ✅ DO
-- Read the plan file FIRST
+- Read the plan file and `docs/engine-design-guidelines.md` FIRST before building or modifying lesson engines
 - Copy structures from working examples
+- Strictly use designated tokens from the design system blueprint (`apps/web/src/components/design-system/DesignSystemWorkbench.tsx` and `docs/design-system.md`)
+- Enforce 56px (`h-14`) touch target height for primary action buttons
 - Run `npx tsc --noEmit` before opening PR
 - Use `strReplace` for editing existing files
 - Follow existing patterns in the codebase
 - Ask for clarification when blocked
 - Test Arabic RTL rendering
+- Use `CurriculumHeader` and `CurriculumFooter` from shared components to ensure mobile responsive layout
+- Separate translated textbook examples (Familiarization) from non-translated interactive exercises (Practice)
+- Verify Arabic Tashkeel against textbook sources and keep English/Bangla fields 100% script-pure
 
 ---
 

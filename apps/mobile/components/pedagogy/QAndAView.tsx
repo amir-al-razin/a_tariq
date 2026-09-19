@@ -1,125 +1,349 @@
-import React, { useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, Text, Pressable, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../../i18n/LanguageContext';
 import type { QAItem } from '@tariq/shared';
 
-type Props = { isDark: boolean; C: any; payload?: any; onProgress?: (v: number) => void; onComplete?: () => void };
+const FALLBACK_QUESTIONS: QAItem[] = [
+  {
+    question_ar: 'مَا هَٰذَا؟',
+    question_en: 'What is this?',
+    question_bn: 'এটা কী?',
+    correct_ar: 'هَٰذَا كِتَابٌ',
+    correct_en: 'This is a book',
+    correct_bn: 'এটা একটি বই',
+    options_ar: ['هَٰذَا كِتَابٌ', 'هَٰذَا قَلَمٌ'],
+    questionType: 'general',
+    emoji: '📖',
+  },
+];
+
+type Props = {
+  isDark: boolean;
+  C: any;
+  payload?: any;
+  onProgress?: (v: number) => void;
+  onComplete?: () => void;
+};
 
 export const QAndAView: React.FC<Props> = ({ isDark, C, payload, onProgress, onComplete }) => {
-    const { t } = useTranslation();
-    const { t_content } = useLanguage();
-    const questions: QAItem[] = payload?.questions || [];
-    const instruction: string = payload?.instruction || '';
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [selected, setSelected] = useState<string | null>(null);
-    const [revealed, setRevealed] = useState(false);
+  const { t } = useTranslation();
+  const { t_content } = useLanguage();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [revealed, setRevealed] = useState(false);
 
-    if (questions.length === 0) {
-        const fallbackText = payload?.text || payload?.instruction;
-        if (fallbackText) {
-            return (
-                <View style={{ width: '100%', paddingVertical: 8 }}>
-                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.neutral100 : C.neutral800, textAlign: 'right', lineHeight: 32 }}>
-                        {fallbackText}
-                    </Text>
-                </View>
-            );
-        }
-        return <Text style={{ color: isDark ? C.neutral100 : C.neutral800 }}>{t('qanda.noQuestions')}</Text>;
-    }
+  const questions: QAItem[] =
+    payload?.questions && payload.questions.length > 0 ? payload.questions : FALLBACK_QUESTIONS;
+  const instruction: string = payload?.instruction || '';
 
-    const q = questions[currentIndex];
-    const isCorrect = selected === q.correct_ar;
-    const isLastQ = currentIndex === questions.length - 1;
+  const handleNext = useCallback(() => {
+    setSelected(null);
+    setRevealed(false);
+    setCurrentIndex((prev) => prev + 1);
+  }, []);
 
-    const handleSelect = (opt: string) => {
-        if (revealed) return;
-        setSelected(opt);
-        setRevealed(true);
-        const newProgress = (currentIndex + 1) / questions.length;
-        onProgress?.(newProgress);
-        if (isLastQ) {
-            onComplete?.();
-        }
-    };
-
-    const handleNext = () => {
-        setSelected(null);
-        setRevealed(false);
-        setCurrentIndex((prev) => prev + 1);
-    };
-
-    return (
-        <View style={{ width: '100%', alignItems: 'center' }}>
-            {instruction ? (
-                <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral600, marginBottom: 20, textAlign: 'center', fontStyle: 'italic' }}>
-                    {t_content(instruction, payload?.instructionBn)}
-                </Text>
-            ) : null}
-
-            {/* Progress dots */}
-            <View style={{ flexDirection: 'row', gap: 8, marginBottom: 20, flexWrap: 'wrap', justifyContent: 'center' }}>
-                {questions.map((_, i) => (
-                    <View key={i} style={{ height: 6, width: i <= currentIndex ? 20 : 6, borderRadius: 3, backgroundColor: i < currentIndex ? C.primary400 : i === currentIndex ? C.primary400 : (isDark ? C.neutral700 : C.neutral200) }} />
-                ))}
-            </View>
-
-            {/* Emoji */}
-            <View style={{ width: 96, height: 96, borderRadius: 16, backgroundColor: isDark ? C.neutral800 : C.neutral100, borderWidth: 1, borderColor: isDark ? C.neutral700 : C.neutral200, alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-                <Text style={{ fontSize: 44 }}>{q.emoji}</Text>
-            </View>
-
-            <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 30, color: isDark ? C.neutral100 : C.neutral800, marginBottom: 4 }}>{q.question_ar}</Text>
-            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 14, color: isDark ? C.neutral400 : C.neutral600, marginBottom: 24 }}>{t_content(q.question_en, q.question_bn)}</Text>
-
-            {/* Options */}
-            <View style={{ width: '100%', gap: 10 }}>
-                {q.options_ar.map((opt) => {
-                    const isChosen = selected === opt;
-                    const isThisCorrect = opt === q.correct_ar;
-                    let borderColor = isDark ? C.neutral700 : C.neutral200;
-                    let bg = 'transparent';
-                    let textColor = isDark ? C.neutral200 : C.neutral800;
-
-                    if (revealed && isChosen && isCorrect) { borderColor = '#22c55e'; bg = isDark ? '#052e16' : '#f0fdf4'; textColor = '#22c55e'; }
-                    else if (revealed && isChosen && !isCorrect) { borderColor = '#ef4444'; bg = isDark ? '#3f0c0c' : '#fef2f2'; textColor = '#ef4444'; }
-                    else if (revealed && isThisCorrect) { borderColor = '#22c55e'; bg = isDark ? '#052e16' : '#f0fdf4'; textColor = '#22c55e'; }
-
-                    return (
-                        <Pressable key={opt} onPress={() => handleSelect(opt)}
-                            style={{ padding: 16, borderRadius: 12, borderWidth: 2, borderColor, backgroundColor: bg, alignItems: 'center' }}>
-                            <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: textColor }}>{opt}</Text>
-                        </Pressable>
-                    );
-                })}
-            </View>
-
-            {/* Show explanation after answering */}
-            {revealed && (
-                <View style={{ marginTop: 16, padding: 14, borderRadius: 12, backgroundColor: isCorrect ? (isDark ? '#052e16' : '#f0fdf4') : (isDark ? '#3f0c0c' : '#fef2f2'), width: '100%', borderWidth: 1, borderColor: isCorrect ? '#22c55e' : '#ef4444' }}>
-                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 13, color: isCorrect ? '#22c55e' : '#ef4444', marginBottom: 4 }}>
-                        {isCorrect ? t('qanda.correct') : t('qanda.notQuite')}
-                    </Text>
-                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 18, color: isDark ? C.neutral100 : C.neutral800 }}>{q.correct_ar}</Text>
-                    <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral400 : C.neutral600 }}>{t_content(q.correct_en, q.correct_bn)}</Text>
-                    {q.explanation && (
-                        <View style={{ marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }}>
-                            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 13, color: isDark ? C.neutral300 : C.neutral700 }}>
-                                <Text style={{ fontFamily: 'Lexend_600SemiBold', color: isDark ? C.neutral100 : C.neutral900 }}>💡 {t('qanda.hint') ?? 'Hint:'} </Text>
-                                {q.explanation}
-                            </Text>
-                        </View>
-                    )}
-                </View>
-            )}
-
-            {/* Next button if not last question */}
-            {revealed && !isLastQ && (
-                <Pressable onPress={handleNext} style={{ marginTop: 20, paddingHorizontal: 32, paddingVertical: 14, borderRadius: 12, backgroundColor: C.primary400, alignItems: 'center', width: '100%' }}>
-                    <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 15, color: '#fff' }}>{t('qanda.nextQuestion')}</Text>
-                </Pressable>
-            )}
+  if (questions.length === 0) {
+    const fallbackText = payload?.text || payload?.instruction;
+    if (fallbackText) {
+      return (
+        <View
+          style={{
+            width: '100%',
+            borderRadius: 24,
+            backgroundColor: isDark ? C.neutral900 : C.neutral100,
+            padding: 24,
+          }}>
+          <Text
+            style={{
+              fontFamily: 'NotoSansArabic_600SemiBold',
+              fontSize: 22,
+              color: isDark ? C.neutral100 : C.neutral900,
+              textAlign: 'right',
+              writingDirection: 'rtl',
+              lineHeight: 36,
+            }}>
+            {fallbackText}
+          </Text>
         </View>
+      );
+    }
+    return (
+      <View style={{ width: '100%', padding: 24, alignItems: 'center' }}>
+        <Text style={{ fontFamily: 'Lexend_400Regular', color: C.neutral400, fontSize: 14 }}>
+          {t('qanda.noQuestions') ?? 'No questions available'}
+        </Text>
+      </View>
     );
+  }
+
+  const q = questions[currentIndex];
+  const isCorrect = selected === q.correct_ar;
+  const isLastQ = currentIndex === questions.length - 1;
+
+  const handleSelect = (opt: string) => {
+    if (revealed) return;
+    setSelected(opt);
+    setRevealed(true);
+    const newProgress = (currentIndex + 1) / questions.length;
+    onProgress?.(newProgress);
+    if (isLastQ) {
+      onComplete?.();
+    }
+  };
+
+  return (
+    <View style={{ width: '100%', alignItems: 'center' }}>
+      {instruction ? (
+        <Text
+          style={{
+            fontFamily: 'Lexend_400Regular',
+            fontSize: 13,
+            color: isDark ? C.neutral400 : C.neutral500,
+            textAlign: 'center',
+            fontStyle: 'italic',
+            marginBottom: 16,
+          }}>
+          {instruction}
+        </Text>
+      ) : null}
+
+      {/* Tone-on-Tone Progress dots */}
+      <View
+        style={{
+          flexDirection: 'row',
+          gap: 8,
+          marginBottom: 20,
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        {questions.map((_, i) => {
+          const isCurrent = i === currentIndex;
+          const isDone = i < currentIndex;
+          return (
+            <View
+              key={i}
+              style={{
+                height: 6,
+                width: isCurrent ? 24 : isDone ? 10 : 6,
+                borderRadius: 3,
+                backgroundColor: isCurrent
+                  ? C.primary400
+                  : isDone
+                    ? C.primary300
+                    : isDark
+                      ? C.neutral800
+                      : C.neutral200,
+              }}
+            />
+          );
+        })}
+      </View>
+
+      {/* Emoji / Image container */}
+      {(q.imageUrl || q.emoji) && (
+        <View
+          style={{
+            width: 104,
+            height: 104,
+            borderRadius: 24,
+            backgroundColor: isDark ? C.neutral900 : C.neutral100,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: 20,
+            overflow: 'hidden',
+          }}>
+          {q.imageUrl ? (
+            <Image
+              source={{ uri: q.imageUrl }}
+              style={{ width: 72, height: 72 }}
+              resizeMode="contain"
+            />
+          ) : (
+            <Text style={{ fontSize: 48 }}>{q.emoji}</Text>
+          )}
+        </View>
+      )}
+
+      {/* Question prompt */}
+      <View style={{ alignItems: 'center', marginBottom: 24, paddingHorizontal: 8 }}>
+        <Text
+          style={{
+            fontFamily: 'NotoSansArabic_600SemiBold',
+            fontSize: 30,
+            color: isDark ? '#FFFFFF' : '#0A0A0A',
+            textAlign: 'center',
+            writingDirection: 'rtl',
+            lineHeight: 46,
+            marginBottom: 6,
+          }}>
+          {q.question_ar}
+        </Text>
+        <Text
+          style={{
+            fontFamily: 'Lexend_400Regular',
+            fontSize: 15,
+            color: isDark ? C.neutral400 : C.neutral500,
+            textAlign: 'center',
+          }}>
+          {t_content(q.question_en, q.question_bn)}
+        </Text>
+      </View>
+
+      {/* Option pills / squircles */}
+      <View style={{ width: '100%', gap: 12 }}>
+        {q.options_ar.map((opt: string) => {
+          const isChosen = selected === opt;
+          const isThisCorrect = opt === q.correct_ar;
+
+          let cardBg = isDark ? C.neutral900 : C.neutral100;
+          let textColor = isDark ? C.neutral100 : C.neutral900;
+          let opacity = 1;
+          let strikeThrough = false;
+
+          if (revealed) {
+            if (isThisCorrect) {
+              cardBg = C.primary400;
+              textColor = '#FFFFFF';
+            } else if (isChosen && !isCorrect) {
+              cardBg = isDark ? C.neutral900 : C.neutral200;
+              textColor = isDark ? C.neutral500 : C.neutral400;
+              opacity = 0.6;
+              strikeThrough = true;
+            } else {
+              cardBg = isDark ? C.neutral900 : C.neutral100;
+              textColor = isDark ? C.neutral600 : C.neutral400;
+              opacity = 0.4;
+            }
+          }
+
+          return (
+            <Pressable
+              key={opt}
+              disabled={revealed}
+              onPress={() => handleSelect(opt)}
+              style={({ pressed }) => ({
+                paddingVertical: 18,
+                paddingHorizontal: 20,
+                borderRadius: 24,
+                backgroundColor: cardBg,
+                alignItems: 'center',
+                justifyContent: 'center',
+                opacity: pressed && !revealed ? 0.85 : opacity,
+              })}>
+              <Text
+                style={{
+                  fontFamily: 'NotoSansArabic_600SemiBold',
+                  fontSize: 22,
+                  color: textColor,
+                  textAlign: 'center',
+                  writingDirection: 'rtl',
+                  textDecorationLine: strikeThrough ? 'line-through' : 'none',
+                }}>
+                {opt}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
+
+      {/* Explanation / Answer Review Block (Borderless Tone-on-Tone) */}
+      {revealed && (
+        <View
+          style={{
+            marginTop: 20,
+            padding: 20,
+            borderRadius: 24,
+            backgroundColor: isDark ? C.neutral900 : C.neutral100,
+            width: '100%',
+          }}>
+          <Text
+            style={{
+              fontFamily: 'Lexend_600SemiBold',
+              fontSize: 12,
+              color: C.primary400,
+              textTransform: 'uppercase',
+              letterSpacing: 1,
+              marginBottom: 8,
+            }}>
+            {isCorrect ? t('qanda.correct') : t('qanda.notQuite')}
+          </Text>
+
+          <Text
+            style={{
+              fontFamily: 'NotoSansArabic_600SemiBold',
+              fontSize: 22,
+              color: isDark ? '#FFFFFF' : '#0A0A0A',
+              textAlign: 'right',
+              writingDirection: 'rtl',
+              marginBottom: 4,
+            }}>
+            {q.correct_ar}
+          </Text>
+
+          <Text
+            style={{
+              fontFamily: 'Lexend_400Regular',
+              fontSize: 14,
+              color: isDark ? C.neutral300 : C.neutral600,
+            }}>
+            {t_content(q.correct_en, q.correct_bn)}
+          </Text>
+
+          {q.explanation && (
+            <View
+              style={{
+                marginTop: 14,
+                padding: 14,
+                borderRadius: 16,
+                backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'Lexend_400Regular',
+                  fontSize: 13,
+                  color: isDark ? C.neutral300 : C.neutral700,
+                  lineHeight: 20,
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'Lexend_600SemiBold',
+                    color: isDark ? '#FFFFFF' : '#0A0A0A',
+                  }}>
+                  💡 {t('qanda.hint') ?? 'Hint:'}{' '}
+                </Text>
+                {q.explanation}
+              </Text>
+            </View>
+          )}
+        </View>
+      )}
+
+      {/* Next question button pill (56px touch target height) */}
+      {revealed && !isLastQ && (
+        <Pressable
+          onPress={handleNext}
+          style={({ pressed }) => ({
+            marginTop: 24,
+            height: 56,
+            borderRadius: 28,
+            backgroundColor: C.primary400,
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            opacity: pressed ? 0.9 : 1,
+          })}>
+          <Text
+            style={{
+              fontFamily: 'Lexend_600SemiBold',
+              fontSize: 16,
+              color: '#FFFFFF',
+            }}>
+            {t('qanda.nextQuestion')}
+          </Text>
+        </Pressable>
+      )}
+    </View>
+  );
 };

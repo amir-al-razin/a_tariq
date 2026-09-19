@@ -18,6 +18,7 @@ export type HomeStackParamList = {
     chapterTitleAr: string;
     chapterTitleEn: string;
     darsNumber: number;
+    autoStart?: boolean;
   };
   ChunkEngine: {
     chunkId: string;

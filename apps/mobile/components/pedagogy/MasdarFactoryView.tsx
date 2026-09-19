@@ -5,249 +5,310 @@ import { useLanguage } from '../../i18n/LanguageContext';
 import type { MasdarRow } from '@tariq/shared';
 
 export interface MasdarPayload {
-    masdarRows?: MasdarRow[];
-    masdarColumnOverrides?: {
-        imperativeAr?: string;
-        imperativeEn?: string;
-        prohibitiveAr?: string;
-        prohibitiveEn?: string;
-    };
-    baabLabel?: string;
-    instruction?: string;
-    instructionBn?: string;
+  masdarRows?: MasdarRow[];
+  rows?: MasdarRow[];
+  masdarColumnOverrides?: {
+    imperativeAr?: string;
+    imperativeEn?: string;
+    prohibitiveAr?: string;
+    prohibitiveEn?: string;
+  };
+  baabLabel?: string;
+  instruction?: string;
+  instructionBn?: string;
 }
 
-interface Props {
-    isDark: boolean;
-    C: Record<string, string>;
-    payload?: MasdarPayload;
-    onProgress: (v: number) => void;
-    onComplete: () => void;
-}
+type Props = {
+  isDark: boolean;
+  C: any;
+  payload?: MasdarPayload;
+  onProgress?: (v: number) => void;
+  onComplete?: () => void;
+};
 
-// Column header config builder
-const getCols = (overrides?: MasdarPayload['masdarColumnOverrides']) => [
-    { key: 'past' as const, arLabel: 'مَاضٍ', labelKey: 'masdar.past' },
-    { key: 'present' as const, arLabel: 'مُضَارِع', labelKey: 'masdar.present' },
-    { key: 'imperative' as const, arLabel: overrides?.imperativeAr ?? 'أَمْر', labelKey: 'masdar.command', customLabelEn: overrides?.imperativeEn },
-    { key: 'prohibitive' as const, arLabel: overrides?.prohibitiveAr ?? 'نَهْي', labelKey: 'masdar.prohibit', customLabelEn: overrides?.prohibitiveEn },
+const getCols = (overrides?: MasdarPayload['masdarColumnOverrides'], t?: any) => [
+  { key: 'past' as const, arLabel: 'مَاضٍ', labelKey: t?.('masdar.past') ?? 'Past' },
+  { key: 'present' as const, arLabel: 'مُضَارِع', labelKey: t?.('masdar.present') ?? 'Present' },
+  {
+    key: 'imperative' as const,
+    arLabel: overrides?.imperativeAr ?? 'أَمْر',
+    labelKey: overrides?.imperativeEn ?? t?.('masdar.command') ?? 'Command',
+  },
+  {
+    key: 'prohibitive' as const,
+    arLabel: overrides?.prohibitiveAr ?? 'نَهْي',
+    labelKey: overrides?.prohibitiveEn ?? t?.('masdar.prohibit') ?? 'Prohibition',
+  },
 ];
 
 export const MasdarFactoryView: React.FC<Props> = ({
-    isDark, C, payload, onProgress, onComplete,
+  isDark,
+  C,
+  payload,
+  onProgress,
+  onComplete,
 }) => {
-    const { t } = useTranslation();
-    const { t_content } = useLanguage();
-    const rows: MasdarRow[] = payload?.masdarRows ?? [];
-    const COLS = getCols(payload?.masdarColumnOverrides);
+  const { t } = useTranslation();
+  const { t_content } = useLanguage();
 
-    // Scroll-based completion handled by ChunkEngineScreen
-    useEffect(() => { onProgress(0); }, []);
+  const rows: MasdarRow[] = payload?.masdarRows ?? payload?.rows ?? [];
+  const COLS = getCols(payload?.masdarColumnOverrides, t);
 
-    if (rows.length === 0) {
-        const fallbackText = payload?.instruction;
-        if (fallbackText) {
-            return (
-                <View style={{ width: '100%', paddingVertical: 8 }}>
-                    <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 20, color: isDark ? C.neutral100 : C.neutral800, textAlign: 'right', lineHeight: 32 }}>
-                        {fallbackText}
-                    </Text>
-                </View>
-            );
-        }
-        return null;
-    }
+  useEffect(() => {
+    onProgress?.(1);
+    onComplete?.();
+  }, [onProgress, onComplete]);
 
-    const border = isDark ? C.neutral700 : C.neutral200;
-    const headerBg = isDark ? C.neutral700 : C.neutral200;
-    const cellBg = isDark ? C.neutral800 : '#fff';
-    const textMain = isDark ? C.neutral100 : C.neutral900;
-    const textSub = isDark ? C.neutral400 : C.neutral500;
-    const accentAr = isDark ? C.primary400 : C.primary700;
-
-    return (
-        <View style={{ width: '100%', gap: 20 }}>
-            {/* Optional Baab label */}
-            {payload?.baabLabel && (
-                <View style={{
-                    alignSelf: 'center',
-                    backgroundColor: isDark ? `${C.primary800}40` : '#ECFDF8',
-                    borderRadius: 10,
-                    paddingHorizontal: 14,
-                    paddingVertical: 6,
-                    borderWidth: 1,
-                    borderColor: isDark ? C.primary800 : '#A7F3DE',
-                }}>
-                    <Text style={{
-                        fontFamily: 'NotoSansArabic_600SemiBold',
-                        fontSize: 16,
-                        color: accentAr,
-                        textAlign: 'center',
-                    }}>
-                        {payload.baabLabel}
-                    </Text>
-                </View>
-            )}
-
-            {/* Optional instruction */}
-            {payload?.instruction && (
-                <Text style={{
-                    fontFamily: 'Lexend_400Regular',
-                    fontSize: 13,
-                    color: textSub,
-                    textAlign: 'center',
-                    fontStyle: 'italic',
-                }}>
-                    {t_content(payload.instruction, payload.instructionBn)}
-                </Text>
-            )}
-
-            {/* Horizontally scrollable table */}
-            <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 4 }}
-            >
-                <View style={{ gap: 0 }}>
-                    {/* ── Column headers ── */}
-                    <View style={{
-                        flexDirection: 'row',
-                        borderRadius: 10,
-                        overflow: 'hidden',
-                        borderWidth: 1,
-                        borderColor: border,
-                        marginBottom: 2,
-                    }}>
-                        {/* Masdar header cell */}
-                        <View style={{
-                            width: 110,
-                            backgroundColor: headerBg,
-                            padding: 8,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            borderRightWidth: 1,
-                            borderRightColor: border,
-                        }}>
-                            <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 13, color: accentAr }}>
-                                مَصْدَر
-                            </Text>
-                            <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 10, color: textSub }}>
-                                {t('masdar.verbalNoun')}
-                            </Text>
-                        </View>
-
-                        {/* Tense header cells */}
-                        {COLS.map((col, ci) => (
-                            <View key={col.key} style={{
-                                width: 90,
-                                backgroundColor: headerBg,
-                                padding: 8,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                borderRightWidth: ci < COLS.length - 1 ? 1 : 0,
-                                borderRightColor: border,
-                            }}>
-                                <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 13, color: textMain }}>
-                                    {col.arLabel}
-                                </Text>
-                                <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 10, color: textSub }}>
-                                    {col.customLabelEn ?? t(col.labelKey)}
-                                </Text>
-                            </View>
-                        ))}
-                    </View>
-
-                    {/* ── Data rows ── */}
-                    {rows.map((row, ri) => (
-                        <View
-                            key={ri}
-                            style={{
-                                flexDirection: 'row',
-                                borderWidth: 1,
-                                borderColor: border,
-                                borderRadius: 10,
-                                overflow: 'hidden',
-                                marginBottom: ri < rows.length - 1 ? 6 : 0,
-                            }}
-                        >
-                            {/* Masdar cell */}
-                            <View style={{
-                                width: 110,
-                                backgroundColor: isDark ? `${C.primary800}30` : '#ECFDF8',
-                                padding: 10,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                borderRightWidth: 1,
-                                borderRightColor: border,
-                                gap: 3,
-                            }}>
-                                <Text style={{
-                                    fontFamily: 'NotoSansArabic_600SemiBold',
-                                    fontSize: 16,
-                                    color: accentAr,
-                                    textAlign: 'center',
-                                }}>
-                                    {row.masdar}
-                                </Text>
-                                <Text style={{
-                                    fontFamily: 'Lexend_400Regular',
-                                    fontSize: 10,
-                                    color: textSub,
-                                    textAlign: 'center',
-                                }}>
-                                    {t_content(row.masdarEn, row.masdarBn)}
-                                </Text>
-                            </View>
-
-                            {/* Derived form cells */}
-                            {COLS.map((col, ci) => (
-                                <View key={col.key} style={{
-                                    width: 90,
-                                    backgroundColor: cellBg,
-                                    padding: 10,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    borderRightWidth: ci < COLS.length - 1 ? 1 : 0,
-                                    borderRightColor: border,
-                                }}>
-                                    <Text style={{
-                                        fontFamily: 'NotoSansArabic_600SemiBold',
-                                        fontSize: 16,
-                                        color: textMain,
-                                        textAlign: 'center',
-                                    }}>
-                                        {row[col.key]}
-                                    </Text>
-                                </View>
-                            ))}
-                        </View>
-                    ))}
-                </View>
-            </ScrollView>
-
-            {/* Legend */}
-            <View style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                gap: 8,
-                justifyContent: 'center',
-                marginTop: 4,
+  if (rows.length === 0) {
+    const fallbackText = payload?.instruction;
+    if (fallbackText) {
+      return (
+        <View
+          style={{
+            width: '100%',
+            borderRadius: 24,
+            backgroundColor: isDark ? C.neutral900 : C.neutral100,
+            padding: 24,
+          }}>
+          <Text
+            style={{
+              fontFamily: 'NotoSansArabic_600SemiBold',
+              fontSize: 20,
+              color: isDark ? C.neutral100 : C.neutral900,
+              textAlign: 'right',
+              writingDirection: 'rtl',
+              lineHeight: 34,
             }}>
-                {COLS.map(col => (
-                    <View key={col.key} style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        gap: 4,
-                    }}>
-                        <Text style={{ fontFamily: 'NotoSansArabic_600SemiBold', fontSize: 11, color: accentAr }}>
-                            {col.arLabel}
-                        </Text>
-                        <Text style={{ fontFamily: 'Lexend_400Regular', fontSize: 11, color: textSub }}>
-                            = {col.customLabelEn ?? t(col.labelKey)}
-                        </Text>
-                    </View>
-                ))}
-            </View>
+            {fallbackText}
+          </Text>
         </View>
+      );
+    }
+    return (
+      <View style={{ width: '100%', padding: 24, alignItems: 'center' }}>
+        <Text style={{ fontFamily: 'Lexend_400Regular', color: C.neutral400, fontSize: 14 }}>
+          {t('masdar.noData') ?? 'No data available'}
+        </Text>
+      </View>
     );
+  }
+
+  return (
+    <View style={{ width: '100%', gap: 18 }}>
+      {/* Optional Baab label - tone-on-tone pill */}
+      {payload?.baabLabel && (
+        <View
+          style={{
+            alignSelf: 'center',
+            borderRadius: 9999,
+            backgroundColor: isDark ? C.neutral800 : C.neutral200,
+            paddingHorizontal: 20,
+            paddingVertical: 8,
+          }}>
+          <Text
+            style={{
+              fontFamily: 'NotoSansArabic_600SemiBold',
+              fontSize: 16,
+              color: isDark ? '#FFFFFF' : '#0A0A0A',
+              textAlign: 'center',
+              writingDirection: 'rtl',
+            }}>
+            {payload.baabLabel}
+          </Text>
+        </View>
+      )}
+
+      {/* Optional instruction */}
+      {payload?.instruction && (
+        <Text
+          style={{
+            fontFamily: 'Lexend_400Regular',
+            fontSize: 13,
+            color: isDark ? C.neutral400 : C.neutral500,
+            textAlign: 'center',
+            fontStyle: 'italic',
+          }}>
+          {t_content(payload.instruction, payload.instructionBn)}
+        </Text>
+      )}
+
+      {/* Horizontally scrollable borderless grid table */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingVertical: 4 }}>
+        <View style={{ gap: 10 }}>
+          {/* Header Row */}
+          <View style={{ flexDirection: 'row', gap: 10 }}>
+            {/* Masdar header cell */}
+            <View
+              style={{
+                width: 120,
+                borderRadius: 20,
+                backgroundColor: isDark ? C.neutral800 : C.neutral200,
+                paddingVertical: 12,
+                paddingHorizontal: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 2,
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'NotoSansArabic_600SemiBold',
+                  fontSize: 16,
+                  color: isDark ? '#FFFFFF' : '#0A0A0A',
+                  writingDirection: 'rtl',
+                }}>
+                مَصْدَر
+              </Text>
+              <Text
+                style={{
+                  fontFamily: 'Lexend_400Regular',
+                  fontSize: 10,
+                  color: isDark ? C.neutral400 : C.neutral500,
+                  textTransform: 'uppercase',
+                }}>
+                {t('masdar.verbalNoun') ?? 'Verbal Noun'}
+              </Text>
+            </View>
+
+            {/* Derived column headers */}
+            {COLS.map((col) => (
+              <View
+                key={col.key}
+                style={{
+                  minWidth: 105,
+                  borderRadius: 20,
+                  backgroundColor: isDark ? C.neutral800 : C.neutral200,
+                  paddingVertical: 12,
+                  paddingHorizontal: 10,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 2,
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'NotoSansArabic_600SemiBold',
+                    fontSize: 16,
+                    color: isDark ? '#FFFFFF' : '#0A0A0A',
+                    writingDirection: 'rtl',
+                  }}>
+                  {col.arLabel}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: 'Lexend_400Regular',
+                    fontSize: 10,
+                    color: isDark ? C.neutral400 : C.neutral500,
+                    textTransform: 'uppercase',
+                  }}>
+                  {col.labelKey}
+                </Text>
+              </View>
+            ))}
+          </View>
+
+          {/* Data Rows */}
+          {rows.map((row, ri) => (
+            <View key={ri} style={{ flexDirection: 'row', gap: 10 }}>
+              {/* Masdar cell */}
+              <View
+                style={{
+                  width: 120,
+                  borderRadius: 20,
+                  backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : C.neutral200,
+                  paddingVertical: 14,
+                  paddingHorizontal: 10,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 3,
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'NotoSansArabic_600SemiBold',
+                    fontSize: 18,
+                    color: isDark ? '#FFFFFF' : '#0A0A0A',
+                    textAlign: 'center',
+                    writingDirection: 'rtl',
+                  }}>
+                  {row.masdar}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: 'Lexend_400Regular',
+                    fontSize: 11,
+                    color: isDark ? C.neutral400 : C.neutral500,
+                    textAlign: 'center',
+                  }}>
+                  {t_content(row.masdarEn, row.masdarBn)}
+                </Text>
+              </View>
+
+              {/* Form cells */}
+              {COLS.map((col) => {
+                const val = (row as any)[col.key] as string | undefined;
+                return (
+                  <View
+                    key={col.key}
+                    style={{
+                      minWidth: 105,
+                      borderRadius: 20,
+                      backgroundColor: isDark ? '#141414' : '#FFFFFF',
+                      paddingVertical: 14,
+                      paddingHorizontal: 10,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'NotoSansArabic_600SemiBold',
+                        fontSize: 18,
+                        color: isDark ? C.neutral100 : C.neutral900,
+                        textAlign: 'center',
+                        writingDirection: 'rtl',
+                        lineHeight: 26,
+                      }}>
+                      {val || '-'}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+
+      {/* Legend */}
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: 12,
+          justifyContent: 'center',
+          paddingTop: 6,
+        }}>
+        {COLS.map((col) => (
+          <View key={col.key} style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+            <Text
+              style={{
+                fontFamily: 'NotoSansArabic_600SemiBold',
+                fontSize: 13,
+                color: isDark ? C.neutral300 : C.neutral700,
+                writingDirection: 'rtl',
+              }}>
+              {col.arLabel}
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'Lexend_400Regular',
+                fontSize: 11,
+                color: isDark ? C.neutral500 : C.neutral400,
+              }}>
+              = {col.labelKey}
+            </Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
 };

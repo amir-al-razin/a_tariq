@@ -21,6 +21,7 @@ import {
 import { setChunkProgress } from '../../state/progressStore'
 import { ComprehensionCheckModal } from '../comprehension/ComprehensionCheckModal'
 import { RewardCelebrationModal } from '../gamification/RewardCelebrationModal'
+import TransliterationToggle from '../TransliterationToggle'
 
 type Props = {
   volumeId: 1 | 2 | 3
@@ -222,24 +223,20 @@ export const ChunkEngineScreen: React.FC<Props> = ({
 
         <div className="flex-1 h-2.5 bg-neutral-100 dark:bg-neutral-900 rounded-full overflow-hidden">
           <motion.div
-            className="h-full rounded-full bg-neutral-900 dark:bg-white"
-            initial={{ width: 0 }}
-            animate={{ width: barWidth }}
-            transition={{ type: 'spring', stiffness: 50, damping: 15 }}
+            className="h-full bg-accent-primary rounded-full"
+            style={{ width: barWidth }}
+            transition={{ duration: 0.2 }}
           />
         </div>
-
-        <div className="px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-900 font-english-semibold text-xs text-neutral-900 dark:text-neutral-100 min-w-[48px] text-center shrink-0">
+        <TransliterationToggle compact />
+        <span className="text-xs font-mono text-accent-primary font-bold min-w-[32px] text-right">
           {Math.round(progress * 100)}%
-        </div>
+        </span>
       </div>
 
-      {/* Body */}
-      <div
-        className="flex-1 flex flex-col items-center p-6 pb-28"
-        ref={contentRef}
-      >
-        <h2 className="font-english-semibold text-base mb-1.5 text-center text-neutral-900 dark:text-neutral-100">
+      {/* Main Pedagogical Flow Content */}
+      <div className="flex-1 flex flex-col items-center justify-start p-6 max-w-4xl mx-auto w-full" ref={contentRef}>
+        <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-400 dark:text-neutral-500 mb-2 text-center">
           {chunk.titleEn}
         </h2>
         <h1
@@ -283,7 +280,7 @@ export const ChunkEngineScreen: React.FC<Props> = ({
           >
             <button
               onClick={handleContinue}
-              className="w-full max-w-md h-14 rounded-full flex items-center justify-center gap-2 transition-all active:scale-95 bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-black cursor-pointer shadow-none border-0"
+              className="w-full max-w-md h-14 rounded-full flex items-center justify-center gap-2 transition-all active:scale-95 bg-accent-primary hover:bg-accent-primary-hover text-white cursor-pointer shadow-none border-0"
             >
               <span className="font-english-semibold text-base tracking-wide">
                 {/* @ts-ignore */}
