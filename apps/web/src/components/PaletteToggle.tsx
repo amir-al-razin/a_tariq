@@ -49,13 +49,13 @@ export const PaletteToggle: React.FC<PaletteToggleProps> = ({ className = '' }) 
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`h-9 flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 outline-none cursor-pointer ${
+        className={`h-9 flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-2 sm:px-3 py-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 outline-none cursor-pointer ${
           isOpen ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100' : ''
         }`}
         title={`Active Palette: ${activePalette.name}`}
         aria-label="Change theme accent palette"
       >
-        <span className="flex items-center -space-x-1">
+        <span className="flex items-center -space-x-1 shrink-0">
           <span
             className="w-2.5 h-2.5 rounded-full z-10 border border-white dark:border-neutral-900"
             style={{ backgroundColor: primaryColor }}
@@ -68,7 +68,7 @@ export const PaletteToggle: React.FC<PaletteToggleProps> = ({ className = '' }) 
         <span className="hidden sm:inline font-english">{activePalette.name}</span>
         <ChevronDown
           size={14}
-          className={`transition-transform duration-200 ${
+          className={`hidden sm:inline-block transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`}
         />

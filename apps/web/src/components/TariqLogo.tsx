@@ -96,8 +96,8 @@ export function TariqLogo({ className = '', iconOnly = false, size = 'md' }: Tar
       </div>
 
       {!iconOnly && (
-        <div className="flex items-center gap-2">
-          <span className={`font-english-bold tracking-tight text-neutral-900 dark:text-neutral-100 transition-colors ${currentSize.text}`}>
+        <div className="flex items-center gap-2 shrink-0">
+          <span className={`font-english-bold tracking-tight text-neutral-900 dark:text-neutral-100 transition-colors whitespace-nowrap ${currentSize.text}`}>
             Tariq
           </span>
         </div>

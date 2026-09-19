@@ -59,6 +59,17 @@ interface RetentionState {
 
   getItem: (itemId: string) => ItemRetention | undefined;
   getDueItemsCount: (volumeId?: number) => number;
+  getDueItems: (volumeId?: number, limit?: number) => ItemRetention[];
+  getPracticeItems: (volumeId?: number, limit?: number) => ItemRetention[];
+  recordReviewResult: (itemId: string, isCorrect: boolean) => void;
+  getRetentionStats: (volumeId?: number) => {
+    totalLearned: number;
+    dueCount: number;
+    masteredCount: number;
+    learningCount: number;
+    boxes: { 1: number; 2: number; 3: number; 4: number };
+  };
+  getLearnedWords: (volumeId?: number) => ItemRetention[];
   getLessonMastery: (volumeId: number, chapterId: number, lessonNum: number) => {
     totalItems: number;
     masteredItems: number;
@@ -157,6 +168,110 @@ export const useRetentionStore = create<RetentionState>()(
           if (volumeId !== undefined && item.volume !== volumeId) return false;
           return item.nextReviewDue <= now;
         }).length;
+      },
+
+      getDueItems: (volumeId, limit = 20) => {
+        const now = Date.now();
+        const items = Object.values(get().items);
+        return items
+          .filter((item) => {
+            if (volumeId !== undefined && item.volume !== volumeId) return false;
+            return item.nextReviewDue <= now;
+          })
+          .sort((a, b) => a.nextReviewDue - b.nextReviewDue)
+          .slice(0, limit);
+      },
+
+      getPracticeItems: (volumeId, limit = 20) => {
+        const items = Object.values(get().items);
+        return items
+          .filter((item) => {
+            if (volumeId !== undefined && item.volume !== volumeId) return false;
+            return true;
+          })
+          .sort((a, b) => {
+            if (a.box !== b.box) return a.box - b.box;
+            if (a.stability !== b.stability) return a.stability - b.stability;
+            return a.lastPracticedAt - b.lastPracticedAt;
+          })
+          .slice(0, limit);
+      },
+
+      recordReviewResult: (itemId, isCorrect) => {
+        set((state) => {
+          const now = Date.now();
+          const existing = state.items[itemId];
+          if (!existing) return state;
+
+          let newBox = existing.box;
+          let newStreak = existing.consecutiveCorrect;
+          let totalAttempts = existing.totalAttempts + 1;
+          let totalErrors = existing.totalErrors;
+
+          if (isCorrect) {
+            newStreak += 1;
+            newBox = Math.min(BOX_INTERVALS.length - 1, existing.box + 1);
+          } else {
+            newStreak = 0;
+            totalErrors += 1;
+            newBox = Math.max(1, existing.box - 1);
+          }
+
+          const intervalDays = BOX_INTERVALS[newBox] || 1;
+          const nextReviewDue = now + intervalDays * 24 * 60 * 60 * 1000;
+
+          const updatedItem: ItemRetention = {
+            ...existing,
+            box: newBox,
+            consecutiveCorrect: newStreak,
+            totalAttempts,
+            totalErrors,
+            lastPracticedAt: now,
+            nextReviewDue,
+            stability: intervalDays,
+          };
+
+          return {
+            items: {
+              ...state.items,
+              [itemId]: updatedItem,
+            },
+          };
+        });
+      },
+
+      getRetentionStats: (volumeId) => {
+        const now = Date.now();
+        const items = Object.values(get().items).filter((item) => {
+          if (volumeId !== undefined && item.volume !== volumeId) return false;
+          return true;
+        });
+
+        const totalLearned = items.length;
+        const dueCount = items.filter((i) => i.nextReviewDue <= now).length;
+        const masteredCount = items.filter((i) => i.box >= 3).length;
+        const learningCount = items.filter((i) => i.box < 3).length;
+        const boxes = {
+          1: items.filter((i) => i.box === 1).length,
+          2: items.filter((i) => i.box === 2).length,
+          3: items.filter((i) => i.box === 3).length,
+          4: items.filter((i) => i.box >= 4).length,
+        };
+
+        return {
+          totalLearned,
+          dueCount,
+          masteredCount,
+          learningCount,
+          boxes,
+        };
+      },
+
+      getLearnedWords: (volumeId) => {
+        return Object.values(get().items).filter((item) => {
+          if (volumeId !== undefined && item.volume !== volumeId) return false;
+          return true;
+        });
       },
 
       getLessonMastery: (volumeId, chapterId, lessonNum) => {

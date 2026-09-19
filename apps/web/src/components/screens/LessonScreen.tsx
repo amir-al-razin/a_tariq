@@ -247,7 +247,7 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
                   setActiveStepIndex(0)
                   setIsRunningSession(true)
                 }}
-                className="w-full h-14 rounded-full bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 font-english-medium text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+                className="w-full h-14 rounded-full bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100 font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
               >
                 <RotateCcw size={18} />
                 <span>

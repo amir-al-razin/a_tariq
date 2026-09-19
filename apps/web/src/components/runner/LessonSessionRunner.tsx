@@ -259,15 +259,33 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
       setFirstTryCorrectCount((prev) => prev + 1);
     }
 
-    if (currentStep.itemId) {
+    const effectiveItemId = currentStep.itemId || currentStep.id;
+    if (effectiveItemId) {
+      const arabic =
+        currentStep.assemblyPayload?.promptAr ||
+        currentStep.polarPayload?.correctAnswer ||
+        currentStep.clozePayload?.correctAnswer ||
+        currentStep.titleAr ||
+        'تَرْكِيبٌ';
+      const meaningEn =
+        currentStep.assemblyPayload?.promptEn ||
+        currentStep.polarPayload?.meaningEn ||
+        currentStep.instructionEn ||
+        currentStep.titleEn;
+      const meaningBn =
+        currentStep.assemblyPayload?.promptBn ||
+        currentStep.polarPayload?.meaningBn ||
+        currentStep.instructionBn ||
+        currentStep.titleEn;
+
       recordItemResult(
         {
-          itemId: currentStep.itemId,
+          itemId: effectiveItemId,
           itemType: currentStep.type === 'sentence_assembly' ? 'phrase' : 'pattern',
-          arabic: currentStep.polarPayload?.correctAnswer || currentStep.clozePayload?.correctAnswer || 'تَرْكِيبٌ',
-          lemma: currentStep.itemId,
-          meaningEn: currentStep.polarPayload?.meaningEn || currentStep.assemblyPayload?.promptEn || '',
-          meaningBn: currentStep.polarPayload?.meaningBn || currentStep.assemblyPayload?.promptBn || '',
+          arabic,
+          lemma: arabic,
+          meaningEn,
+          meaningBn,
           volume: volumeId,
           chapter: chapterId,
           lesson: lessonNum,
@@ -291,15 +309,33 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
       });
     }
 
-    if (currentStep.itemId) {
+    const effectiveItemId = currentStep.itemId || currentStep.id;
+    if (effectiveItemId) {
+      const arabic =
+        currentStep.assemblyPayload?.promptAr ||
+        currentStep.polarPayload?.correctAnswer ||
+        currentStep.clozePayload?.correctAnswer ||
+        currentStep.titleAr ||
+        'تَرْكِيبٌ';
+      const meaningEn =
+        currentStep.assemblyPayload?.promptEn ||
+        currentStep.polarPayload?.meaningEn ||
+        currentStep.instructionEn ||
+        currentStep.titleEn;
+      const meaningBn =
+        currentStep.assemblyPayload?.promptBn ||
+        currentStep.polarPayload?.meaningBn ||
+        currentStep.instructionBn ||
+        currentStep.titleEn;
+
       recordItemResult(
         {
-          itemId: currentStep.itemId,
+          itemId: effectiveItemId,
           itemType: currentStep.type === 'sentence_assembly' ? 'phrase' : 'pattern',
-          arabic: currentStep.polarPayload?.correctAnswer || currentStep.clozePayload?.correctAnswer || 'تَرْكِيبٌ',
-          lemma: currentStep.itemId,
-          meaningEn: currentStep.polarPayload?.meaningEn || currentStep.assemblyPayload?.promptEn || '',
-          meaningBn: currentStep.polarPayload?.meaningBn || currentStep.assemblyPayload?.promptBn || '',
+          arabic,
+          lemma: arabic,
+          meaningEn,
+          meaningBn,
           volume: volumeId,
           chapter: chapterId,
           lesson: lessonNum,

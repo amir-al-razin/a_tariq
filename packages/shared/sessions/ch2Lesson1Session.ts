@@ -317,20 +317,23 @@ export const CH2_LESSON_01_STEPS: SessionStep[] = [
     },
   },
 
-  // 10. Sentence Assembly Drill 2: Negative Correction
+  // 10. Authentic Reading & Translation Drill: Tank and Steamer
   {
     id: 'ch2-l1-step-10-assembly-hal-correction',
     type: 'sentence_assembly',
     pageNumber: 53,
-    titleEn: 'Sentence Building: Negative Correction',
-    titleAr: 'تَرْكِيبُ: لَا ، بَلْ هَذِهِ بَاخِرَةٌ',
-    instructionEn: 'Assemble: "No, rather this is a steamer"',
-    instructionBn: 'শব্দগুলো সাজিয়ে লিখুন: "না, বরং এটি একটি স্টীমার"',
+    titleEn: 'Textbook Translation: Tank & Steamer',
+    titleAr: 'اقْرَأْ وَتَرْجِمْ: الدَّبَّابَةُ وَالبَاخِرَةُ',
+    instructionEn: 'Read the Arabic sentence and assemble the translation.',
+    instructionBn: 'আরবি বাক্যটি পড়ুন এবং সঠিক অনুবাদ সাজিয়ে তুলুন।',
     assemblyPayload: {
-      promptEn: 'No, rather this is a steamer',
-      promptBn: 'না, বরং এটি একটি স্টীমার',
-      expectedAnswer: ['لَا', '،', 'بَلْ', 'هَذِهِ', 'بَاخِرَةٌ'],
-      chips: ['لَا', '،', 'بَلْ', 'هَذِهِ', 'بَاخِرَةٌ', 'نَعَمْ', 'دَبَّابَةٌ'],
+      promptAr: 'تِلْكَ دَبَّابَةٌ وَهَذِهِ بَاخِرَةٌ',
+      promptEn: 'That is a tank and this is a steamer',
+      promptBn: 'ওটি একটি ট্যাঙ্ক এবং এটি একটি স্টীমার',
+      expectedAnswer: ['That is a tank', 'and', 'this is a steamer'],
+      chips: ['That is a tank', 'and', 'this is a steamer', 'a cannon', 'an arrow'],
+      expectedAnswerBn: ['ওটি একটি ট্যাঙ্ক', 'এবং', 'এটি একটি স্টীমার'],
+      chipsBn: ['ওটি একটি ট্যাঙ্ক', 'এবং', 'এটি একটি স্টীমার', 'একটি কামান', 'একটি তীর'],
       emoji: '🚢',
     },
   },

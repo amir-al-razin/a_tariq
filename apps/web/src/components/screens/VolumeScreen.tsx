@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
-import { Check, Trophy, ArrowRight, X, Sparkles, Clock, Play, RotateCcw, BookmarkCheck } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
+import { Check, Trophy, ArrowRight, X, Sparkles, Clock, Play, RotateCcw, BookmarkCheck, Brain, BookMarked } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import * as m from '#/paraglide/messages.js'
 
@@ -165,6 +166,8 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
 
   const getCheckpoint = useLessonCheckpointStore((state) => state.getCheckpoint)
   const clearCheckpoint = useLessonCheckpointStore((state) => state.clearCheckpoint)
+  const dueCount = useRetentionStore((state) => state.getDueItemsCount(volumeId))
+  const learnedWordsCount = useRetentionStore((state) => state.getLearnedWords(volumeId).length)
 
   const dataMap = {
     1: CHAPTERS,
@@ -281,6 +284,57 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
             <span className="font-mushaf text-[260px] leading-none text-neutral-900 dark:text-white">
               {arTitleMap[volumeId]}
             </span>
+          </div>
+        </div>
+
+        {/* Daily SRS Review & Lexical Vault Launchpad Banner */}
+        <div className="w-full rounded-3xl bg-neutral-100 dark:bg-neutral-900 p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 mb-10">
+          <div className="flex items-center gap-3.5 text-center sm:text-left">
+            <div className="w-12 h-12 rounded-2xl bg-accent-primary-subtle flex items-center justify-center shrink-0">
+              <Brain className="w-6 h-6 text-accent-primary" />
+            </div>
+            <div>
+              <h3 className="font-bold text-base text-neutral-900 dark:text-neutral-100">
+                {learnedWordsCount > 0
+                  ? dueCount > 0
+                    ? isBn ? `আজকের দৈনিক রিভিউ প্রস্তুত (${dueCount}টি শব্দ)` : `Daily Review Ready (${dueCount} Due)`
+                    : isBn ? 'স্মৃতি সংরক্ষণ অনুশীলন' : 'Memory Retention Practice'
+                  : isBn ? 'শব্দভাণ্ডার ও স্পেসড রিপিটিশন' : 'Lexical Vault & Spaced Repetition'}
+              </h3>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                {learnedWordsCount > 0
+                  ? dueCount > 0
+                    ? isBn ? 'স্পেসড রিপিটিশন মেমোরি কিউ থেকে পড়া শব্দগুলো ঝালিয়ে নিন।' : 'Reinforce learned vocabulary before the Leitner memory curve decays.'
+                    : isBn ? `${learnedWordsCount}টি শব্দ ট্র্যাক করা হয়েছে। দুর্বল শব্দগুলো অনুশীলন করুন।` : `${learnedWordsCount} words tracked. Strengthen lower-stability items.`
+                  : isBn ? 'পাঠ সম্পন্ন করার সাথে সাথে শব্দগুলো স্বয়ংক্রিয়ভাবে আপনার শব্দকোষে যুক্ত হবে।' : 'As you learn, vocabulary automatically enters your Lexical Vault and Leitner review queue.'}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5 w-full sm:w-auto justify-center sm:justify-end shrink-0">
+            <Link
+              to="/words"
+              onClick={() => playTapSound()}
+              className="h-12 px-5 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 bg-neutral-200/80 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100 transition-colors cursor-pointer"
+            >
+              <BookMarked className="w-4 h-4 opacity-70" />
+              <span>{isBn ? 'শব্দকোষ' : 'Lexicon'}</span>
+            </Link>
+
+            {learnedWordsCount > 0 && (
+              <Link
+                to="/review"
+                onClick={() => playTapSound()}
+                className="h-12 px-5 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 transition-transform active:scale-[0.98] cursor-pointer bg-accent-primary hover:bg-accent-primary-hover text-white"
+              >
+                <Sparkles className="w-4 h-4" />
+                <span>
+                  {dueCount > 0
+                    ? isBn ? `রিভিউ (${dueCount})` : `Daily Review (${dueCount})`
+                    : isBn ? 'অনুশীলন' : 'Practice Review'}
+                </span>
+              </Link>
+            )}
           </div>
         </div>
 
@@ -639,7 +693,7 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                             stepIndex: 0,
                           })
                         }}
-                        className="w-full h-14 rounded-full bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 font-english-medium text-base flex items-center justify-center gap-2 cursor-pointer shadow-none border-0 active:scale-[0.98] transition-all"
+                        className="w-full h-14 rounded-full bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100 font-english-semibold text-base flex items-center justify-center gap-2 cursor-pointer shadow-none border-0 active:scale-[0.98] transition-all"
                       >
                         <RotateCcw size={18} />
                         <span>

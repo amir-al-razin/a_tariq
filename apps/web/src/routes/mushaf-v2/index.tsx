@@ -4,7 +4,10 @@ import {
   ChevronLeft,
   ChevronRight,
   Bookmark,
+  Sparkles,
 } from 'lucide-react';
+import { useRetentionStore } from '@/state/retentionStore';
+import { buildKnownTokensSet, isWordMatch, calculatePageComprehension } from '@/lib/mushafMatcher';
 
 export const Route = createFileRoute('/mushaf-v2/')({
   component: MushafV2Page,
@@ -280,6 +283,21 @@ function MushafV2Page() {
   const primaryChapterId = firstVerse?.chapter_id ?? 1;
   const primaryChapter = chaptersMap.get(primaryChapterId);
 
+  // Retention & Mastered Token Illumination
+  const items = useRetentionStore((state) => state.items);
+  const learnedItems = useMemo(() => Object.values(items), [items]);
+  const knownTokensSet = useMemo(() => buildKnownTokensSet(learnedItems), [learnedItems]);
+
+  const pageComprehension = useMemo(() => {
+    const allWordList: { text_uthmani: string; char_type_name: 'word' | 'end' }[] = [];
+    verses.forEach((v) => {
+      v.words.forEach((w) => {
+        allWordList.push({ text_uthmani: w.text_uthmani, char_type_name: w.char_type_name });
+      });
+    });
+    return calculatePageComprehension(allWordList, knownTokensSet);
+  }, [verses, knownTokensSet]);
+
   // Jump to selected Surah's first page
   const handleSurahSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const startPage = parseInt(e.target.value, 10);
@@ -369,6 +387,16 @@ function MushafV2Page() {
 
           {/* Bottom Tier on Mobile / Right Section on Desktop: Pagination Stepper & Font Size Controls */}
           <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
+            {/* Real-time Quran Illumination Comprehension Badge */}
+            {knownTokensSet.size > 0 && (
+              <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-accent-primary-subtle text-accent-primary text-xs font-bold font-mono mr-1 sm:mr-2">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>
+                  {pageComprehension.percentage}% Comprehension ({pageComprehension.matchedWords}/{pageComprehension.totalWords})
+                </span>
+              </div>
+            )}
+
             {/* Center: Page & Juz Metadata Badge (Desktop only) */}
             <div className="hidden xl:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 text-xs font-semibold mr-2">
               <Bookmark className="w-3.5 h-3.5 text-neutral-600 dark:text-neutral-400" />
@@ -530,6 +558,7 @@ function MushafV2Page() {
                         >
                           {lineGroup.words.map((word, wordIdx) => {
                             const isEndMarker = word.char_type_name === 'end';
+                            const isMatched = !isEndMarker && isWordMatch(word.text_uthmani, knownTokensSet);
                             return (
                               <React.Fragment key={word.id}>
                                 <span
@@ -540,8 +569,11 @@ function MushafV2Page() {
                                   className={
                                     isEndMarker
                                       ? 'font-mushaf text-neutral-500 dark:text-neutral-500 select-none mx-1 sm:mx-1.5 md:mx-2 inline-block md:flex-shrink-0'
-                                      : 'font-mushaf text-neutral-900 dark:text-neutral-100 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors cursor-pointer inline md:inline-block md:flex-shrink-0'
+                                      : isMatched
+                                        ? 'font-mushaf text-accent-primary dark:text-accent-primary bg-accent-primary-subtle/90 rounded-lg px-1 transition-colors cursor-pointer inline md:inline-block md:flex-shrink-0 font-bold'
+                                        : 'font-mushaf text-neutral-900 dark:text-neutral-100 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors cursor-pointer inline md:inline-block md:flex-shrink-0'
                                   }
+                                  title={isMatched ? `Mastered vocabulary: ${word.text_uthmani}` : undefined}
                                 >
                                   {word.code_v2 || word.text_uthmani}
                                 </span>

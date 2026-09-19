@@ -5,5 +5,11 @@
     "dev": "pnpm --filter mobile start & pnpm --filter web dev",
     "dev:mobile": "pnpm --filter mobile start",
     "dev:web": "pnpm --filter web dev"
+  },
+  "pnpm": {
+    "overrides": {
+      "react": "19.2.3",
+      "react-dom": "19.2.3"
+    }
   }
 }

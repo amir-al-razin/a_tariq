@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from '@tanstack/react-router'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, Code2 } from 'lucide-react'
+import { ChevronDown, Code2, Brain, BookMarked } from 'lucide-react'
+import { useRetentionStore } from '@/state/retentionStore'
 import ThemeToggle from './ThemeToggle'
 import FontToggle from './FontToggle'
 import PaletteToggle from './PaletteToggle'
@@ -11,6 +12,7 @@ export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const dueCount = useRetentionStore((state) => state.getDueItemsCount())
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,17 +41,42 @@ export default function Header() {
           : 'bg-transparent'
       }`}
     >
-      <div className="w-full max-w-[1024px] mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="w-full max-w-[1024px] mx-auto px-3.5 sm:px-6 h-16 flex items-center justify-between">
         
         <Link
           to="/"
-          className="no-underline group focus:outline-none"
+          className="no-underline group focus:outline-none shrink-0"
         >
           <TariqLogo />
         </Link>
 
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <div className="relative" ref={dropdownRef}>
+        <div className="flex items-center gap-1 sm:gap-2">
+          {/* Lexical Vault Words Link */}
+          <Link
+            to="/words"
+            className="h-9 flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-2 sm:px-3 py-2 rounded-full hover:bg-neutral-200/60 dark:hover:bg-neutral-800 outline-none"
+            activeProps={{ className: "text-neutral-950 dark:text-white font-bold bg-neutral-200/80 dark:bg-neutral-850" }}
+          >
+            <BookMarked size={15} className="opacity-80" />
+            <span className="hidden sm:inline">Words</span>
+          </Link>
+
+          {/* Daily SRS Review Link */}
+          <Link
+            to="/review"
+            className="h-9 flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-2 sm:px-3 py-2 rounded-full hover:bg-neutral-200/60 dark:hover:bg-neutral-800 outline-none"
+            activeProps={{ className: "text-neutral-950 dark:text-white font-bold bg-neutral-200/80 dark:bg-neutral-850" }}
+          >
+            <Brain size={15} className="opacity-80" />
+            <span className="hidden sm:inline">Review</span>
+            {dueCount > 0 && (
+              <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 text-[10px] font-bold leading-none">
+                {dueCount}
+              </span>
+            )}
+          </Link>
+
+          <div className="relative hidden md:block" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className={`h-9 flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 outline-none cursor-pointer ${
