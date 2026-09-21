@@ -19,6 +19,18 @@ import { CH2_LESSON_08_SESSION } from './ch2Lesson8Session';
 import { CH3_LESSON_01_SESSION } from './ch3Lesson1Session';
 import { CH3_LESSON_02_SESSION } from './ch3Lesson2Session';
 import { CH3_LESSON_03_SESSION } from './ch3Lesson3Session';
+import { VOL2_CH1_LESSON_01_SESSION } from './vol2Ch1Lesson1Session';
+import { VOL2_CH1_LESSON_02_SESSION } from './vol2Ch1Lesson2Session';
+import { VOL2_CH1_LESSON_03_SESSION } from './vol2Ch1Lesson3Session';
+import { VOL2_CH1_LESSON_04_SESSION } from './vol2Ch1Lesson4Session';
+import { VOL2_CH1_LESSON_05_SESSION } from './vol2Ch1Lesson5Session';
+import { VOL2_CH1_LESSON_06_SESSION } from './vol2Ch1Lesson6Session';
+import { VOL2_CH1_LESSON_07_SESSION } from './vol2Ch1Lesson7Session';
+import { VOL2_CH1_LESSON_08_SESSION } from './vol2Ch1Lesson8Session';
+import { VOL2_CH1_LESSON_09_SESSION } from './vol2Ch1Lesson9Session';
+import { VOL2_CH1_LESSON_10_SESSION } from './vol2Ch1Lesson10Session';
+import { VOL2_CH1_LESSON_11_SESSION } from './vol2Ch1Lesson11Session';
+import { VOL2_CH1_LESSON_12_SESSION } from './vol2Ch1Lesson12Session';
 
 const SESSION_REGISTRY: Record<string, LessonSessionData> = {
   // Volume 1 Chapter 1
@@ -44,6 +56,19 @@ const SESSION_REGISTRY: Record<string, LessonSessionData> = {
   '1-3-1': CH3_LESSON_01_SESSION,
   '1-3-2': CH3_LESSON_02_SESSION,
   '1-3-3': CH3_LESSON_03_SESSION,
+  // Volume 2 Chapter 1
+  '2-1-1': VOL2_CH1_LESSON_01_SESSION,
+  '2-1-2': VOL2_CH1_LESSON_02_SESSION,
+  '2-1-3': VOL2_CH1_LESSON_03_SESSION,
+  '2-1-4': VOL2_CH1_LESSON_04_SESSION,
+  '2-1-5': VOL2_CH1_LESSON_05_SESSION,
+  '2-1-6': VOL2_CH1_LESSON_06_SESSION,
+  '2-1-7': VOL2_CH1_LESSON_07_SESSION,
+  '2-1-8': VOL2_CH1_LESSON_08_SESSION,
+  '2-1-9': VOL2_CH1_LESSON_09_SESSION,
+  '2-1-10': VOL2_CH1_LESSON_10_SESSION,
+  '2-1-11': VOL2_CH1_LESSON_11_SESSION,
+  '2-1-12': VOL2_CH1_LESSON_12_SESSION,
 };
 
 /**

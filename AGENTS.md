@@ -1,4 +1,4 @@
-# AI Agent Rules - Universal (Jules + Local IDE)
+# AI Agent Rules - Universal
 
 ## Project Context
 
@@ -12,7 +12,7 @@
 
 ---
 
-## Jules Execution Rules (CRITICAL - Jules Must Follow)
+## Core Execution Rules (CRITICAL - All Agents Must Follow)
 
 ### 1. Plan-First Execution
 - **BEFORE writing any code**: Read the plan file specified in your task prompt
@@ -73,6 +73,28 @@
 - Translation keys must exist in `messages/` directory
 - **Strict Script Isolation**: `en` fields must contain only clean English; `bn` fields must contain only natural Bangla. Never mix scripts or English words into Bangla fields.
 - **Arabic Tashkeel Fidelity**: Every Arabic word in curriculum data must have complete, accurate Harakat (never guess or drop grammatical vowel endings).
+
+### 11. Pedagogical Anti-Patterns & Common Mistakes
+- **Mandatory Pre-Flight**: BEFORE creating or modifying any lesson session, data file, or interactive exercise, you MUST read `docs/common-mistakes.md` (or `COMMON_MISTAKES.md`).
+- **Zero Solution Leakage**: NEVER include `promptAr` in `sentence_assembly` (leaves only `promptEn`/`promptBn` so the learner builds the Arabic from scratch). In `cloze_choice`, never put the target word or bracketed blanks in `partialAnswerAr` (always use standard `...`).
+- **Zero Static Translations on Reading Passages**: NEVER include `contextEn` or `contextBn` on reading comprehension cards (`alternative_qa`). The learner must read the Arabic text directly. Verify `contextAr` contains all information needed to answer the questions.
+- **Strict Textbook Fidelity**: Transcribe textbook passages verbatim. Never omit sentences from multi-sentence reading units, and never invent or alter textbook dialogue.
+- **Zero Screen Duplication**: Never repeat the exact same sentence 2-3 times across instructions, questions, and prompts on a single card.
+- **Scope Discipline**: Always restrict verb paradigms using `targetTense` (e.g., `targetTense: 'past'` for `لَيْسَ`) to prevent un-taught or invalid tenses from displaying.
+
+### 12. Sarf & Masdar Factory Pedagogy
+- **Never Introduce Bab Without Functional Explanation**: Don't just show an abstract label like "Fataha Pattern (a - a)". Always explain how the middle radical vowel changes between past and present, and why this matters for forming commands and prohibitions.
+- **Zero "Reveal All" or Skip Exploits**: Multi-step interactive drills must never provide reveal-all buttons or allow skipping past unrevealed forms without active student interaction.
+- **Cognitive Separation**: Commands (`الأَمْر`) and Prohibitions (`النَّهْي`) must always be taught in separate, sequential micro-steps, never combined into cluttered dual-form rows.
+
+### 13. Locked Unimplemented Lessons
+- **Lock Icons on Unimplemented Units**: Any lesson lacking an interactive session implementation MUST render a Lock icon instead of a lesson number in learning journey views.
+- **Zero Fallback Navigation**: Stepping stone buttons for locked lessons must be strictly disabled and inert (`disabled={!isImplemented}`, `cursor-not-allowed`) to prevent accidental navigation or silent fallbacks to Lesson 1.
+- **Beacon Targeting**: The active curriculum beacon (`START` / `CURRENT`) must exclusively target implemented, uncompleted lessons.
+
+### 14. Arabic Neural TTS Audio Standards
+- **Standardized Male Neural Voice**: Arabic speech synthesis must exclusively utilize `ar-XA-Wavenet-B` (high-fidelity male neural voice, pitch: 0.0, rate: 0.88). Female voices are prohibited for core lesson audio.
+- **Wasl Continuation Trimming**: Always append an unstressed continuation token (` نَعَمْ`) during synthesis to prevent the engine from applying pausal stop (Waqf) silencing on final case vowels (I'rab/Tanwin), then slice cleanly at the boundary using `ffmpeg` with a 30ms fade-out.
 
 ---
 
@@ -240,6 +262,13 @@ payload: {
 ## Common Mistakes to Avoid
 
 ### ❌ DON'T
+- Provide competing action buttons simultaneously (e.g. "Next Verb" alongside "Continue"); never split navigation choices at the bottom of the card
+- Include `promptAr` in `sentence_assembly` (spoils the exercise by revealing the Arabic solution above the chips)
+- Leak target answers into `partialAnswerAr` in `cloze_choice` or use bracketed blanks like `[···]` (always use clean `...`)
+- Provide static English or Bangla translations (`contextEn` / `contextBn`) for reading passages in `alternative_qa`
+- Omit sentences from multi-sentence textbook passages or fabricate dialogue not in the book
+- Render the exact same sentence multiple times on a single screen
+- Display un-taught or invalid verb tenses (always set `targetTense` on verb conjugators)
 - Use `fsWrite` on existing files with working code (use `strReplace` instead)
 - Invent payload structures for lesson chunks (copy from working examples)
 - Use `questionType: 'multiple_choice'` (use 'hal', 'a_am', or 'general')
@@ -256,11 +285,22 @@ payload: {
 - Hardcode hex colors or arbitrary Tailwind color classes (strictly use designated tokens like `bg-accent-primary`, `bg-neutral-100`, etc.)
 - Use 1px solid outline borders or drop shadows (`shadow-*`) anywhere in UI components (strictly prohibited by Raw Neutral)
 - Use arbitrary border radii (strictly follow the 5-tier radius hierarchy: `rounded-4xl` to `rounded-full`)
-- Mix languages across content fields (no Bengali script in English fields or English words in Bangla fields)
+- Display raw citation infinitives ("To do", "To exit") for conjugated verbs without tense anchors (always use concrete 3rd person past "He did" and state tense "PAST TENSE · المَاضِي")
+- Add redundant subtitle bloat under paradigm rows (e.g. repeating "He" under "He did" or leaking "{meaning.bn}" into English mode)
+- Mix languages across content fields or UI labels (English mode = Arabic + English ONLY; Bangla mode = Arabic + Bangla ONLY; zero cross-script contamination)
+- Render developer role badges (`Model · النموذج`, `Practice · التَّمْرِين`) or abstract Sarf classification badges (`بَاب فَتَحَ يَفْتَحُ`); never burden learners with developer jargon or un-taught grammar categories
+- Add multi-line subtitle paragraphs explaining suffixes or instructions under hero cards; keep cards clean, uncluttered, and focused
 - Output Arabic words without complete, accurate Harakat (never guess or drop vowel endings)
+- Display citation past root (e.g. خَرَجَ) in the hero or audio of present/imperative verb conjugators; hero Arabic word and audio must match active tense (e.g. يَخْرُجُ for present)
+- Provide "Reveal All" cheat buttons or dump multiple un-practiced tenses at once onto a passive card
+- Allow users to skip past interactive paradigm or masdar steps without actively solving the pattern challenge
+- Display active lesson numbers on unimplemented curriculum units or allow clicking locked stepping stones
+- Combine Command and Prohibition into dual-form rows on a single card; always split into separate micro-steps
+- Use female voice models or synthesize Arabic audio without Wasl continuation trimming
 
 ### ✅ DO
-- Read the plan file and `docs/engine-design-guidelines.md` FIRST before building or modifying lesson engines
+- Follow the Single Action Principle: exactly ONE 56px action button at the bottom of multi-item sequences (Next Verb/Item -> then Continue on final item)
+- Read `docs/common-mistakes.md` (or `COMMON_MISTAKES.md`) and the plan file FIRST before building or modifying lessons
 - Copy structures from working examples
 - Strictly use designated tokens from the design system blueprint (`apps/web/src/components/design-system/DesignSystemWorkbench.tsx` and `docs/design-system.md`)
 - Enforce 56px (`h-14`) touch target height for primary action buttons
@@ -271,13 +311,21 @@ payload: {
 - Test Arabic RTL rendering
 - Use `CurriculumHeader` and `CurriculumFooter` from shared components to ensure mobile responsive layout
 - Separate translated textbook examples (Familiarization) from non-translated interactive exercises (Practice)
+- Display explicit Tense Pill (`PAST TENSE · المَاضِي`) and concrete 3rd-person past meaning ("He did" / "সে করল") in verb conjugator hero
+- Strictly synchronize hero Arabic word, audio, and action button labels with active tense using getRootVerbArabic (خَرَجَ for past, يَخْرُجُ for present, اخْرُجْ for imperative)
+- Keep paradigm rows clean: rounded pronoun badge (`[ هُوَ ]`) + single bold concrete meaning ("He did" / "সে করল") + inflected form / target slot
 - Verify Arabic Tashkeel against textbook sources and keep English/Bangla fields 100% script-pure
+- Validate UI visually in BOTH English (`en`) and Bengali (`bn`) modes before declaring complete
+- Lock unimplemented lessons with a lock icon, disable stepping stone clicks, and target the progress beacon strictly to implemented lessons
+- Teach the function of Sarf Bab patterns (explaining vowel shifts from past to present) before testing learners
+- Separate Command (`الأَمْر`) and Prohibition (`النَّهْي`) into distinct sequential micro-steps
+- Synthesize Arabic audio using `ar-XA-Wavenet-B` with Wasl continuation tokens (` نَعَمْ`) trimmed via ffmpeg for pristine I'rab
 
 ---
 
 ## Success Criteria
 
-A successful Jules PR:
+A successful PR / Contribution:
 - ✅ Follows the plan exactly
 - ✅ All validation commands pass
 - ✅ No TypeScript errors (`npx tsc --noEmit`)
@@ -285,12 +333,14 @@ A successful Jules PR:
 - ✅ Arabic RTL works correctly
 - ✅ i18n keys exist for all user-facing text
 - ✅ Only modifies files listed in plan
+- ✅ Adheres to all rules in `docs/common-mistakes.md`
 - ✅ Includes clear commit message
 
 ---
 
 ## Resources
 
+- **Common Mistakes Log**: `docs/common-mistakes.md` (or `COMMON_MISTAKES.md`)
 - **Design System**: `docs/design-system.md`
 - **Pedagogical Implementation Principles**: `docs/engine-design-guidelines.md`
 - **Theming Guide**: `docs/theming.md`

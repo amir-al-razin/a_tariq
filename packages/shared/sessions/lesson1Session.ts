@@ -426,7 +426,7 @@ export const LESSON_01_STEPS: SessionStep[] = [
       questionAr: 'مَا تِلْكَ ؟',
       questionEn: 'What is that?',
       questionBn: 'উহা কী?',
-      partialAnswerAr: 'تِلْكَ',
+      partialAnswerAr: 'تِلْكَ ...',
       correctAnswer: 'سَيَّارَةٌ',
       options: ['سَيَّارَةٌ', 'دَرَّاجَةٌ', 'حَقِيبَةٌ', 'طَاوِلَةٌ'],
       emoji: '🚗',

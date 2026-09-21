@@ -1,0 +1,520 @@
+import type { LessonSessionData, SessionStep } from './lessonSessionTypes';
+
+export const VOL2_CH1_LESSON_08_STEPS: SessionStep[] = [
+  // 1. Page 49-50: Concept Discovery - Emphatic Future Negative (لَنْ) & Munada Mudaf (المُنَادَى المُضَاف)
+  {
+    id: 'v2-c1-l8-step-1-concept-lan',
+    type: 'concept_intro',
+    pageNumber: 49,
+    titleEn: 'Emphatic Future Negative (لَنْ) & Dropping the Noon',
+    titleAr: 'مَدْخَلُ (لَنْ) النَّاصِبَةِ وَالمُنَادَى المُضَافِ',
+    instructionEn: 'Observe how "لَنْ" negates the future emphatically with nasb (fathah), drops the nun for 2nd person feminine, and how calling a mudaf noun makes it accusative.',
+    instructionBn: 'লক্ষ্য করুন কীভাবে "لَنْ" ভবিষ্যতের দৃঢ় অস্বীকৃতি বোঝায় ও ক্রিয়ায় যবর দেয়, স্ত্রীলিঙ্গে নূন বিলুপ্ত করে এবং মুদাফকে ডাকার সময় যবর হয়।',
+    conceptPayload: {
+      concepts: [
+        {
+          id: 'c-lan-nasb',
+          ar: 'لَنْ يَفْعَلَ - لَنْ تَفْعَلَ - لَنْ أَفْعَلَ',
+          romanized: 'lan yaf‘ala - lan taf‘ala - lan af‘ala',
+          meaningEn: 'Emphatic Negative: He / You / I will never do!',
+          meaningBn: 'সে / তুমি / আমি কিছুতেই করব না!',
+          exampleAr: 'لَنْ يَدْخُلَ المُشْرِكُ الجَنَّةَ',
+          exampleEn: 'The polytheist will by no means enter Paradise.',
+          exampleBn: 'মুশরিক কিছুতেই জান্নাতে প্রবেশ করবে না।',
+          audioKey: 'لَنْ يَفْعَلَ',
+          exampleAudioKey: 'لَنْ يَدْخُلَ المُشْرِكُ الجَنَّةَ',
+          emoji: '🚫',
+        },
+        {
+          id: 'c-lan-noon-drop',
+          ar: 'أَنْتِ: لَنْ تَفْعَلِي (بِحَذْفِ النُّونِ)',
+          romanized: 'anti: lan taf‘alī',
+          meaningEn: 'Feminine Drop of Nun: You (f) will never do!',
+          meaningBn: 'স্ত্রীলিঙ্গে নূন বিলুপ্তি: তুমি (স্ত্রী) কিছুতেই করবে না!',
+          exampleAr: 'يَا فَاطِمَةُ! لَنْ تَفْهَمِي كَلَامَ اللهِ',
+          exampleEn: 'O Fatima! You will never understand the speech of Allah (without Arabic).',
+          exampleBn: 'হে ফাতেমা! তুমি কিছুতেই আল্লাহর বাণী বুঝতে পারবে না।',
+          audioKey: 'لَنْ تَفْعَلِي',
+          exampleAudioKey: 'يَا فَاطِمَةُ! لَنْ تَفْهَمِي كَلَامَ اللهِ',
+          emoji: '✂️',
+        },
+        {
+          id: 'c-alan-bala',
+          ar: 'أَلَنْ تُنْفِقَ؟ بَلَى .. أُنْفِقُ',
+          romanized: 'alan tunfiqa? balā .. unfiqu',
+          meaningEn: 'Negative Question & Affirmation: Will you not spend? Yes indeed!',
+          meaningBn: 'না-বোধক প্রশ্ন ও হ্যাঁ-সূচক উত্তর: তুমি কি খরচ করবে না? অবশ্যই, করব!',
+          exampleAr: 'أَلَنْ تُنْفِقَ مَالَكَ فِي سَبِيلِ اللهِ؟ بَلَى',
+          exampleEn: 'Will you not spend your wealth in the cause of Allah? Yes indeed!',
+          exampleBn: 'তুমি কি আল্লাহর রাস্তায় তোমার সম্পদ খরচ করবে না? অবশ্যই!',
+          audioKey: 'أَلَنْ تُنْفِقَ؟ بَلَى',
+          exampleAudioKey: 'أَلَنْ تُنْفِقَ مَالَكَ فِي سَبِيلِ اللهِ؟ بَلَى',
+          emoji: '💎',
+        },
+        {
+          id: 'c-munada-mudaf',
+          ar: 'يَا مُعَلِّمَ المَدْرَسَةِ (مَنْصُوبٌ بِالفَتْحَةِ)',
+          romanized: 'yā mu‘allima al-madrasati',
+          meaningEn: 'Vocative with Mudaf: Takes Fathah!',
+          meaningBn: 'মুদাফ বিশিষ্ট সম্বোধন: যবর গ্রহণ করে!',
+          exampleAr: 'يَا مُعَلِّمَ المَدْرَسَةِ! يَا أَخَا بِلَالٍ!',
+          exampleEn: 'O teacher of the school! O brother of Bilal!',
+          exampleBn: 'হে মাদ্রাসার শিক্ষক! হে বেলালের ভাই!',
+          audioKey: 'يَا مُعَلِّمَ المَدْرَسَةِ',
+          exampleAudioKey: 'يَا مُعَلِّمَ المَدْرَسَةِ! يَا أَخَا بِلَالٍ!',
+          emoji: '📢',
+        },
+      ],
+    },
+  },
+
+  // 2. Page 49: Verb Conjugator - لَنْ يَفْعَلَ (Future Negative Paradigm)
+  {
+    id: 'v2-c1-l8-step-2-conjugator-lan',
+    type: 'verb_conjugator',
+    pageNumber: 49,
+    titleEn: 'Verb Paradigm: لَنْ يَفْعَلَ (Emphatic Future Negative)',
+    titleAr: 'تَصْرِيفُ فِعْلِ: لَنْ يَفْعَلَ (نَفْيُ المُسْتَقْبَلِ بِالنَّصْبِ)',
+    instructionEn: 'Switch between pronouns to observe the accusative fathah and the deletion of the nun in "لَنْ تَفْعَلِي".',
+    instructionBn: 'সর্বনাম পরিবর্তন করে লক্ষ্য করুন শেষ অক্ষরে যবর এবং "لَنْ تَفْعَلِي" তে নূন বিলুপ্তি।',
+    conjugatorPayload: {
+      mode: 'explore',
+      targetTense: 'present',
+      verbs: [
+        {
+          id: 'verb_lan_yaf-ala',
+          rootAr: 'ف ع ل',
+          masdarAr: 'فِعْلٌ',
+          meaningEn: 'To do (negated with lan)',
+          meaningBn: 'করা (দৃঢ় অস্বীকৃতি)',
+          baabAr: 'نَصْبُ المُضَارِعِ بِـ (لَنْ)',
+          baabEn: 'Subjunctive Mudari with Lan',
+          emoji: '🚫',
+          forms: [
+            {
+              subjectAr: 'هُوَ',
+              subjectEn: 'He',
+              subjectBn: 'সে (পুং)',
+              pastAr: 'مَا فَعَلَ',
+              presentAr: 'لَنْ يَفْعَلَ',
+              imperativeAr: 'لَا يَفْعَلْ',
+              pastMeaningEn: 'He did not do',
+              pastMeaningBn: 'সে করেনি',
+              presentMeaningEn: 'He will never do',
+              presentMeaningBn: 'সে কিছুতেই করবে না',
+              audioKey: 'لَنْ يَفْعَلَ',
+            },
+            {
+              subjectAr: 'هِيَ',
+              subjectEn: 'She',
+              subjectBn: 'সে (স্ত্রী)',
+              pastAr: 'مَا فَعَلَتْ',
+              presentAr: 'لَنْ تَفْعَلَ',
+              imperativeAr: 'لَا تَفْعَلْ',
+              pastMeaningEn: 'She did not do',
+              pastMeaningBn: 'সে করেনি',
+              presentMeaningEn: 'She will never do',
+              presentMeaningBn: 'সে কিছুতেই করবে না',
+              audioKey: 'لَنْ تَفْعَلَ',
+            },
+            {
+              subjectAr: 'أَنْتَ',
+              subjectEn: 'You (m)',
+              subjectBn: 'তুমি (পুং)',
+              pastAr: 'مَا فَعَلْتَ',
+              presentAr: 'لَنْ تَفْعَلَ',
+              imperativeAr: 'لَا تَفْعَلْ',
+              pastMeaningEn: 'You did not do',
+              pastMeaningBn: 'তুমি করোনি',
+              presentMeaningEn: 'You will never do',
+              presentMeaningBn: 'তুমি কিছুতেই করবে না',
+              audioKey: 'لَنْ تَفْعَلَ',
+            },
+            {
+              subjectAr: 'أَنْتِ',
+              subjectEn: 'You (f)',
+              subjectBn: 'তুমি (স্ত্রী)',
+              pastAr: 'مَا فَعَلْتِ',
+              presentAr: 'لَنْ تَفْعَلِي',
+              imperativeAr: 'لَا تَفْعَلِي',
+              pastMeaningEn: 'You did not do (f)',
+              pastMeaningBn: 'তুমি করোনি (স্ত্রী)',
+              presentMeaningEn: 'You will never do (f)',
+              presentMeaningBn: 'তুমি কিছুতেই করবে না (স্ত্রী)',
+              audioKey: 'لَنْ تَفْعَلِي',
+            },
+            {
+              subjectAr: 'أَنَا',
+              subjectEn: 'I',
+              subjectBn: 'আমি',
+              pastAr: 'مَا فَعَلْتُ',
+              presentAr: 'لَنْ أَفْعَلَ',
+              imperativeAr: 'لَا أَفْعَلْ',
+              pastMeaningEn: 'I did not do',
+              pastMeaningBn: 'আমি করিনি',
+              presentMeaningEn: 'I will never do',
+              presentMeaningBn: 'আমি কিছুতেই করব না',
+              audioKey: 'لَنْ أَفْعَلَ',
+            },
+          ],
+        },
+      ],
+    },
+  },
+
+  // 3. Page 49-50: Vocab Prime - Essential Terms
+  {
+    id: 'v2-c1-l8-step-3-vocab-lan',
+    type: 'vocab_prime',
+    pageNumber: 49,
+    titleEn: 'Vocabulary: Particles of Negation & Moral Terms',
+    titleAr: 'مُفْرَدَاتُ الدَّرْسِ الثَّامِنِ',
+    instructionEn: 'Listen to the essential vocabulary for future negation, honesty, and vocative constructs.',
+    instructionBn: 'ভবিষ্যতের অস্বীকৃতি, সত্যবাদিতা ও সম্বোধন সম্পর্কিত গুরুত্বপূর্ণ শব্দগুলোর অর্থ মনোযোগ দিয়ে শুনুন।',
+    vocabPayload: {
+      words: [
+        { id: 'v2_lan', ar: 'لَنْ', en: 'Never / By No Means', bn: 'কিছুতেই না / কখনো না', romanized: 'lan', emoji: '🚫' },
+        { id: 'v2_mushrik', ar: 'مُشْرِكٌ', en: 'Polytheist / Idolater', bn: 'মুশরিক / অংশীবাদী', romanized: 'mushrikun', emoji: '🗿' },
+        { id: 'v2_munafiq', ar: 'مُنَافِقٌ', en: 'Hypocrite', bn: 'মুনাফিক / কপট', romanized: 'munāfiqun', emoji: '🎭' },
+        { id: 'v2_sadaqa', ar: 'صَدَقَ يَصْدُقُ', en: 'To Speak Truth', bn: 'সত্য বলা', romanized: 'ṣadaqa yaṣduqu', emoji: '✨' },
+        { id: 'v2_kadhaba', ar: 'كَذَبَ يَكْذِبُ', en: 'To Lie / Tell Falsehood', bn: 'মিথ্যা বলা', romanized: 'kadhaba yakdhibu', emoji: '❌' },
+        { id: 'v2_mal_yatim', ar: 'مَالُ اليَتِيمِ', en: 'Orphan\'s Wealth', bn: 'এতিমের সম্পদ', romanized: 'mālu al-yatīmi', emoji: '🧒' },
+        { id: 'v2_fajir', ar: 'فَاجِرٌ', en: 'Wicked / Transgressor', bn: 'পাপী / দুরাচার', romanized: 'fājirun', emoji: '⚠️' },
+        { id: 'v2_saqf', ar: 'سَقْفٌ', en: 'Roof / Ceiling', bn: 'ছাদ', romanized: 'saqfun', emoji: '🏠' },
+        { id: 'v2_fallah', ar: 'فَلَّاحٌ', en: 'Farmer / Peasant', bn: 'কৃষক', romanized: 'fallāḥun', emoji: '🌾' },
+        { id: 'v2_qaryah', ar: 'قَرْيَةٌ', en: 'Village', bn: 'গ্রাম', romanized: 'qaryatun', emoji: '🏡' },
+        { id: 'v2_bala', ar: 'بَلَى', en: 'Yes Indeed! / Why Not!', bn: 'অবশ্যই! / কেন নয়!', romanized: 'balā', emoji: '✅' },
+        { id: 'v2_akhaa', ar: 'أَخَا', en: 'Brother of (Accusative)', bn: 'ভাই (মুদাফ অবস্থায়)', romanized: 'akhā', emoji: '👦' },
+        { id: 'v2_abaa', ar: 'أَبَا', en: 'Father of (Accusative)', bn: 'বাবা (মুদাফ অবস্থায়)', romanized: 'abā', emoji: '👨' },
+        { id: 'v2_sabilillah', ar: 'سَبِيلُ اللهِ', en: 'The Path of Allah', bn: 'আল্লাহর রাস্তা', romanized: 'sabīlu Allāhi', emoji: '🛣️' },
+      ],
+    },
+  },
+
+  // 4. Page 49-50: Speed Pair - Match Lan & Vocative Expressions
+  {
+    id: 'v2-c1-l8-step-4-speed-pair-lan',
+    type: 'speed_pair',
+    pageNumber: 49,
+    titleEn: 'Rapid Pairing: Lan Expressions & Vocatives',
+    titleAr: 'المُطَابَقَةُ السَّرِيعَةُ: عِبَارَاتُ (لَنْ) وَالمُنَادَى',
+    instructionEn: 'Match each Arabic expression to its exact English meaning.',
+    instructionBn: 'প্রতিটি আরবি বাক্যাংশকে তার সঠিক অর্থটির সাথে মিলান।',
+    pairPayload: {
+      pairs: [
+        { id: 'p1', ar: 'لَنْ يَدْخُلَ الجَنَّةَ', meaning: 'He will never enter Paradise', meaningBn: 'সে কিছুতেই জান্নাতে প্রবেশ করবে না' },
+        { id: 'p2', ar: 'لَنْ أُطِيعَ الشَّيْطَانَ', meaning: 'I will never obey Satan', meaningBn: 'আমি কখনো শয়তানের আনুগত্য করব না' },
+        { id: 'p3', ar: 'لَنْ يَكْذِبَ المُسْلِمُ', meaning: 'The Muslim will never lie', meaningBn: 'মুসলিম কখনো মিথ্যা বলবে না' },
+        { id: 'p4', ar: 'لَنْ آكُلَ مَالَ اليَتِيمِ', meaning: 'I will never eat orphan wealth', meaningBn: 'আমি কখনো এতিমের সম্পদ খাব না' },
+        { id: 'p5', ar: 'يَا مُعَلِّمَ المَدْرَسَةِ', meaning: 'O teacher of the school!', meaningBn: 'হে মাদ্রাসার শিক্ষক!' },
+      ],
+    },
+  },
+
+  // 5. Page 49: Sentence Assembly - Idolater Entering Paradise & Obeying Satan
+  {
+    id: 'v2-c1-l8-step-5-assembly-mushrik-shaitan',
+    type: 'sentence_assembly',
+    pageNumber: 49,
+    titleEn: 'Sentence Assembly: Polytheist & Obeying Satan',
+    titleAr: 'تَرْكِيبُ الجُمْلَةِ: عَدَمُ دُخُولِ المُشْرِكِ الجَنَّةَ',
+    instructionEn: 'Assemble: "The polytheist will by no means enter Paradise, and I will never obey Satan because I am a Muslim."',
+    instructionBn: 'বাক্যটি সাজান: "মুশরিক কিছুতেই জান্নাতে প্রবেশ করবে না, এবং আমি কখনো শয়তানের আনুগত্য করব না কেননা আমি মুসলিম।"',
+    assemblyPayload: {
+      promptEn: 'The polytheist will by no means enter Paradise, and I will never obey Satan because I am a Muslim.',
+      promptBn: 'মুশরিক কিছুতেই জান্নাতে প্রবেশ করবে না, এবং আমি কখনো শয়তানের আনুগত্য করব না কেননা আমি মুসলিম।',
+      expectedAnswer: ['لَنْ', 'يَدْخُلَ', 'المُشْرِكُ', 'الجَنَّةَ،', 'وَلَنْ', 'أُطِيعَ', 'الشَّيْطَانَ', 'لِأَنِّي', 'مُسْلِمٌ'],
+      chips: ['لَنْ', 'يَدْخُلَ', 'المُشْرِكُ', 'الجَنَّةَ،', 'وَلَنْ', 'أُطِيعَ', 'الشَّيْطَانَ', 'لِأَنِّي', 'مُسْلِمٌ', 'يَدْخُلُ', 'أَطَاعَ'],
+      expectedAnswerBn: ['মুশরিক', 'কিছুতেই', 'জান্নাতে', 'প্রবেশ', 'করবে', 'না,', 'এবং', 'আমি', 'কখনো', 'শয়তানের', 'আনুগত্য', 'করব', 'না', 'কেননা', 'আমি', 'মুসলিম'],
+      chipsBn: ['মুশরিক', 'কিছুতেই', 'জান্নাতে', 'প্রবেশ', 'করবে', 'না,', 'এবং', 'আমি', 'কখনো', 'শয়তানের', 'আনুগত্য', 'করব', 'না', 'কেননা', 'আমি', 'মুসলিম', 'করেছিল'],
+      emoji: '🛡️',
+    },
+  },
+
+  // 6. Page 49: Sentence Assembly - Hypocrite Truth & Muslim Lying
+  {
+    id: 'v2-c1-l8-step-6-assembly-munafiq-truth',
+    type: 'sentence_assembly',
+    pageNumber: 49,
+    titleEn: 'Sentence Assembly: Hypocrisy & Truthfulness',
+    titleAr: 'تَرْكِيبُ الجُمْلَةِ: صِدْقُ المُسْلِمِ وَكِذْبُ المُنَافِقِ',
+    instructionEn: 'Assemble: "The hypocrite will never speak truth and the Muslim will never lie, and he will never fear other than Allah."',
+    instructionBn: 'বাক্যটি সাজান: "মুনাফিক কখনো সত্য বলবে না এবং মুসলিম কখনো মিথ্যা বলবে না, এবং সে কখনো আল্লাহ ছাড়া কাউকে ভয় করবে না।"',
+    assemblyPayload: {
+      promptEn: 'The hypocrite will never speak truth and the Muslim will never lie, and he will never fear other than Allah.',
+      promptBn: 'মুনাফিক কখনো সত্য বলবে না এবং মুসলিম কখনো মিথ্যা বলবে না, এবং সে কখনো আল্লাহ ছাড়া কাউকে ভয় করবে না।',
+      expectedAnswer: ['لَنْ', 'يُصَدِّقَ', 'المُنَافِقُ', 'وَلَنْ', 'يَكْذِبَ', 'المُسْلِمُ،', 'وَلَنْ', 'يَخَافَ', 'غَيْرَ', 'اللهِ'],
+      chips: ['لَنْ', 'يُصَدِّقَ', 'المُنَافِقُ', 'وَلَنْ', 'يَكْذِبَ', 'المُسْلِمُ،', 'وَلَنْ', 'يَخَافَ', 'غَيْرَ', 'اللهِ', 'يَكْذِبُ', 'صَادِقٌ'],
+      expectedAnswerBn: ['মুনাফিক', 'কখনো', 'সত্য', 'বলবে', 'না', 'এবং', 'মুসলিম', 'কখনো', 'মিথ্যা', 'বলবে', 'না,', 'এবং', 'সে', 'কখনো', 'আল্লাহ', 'ছাড়া', 'কাউকে', 'ভয়', 'করবে', 'না'],
+      chipsBn: ['মুনাফিক', 'কখনো', 'সত্য', 'বলবে', 'না', 'এবং', 'মুসলিম', 'কখনো', 'মিথ্যা', 'বলবে', 'না,', 'এবং', 'সে', 'কখনো', 'আল্লাহ', 'ছাড়া', 'কাউকে', 'ভয়', 'করবে', 'না', 'বলেছে'],
+      emoji: '⚖️',
+    },
+  },
+
+  // 7. Page 49: Sentence Assembly - Fatima Understanding the Speech of Allah
+  {
+    id: 'v2-c1-l8-step-7-assembly-fatima-arabic',
+    type: 'sentence_assembly',
+    pageNumber: 49,
+    titleEn: 'Sentence Assembly: Understanding Allah\'s Speech (لَنْ تَفْهَمِي)',
+    titleAr: 'تَرْكِيبُ الجُمْلَةِ: فَهْمُ كَلَامِ اللهِ',
+    instructionEn: 'Assemble: "O Fatima! You will never understand the speech of Allah because you do not know the Arabic language."',
+    instructionBn: 'বাক্যটি সাজান: "হে ফাতেমা! তুমি কিছুতেই আল্লাহর বাণী বুঝতে পারবে না, কেননা তুমি আরবি ভাষা জানো না।"',
+    assemblyPayload: {
+      promptEn: 'O Fatima! You will never understand the speech of Allah because you do not know the Arabic language.',
+      promptBn: 'হে ফাতেমা! তুমি কিছুতেই আল্লাহর বাণী বুঝতে পারবে না, কেননা তুমি আরবি ভাষা জানো না।',
+      expectedAnswer: ['يَا', 'فَاطِمَةُ!', 'لَنْ', 'تَفْهَمِي', 'كَلَامَ', 'اللهِ،', 'لِأَنَّكِ', 'لَا', 'تَعْرِفِينَ', 'اللُّغَةَ', 'العَرَبِيَّةَ'],
+      chips: ['يَا', 'فَاطِمَةُ!', 'لَنْ', 'تَفْهَمِي', 'كَلَامَ', 'اللهِ،', 'لِأَنَّكِ', 'لَا', 'تَعْرِفِينَ', 'اللُّغَةَ', 'العَرَبِيَّةَ', 'تَفْهَمِينَ', 'كَلَامُ'],
+      expectedAnswerBn: ['হে', 'ফাতেমা!', 'তুমি', 'কিছুতেই', 'আল্লাহর', 'বাণী', 'বুঝতে', 'পারবে', 'না,', 'কেননা', 'তুমি', 'আরবি', 'ভাষা', 'জানো', 'না'],
+      chipsBn: ['হে', 'ফাতেমা!', 'তুমি', 'কিছুতেই', 'আল্লাহর', 'বাণী', 'বুঝতে', 'পারবে', 'না,', 'কেননা', 'তুমি', 'আরবি', 'ভাষা', 'জানো', 'না', 'জেনেছ'],
+      emoji: '📖',
+    },
+  },
+
+  // 8. Page 50: Cloze Choice - Dropping Noon in 2nd Person Feminine
+  {
+    id: 'v2-c1-l8-step-8-cloze-tal-abi',
+    type: 'cloze_choice',
+    pageNumber: 50,
+    titleEn: 'Cloze Selection: Dropping the Noon with "Lan"',
+    titleAr: 'اخْتِيَارُ الفِعْلِ: حَذْفُ النُّونِ مَعَ (لَنْ)',
+    instructionEn: 'Select the correct form with the nun dropped after "lan": "تَلْعَبِي".',
+    instructionBn: '"لَنْ" এর কারণে নূন বিলুপ্ত হওয়া সঠিক রূপটি নির্বাচন করুন: "تَلْعَبِي"।',
+    clozePayload: {
+      questionAr: 'يَا زَيْنَبُ! أَلَنْ ... الآنَ فِي الحَدِيقَةِ مَعَ فَاطِمَةَ ؟',
+      questionEn: 'O Zaynab! Will you not [play] now in the garden with Fatima?',
+      questionBn: 'হে জয়নব! তুমি কি এখন ফাতেমার সাথে বাগানে [খেলবে না]?',
+      partialAnswerAr: 'يَا زَيْنَبُ! أَلَنْ ... الآنَ فِي الحَدِيقَةِ مَعَ فَاطِمَةَ ؟',
+      correctAnswer: 'تَلْعَبِي',
+      options: ['تَلْعَبِي', 'تَلْعَبِينَ', 'تَلْعَبُ'],
+      emoji: '🌸',
+    },
+  },
+
+  // 9. Page 50: Alternative QA - Negative Questions Answered with Bala
+  {
+    id: 'v2-c1-l8-step-9-qa-alan-bala',
+    type: 'alternative_qa',
+    pageNumber: 50,
+    titleEn: 'Dialogue Q&A: Answering "Alan" with "Bala"',
+    titleAr: 'سُؤَالٌ وَجَوَابٌ: الإِجَابَةُ بِـ (بَلَى)',
+    instructionEn: 'Answer negative interrogatives with the emphatic affirmative particle "بَلَى" (Yes indeed!).',
+    instructionBn: '"অ্যালান" যুক্ত না-বোধক প্রশ্নের উত্তরে "বালা" (অবশ্যই) ব্যবহার করে উত্তর দিন।',
+    alternativeQAPayload: {
+      contextAr: 'أَيُّهَا التَّاجِرُ الغَنِيُّ! أَلَنْ تُنْفِقَ مَالَكَ فِي سَبِيلِ اللهِ ؟ بَلَى .. أُنْفِقُ. أَلَنْ تُطْعِمَ هَذَا الجَائِعَ ؟ بَلَى .. سَأُطْعِمُهُ.',
+      questions: [
+        {
+          id: 'q1-spend-bala',
+          questionAr: 'أَلَنْ تُنْفِقَ مَالَكَ فِي سَبِيلِ اللهِ ؟',
+          correctAnswerAr: 'بَلَى .. أُنْفِقُ فِي سَبِيلِ اللهِ',
+          optionsAr: ['بَلَى .. أُنْفِقُ فِي سَبِيلِ اللهِ', 'لَا .. لَنْ أُنْفِقَ'],
+        },
+        {
+          id: 'q2-feed-bala',
+          questionAr: 'أَلَنْ تُطْعِمَ هَذَا الفَقِيرَ الجَائِعَ ؟',
+          correctAnswerAr: 'بَلَى .. سَأُطْعِمُهُ',
+          optionsAr: ['بَلَى .. سَأُطْعِمُهُ', 'لَا .. لَسْتُ أُطْعِمُهُ'],
+        },
+      ],
+    },
+  },
+
+  // 10. Page 49: Sentence Assembly - Not Consuming Orphan's Wealth
+  {
+    id: 'v2-c1-l8-step-10-assembly-yatim',
+    type: 'sentence_assembly',
+    pageNumber: 49,
+    titleEn: 'Sentence Assembly: Protecting the Orphan\'s Wealth',
+    titleAr: 'تَرْكِيبُ الجُمْلَةِ: عَدَمُ أَكْلِ مَالِ اليَتِيمِ',
+    instructionEn: 'Assemble: "I will never consume the wealth of the orphan, and I will never oppress a weak person."',
+    instructionBn: 'বাক্যটি সাজান: "আমি কখনো এতিমের সম্পদ খাব না, এবং আমি কখনো কোনো দুর্বলকে জুলুম করব না।"',
+    assemblyPayload: {
+      promptEn: 'I will never consume the wealth of the orphan, and I will never oppress a weak person.',
+      promptBn: 'আমি কখনো এতিমের সম্পদ খাব না, এবং আমি কখনো কোনো দুর্বলকে জুলুম করব না।',
+      expectedAnswer: ['لَنْ', 'آكُلَ', 'مَالَ', 'اليَتِيمِ،', 'وَلَنْ', 'أَظْلِمَ', 'ضَعِيفًا'],
+      chips: ['لَنْ', 'آكُلَ', 'مَالَ', 'اليَتِيمِ،', 'وَلَنْ', 'أَظْلِمَ', 'ضَعِيفًا', 'أَكَلْتُ', 'مَالُ'],
+      expectedAnswerBn: ['আমি', 'কখনো', 'এতিমের', 'সম্পদ', 'খাব', 'না,', 'এবং', 'আমি', 'কখনো', 'কোনো', 'দুর্বলকে', 'জুলুম', 'করব', 'না'],
+      chipsBn: ['আমি', 'কখনো', 'এতিমের', 'সম্পদ', 'খাব', 'না,', 'এবং', 'আমি', 'কখনো', 'কোনো', 'দুর্বলকে', 'জুলুম', 'করব', 'না', 'খেয়েছি'],
+      emoji: '🤲',
+    },
+  },
+
+  // 11. Page 50: Sentence Assembly - Never Residing with Transgressor
+  {
+    id: 'v2-c1-l8-step-11-assembly-fajir',
+    type: 'sentence_assembly',
+    pageNumber: 50,
+    titleEn: 'Sentence Assembly: Refusal to Dwell with Transgressor',
+    titleAr: 'تَرْكِيبُ الجُمْلَةِ: عَدَمُ الإِقَامَةِ مَعَ الفَاجِرِ',
+    instructionEn: 'Assemble: "I will never reside with this wicked man in one house and under one roof."',
+    instructionBn: 'বাক্যটি সাজান: "আমি কখনো এই পাপাচারী লোকটির সাথে এক ঘরে এবং এক ছাদের নিচে বসবাস করব না।"',
+    assemblyPayload: {
+      promptEn: 'I will never reside with this wicked man in one house and under one roof.',
+      promptBn: 'আমি কখনো এই পাপাচারী লোকটির সাথে এক ঘরে এবং এক ছাদের নিচে বসবাস করব না।',
+      expectedAnswer: ['لَنْ', 'أُقِيمَ', 'مَعَ', 'هَذَا', 'الرَّجُلِ', 'الفَاجِرِ', 'فِي', 'بَيْتٍ', 'وَتَحْتَ', 'سَقْفٍ', 'وَاحِدٍ'],
+      chips: ['لَنْ', 'أُقِيمَ', 'مَعَ', 'هَذَا', 'الرَّجُلِ', 'الفَاجِرِ', 'فِي', 'بَيْتٍ', 'وَتَحْتَ', 'سَقْفٍ', 'وَاحِدٍ', 'أَقَامَ', 'سَقْفُ'],
+      expectedAnswerBn: ['আমি', 'কখনো', 'এই', 'পাপাচারী', 'লোকটির', 'সাথে', 'এক', 'ঘরে', 'এবং', 'এক', 'ছাদের', 'নিচে', 'বসবাস', 'করব', 'না'],
+      chipsBn: ['আমি', 'কখনো', 'এই', 'পাপাচারী', 'লোকটির', 'সাথে', 'এক', 'ঘরে', 'এবং', 'এক', 'ছাদের', 'নিচে', 'বসবাস', 'করব', 'না', 'বসবাস'],
+      emoji: '🏚️',
+    },
+  },
+
+  // 12. Page 50: Alternative QA - Obeying Parents & Munada Case
+  {
+    id: 'v2-c1-l8-step-12-qa-parents-munada',
+    type: 'alternative_qa',
+    pageNumber: 50,
+    titleEn: 'Dialogue Q&A: Obeying Parents & The Vocative',
+    titleAr: 'سُؤَالٌ وَجَوَابٌ: بِرُّ الوَالِدَيْنِ وَالمُنَادَى',
+    instructionEn: 'Answer questions on filial obedience and the grammatical state of the vocative mudaf.',
+    instructionBn: 'পিতামাতার আনুগত্য এবং মুদাফ বিশিষ্ট সম্বোধনের ব্যাকরণিক রূপ সংক্রান্ত প্রশ্নের উত্তর দিন।',
+    alternativeQAPayload: {
+      contextAr: 'يَا فَاطِمَةُ! أَلَنْ تُطِيعِي أَبَاكِ وَأُمَّكِ ؟ بَلَى .. أُطِيعُهُمَا دَائِمًا.',
+      questions: [
+        {
+          id: 'q1-obey-parents',
+          questionAr: 'يَا فَاطِمَةُ! أَلَنْ تُطِيعِي أَبَاكِ وَأُمَّكِ ؟',
+          correctAnswerAr: 'بَلَى .. أُطِيعُهُمَا دَائِمًا',
+          optionsAr: ['بَلَى .. أُطِيعُهُمَا دَائِمًا', 'لَا .. لَنْ أُطِيعَ'],
+        },
+        {
+          id: 'q2-munada-rule',
+          questionAr: 'مَا إِعْرَابُ كَلِمَةِ (مُعَلِّمَ) فِي قَوْلِنَا: (يَا مُعَلِّمَ المَدْرَسَةِ) ؟',
+          correctAnswerAr: 'مُنَادَى مُضَافٌ مَنْصُوبٌ بِالفَتْحَةِ',
+          optionsAr: ['مُنَادَى مُضَافٌ مَنْصُوبٌ بِالفَتْحَةِ', 'مَرْفُوعٌ بِالضَّمَّةِ'],
+        },
+      ],
+    },
+  },
+
+  // 13. Page 50: Sentence Assembly - Calling School Teacher & Farmer's Son
+  {
+    id: 'v2-c1-l8-step-13-assembly-teacher-son',
+    type: 'sentence_assembly',
+    pageNumber: 50,
+    titleEn: 'Sentence Assembly: Vocative Mudaf (يَا مُعَلِّمَ المَدْرَسَةِ)',
+    titleAr: 'تَرْكِيبُ الجُمْلَةِ: نِدَاءُ مُعَلِّمِ المَدْرَسَةِ',
+    instructionEn: 'Assemble: "O teacher of the school! This son of the farmer is very intelligent."',
+    instructionBn: 'বাক্যটি সাজান: "হে মাদ্রাসার শিক্ষক! কৃষকের এই ছেলেটি খুব বুদ্ধিমান।"',
+    assemblyPayload: {
+      promptEn: 'O teacher of the school! This son of the farmer is very intelligent.',
+      promptBn: 'হে মাদ্রাসার শিক্ষক! কৃষকের এই ছেলেটি খুব বুদ্ধিমান।',
+      expectedAnswer: ['يَا', 'مُعَلِّمَ', 'المَدْرَسَةِ!', 'هَذَا', 'وَلَدُ', 'الفَلَّاحِ', 'ذَكِيٌّ', 'جِدًّا'],
+      chips: ['يَا', 'مُعَلِّمَ', 'المَدْرَسَةِ!', 'هَذَا', 'وَلَدُ', 'الفَلَّاحِ', 'ذَكِيٌّ', 'جِدًّا', 'مُعَلِّمُ', 'وَلَدَ'],
+      expectedAnswerBn: ['হে', 'মাদ্রাসার', 'শিক্ষক!', 'কৃষকের', 'এই', 'ছেলেটি', 'খুব', 'বুদ্ধিমান'],
+      chipsBn: ['হে', 'মাদ্রাসার', 'শিক্ষক!', 'কৃষকের', 'এই', 'ছেলেটি', 'খুব', 'বুদ্ধিমান', 'কৃষক'],
+      emoji: '👨‍🏫',
+    },
+  },
+
+  // 14. Page 50: Sentence Assembly - Calling Brother of Bilal to Spend
+  {
+    id: 'v2-c1-l8-step-14-assembly-akhaa-bilal',
+    type: 'sentence_assembly',
+    pageNumber: 50,
+    titleEn: 'Sentence Assembly: Brother of Bilal (يَا أَخَا بِلَالٍ)',
+    titleAr: 'تَرْكِيبُ الجُمْلَةِ: نِدَاءُ أَخِي بِلَالٍ لِلإِنْفَاقِ',
+    instructionEn: 'Assemble: "O brother of Bilal! Spend your wealth in the path of Allah and do not be stingy."',
+    instructionBn: 'বাক্যটি সাজান: "হে বেলালের ভাই! আল্লাহর রাস্তায় তোমার সম্পদ খরচ করো এবং কৃপণতা কোরো না।"',
+    assemblyPayload: {
+      promptEn: 'O brother of Bilal! Spend your wealth in the path of Allah and do not be stingy.',
+      promptBn: 'হে বেলালের ভাই! আল্লাহর রাস্তায় তোমার সম্পদ খরচ করো এবং কৃপণতা কোরো না।',
+      expectedAnswer: ['يَا', 'أَخَا', 'بِلَالٍ!', 'أَنْفِقْ', 'مَالَكَ', 'فِي', 'سَبِيلِ', 'اللهِ', 'وَلَا', 'تَبْخَلْ'],
+      chips: ['يَا', 'أَخَا', 'بِلَالٍ!', 'أَنْفِقْ', 'مَالَكَ', 'فِي', 'سَبِيلِ', 'اللهِ', 'وَلَا', 'تَبْخَلْ', 'أَخُو', 'بَخِيلٌ'],
+      expectedAnswerBn: ['হে', 'বেলালের', 'ভাই!', 'আল্লাহর', 'রাস্তায়', 'তোমার', 'সম্পদ', 'খরচ', 'করো', 'এবং', 'কৃপণতা', 'কোরো', 'না'],
+      chipsBn: ['হে', 'বেলালের', 'ভাই!', 'আল্লাহর', 'রাস্তায়', 'তোমার', 'সম্পদ', 'খরচ', 'করো', 'এবং', 'কৃপণতা', 'কোরো', 'না', 'কৃপণ'],
+      emoji: '🤝',
+    },
+  },
+
+  // 15. Page 49: Syntactic Dissector (Tarkib) - Negated Subjunctive Verb
+  {
+    id: 'v2-c1-l8-step-15-tarkib-lan-yakdhiba',
+    type: 'tarkib_dissector',
+    pageNumber: 49,
+    titleEn: 'Syntactic Dissector: Subjunctive Verb with "Lan"',
+    titleAr: 'تَرْكِيبُ الجُمْلَةِ: لَنْ يَكْذِبَ المُسْلِمُ',
+    instructionEn: 'Slot each component: Negating Subjunctive Particle, Accusative Present Verb, and Nominative Doer.',
+    instructionBn: 'প্রতিটি অংশ বসান: নসবদানকারী না-বোধক হরফ, মানসুব বর্তমান ক্রিয়া এবং মারফু কর্তা।',
+    tarkibPayload: {
+      sentences: [
+        {
+          id: 'tarkib-lan-yakdhiba',
+          sentenceAr: 'لَنْ يَكْذِبَ المُسْلِمُ',
+          sentenceTypeAr: 'جُمْلَةٌ فِعْلِيَّةٌ مَنْفِيَّةٌ بِلَنْ',
+          sentenceTypeEn: 'Emphatic Negated Verbal Sentence',
+          sentenceTypeBn: 'দৃঢ় অস্বীকৃতিসূচক ক্রিয়াবাচক বাক্য',
+          slots: [
+            { roleAr: 'حَرْفُ نَفْيٍ وَنَصْبٍ وَاسْتِقْبَالٍ', roleEn: 'Subjunctive Negative Particle', roleBn: 'ভবিষ্যতের নসবদানকারী না-বোধক হরফ', expectedWordAr: 'لَنْ' },
+            { roleAr: 'فِعْلٌ مُضَارِعٌ (مَنْصُوبٌ بِالفَتْحَةِ)', roleEn: 'Accusative Present Verb', roleBn: 'বর্তমান কাজ (যবর বিশিষ্ট)', expectedWordAr: 'يَكْذِبَ' },
+            { roleAr: 'فَاعِلٌ (مَرْفُوعٌ بِالضَّمَّةِ)', roleEn: 'Doer / Subject (Nominative)', roleBn: 'কর্তা (পেশ বিশিষ্ট)', expectedWordAr: 'المُسْلِمُ' },
+          ],
+          availableWordsAr: ['لَنْ', 'يَكْذِبَ', 'المُسْلِمُ'],
+        },
+      ],
+    },
+  },
+
+  // 16. Page 50: Syntactic Dissector (Tarkib) - Vocative Mudaf Construct
+  {
+    id: 'v2-c1-l8-step-16-tarkib-munada-mudaf',
+    type: 'tarkib_dissector',
+    pageNumber: 50,
+    titleEn: 'Syntactic Dissector: Vocative Mudaf (يَا مُعَلِّمَ المَدْرَسَةِ)',
+    titleAr: 'تَرْكِيبُ الجُمْلَةِ: يَا مُعَلِّمَ المَدْرَسَةِ',
+    instructionEn: 'Slot each component: Vocative Particle, Accusative Called Noun (Mudaf), and Genitive Modifier (Mudaf Ilayh).',
+    instructionBn: 'প্রতিটি অংশ বসান: সম্বোধনকারী হরফ, মানসুব সম্বোধিত মুদাফ এবং মাজরুর মুদাফ ইলাইহ।',
+    tarkibPayload: {
+      sentences: [
+        {
+          id: 'tarkib-munada-mudaf',
+          sentenceAr: 'يَا مُعَلِّمَ المَدْرَسَةِ',
+          sentenceTypeAr: 'تَرْكِيبُ نِدَاءِ المُضَافِ',
+          sentenceTypeEn: 'Vocative Mudaf Construction',
+          sentenceTypeBn: 'মুদাফ বিশিষ্ট সম্বোধন বাক্যাংশ',
+          slots: [
+            { roleAr: 'حَرْفُ نِدَاءٍ', roleEn: 'Vocative Particle', roleBn: 'সম্বোধনসূচক হরফ', expectedWordAr: 'يَا' },
+            { roleAr: 'مُنَادَى مُضَافٌ (مَنْصُوبٌ بِالفَتْحَةِ)', roleEn: 'Called Noun / Mudaf (Accusative)', roleBn: 'সম্বোধিত মুদাফ (যবর বিশিষ্ট)', expectedWordAr: 'مُعَلِّمَ' },
+            { roleAr: 'مُضَافٌ إِلَيْهِ (مَجْرُورٌ بِالكَسْرَةِ)', roleEn: 'Genitive Modifier (Mudaf Ilayh)', roleBn: 'মুদাফ ইলাইহ (জের বিশিষ্ট)', expectedWordAr: 'المَدْرَسَةِ' },
+          ],
+          availableWordsAr: ['يَا', 'مُعَلِّمَ', 'المَدْرَسَةِ'],
+        },
+      ],
+    },
+  },
+
+  // 17. Page 49: Quranic Echo - Surah Al-Baqarah (2:24) - The Inability to Produce Like the Quran
+  {
+    id: 'v2-c1-l8-step-17-quranic-echo-lan-taf-alu',
+    type: 'quranic_echo',
+    pageNumber: 49,
+    titleEn: 'The Eternal Challenge: "You Will Never Be Able To"',
+    titleAr: 'صَدَى القُرْآنِ: (فَإِن لَّمْ تَفْعَلُوا وَلَن تَفْعَلُوا)',
+    instructionEn: 'Reflect on how the particle "لَنْ" issues an eternal, absolute negative prophecy in Surah Al-Baqarah (2:24).',
+    instructionBn: 'সূরা আল-বাকারার ২৪ নং আয়াতে "لَنْ" হরফটি কীভাবে একটি চিরন্তন ও চূড়ান্ত অস্বীকৃতির ঘোষণা দেয় তা নিয়ে চিন্তা করুন।',
+    echoPayload: {
+      surahNumber: 2,
+      ayahNumber: 24,
+      surahNameAr: 'البَقَرَة',
+      surahNameEn: 'Al-Baqarah',
+      arabicText: 'فَإِن لَّمْ تَفْعَلُوا وَلَن تَفْعَلُوا فَاتَّقُوا النَّارَ الَّتِي وَقُودُهَا النَّاسُ وَالْحِجَارَةُ',
+      translationEn: 'But if you do not - and you will never be able to - then fear the Fire, whose fuel is men and stones.',
+      translationBn: 'কিন্তু যদি তোমরা তা না পার - আর কখনো তা করতে পারবেও না - তবে সেই আগুনকে ভয় কর, যার জ্বালানি হবে মানুষ ও পাথর।',
+      highlightedWords: ['وَلَن', 'تَفْعَلُوا', 'فَاتَّقُوا'],
+      reflection: 'The particle "لَنْ" that you mastered today is used in this momentous verse to issue an impossible challenge to mankind: "وَلَن تَفْعَلُوا" (and you will NEVER be able to do so). Notice how "لَنْ" strips certainty away from human capability and anchors divine truth.',
+    },
+  },
+];
+
+export const VOL2_CH1_LESSON_08_SESSION: LessonSessionData = {
+  volumeId: 2,
+  chapterId: 1,
+  lessonNum: 8,
+  titleEn: 'The Emphatic Future Negative (لَنْ) & Vocatives',
+  titleAr: 'نَفْيُ المُسْتَقْبَلِ بِلَنْ وَالمُنَادَى المُضَافُ',
+  wordsLearned: [
+    'لَنْ', 'المُشْرِكُ', 'المُنَافِقُ', 'صَدَقَ', 'كَذَبَ', 'مَالُ اليَتِيمِ',
+    'فَاجِرٌ', 'سَقْفٌ', 'فَلَّاحٌ', 'قَرْيَةٌ', 'بَلَى', 'أَخَا', 'أَبَا', 'سَبِيلُ اللهِ'
+  ],
+  steps: VOL2_CH1_LESSON_08_STEPS,
+};

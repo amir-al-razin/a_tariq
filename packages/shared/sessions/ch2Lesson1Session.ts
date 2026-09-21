@@ -354,8 +354,6 @@ export const CH2_LESSON_01_STEPS: SessionStep[] = [
     instructionBn: 'বিকল্প প্রশ্নগুলোর ক্ষেত্রে কাঙ্ক্ষিত বস্তুর সঠিক উত্তরটি নির্বাচন করুন',
     alternativeQAPayload: {
       contextAr: 'هَذَا قَلَمٌ وَتِلْكَ مِسْطَرَةٌ',
-      contextEn: 'Premise: This is a pen and that is a ruler',
-      contextBn: 'প্রেক্ষাপট: এটি কলম এবং ওটি স্কেল',
       questions: [
         {
           id: 'qa-c2l1-6',
@@ -385,8 +383,6 @@ export const CH2_LESSON_01_STEPS: SessionStep[] = [
           id: 'qa-c2l1-10',
           questionAr: 'أَ سَيْفٌ هَذَا أَمْ سَهْمٌ ؟',
           contextAr: 'هَذَا سَهْمٌ',
-          contextBn: 'প্রেক্ষাপট: এটি তীর',
-          contextEn: 'Premise: This is an arrow',
           optionsAr: ['سَهْمٌ', 'سَيْفٌ'],
           correctAnswerAr: 'سَهْمٌ',
         },
@@ -405,8 +401,6 @@ export const CH2_LESSON_01_STEPS: SessionStep[] = [
     instructionBn: 'ইশারা নির্বাচনের বিকল্প প্রশ্নের সঠিক উত্তরটি নির্বাচন করুন',
     alternativeQAPayload: {
       contextAr: 'ذَلِكَ قَلَمٌ وَهَذَا مِفْتَاحٌ',
-      contextEn: 'Premise: That is a pen and this is a key',
-      contextBn: 'প্রেক্ষাপট: ওইটি কলম এবং এটি চাবি',
       questions: [
         {
           id: 'qa-c2l1-11',

@@ -367,8 +367,6 @@ export const CH2_LESSON_05_STEPS: SessionStep[] = [
     instructionBn: 'আত্মীয়তার পরিচয় ও সর্বনামের রূপান্তর লক্ষ্য রেখে ব্যাকরণগতভাবে সঠিক উত্তর দিন।',
     alternativeQAPayload: {
       contextAr: 'هَذَا الرَّجُلُ أَبِي',
-      contextEn: 'Premise: This man is my father',
-      contextBn: 'প্রেক্ষাপট: এই লোকটি আমার পিতা',
       questions: [
         {
           id: 'qa-c2l5-1',
@@ -415,8 +413,6 @@ export const CH2_LESSON_05_STEPS: SessionStep[] = [
     instructionBn: 'বিকল্প প্রশ্নে হ্যাঁ বা না ছাড়া সুনির্দিষ্ট পরিচয় ও সর্বনামের সঠিক ব্যবহার নিশ্চিত করে উত্তর দিন।',
     alternativeQAPayload: {
       contextAr: 'مَاجِدٌ صَدِيقِي',
-      contextEn: 'Premise: Majid is my friend',
-      contextBn: 'প্রেক্ষাপট: মাজেদ আমার বন্ধু',
       questions: [
         {
           id: 'qa-c2l5-6',

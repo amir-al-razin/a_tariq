@@ -16,7 +16,10 @@ export type StepType =
   | 'possessive_matrix' // Possessive pronoun suffix conjugation grid
   | 'idafah_equation'   // Idafah formula (Mudaf & Mudaf Ilayh)
   | 'syntax_fronting'   // Spatial syntax contrast & interrogative fronting
-  | 'verb_preview_grid'; // Foundational verb conjugation paradigm preview for pure memorization
+  | 'verb_preview_grid' // Foundational verb conjugation paradigm preview for pure memorization
+  | 'masdar_factory'    // Derivation of 4 verb forms from Masdar (verbal noun) across Abwaab
+  | 'verb_conjugator'   // Interactive Sarf verb inflection drill across tenses & persons
+  | 'word_construction';// Arabic letter & morpheme word assembly & Sarf derivation
 
 export interface ConceptItem {
   id: string;
@@ -232,6 +235,103 @@ export interface VerbPreviewPayload {
   verbs: VerbPreviewItem[];
 }
 
+export interface MasdarItem {
+  id: string;
+  masdarAr: string;           // e.g. "الْفِعْلُ"
+  masdarMeaningEn: string;    // e.g. "To do / Doing"
+  masdarMeaningBn: string;    // e.g. "করা"
+  baabPatternAr: string;      // e.g. "بَاب فَتَحَ يَفْتَحُ"
+  baabPatternEn: string;      // e.g. "Pattern: Fataha - Yaftahu"
+  baabPatternBn: string;      // e.g. "ফা-তা-হা বাবের ওজন"
+  vowelShiftEn?: string;      // e.g. "a ➔ a (Fathah ➔ Fathah)"
+  vowelShiftBn?: string;      // e.g. "a ➔ a (যবর ➔ যবর)"
+  patternRuleEn?: string;     // e.g. "The middle letter keeps Fathah (a) in both past and present."
+  patternRuleBn?: string;     // e.g. "অতীত ও বর্তমান উভয় রূপেই মাঝের অক্ষরে যবর থাকে।"
+  pastAr: string;             // e.g. "فَعَلَ"
+  pastMeaningEn: string;      // e.g. "He did"
+  pastMeaningBn: string;      // e.g. "সে করল / করেছে"
+  presentAr: string;          // e.g. "يَفْعَلُ"
+  presentMeaningEn: string;   // e.g. "He does / will do"
+  presentMeaningBn: string;   // e.g. "সে করে / করবে"
+  presentOptionsAr?: string[];// e.g. ["يَفْعَلُ", "يَفْعُلُ", "يَفْعِلُ"]
+  imperativeAr: string;       // e.g. "اِفْعَلْ"
+  imperativeMeaningEn: string;// e.g. "Do! (m)"
+  imperativeMeaningBn: string;// e.g. "তুমি করো"
+  prohibitionAr: string;      // e.g. "لَا تَفْعَلْ"
+  prohibitionMeaningEn: string;// e.g. "Do not do! (m)"
+  prohibitionMeaningBn: string;// e.g. "তুমি করো না"
+  emoji: string;
+  audioKey?: string;
+}
+
+export interface MasdarFactoryPayload {
+  items: MasdarItem[];
+}
+
+export interface VerbConjugatorForm {
+  subjectAr: string;          // e.g. "هُوَ", "هِيَ", "أَنْتَ", "أَنْتِ", "أَنَا", "نَحْنُ"
+  subjectEn: string;          // e.g. "He", "She", "You (m)", "You (f)", "I", "We"
+  subjectBn: string;          // e.g. "সে (পুং)", "সে (স্ত্রী)", "তুমি (পুং)", "তুমি (স্ত্রী)", "আমি", "আমরা"
+  pastAr: string;             // e.g. "كَتَبَ"
+  pastMeaningEn?: string;
+  pastMeaningBn?: string;
+  presentAr: string;          // e.g. "يَكْتُبُ"
+  presentMeaningEn?: string;
+  presentMeaningBn?: string;
+  imperativeAr?: string;      // e.g. "اُكْتُبْ"
+  imperativeMeaningEn?: string;
+  imperativeMeaningBn?: string;
+  prohibitionAr?: string;     // e.g. "لَا تَكْتُبْ"
+  prohibitionMeaningEn?: string;
+  prohibitionMeaningBn?: string;
+  audioKey?: string;
+}
+
+export interface VerbConjugatorItem {
+  id: string;
+  rootAr: string;             // e.g. "كَتَبَ"
+  masdarAr: string;           // e.g. "الْكِتَابَةُ"
+  meaningEn: string;          // e.g. "To write"
+  meaningBn: string;          // e.g. "লেখা"
+  baabAr: string;             // e.g. "بَاب نَصَرَ يَنْصُرُ"
+  baabEn?: string;
+  baabBn?: string;
+  emoji: string;
+  forms: VerbConjugatorForm[];
+}
+
+export interface VerbConjugatorPayload {
+  mode: 'explore' | 'drill';  // 'explore' = interactive paradigm viewer; 'drill' = tap target form to fill
+  verbs: VerbConjugatorItem[];
+  targetTense?: 'past' | 'present' | 'imperative' | 'prohibition';
+  targetSubject?: string;
+  drillQuestionAr?: string;
+  drillQuestionEn?: string;
+  drillQuestionBn?: string;
+  correctAnswerAr?: string;
+  optionsAr?: string[];
+}
+
+export interface WordConstructionItem {
+  id: string;
+  promptEn: string;
+  promptBn: string;
+  promptAr?: string;
+  sourceWordAr?: string;       // e.g. "الكِتَابَةُ" (Verbal Noun / Masdar) or root "ك - ت - ب"
+  sourceWordLabelEn?: string;  // e.g. "Verbal Noun (Masdar)"
+  sourceWordLabelBn?: string;  // e.g. "মূল মাছদার"
+  targetWordAr: string;        // Complete target Arabic word with harakat e.g. "لِيَكْتُبَ"
+  targetMeaningEn: string;     // e.g. "In order that he write"
+  targetMeaningBn: string;     // e.g. "যেন সে লেখে"
+  chips: string[];             // Available letter/morpheme chips e.g. ["لِ", "يَ", "كْ", "تُ", "بَ", "تَ", "بُ"]
+  audioKey?: string;
+  emoji?: string;
+}
+
+export interface WordConstructionPayload {
+  items: WordConstructionItem[];
+}
+
 export interface SessionStep {
   id: string;
   type: StepType;
@@ -298,6 +398,7 @@ export interface SessionStep {
     pairs: {
       ar: string;
       meaning: string;
+      meaningBn?: string;
       id: string;
     }[];
   };
@@ -329,6 +430,9 @@ export interface SessionStep {
   idafahPayload?: IdafahEquationPayload;
   syntaxFrontingPayload?: SyntaxFrontingPayload;
   verbPreviewPayload?: VerbPreviewPayload;
+  masdarPayload?: MasdarFactoryPayload;
+  conjugatorPayload?: VerbConjugatorPayload;
+  wordConstructionPayload?: WordConstructionPayload;
 }
 
 export interface LessonSessionData {

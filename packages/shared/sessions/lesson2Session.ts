@@ -304,10 +304,10 @@ export const LESSON_02_STEPS: SessionStep[] = [
     instructionBn: 'পরিচ্ছন্ন বিছানার জন্য উপযুক্ত গুণবাচক শব্দটি নির্বাচন করুন।',
     itemId: 'pattern:firash_nazif',
     clozePayload: {
-      questionAr: 'هَذَا فِرَاشٌ [ ... ]',
+      questionAr: 'هَذَا فِرَاشٌ ...',
       questionEn: 'This is a clean bed',
       questionBn: 'ইহা একটি পরিচ্ছন্ন বিছানা',
-      partialAnswerAr: 'هَذَا فِرَاشٌ',
+      partialAnswerAr: 'هَذَا فِرَاشٌ ...',
       correctAnswer: 'نَظِيفٌ',
       options: ['نَظِيفٌ', 'نَظِيفَةٌ', 'وَسِخٌ', 'وَسِخَةٌ'],
       emoji: '🛏️',

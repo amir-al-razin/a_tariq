@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { ArrowLeft, Play, Check, RotateCcw, BookmarkCheck } from 'lucide-react'
+import { ArrowLeft, Play, Check, RotateCcw, BookmarkCheck, Lock } from 'lucide-react'
 
 import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
 import { useProgressStore } from '../../state/progressStore'
@@ -216,7 +216,28 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
           )}
 
           {/* Action Buttons: Dual (Resume + Restart) vs Single */}
-          {hasCheckpoint && checkpoint ? (
+          {!registeredSession ? (
+            <div className="w-full flex flex-col items-center gap-3">
+              <div className="w-full p-4 rounded-3xl bg-neutral-100 dark:bg-neutral-900 text-neutral-500 dark:text-neutral-400 flex items-center justify-center gap-2 text-sm font-medium text-center">
+                <Lock size={16} />
+                <span>
+                  {isBn
+                    ? 'এই পাঠটির ইন্টারেক্টিভ সেশন বর্তমানে প্রস্তুত হচ্ছে।'
+                    : 'This interactive lesson session is currently in development.'}
+                </span>
+              </div>
+              <button
+                type="button"
+                disabled
+                className="w-full h-14 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500 font-english-semibold text-base flex items-center justify-center gap-3 cursor-not-allowed shadow-none border-0"
+              >
+                <Lock size={18} />
+                <span>
+                  {isBn ? 'শীঘ্রই আসছে' : 'Coming Soon'}
+                </span>
+              </button>
+            </div>
+          ) : hasCheckpoint && checkpoint ? (
             <div className="w-full flex flex-col gap-2.5">
               <button
                 type="button"

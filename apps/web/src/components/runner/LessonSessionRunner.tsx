@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight, Check, Volume2, VolumeX, Sparkles, AlertCircle, Award, BookmarkCheck, Eye, EyeOff } from 'lucide-react';
-import type { SessionStep, LessonSessionData } from '@/lib/lessonSessionTypes';
+import { X, ArrowRight, Check, Volume2, VolumeX, Sparkles, AlertCircle, Award, BookmarkCheck, Eye, EyeOff, RotateCcw, ChevronLeft } from 'lucide-react';
+import type { SessionStep, LessonSessionData, VerbConjugatorForm } from '@/lib/lessonSessionTypes';
+import { getConjugationMeaning, getRootVerbMeaning, getRootVerbArabic } from '@/lib/conjugationMeanings';
 import { getLessonSession } from '@/lib/lessonRegistry';
 import { LESSON_01_SESSION } from '@/lib/lesson1Session';
 import { useRetentionStore } from '@/state/retentionStore';
@@ -123,6 +124,26 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
   const [activeVerbIndex, setActiveVerbIndex] = useState<number>(0);
   const [revealConjugations, setRevealConjugations] = useState<boolean>(true);
 
+  // Masdar Factory local state (Vol 2)
+  const [activeMasdarIndex, setActiveMasdarIndex] = useState<number>(0);
+  const [completedMasdarItems, setCompletedMasdarItems] = useState<Record<string, string>>({});
+  const [wrongMasdarOption, setWrongMasdarOption] = useState<string | null>(null);
+
+  // Verb Conjugator local state (Vol 2)
+  const [activeConjugatorVerbIndex, setActiveConjugatorVerbIndex] = useState<number>(0);
+  const [selectedConjugatorTense, setSelectedConjugatorTense] = useState<'past' | 'present' | 'imperative' | 'prohibition'>('past');
+  const [selectedConjugatorDrillChoice, setSelectedConjugatorDrillChoice] = useState<string | null>(null);
+  const [completedConjugatorSlots, setCompletedConjugatorSlots] = useState<Record<string, Record<string, boolean>>>({});
+  const [availableConjugatorChips, setAvailableConjugatorChips] = useState<{ id: string; subjectAr: string; textAr: string }[]>([]);
+  const [selectedTargetConjugatorSubject, setSelectedTargetConjugatorSubject] = useState<string | null>(null);
+  const [wrongConjugatorChipId, setWrongConjugatorChipId] = useState<string | null>(null);
+
+  // Word Construction local state (Letter/Morpheme assembly)
+  const [activeWordConstructionIndex, setActiveWordConstructionIndex] = useState<number>(0);
+  const [constructedLetterChips, setConstructedLetterChips] = useState<{ id: string; letter: string }[]>([]);
+  const [availableLetterChips, setAvailableLetterChips] = useState<{ id: string; letter: string }[]>([]);
+  const [wordConstructionStatus, setWordConstructionStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
   // Stores
   const recordItemResult = useRetentionStore((state) => state.recordItemResult);
   const recordSessionComplete = useRetentionStore((state) => state.recordSessionComplete);
@@ -191,8 +212,112 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
     setAssignedTarkibSlots({});
     setActiveVerbIndex(0);
     setRevealConjugations(true);
+    setActiveMasdarIndex(0);
+    setCompletedMasdarItems({});
+    setWrongMasdarOption(null);
+    setActiveConjugatorVerbIndex(0);
+    setSelectedConjugatorTense(currentStep?.conjugatorPayload?.targetTense || 'past');
+    setSelectedConjugatorDrillChoice(null);
+    setCompletedConjugatorSlots({});
+    setAvailableConjugatorChips([]);
+    setSelectedTargetConjugatorSubject(null);
+    setWrongConjugatorChipId(null);
+
+    // Initialize Word Construction chips
+    if (currentStep?.type === 'word_construction' && currentStep.wordConstructionPayload) {
+      const payload = currentStep.wordConstructionPayload;
+      setActiveWordConstructionIndex(0);
+      setConstructedLetterChips([]);
+      setWordConstructionStatus('idle');
+      if (payload.items.length > 0) {
+        const item = payload.items[0];
+        const chipsWithId = item.chips.map((ch, idx) => ({
+          id: `${ch}-${idx}-${Math.random().toString(36).slice(2, 6)}`,
+          letter: ch,
+        }));
+        for (let i = chipsWithId.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [chipsWithId[i], chipsWithId[j]] = [chipsWithId[j], chipsWithId[i]];
+        }
+        setAvailableLetterChips(chipsWithId);
+      } else {
+        setAvailableLetterChips([]);
+      }
+    } else {
+      setActiveWordConstructionIndex(0);
+      setConstructedLetterChips([]);
+      setAvailableLetterChips([]);
+      setWordConstructionStatus('idle');
+    }
+
     setStepStatus('idle');
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
   }, [currentStep, isBn]);
+
+  // Initialize Verb Conjugator practice chips and selection for Verbs 1..N
+  useEffect(() => {
+    if (currentStep?.type !== 'verb_conjugator' || !currentStep.conjugatorPayload) return;
+    const payload = currentStep.conjugatorPayload;
+    if (payload.mode === 'drill' || payload.verbs.length <= 1) {
+      setAvailableConjugatorChips([]);
+      setSelectedTargetConjugatorSubject(null);
+      return;
+    }
+
+    // Verb 0 is the Reference Model (النموذج) - all forms visible
+    if (activeConjugatorVerbIndex === 0) {
+      setAvailableConjugatorChips([]);
+      setSelectedTargetConjugatorSubject(null);
+      return;
+    }
+
+    const currentVerb = payload.verbs[activeConjugatorVerbIndex];
+    if (!currentVerb) return;
+
+    const verbKey = `${currentVerb.id || activeConjugatorVerbIndex}-${selectedConjugatorTense}`;
+    const verbCompleted = completedConjugatorSlots[verbKey] || {};
+
+    const availableForms =
+      selectedConjugatorTense === 'imperative'
+        ? currentVerb.forms.filter((f) => Boolean(f.imperativeAr))
+        : selectedConjugatorTense === 'prohibition'
+        ? currentVerb.forms.filter((f) => Boolean(f.prohibitionAr))
+        : currentVerb.forms;
+
+    const practiceForms = availableForms.slice(1);
+    const unfilled = practiceForms.filter((f) => !verbCompleted[f.subjectAr]);
+
+    const chips: { id: string; subjectAr: string; textAr: string }[] = unfilled.map((f, idx) => {
+      const formAr =
+        selectedConjugatorTense === 'past'
+          ? f.pastAr
+          : selectedConjugatorTense === 'present'
+          ? f.presentAr || f.pastAr
+          : selectedConjugatorTense === 'prohibition'
+          ? f.prohibitionAr || f.pastAr
+          : f.imperativeAr || f.pastAr;
+      return {
+        id: `${f.subjectAr}-${formAr}-${idx}`,
+        subjectAr: f.subjectAr,
+        textAr: formAr,
+      };
+    });
+
+    // Fisher-Yates shuffle
+    for (let i = chips.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [chips[i], chips[j]] = [chips[j], chips[i]];
+    }
+
+    setAvailableConjugatorChips(chips);
+    if (unfilled.length > 0) {
+      setSelectedTargetConjugatorSubject(unfilled[0].subjectAr);
+    } else {
+      setSelectedTargetConjugatorSubject(null);
+    }
+  }, [currentStep, activeConjugatorVerbIndex, selectedConjugatorTense]);
 
   // Overall progress percentage
   const progressPercent = useMemo(() => {
@@ -271,6 +396,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
         currentStep.assemblyPayload?.promptAr ||
         currentStep.polarPayload?.correctAnswer ||
         currentStep.clozePayload?.correctAnswer ||
+        currentStep.wordConstructionPayload?.items[activeWordConstructionIndex]?.targetWordAr ||
         currentStep.titleAr ||
         'تَرْكِيبٌ';
       const meaningEn =
@@ -1000,7 +1126,18 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
       <div className="w-full max-w-lg mx-auto flex flex-col items-center space-y-6">
         {/* Target Sentence Prompt */}
         <div className="w-full p-6 sm:p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center text-center space-y-3">
-          {payload.promptAr ? (
+          {isArabicChips ? (
+            /* Student is building the ARABIC sentence from English/Bangla prompt */
+            <>
+              <h3 className="text-2xl sm:text-3xl font-english-bold text-neutral-900 dark:text-neutral-100">
+                {isBn ? (payload.promptBn || payload.promptEn) : payload.promptEn}
+              </h3>
+              <p className="text-xs font-mono font-medium text-neutral-500 uppercase tracking-wider">
+                {isBn ? 'নিচের শব্দগুলো সাজিয়ে আরবি বাক্যটি গঠন করুন' : 'Assemble the Arabic sentence using the word chips below'}
+              </p>
+            </>
+          ) : payload.promptAr ? (
+            /* Student is translating an Arabic sentence into Bangla/English */
             <>
               <div className="flex items-center justify-center gap-3">
                 <h3 className="font-arabic-bold text-3xl sm:text-4xl text-neutral-900 dark:text-white leading-relaxed" dir="rtl">
@@ -1150,15 +1287,31 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
     const prefix = parts[0]?.trim() || '';
     const suffix = parts.length > 1 ? parts.slice(1).join(' ').trim() : '';
 
+    // Check if questionAr is identical to the cloze sentence or is itself a cloze sentence
+    const isSingleSentenceCloze = !payload.partialAnswerAr ||
+      payload.questionAr.replace(/[\s.…]/g, '') === payload.partialAnswerAr.replace(/[\s.…]/g, '') ||
+      /(?:\.{2,}|…)/.test(payload.questionAr);
+
     return (
       <div className="w-full max-w-lg mx-auto flex flex-col items-center space-y-6">
         {/* Textbook Q&A Question Card */}
         <div className="w-full p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center text-center space-y-4">
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-center gap-3">
-              <h3 className="font-arabic-bold text-4xl text-neutral-950 dark:text-white" dir="rtl">
+          {/* Prominent Pedagogical Instruction */}
+          <div className="space-y-1">
+            <h3 className="text-base sm:text-lg font-english-bold text-neutral-900 dark:text-neutral-100">
+              {isBn ? currentStep.instructionBn : currentStep.instructionEn}
+            </h3>
+            <p className="text-xs sm:text-sm font-medium text-neutral-500 dark:text-neutral-400">
+              {isBn ? (payload.questionBn || payload.questionEn) : payload.questionEn}
+            </p>
+          </div>
+
+          {/* Distinct Question if this is a Q&A Dialogue (e.g. من في المسجد؟) */}
+          {!isSingleSentenceCloze && (
+            <div className="flex items-center justify-center gap-3 pt-2">
+              <h4 className="font-arabic-bold text-3xl sm:text-4xl text-neutral-950 dark:text-white" dir="rtl">
                 {payload.questionAr}
-              </h3>
+              </h4>
               <button
                 onClick={() => playArabicAudio(payload.questionAr)}
                 className="w-9 h-9 rounded-full bg-neutral-200/80 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 transition-colors cursor-pointer shadow-none border-0"
@@ -1167,14 +1320,11 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                 <Volume2 size={18} />
               </button>
             </div>
-            <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
-              {isBn ? (payload.questionBn || payload.questionEn) : payload.questionEn}
-            </p>
-          </div>
+          )}
 
-          {/* Answer Sentence with Inline Blank Slot */}
+          {/* Interactive Answer Sentence with Inline Blank Slot */}
           <div
-            className="pt-3 flex flex-wrap items-center justify-center gap-2.5 text-2xl md:text-3xl font-arabic-bold text-neutral-900 dark:text-neutral-100"
+            className="pt-2 flex flex-wrap items-center justify-center gap-2.5 text-2xl md:text-3xl font-arabic-bold text-neutral-900 dark:text-neutral-100"
             dir="rtl"
           >
             {prefix && <span>{prefix}</span>}
@@ -2302,8 +2452,8 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
           </div>
         </div>
 
-        {/* 56px Action Buttons */}
-        <div className="w-full flex items-center gap-3">
+        {/* Single Primary Action Button */}
+        <div className="w-full">
           {activeVerbIndex < payload.verbs.length - 1 ? (
             <button
               onClick={() => {
@@ -2312,25 +2462,1146 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                 setActiveVerbIndex(nextIdx);
                 playArabicAudio(payload.verbs[nextIdx].rootAr);
               }}
-              className="flex-1 h-14 rounded-full bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-300 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100 font-english-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+              className="w-full h-14 rounded-full bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
             >
               <span>{isBn ? 'পরবর্তী ক্রিয়া' : 'Next Verb'}</span>
-              <span className="font-arabic-bold text-base tracking-normal" dir="rtl">
+              <span className="font-arabic-bold text-lg tracking-normal" dir="rtl">
                 ({payload.verbs[activeVerbIndex + 1].rootAr})
               </span>
+              <ArrowRight size={18} />
             </button>
-          ) : null}
+          ) : (
+            <button
+              onClick={() => {
+                playTapSound();
+                advanceToNext();
+              }}
+              className="w-full h-14 rounded-full bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+            >
+              <span>{isBn ? 'পরবর্তী ধাপে যান' : 'Continue'}</span>
+              <ArrowRight size={18} />
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  };
 
-          <button
-            onClick={() => {
-              playTapSound();
-              advanceToNext();
-            }}
-            className="flex-1 h-14 rounded-full bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+  // --------------------------------------------------------------------------
+  // RENDER: MASDAR FACTORY VIEW (Interactive Verb Derivation & Bab Pattern Discovery)
+  // --------------------------------------------------------------------------
+  const renderMasdarFactory = () => {
+    const payload = currentStep.masdarPayload;
+    if (!payload || payload.items.length === 0) return null;
+
+    const currentItem = payload.items[activeMasdarIndex] || payload.items[0];
+    const isSolved = Boolean(completedMasdarItems[currentItem.id]);
+    const options = currentItem.presentOptionsAr && currentItem.presentOptionsAr.length > 0
+      ? currentItem.presentOptionsAr
+      : [currentItem.presentAr];
+
+    const handlePresentChoice = (choice: string) => {
+      if (isSolved) return;
+      playArabicAudio(choice);
+
+      if (choice === currentItem.presentAr) {
+        playSuccessChime();
+        setCompletedMasdarItems((prev) => ({
+          ...prev,
+          [currentItem.id]: choice,
+        }));
+      } else {
+        playTapSound();
+        setWrongMasdarOption(choice);
+        setTimeout(() => {
+          setWrongMasdarOption(null);
+        }, 500);
+      }
+    };
+
+    const handleNextMasdar = () => {
+      playTapSound();
+      const nextIdx = activeMasdarIndex + 1;
+      setActiveMasdarIndex(nextIdx);
+      playArabicAudio(payload.items[nextIdx].masdarAr);
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+
+    const handlePrevMasdar = () => {
+      playTapSound();
+      const prevIdx = activeMasdarIndex - 1;
+      setActiveMasdarIndex(prevIdx);
+      playArabicAudio(payload.items[prevIdx].masdarAr);
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+
+    return (
+      <div className="w-full max-w-xl mx-auto flex flex-col items-center space-y-5">
+        {/* Navigation & Counter Bar */}
+        <div className="w-full flex items-center justify-between px-1">
+          {activeMasdarIndex > 0 ? (
+            <button
+              type="button"
+              onClick={handlePrevMasdar}
+              className="flex items-center gap-1 text-xs font-english-semibold text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors border-0 bg-transparent cursor-pointer p-0 shadow-none"
+              aria-label="Previous Masdar"
+            >
+              <ChevronLeft size={16} />
+              <span>{isBn ? 'আগের মাসদার' : 'Previous Masdar'}</span>
+            </button>
+          ) : (
+            <div />
+          )}
+          <span className="text-xs font-mono text-neutral-400 dark:text-neutral-500">
+            {toArabicNumerals(activeMasdarIndex + 1)} / {toArabicNumerals(payload.items.length)}
+          </span>
+        </div>
+
+        {/* 1. Masdar Hero Card */}
+        <div className="w-full p-6 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center space-y-2.5 text-center">
+          <div className="flex items-center gap-3">
+            <span className="text-3xl select-none">{currentItem.emoji}</span>
+            <h3 className="font-arabic-bold text-4xl sm:text-5xl text-neutral-950 dark:text-white leading-relaxed" dir="rtl">
+              {currentItem.masdarAr}
+            </h3>
+            <button
+              type="button"
+              onClick={() => playArabicAudio(currentItem.audioKey || currentItem.masdarAr)}
+              className="w-10 h-10 rounded-full bg-neutral-200/80 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 shrink-0 border-0 cursor-pointer transition-colors shadow-none"
+              aria-label="Listen to Masdar"
+            >
+              <Volume2 size={18} />
+            </button>
+          </div>
+          <div className="space-y-1">
+            <p className="text-xl font-english-bold text-neutral-900 dark:text-neutral-100 tracking-tight">
+              {isBn ? currentItem.masdarMeaningBn : currentItem.masdarMeaningEn}
+            </p>
+            <span className="text-xs font-mono font-medium text-neutral-500 dark:text-neutral-400">
+              {isBn ? 'ক্রিয়ামূল (মাসদার)' : 'Verbal Noun (Masdar)'}
+            </span>
+          </div>
+        </div>
+
+        {/* 2. Verb Pattern Anchor: Past Form & Bab Rule */}
+        <div className="w-full p-5 rounded-3xl bg-neutral-100 dark:bg-neutral-900 flex flex-col space-y-4">
+          {/* Pattern Family Badges */}
+          <div className="w-full flex items-center justify-between flex-wrap gap-2">
+            <span className="text-xs font-mono font-bold text-accent-primary bg-accent-primary-subtle px-3 py-1 rounded-full">
+              {isBn ? (currentItem.baabPatternBn || currentItem.baabPatternEn) : currentItem.baabPatternEn}
+            </span>
+            {(currentItem.vowelShiftEn || currentItem.vowelShiftBn) && (
+              <span className="text-xs font-mono font-bold text-neutral-700 dark:text-neutral-300 bg-neutral-200/80 dark:bg-neutral-800 px-3 py-1 rounded-full">
+                {isBn ? (currentItem.vowelShiftBn || currentItem.vowelShiftEn) : currentItem.vowelShiftEn}
+              </span>
+            )}
+          </div>
+
+          {/* Past Tense Row */}
+          <div className="w-full p-4 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+            <div className="text-left space-y-0.5">
+              <span className="text-[11px] font-mono font-semibold text-neutral-400 uppercase tracking-wider">
+                {isBn ? 'অতীতকাল · المَاضِي' : 'Past Tense · المَاضِي'}
+              </span>
+              <p className="text-xs sm:text-sm font-english-medium text-neutral-600 dark:text-neutral-300">
+                {isBn ? currentItem.pastMeaningBn : currentItem.pastMeaningEn}
+              </p>
+            </div>
+            <div className="flex items-center gap-2.5" dir="rtl">
+              <span className="font-arabic-bold text-2xl sm:text-3xl text-neutral-950 dark:text-white leading-relaxed">
+                {currentItem.pastAr}
+              </span>
+              <button
+                type="button"
+                onClick={() => playArabicAudio(currentItem.pastAr)}
+                className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-300 transition-colors cursor-pointer border-0 shadow-none"
+                aria-label="Listen to past tense"
+              >
+                <Volume2 size={15} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* 3. Interactive Pattern Discovery: Present Tense Choice or Reveal */}
+        {!isSolved ? (
+          <div className="w-full p-5 rounded-3xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center space-y-4 text-center">
+            <div className="space-y-1">
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-accent-secondary">
+                {isBn ? 'প্যাটার্ন প্রয়োগ করুন' : 'Apply Pattern Rule'}
+              </span>
+              <h4 className="text-sm sm:text-base font-english-semibold text-neutral-900 dark:text-neutral-100">
+                {isBn
+                  ? 'এই বাবের নিয়ম অনুযায়ী বর্তমান কালের (মুদারী) সঠিক রূপ কোনটি?'
+                  : 'Which form follows this pattern in the present tense?'}
+              </h4>
+            </div>
+
+            {/* Options Chips */}
+            <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              {options.map((opt) => {
+                const isWrong = wrongMasdarOption === opt;
+                return (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={() => handlePresentChoice(opt)}
+                    className={`w-full min-h-[56px] py-3 px-4 rounded-2xl font-arabic-bold text-2xl flex items-center justify-center transition-all active:scale-[0.98] cursor-pointer border-0 ${
+                      isWrong
+                        ? 'bg-rose-500/20 text-rose-700 dark:text-rose-300 ring-2 ring-rose-500 animate-shake'
+                        : 'bg-white hover:bg-neutral-200 dark:bg-neutral-950 dark:hover:bg-neutral-800 text-neutral-950 dark:text-white shadow-none'
+                    }`}
+                    dir="rtl"
+                  >
+                    {opt}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          /* Solved State: Full Derivation Revealed with Pattern Explanation */
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full space-y-3"
           >
-            <span>{isBn ? 'পরবর্তী ধাপে যান' : 'Continue'}</span>
-            <ArrowRight size={18} />
-          </button>
+            {/* Pattern Rule Confirmation Banner */}
+            <div className="w-full p-4 rounded-3xl bg-emerald-500/10 dark:bg-emerald-500/15 flex flex-col items-center text-center space-y-1">
+              <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-700 dark:text-emerald-300">
+                <Sparkles size={14} />
+                <span>{isBn ? 'সঠিক রূপান্তর!' : 'Pattern Applied!'}</span>
+              </div>
+              <p className="text-xs sm:text-sm font-medium text-emerald-800 dark:text-emerald-200">
+                {isBn
+                  ? (currentItem.patternRuleBn || currentItem.baabPatternBn)
+                  : (currentItem.patternRuleEn || currentItem.baabPatternEn)}
+              </p>
+            </div>
+
+            {/* Present Form Card */}
+            <div className="w-full p-4 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+              <div className="text-left space-y-0.5">
+                <span className="text-[11px] font-mono font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                  {isBn ? 'বর্তমান ও ভবিষ্যৎ · المُضَارِع' : 'Present Tense · المُضَارِع'}
+                </span>
+                <p className="text-xs sm:text-sm font-english-medium text-neutral-600 dark:text-neutral-300">
+                  {isBn ? currentItem.presentMeaningBn : currentItem.presentMeaningEn}
+                </p>
+              </div>
+              <div className="flex items-center gap-2.5" dir="rtl">
+                <span className="font-arabic-bold text-2xl sm:text-3xl text-neutral-950 dark:text-white leading-relaxed">
+                  {currentItem.presentAr}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => playArabicAudio(currentItem.presentAr)}
+                  className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-300 transition-colors cursor-pointer border-0 shadow-none"
+                  aria-label="Listen to present tense"
+                >
+                  <Volume2 size={15} />
+                </button>
+              </div>
+            </div>
+
+            {/* Derived Directives: Command & Prohibition */}
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              {/* Command (Amr) */}
+              <div className="p-3.5 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+                <div className="text-left space-y-0.5">
+                  <span className="text-[10px] font-mono font-bold text-neutral-400 uppercase tracking-wider">
+                    {isBn ? 'আদেশবাচক · الأَمْر' : 'Command · الأَمْر'}
+                  </span>
+                  <p className="text-xs font-english-medium text-neutral-600 dark:text-neutral-400">
+                    {isBn ? currentItem.imperativeMeaningBn : currentItem.imperativeMeaningEn}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2" dir="rtl">
+                  <span className="font-arabic-bold text-xl text-neutral-950 dark:text-white">
+                    {currentItem.imperativeAr}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => playArabicAudio(currentItem.imperativeAr)}
+                    className="w-7 h-7 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-600 dark:text-neutral-300 border-0 cursor-pointer shadow-none"
+                    aria-label="Listen to command"
+                  >
+                    <Volume2 size={13} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Prohibition (Nahy) */}
+              <div className="p-3.5 rounded-2xl bg-white dark:bg-neutral-950 flex items-center justify-between">
+                <div className="text-left space-y-0.5">
+                  <span className="text-[10px] font-mono font-bold text-neutral-400 uppercase tracking-wider">
+                    {isBn ? 'নিষেধবাচক · النَّهْي' : 'Forbidding · النَّهْي'}
+                  </span>
+                  <p className="text-xs font-english-medium text-neutral-600 dark:text-neutral-400">
+                    {isBn ? currentItem.prohibitionMeaningBn : currentItem.prohibitionMeaningEn}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2" dir="rtl">
+                  <span className="font-arabic-bold text-xl text-neutral-950 dark:text-white">
+                    {currentItem.prohibitionAr}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => playArabicAudio(currentItem.prohibitionAr)}
+                    className="w-7 h-7 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-600 dark:text-neutral-300 border-0 cursor-pointer shadow-none"
+                    aria-label="Listen to prohibition"
+                  >
+                    <Volume2 size={13} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* 4. Single 56px Action Button */}
+        <div className="w-full pt-1">
+          {isSolved ? (
+            activeMasdarIndex < payload.items.length - 1 ? (
+              <button
+                type="button"
+                onClick={handleNextMasdar}
+                className="w-full h-14 rounded-full bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+              >
+                <span>{isBn ? 'পরবর্তী মাসদার' : 'Next Masdar'}</span>
+                <span className="font-arabic-bold text-base tracking-normal" dir="rtl">
+                  ({payload.items[activeMasdarIndex + 1].masdarAr})
+                </span>
+                <ArrowRight size={18} />
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  playTapSound();
+                  advanceToNext();
+                }}
+                className="w-full h-14 rounded-full bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+              >
+                <span>{isBn ? 'আমি বুঝেছি! চালিয়ে যান' : 'I Understand! Continue'}</span>
+                <ArrowRight size={18} />
+              </button>
+            )
+          ) : (
+            <button
+              type="button"
+              disabled
+              className="w-full h-14 rounded-full bg-neutral-200 dark:bg-neutral-850 text-neutral-400 dark:text-neutral-500 font-english-semibold text-sm sm:text-base flex items-center justify-center gap-2 cursor-not-allowed shadow-none border-0 select-none"
+            >
+              <span>{isBn ? 'মুদারী রূপটি নির্বাচন করুন' : 'Select the Present Tense to Continue'}</span>
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // --------------------------------------------------------------------------
+  // RENDER: VERB CONJUGATOR VIEW (Interactive Sarf Paradigm Drill & Matrix)
+  // --------------------------------------------------------------------------
+  const renderVerbConjugator = () => {
+    const payload = currentStep.conjugatorPayload;
+    if (!payload || payload.verbs.length === 0) return null;
+
+    const currentVerb = payload.verbs[activeConjugatorVerbIndex] || payload.verbs[0];
+
+    // In 'drill' mode: Multiple choice question for a specific target conjugation
+    if (payload.mode === 'drill' && payload.optionsAr && payload.correctAnswerAr) {
+      const handleDrillChoice = (choice: string) => {
+        if (selectedConjugatorDrillChoice !== null) return;
+        playArabicAudio(choice);
+        setSelectedConjugatorDrillChoice(choice);
+
+        if (choice === payload.correctAnswerAr) {
+          playSuccessChime();
+          handlePass();
+        } else {
+          handleFail();
+        }
+      };
+
+      return (
+        <div className="w-full max-w-lg mx-auto flex flex-col items-center space-y-6">
+          {/* Prompt Card */}
+          <div className="w-full p-6 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center space-y-4 text-center">
+            <div className="flex items-center gap-2">
+              <span className="text-3xl">{currentVerb.emoji}</span>
+              <span className="font-arabic-bold text-3xl text-neutral-950 dark:text-white" dir="rtl">
+                {currentVerb.rootAr}
+              </span>
+              <span className="text-xs font-mono text-neutral-400">
+                ({isBn ? currentVerb.meaningBn : currentVerb.meaningEn})
+              </span>
+            </div>
+
+            <div className="space-y-1">
+              <h3 className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                {isBn ? payload.drillQuestionBn : payload.drillQuestionEn}
+              </h3>
+              {payload.drillQuestionAr && (
+                <p className="font-arabic-bold text-2xl text-accent-secondary" dir="rtl">
+                  {payload.drillQuestionAr}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Drill Options */}
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {payload.optionsAr.map((opt) => {
+              const isSelected = selectedConjugatorDrillChoice === opt;
+              const isCorrect = opt === payload.correctAnswerAr;
+              let style = 'bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-900 dark:text-white';
+
+              if (selectedConjugatorDrillChoice !== null) {
+                if (isSelected && isCorrect) {
+                  style = 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 ring-2 ring-emerald-500';
+                } else if (isSelected && !isCorrect) {
+                  style = 'bg-rose-500/20 text-rose-700 dark:text-rose-300 ring-2 ring-rose-500';
+                } else if (isCorrect) {
+                  style = 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400';
+                }
+              }
+
+              return (
+                <button
+                  key={opt}
+                  onClick={() => handleDrillChoice(opt)}
+                  disabled={selectedConjugatorDrillChoice !== null}
+                  className={`w-full min-h-[56px] py-4 px-6 rounded-3xl font-arabic-bold text-2xl flex items-center justify-center transition-all active:scale-[0.98] cursor-pointer border-0 ${style}`}
+                  dir="rtl"
+                >
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Continue Button */}
+          {stepStatus !== 'idle' && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="w-full space-y-3"
+            >
+              <button
+                onClick={advanceToNext}
+                className={`w-full h-14 rounded-full font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer border-0 text-white ${
+                  stepStatus === 'correct'
+                    ? 'bg-emerald-600 hover:bg-emerald-700'
+                    : 'bg-rose-600 hover:bg-rose-700'
+                }`}
+              >
+                <span>{stepStatus === 'correct' ? 'Continue' : 'Got it! Continue'}</span>
+                <ArrowRight size={18} />
+              </button>
+            </motion.div>
+          )}
+        </div>
+      );
+    }
+
+    // In 'explore' mode: Paradigm matrix explorer with Active Practice for Verbs 2..N
+    const allTenses: { key: 'past' | 'present' | 'imperative' | 'prohibition'; labelEn: string; labelBn: string; labelAr: string }[] = [
+      { key: 'past', labelEn: 'Past', labelBn: 'মাযী', labelAr: 'المَاضِي' },
+      { key: 'present', labelEn: 'Present', labelBn: 'মুদারী', labelAr: 'المُضَارِع' },
+      { key: 'imperative', labelEn: 'Command', labelBn: 'আমর', labelAr: 'الأَمْر' },
+      { key: 'prohibition', labelEn: 'Forbidding', labelBn: 'নিষেধ', labelAr: 'النَّهْي' },
+    ];
+
+    // If targetTense is specified on payload, lock to it; otherwise only show tenses supported by the verb
+    const tenses = payload.targetTense
+      ? allTenses.filter((t) => t.key === payload.targetTense)
+      : allTenses.filter((t) => {
+          if (t.key === 'imperative') return currentVerb.forms.some((f) => Boolean(f.imperativeAr));
+          if (t.key === 'prohibition') return currentVerb.forms.some((f) => Boolean(f.prohibitionAr));
+          if (t.key === 'present') return currentVerb.forms.some((f) => Boolean(f.presentAr));
+          return true;
+        });
+
+    // In imperative and prohibition modes, only 2nd person subjects (أَنْتَ, أَنْتِ) exist in Arabic
+    const availableForms =
+      selectedConjugatorTense === 'imperative'
+        ? currentVerb.forms.filter((f) => Boolean(f.imperativeAr))
+        : selectedConjugatorTense === 'prohibition'
+        ? currentVerb.forms.filter((f) => Boolean(f.prohibitionAr))
+        : currentVerb.forms;
+
+    const getFormArabic = (form: VerbConjugatorForm, tense: 'past' | 'present' | 'imperative' | 'prohibition') => {
+      if (tense === 'past') return form.pastAr;
+      if (tense === 'present') return form.presentAr || form.pastAr;
+      if (tense === 'prohibition') return form.prohibitionAr || form.presentAr || form.pastAr;
+      return form.imperativeAr || form.presentAr || form.pastAr;
+    };
+
+    const isModelVerb = activeConjugatorVerbIndex === 0;
+    const rootMeaning = getRootVerbMeaning(currentVerb, selectedConjugatorTense);
+    const rootArabic = getRootVerbArabic(currentVerb, selectedConjugatorTense);
+    const verbKey = `${currentVerb.id || activeConjugatorVerbIndex}-${selectedConjugatorTense}`;
+    const verbCompleted = completedConjugatorSlots[verbKey] || {};
+
+    // Practice rows are forms after the 1st row (row 0: هُوَ is anchor/reference)
+    const practiceForms = availableForms.slice(1);
+    const isAllSlotsCompleted = isModelVerb || practiceForms.every((f) => verbCompleted[f.subjectAr]);
+
+    const handleConjugatorChipTap = (chip: { id: string; subjectAr: string; textAr: string }) => {
+      if (wrongConjugatorChipId !== null) return;
+      playTapSound();
+
+      const targetSubject =
+        selectedTargetConjugatorSubject ||
+        practiceForms.find((f) => !verbCompleted[f.subjectAr])?.subjectAr;
+
+      if (!targetSubject) return;
+
+      const targetForm = practiceForms.find((f) => f.subjectAr === targetSubject);
+      if (!targetForm) return;
+
+      const expectedAr = getFormArabic(targetForm, selectedConjugatorTense);
+
+      if (chip.textAr === expectedAr) {
+        playArabicAudio(chip.textAr);
+        const updatedSlots = { ...verbCompleted, [targetSubject]: true };
+
+        setCompletedConjugatorSlots((prev) => ({
+          ...prev,
+          [verbKey]: updatedSlots,
+        }));
+
+        setAvailableConjugatorChips((prev) => prev.filter((c) => c.id !== chip.id));
+
+        const nextUnfilled = practiceForms.find((f) => !updatedSlots[f.subjectAr]);
+        if (nextUnfilled) {
+          setSelectedTargetConjugatorSubject(nextUnfilled.subjectAr);
+        } else {
+          setSelectedTargetConjugatorSubject(null);
+          playSuccessChime();
+        }
+      } else {
+        playErrorCue();
+        setWrongConjugatorChipId(chip.id);
+        setTimeout(() => {
+          setWrongConjugatorChipId(null);
+        }, 500);
+      }
+    };
+
+    const handleNextConjugatorVerb = () => {
+      playTapSound();
+      const nextIdx = activeConjugatorVerbIndex + 1;
+      setActiveConjugatorVerbIndex(nextIdx);
+      const nextVerb = payload.verbs[nextIdx];
+      if (nextVerb) {
+        playArabicAudio(getRootVerbArabic(nextVerb, selectedConjugatorTense));
+      }
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+
+    const handlePrevConjugatorVerb = () => {
+      playTapSound();
+      const prevIdx = activeConjugatorVerbIndex - 1;
+      setActiveConjugatorVerbIndex(prevIdx);
+      const prevVerb = payload.verbs[prevIdx];
+      if (prevVerb) {
+        playArabicAudio(getRootVerbArabic(prevVerb, selectedConjugatorTense));
+      }
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+
+    return (
+      <div className="w-full max-w-xl mx-auto flex flex-col items-center space-y-5">
+        {/* Navigation Bar (only when on subsequent verbs) */}
+        {activeConjugatorVerbIndex > 0 && (
+          <div className="w-full flex items-center justify-between px-1">
+            <button
+              onClick={handlePrevConjugatorVerb}
+              className="flex items-center gap-1 text-xs font-english-semibold text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors border-0 bg-transparent cursor-pointer p-0 shadow-none"
+              aria-label="Previous Verb"
+            >
+              <ChevronLeft size={16} />
+              <span>{isBn ? 'আগের ক্রিয়া' : 'Previous verb'}</span>
+            </button>
+            <span className="text-xs font-mono text-neutral-400 dark:text-neutral-500">
+              {toArabicNumerals(activeConjugatorVerbIndex + 1)} / {toArabicNumerals(payload.verbs.length)}
+            </span>
+          </div>
+        )}
+
+        {/* Hero Section: Centered Tense Anchor Pill, Prominent Concrete Meaning & Root Word */}
+        <div className="w-full flex flex-col items-center space-y-2.5 text-center">
+          <span className="text-xs font-mono font-bold uppercase tracking-wider text-accent-primary bg-accent-primary-subtle px-3 py-1 rounded-full">
+            {selectedConjugatorTense === 'past'
+              ? (isBn ? 'অতীতকাল · المَاضِي' : 'Past Tense · المَاضِي')
+              : selectedConjugatorTense === 'present'
+              ? (isBn ? 'বর্তমান/ভবিষ্যৎ · المُضَارِع' : 'Present Tense · المُضَارِع')
+              : selectedConjugatorTense === 'prohibition'
+              ? (isBn ? 'নিষেধ · النَّهْي' : 'Forbidding · النَّهْي')
+              : (isBn ? 'আদেশ · الأَمْر' : 'Command · الأَمْر')}
+          </span>
+
+          <h2 className="text-3xl sm:text-4xl font-english-bold text-neutral-900 dark:text-white tracking-tight">
+            {isBn ? rootMeaning.bn : rootMeaning.en}
+          </h2>
+
+          <div className="flex items-center justify-center gap-3">
+            <span className="font-arabic-bold text-4xl sm:text-5xl text-neutral-950 dark:text-white leading-relaxed" dir="rtl">
+              {rootArabic}
+            </span>
+            <button
+              onClick={() => playArabicAudio(rootArabic)}
+              className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-300 transition-colors cursor-pointer border-0 shrink-0 shadow-none"
+              aria-label={isBn ? "শব্দ শুনুন" : "Listen to verb"}
+            >
+              <Volume2 size={18} />
+            </button>
+          </div>
+
+          {/* Tense Selector (if multi-tense) */}
+          {tenses.length > 1 && (
+            <div className="w-full max-w-xs grid grid-cols-3 p-1 rounded-full bg-neutral-100 dark:bg-neutral-900 gap-1 mt-1">
+              {tenses.map((t) => {
+                const isSelected = selectedConjugatorTense === t.key;
+                return (
+                  <button
+                    key={t.key}
+                    onClick={() => {
+                      playTapSound();
+                      setSelectedConjugatorTense(t.key);
+                    }}
+                    className={`py-1.5 px-2 rounded-full text-xs font-bold transition-all border-0 cursor-pointer flex items-center justify-center gap-1 ${
+                      isSelected
+                        ? 'bg-white dark:bg-neutral-950 text-neutral-950 dark:text-white shadow-none'
+                        : 'text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200'
+                    }`}
+                  >
+                    <span>{isBn ? t.labelBn : t.labelEn}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Paradigm List: Vertical Stack of All Forms */}
+        <div className="w-full space-y-2.5">
+          {availableForms.map((form, index) => {
+            const formAr = getFormArabic(form, selectedConjugatorTense);
+            const meaning = getConjugationMeaning(form, selectedConjugatorTense, currentVerb);
+
+            // Row 0 is pre-filled model anchor; rows 1..N are practice slots for verbs 1..N
+            const isSlotFilled = isModelVerb || index === 0 || verbCompleted[form.subjectAr] === true;
+            const isTargeted = !isSlotFilled && selectedTargetConjugatorSubject === form.subjectAr;
+
+            return (
+              <div
+                key={form.subjectAr}
+                onClick={() => {
+                  if (!isSlotFilled) {
+                    playTapSound();
+                    setSelectedTargetConjugatorSubject(form.subjectAr);
+                  }
+                }}
+                className={`w-full px-5 py-3.5 sm:px-6 sm:py-4 rounded-3xl transition-all flex items-center justify-between ${
+                  !isSlotFilled
+                    ? isTargeted
+                      ? 'bg-accent-primary-subtle/50 ring-2 ring-accent-primary cursor-pointer'
+                      : 'bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 cursor-pointer'
+                    : 'bg-neutral-100 dark:bg-neutral-900'
+                }`}
+              >
+                {/* Left: Pronoun Badge & Full Concrete Meaning */}
+                <div className="flex items-center gap-3.5 sm:gap-4">
+                  <div className="w-12 h-10 sm:w-14 sm:h-11 rounded-2xl bg-white dark:bg-neutral-800 flex items-center justify-center shrink-0 shadow-none">
+                    <span className="font-arabic-bold text-lg sm:text-xl text-neutral-900 dark:text-neutral-100" dir="rtl">
+                      {form.subjectAr}
+                    </span>
+                  </div>
+                  <div className="flex flex-col items-start text-start">
+                    <span className="font-english-bold text-base sm:text-lg text-neutral-950 dark:text-white leading-tight">
+                      {isBn ? meaning.bn : meaning.en}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Right: Inflected Form & Audio OR Dashed Target Slot */}
+                {isSlotFilled ? (
+                  <div className="flex items-center gap-3">
+                    <span className="font-arabic-bold text-2xl sm:text-3xl text-neutral-950 dark:text-white leading-relaxed tracking-normal" dir="rtl">
+                      {formAr}
+                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        playArabicAudio(formAr);
+                      }}
+                      className="w-9 h-9 rounded-full bg-white hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-200 flex items-center justify-center transition-colors cursor-pointer border-0 shrink-0 shadow-none"
+                      aria-label={`Listen to ${formAr}`}
+                    >
+                      <Volume2 size={16} />
+                    </button>
+                  </div>
+                ) : (
+                  <div className={`h-11 px-4 sm:px-5 rounded-2xl border-2 border-dashed flex items-center justify-center transition-all ${
+                    isTargeted
+                      ? 'border-accent-primary bg-white dark:bg-neutral-950 text-accent-primary'
+                      : 'border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-950/40 text-neutral-400 dark:text-neutral-500'
+                  }`}>
+                    <span className="text-xs font-mono font-semibold">
+                      {isTargeted
+                        ? (isBn ? 'নিচের চিপ বাছুন' : 'Select chip below')
+                        : (isBn ? 'পূরণ করতে চাপুন' : 'Tap to fill')}
+                    </span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Word Chip Bank (Verbs 1..N Practice) */}
+        {!isModelVerb && availableConjugatorChips.length > 0 && (
+          <div className="w-full pt-1 flex flex-col items-center space-y-3">
+            <div className="w-full flex items-center justify-between px-1">
+              <span className="text-xs font-mono font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">
+                {isBn ? 'সঠিক রূপটি নির্বাচন করুন:' : 'Select matching form:'}
+              </span>
+              {selectedTargetConjugatorSubject && (
+                <span className="text-xs font-mono font-semibold text-accent-primary bg-accent-primary-subtle px-2.5 py-0.5 rounded-full">
+                  {isBn ? `লক্ষ্য: ${selectedTargetConjugatorSubject}` : `Target: ${selectedTargetConjugatorSubject}`}
+                </span>
+              )}
+            </div>
+
+            <div className="w-full flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
+              {availableConjugatorChips.map((chip) => {
+                const isWrong = wrongConjugatorChipId === chip.id;
+                return (
+                  <motion.button
+                    key={chip.id}
+                    animate={isWrong ? { x: [-8, 8, -6, 6, -3, 3, 0] } : {}}
+                    transition={{ duration: 0.4 }}
+                    onClick={() => handleConjugatorChipTap(chip)}
+                    className={`min-h-[52px] px-5 sm:px-6 rounded-2xl font-arabic-bold text-2xl sm:text-3xl flex items-center justify-center cursor-pointer border-0 transition-all active:scale-95 shadow-none ${
+                      isWrong
+                        ? 'bg-rose-500/20 text-rose-600 dark:text-rose-400 ring-2 ring-rose-500'
+                        : 'bg-white dark:bg-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-950 dark:text-white'
+                    }`}
+                    dir="rtl"
+                  >
+                    {chip.textAr}
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Single Action Button */}
+        <div className="w-full pt-1">
+          {isModelVerb ? (
+            payload.verbs.length > 1 ? (
+              <button
+                onClick={handleNextConjugatorVerb}
+                className="w-full h-14 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+              >
+                <span>{isBn ? 'অনুশীলন শুরু করুন' : 'Start Practice'}</span>
+                <span className="font-arabic-bold text-lg tracking-normal" dir="rtl">
+                  ({getRootVerbArabic(payload.verbs[1], selectedConjugatorTense)})
+                </span>
+                <ArrowRight size={18} />
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  playTapSound();
+                  advanceToNext();
+                }}
+                className="w-full h-14 rounded-full bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+              >
+                <span>{isBn ? 'পরবর্তী ধাপে যান' : 'Continue'}</span>
+                <ArrowRight size={18} />
+              </button>
+            )
+          ) : !isAllSlotsCompleted ? (
+            <button
+              disabled
+              className="w-full h-14 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500 font-english-semibold text-base flex items-center justify-center gap-2 cursor-not-allowed shadow-none border-0"
+            >
+              <span>{isBn ? 'উপরের খালি রূপগুলো সম্পন্ন করুন' : 'Complete the conjugations above'}</span>
+            </button>
+          ) : activeConjugatorVerbIndex < payload.verbs.length - 1 ? (
+            <button
+              onClick={handleNextConjugatorVerb}
+              className="w-full h-14 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+            >
+              <span>{isBn ? 'পরবর্তী ক্রিয়া' : 'Next Verb'}</span>
+              <span className="font-arabic-bold text-lg tracking-normal" dir="rtl">
+                ({getRootVerbArabic(payload.verbs[activeConjugatorVerbIndex + 1], selectedConjugatorTense)})
+              </span>
+              <ArrowRight size={18} />
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                playTapSound();
+                advanceToNext();
+              }}
+              className="w-full h-14 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer shadow-none border-0"
+            >
+              <span>{isBn ? 'পরবর্তী ধাপে যান' : 'Continue'}</span>
+              <ArrowRight size={18} />
+            </button>
+          )}
+        </div>
+      </div>
+    );
+
+  };
+
+  // --------------------------------------------------------------------------
+  // RENDER: WORD CONSTRUCTION (Morpheme & Letter-by-Letter Assembly)
+  // --------------------------------------------------------------------------
+  const renderWordConstruction = () => {
+    const payload = currentStep.wordConstructionPayload;
+    if (!payload || !payload.items || payload.items.length === 0) return null;
+
+    const currentItem = payload.items[activeWordConstructionIndex] || payload.items[0];
+    const assembledWord = constructedLetterChips.map((c) => c.letter).join('');
+    const hasPlacedChips = constructedLetterChips.length > 0;
+
+    const handleAddLetterChip = (chip: { id: string; letter: string }) => {
+      if (wordConstructionStatus === 'success') return;
+      playTapSound();
+      setAvailableLetterChips((prev) => prev.filter((c) => c.id !== chip.id));
+      setConstructedLetterChips((prev) => [...prev, chip]);
+      if (wordConstructionStatus === 'error') {
+        setWordConstructionStatus('idle');
+      }
+    };
+
+    const handleRemoveLetterChip = (chipId: string) => {
+      if (wordConstructionStatus === 'success') return;
+      playTapSound();
+      const chipToRemove = constructedLetterChips.find((c) => c.id === chipId);
+      if (!chipToRemove) return;
+      setConstructedLetterChips((prev) => prev.filter((c) => c.id !== chipId));
+      setAvailableLetterChips((prev) => [...prev, chipToRemove]);
+      if (wordConstructionStatus === 'error') {
+        setWordConstructionStatus('idle');
+      }
+    };
+
+    const handleClearLetterChips = () => {
+      if (wordConstructionStatus === 'success' || constructedLetterChips.length === 0) return;
+      playTapSound();
+      setAvailableLetterChips((prev) => [...prev, ...constructedLetterChips]);
+      setConstructedLetterChips([]);
+      if (wordConstructionStatus === 'error') {
+        setWordConstructionStatus('idle');
+      }
+    };
+
+    const handleCheckConstruction = () => {
+      if (constructedLetterChips.length === 0 || wordConstructionStatus === 'success') return;
+
+      const cleanAssembled = assembledWord.trim();
+      const cleanTarget = currentItem.targetWordAr.trim();
+      const isCorrect = cleanAssembled === cleanTarget;
+
+      if (isCorrect) {
+        setWordConstructionStatus('success');
+        playSuccessChime();
+        playArabicAudio(currentItem.targetWordAr);
+        if (activeWordConstructionIndex === payload.items.length - 1) {
+          handlePass();
+        }
+      } else {
+        setWordConstructionStatus('error');
+        playErrorCue();
+        handleFail();
+      }
+    };
+
+    const handleNextWordOrStep = () => {
+      if (activeWordConstructionIndex < payload.items.length - 1) {
+        const nextIdx = activeWordConstructionIndex + 1;
+        setActiveWordConstructionIndex(nextIdx);
+        setConstructedLetterChips([]);
+        setWordConstructionStatus('idle');
+        const nextItem = payload.items[nextIdx];
+        const chipsWithId = nextItem.chips.map((ch, idx) => ({
+          id: `${ch}-${idx}-${Math.random().toString(36).slice(2, 6)}`,
+          letter: ch,
+        }));
+        for (let i = chipsWithId.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [chipsWithId[i], chipsWithId[j]] = [chipsWithId[j], chipsWithId[i]];
+        }
+        setAvailableLetterChips(chipsWithId);
+        playTapSound();
+      } else {
+        advanceToNext();
+      }
+    };
+
+    return (
+      <div className="w-full max-w-lg mx-auto flex flex-col items-center space-y-6">
+        {/* Progress Counter for Multi-item Battery */}
+        {payload.items.length > 1 && (
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono font-semibold text-neutral-500 dark:text-neutral-400">
+              {toArabicNumerals(activeWordConstructionIndex + 1)} / {toArabicNumerals(payload.items.length)}
+            </span>
+            <div className="flex gap-1.5">
+              {payload.items.map((_, idx) => (
+                <div
+                  key={idx}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    idx === activeWordConstructionIndex
+                      ? 'bg-accent-primary w-4'
+                      : idx < activeWordConstructionIndex
+                      ? 'bg-emerald-500'
+                      : 'bg-neutral-300 dark:bg-neutral-800'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Source Word & Derivation Prompt Card */}
+        <div className="w-full p-6 sm:p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center space-y-4 text-center">
+          {currentItem.sourceWordAr && (
+            <div className="flex flex-col items-center space-y-2">
+              <span className="px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider bg-neutral-200/80 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+                {isBn
+                  ? (currentItem.sourceWordLabelBn || 'মূল মাছদার (Verbal Noun)')
+                  : (currentItem.sourceWordLabelEn || 'Verbal Noun (Masdar)')}
+              </span>
+              <div className="flex items-center gap-3">
+                <span className="font-arabic-bold text-3xl sm:text-4xl text-neutral-950 dark:text-white leading-relaxed" dir="rtl">
+                  {currentItem.sourceWordAr}
+                </span>
+                <button
+                  onClick={() => playArabicAudio(currentItem.sourceWordAr!)}
+                  className="w-10 h-10 rounded-full bg-neutral-200/80 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-700 dark:text-neutral-200 cursor-pointer border-0 transition-colors"
+                  aria-label="Listen to source word"
+                >
+                  <Volume2 size={18} />
+                </button>
+              </div>
+            </div>
+          )}
+
+          <div className="space-y-1">
+            <h3 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">
+              {isBn ? currentItem.promptBn : currentItem.promptEn}
+            </h3>
+            <p className="text-xs sm:text-sm font-medium text-neutral-500 dark:text-neutral-400">
+              &quot;{isBn ? currentItem.targetMeaningBn : currentItem.targetMeaningEn}&quot;
+            </p>
+          </div>
+        </div>
+
+        {/* Live Assembled Word Display (Connected Cursive OpenType) */}
+        <div className="w-full flex flex-col items-center space-y-2">
+          <div className="w-full min-h-[96px] p-4 rounded-3xl bg-white dark:bg-neutral-950 flex items-center justify-center relative overflow-hidden">
+            {hasPlacedChips ? (
+              <div className="flex items-center gap-3" dir="rtl">
+                <span className={`font-arabic-bold text-5xl sm:text-6xl tracking-normal leading-relaxed transition-colors ${
+                  wordConstructionStatus === 'success'
+                    ? 'text-emerald-600 dark:text-emerald-400'
+                    : wordConstructionStatus === 'error'
+                    ? 'text-rose-600 dark:text-rose-400'
+                    : 'text-neutral-950 dark:text-white'
+                }`}>
+                  {assembledWord}
+                </span>
+                {wordConstructionStatus === 'success' && (
+                  <button
+                    onClick={() => playArabicAudio(currentItem.targetWordAr)}
+                    className="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 flex items-center justify-center border-0 cursor-pointer"
+                    aria-label="Listen to target word"
+                  >
+                    <Volume2 size={20} />
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center justify-center gap-2 text-neutral-400 dark:text-neutral-600">
+                <span className="text-sm font-mono uppercase tracking-wider">
+                  {isBn
+                    ? 'নিচে বর্ণগুলোতে চাপ দিয়ে শব্দটি গঠন করুন'
+                    : 'Tap letter chips below to construct the word'}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Constructed Letter Pills Tray (Tap to Remove) */}
+          <div
+            className={`w-full min-h-[64px] p-2.5 rounded-3xl flex flex-wrap items-center justify-center gap-2 transition-colors ${
+              !hasPlacedChips
+                ? 'border-2 border-dashed border-neutral-300 dark:border-neutral-700 bg-neutral-100/40 dark:bg-neutral-900/40'
+                : 'bg-neutral-100 dark:bg-neutral-900'
+            }`}
+            dir="rtl"
+          >
+            {hasPlacedChips ? (
+              <>
+                {constructedLetterChips.map((chip) => (
+                  <button
+                    key={chip.id}
+                    onClick={() => handleRemoveLetterChip(chip.id)}
+                    disabled={wordConstructionStatus === 'success'}
+                    className="h-12 min-w-[48px] px-3 rounded-2xl bg-white dark:bg-neutral-800 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-neutral-900 dark:text-white hover:text-rose-600 dark:hover:text-rose-400 font-arabic-bold text-xl flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer border-0 shadow-none"
+                    aria-label={`Remove ${chip.letter}`}
+                  >
+                    <span>{chip.letter}</span>
+                    <X size={13} className="opacity-40" />
+                  </button>
+                ))}
+                {wordConstructionStatus !== 'success' && (
+                  <button
+                    onClick={handleClearLetterChips}
+                    className="w-10 h-10 rounded-full bg-neutral-200/70 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-600 dark:text-neutral-300 flex items-center justify-center transition-all cursor-pointer border-0"
+                    title={isBn ? 'সব মুছুন' : 'Clear all'}
+                    aria-label="Clear all chips"
+                  >
+                    <RotateCcw size={16} />
+                  </button>
+                )}
+              </>
+            ) : (
+              <span className="text-xs font-mono text-neutral-400 dark:text-neutral-600">
+                {isBn ? 'বর্ণ বিন্যাস শূন্য' : 'Tray Empty'}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Available Letter / Morpheme Bank */}
+        <div className="w-full flex flex-col items-center space-y-2">
+          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 py-2 w-full" dir="rtl">
+            {availableLetterChips.map((chip) => (
+              <button
+                key={chip.id}
+                onClick={() => handleAddLetterChip(chip)}
+                disabled={wordConstructionStatus === 'success'}
+                className="h-14 min-w-[56px] px-4 rounded-2xl bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 active:scale-95 text-neutral-950 dark:text-white font-arabic-bold text-2xl flex items-center justify-center transition-all cursor-pointer border-0 shadow-none"
+                dir="rtl"
+              >
+                {chip.letter}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Action / Validation Controls */}
+        <div className="w-full space-y-3">
+          {wordConstructionStatus === 'idle' && (
+            <button
+              onClick={handleCheckConstruction}
+              disabled={!hasPlacedChips}
+              className={`w-full h-14 rounded-full font-english-semibold text-base flex items-center justify-center gap-2 transition-all cursor-pointer border-0 shadow-none ${
+                hasPlacedChips
+                  ? 'bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 active:scale-[0.98]'
+                  : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-600 cursor-not-allowed'
+              }`}
+            >
+              <Check size={18} />
+              <span>{isBn ? 'যাচাই করুন' : 'Check'}</span>
+            </button>
+          )}
+
+          {wordConstructionStatus === 'success' && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="w-full space-y-3"
+            >
+              <div className="w-full p-4 rounded-3xl bg-emerald-500/10 text-emerald-800 dark:text-emerald-200 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
+                    <Sparkles size={18} />
+                  </div>
+                  <div>
+                    <p className="font-english-bold text-sm">
+                      {isBn ? 'চমৎকার! সঠিক গঠন!' : 'Excellent! Perfect derivation!'}
+                    </p>
+                    <p className="text-xs font-mono text-emerald-700 dark:text-emerald-300">
+                      {currentItem.targetWordAr} ({isBn ? currentItem.targetMeaningBn : currentItem.targetMeaningEn})
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={handleNextWordOrStep}
+                className="w-full h-14 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer border-0 shadow-none"
+              >
+                <span>
+                  {activeWordConstructionIndex < payload.items.length - 1
+                    ? (isBn ? 'পরবর্তী শব্দ' : 'Next Word')
+                    : (isBn ? 'পরবর্তী ধাপে যান' : 'Continue')}
+                </span>
+                <ArrowRight size={18} />
+              </button>
+            </motion.div>
+          )}
+
+          {wordConstructionStatus === 'error' && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="w-full space-y-3"
+            >
+              <div className="w-full p-4 rounded-3xl bg-rose-500/10 text-rose-800 dark:text-rose-200 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-600 dark:text-rose-400 shrink-0">
+                    <AlertCircle size={18} />
+                  </div>
+                  <div>
+                    <p className="font-english-bold text-sm">
+                      {isBn ? 'সঠিক হয়নি' : 'Not quite right'}
+                    </p>
+                    <p className="text-xs font-mono text-rose-700 dark:text-rose-300" dir="rtl">
+                      {isBn ? 'সঠিক গঠন: ' : 'Target: '}
+                      <span className="font-arabic-bold text-base">{currentItem.targetWordAr}</span>
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => playArabicAudio(currentItem.targetWordAr)}
+                  className="w-8 h-8 rounded-full bg-rose-500/20 text-rose-700 dark:text-rose-300 flex items-center justify-center border-0 cursor-pointer"
+                  aria-label="Listen to correct word"
+                >
+                  <Volume2 size={16} />
+                </button>
+              </div>
+
+              <button
+                onClick={handleNextWordOrStep}
+                className="w-full h-14 rounded-full bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer border-0 shadow-none"
+              >
+                <span>{isBn ? 'বুঝেছি! এগিয়ে যান' : 'Got it! Continue'}</span>
+                <ArrowRight size={18} />
+              </button>
+            </motion.div>
+          )}
         </div>
       </div>
     );
@@ -2528,13 +3799,6 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                   <Volume2 size={12} />
                 </button>
               </div>
-              {(currentQ.contextBn || payload.contextBn || currentQ.contextEn || payload.contextEn) && (
-                <span className="text-xs text-neutral-500 dark:text-neutral-400 font-medium">
-                  {isBn
-                    ? (currentQ.contextBn || payload.contextBn)
-                    : (currentQ.contextEn || payload.contextEn)}
-                </span>
-              )}
             </div>
           )}
 
@@ -2849,7 +4113,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-950 flex flex-col font-english">
       {/* Top Header HUD */}
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md px-6 py-4 flex items-center gap-4 border-b border-neutral-200/50 dark:border-neutral-800/50">
+      <header className="sticky top-16 z-40 bg-white/90 dark:bg-neutral-950/90 backdrop-blur-md px-6 py-4 flex items-center gap-4 border-b border-neutral-200/50 dark:border-neutral-800/50">
         <button
           onClick={() => {
             if (currentStepIndex > 0 && !isSessionComplete) {
@@ -2912,7 +4176,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
       )}
 
       {/* Main Single-Focus Content Viewport */}
-      <main className="flex-1 flex flex-col items-center justify-center px-6 py-8 max-w-2xl mx-auto w-full">
+      <main className="flex-1 flex flex-col items-center justify-start pt-6 pb-12 px-6 max-w-2xl mx-auto w-full">
         {/* Clean Single Instruction Header */}
         <div className="text-center mb-6">
           <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
@@ -2946,6 +4210,9 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
             {currentStep.type === 'idafah_equation' && renderIdafahEquation()}
             {currentStep.type === 'syntax_fronting' && renderSyntaxFronting()}
             {currentStep.type === 'verb_preview_grid' && renderVerbPreviewGrid()}
+            {currentStep.type === 'masdar_factory' && renderMasdarFactory()}
+            {currentStep.type === 'verb_conjugator' && renderVerbConjugator()}
+            {currentStep.type === 'word_construction' && renderWordConstruction()}
           </motion.div>
         </AnimatePresence>
       </main>

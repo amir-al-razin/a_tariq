@@ -3,7 +3,7 @@ import { View, Text, ScrollView, Modal, Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3, getLessonSession } from '@tariq/shared';
+import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3, getLessonSession, hasLessonSession } from '@tariq/shared';
 import { useProgressStore, LESSON_KEY } from '../../state/progressStore';
 import { useRetentionStore } from '../../state/retentionStore';
 import { useThemeTokens } from '../../theme/colors';
@@ -195,17 +195,20 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
     return { totalLessons: total, completedLessons: completed };
   }, [chapters, isLessonCompleted]);
 
-  // Next uncompleted lesson along curriculum path
+  // Next uncompleted lesson along curriculum path (must be implemented)
   const nextLessonInfo = useMemo(() => {
     for (const chapter of chapters) {
       for (const lesson of chapter.lessons) {
-        if (!isLessonCompleted(chapter.id, lesson.darsNumber)) {
+        if (
+          hasLessonSession(volumeId, chapter.id, lesson.darsNumber) &&
+          !isLessonCompleted(chapter.id, lesson.darsNumber)
+        ) {
           return { chapterId: chapter.id, darsNum: lesson.darsNumber };
         }
       }
     }
     return { chapterId: chapters[0].id, darsNum: chapters[0].lessons[0].darsNumber };
-  }, [chapters, isLessonCompleted]);
+  }, [chapters, isLessonCompleted, volumeId]);
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.canvas }}>
@@ -381,8 +384,10 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
               <View style={{ width: '100%', alignItems: 'center' }}>
                 {chapter.lessons.map((lesson, idx) => {
                   const darsNum = lesson.darsNumber;
+                  const isImplemented = hasLessonSession(volumeId, chapter.id, darsNum);
                   const isCompleted = isLessonCompleted(chapter.id, darsNum);
                   const isCurrent =
+                    isImplemented &&
                     nextLessonInfo.chapterId === chapter.id &&
                     nextLessonInfo.darsNum === darsNum &&
                     !isCompleted;
@@ -428,7 +433,7 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
                                   letterSpacing: 1,
                                   color: '#FFFFFF',
                                   textTransform: 'uppercase',
-                                }}>
+                                  }}>
                                 {isFirst ? 'START' : 'CURRENT'}
                               </Text>
                             </View>
@@ -446,7 +451,9 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
 
                         {/* 3D Circular Stepping Stone Button */}
                         <Pressable
+                          disabled={!isImplemented}
                           onPress={() => {
+                            if (!isImplemented) return;
                             playTapSound();
                             setSelectedLesson({ chapterId: chapter.id, darsNum });
                           }}
@@ -455,19 +462,24 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
                             height: 82,
                             justifyContent: 'flex-end',
                             alignItems: 'center',
+                            opacity: isImplemented ? 1 : 0.7,
                           }}>
                           {({ pressed, hovered }: any) => {
                             const isSpecial = isCurrent || isCompleted;
 
-                            // Theme-calibrated solid colors (No opacity reduction!)
+                            // Theme-calibrated 100% solid opaque colors (zero opacity reduction)
                             let faceBg: string;
                             let pedestalBg: string;
                             let textColor: string;
 
-                            if (isSpecial) {
+                            if (!isImplemented) {
+                              faceBg = theme.isDark ? theme.neutral[800] : theme.neutral[100];
+                              pedestalBg = theme.isDark ? theme.neutral[900] : theme.neutral[200];
+                              textColor = theme.isDark ? theme.neutral[400] : theme.neutral[400];
+                            } else if (isSpecial) {
                               faceBg =
                                 pressed || hovered ? theme.accentPrimaryHover : theme.accentPrimary;
-                              pedestalBg = theme.accentPrimaryHover;
+                              pedestalBg = theme.isDark ? '#172554' : '#1E40AF';
                               textColor = '#FFFFFF';
                             } else {
                               if (theme.isDark) {
@@ -475,19 +487,19 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
                                 faceBg =
                                   pressed || hovered ? theme.neutral[700] : theme.neutral[800];
                                 pedestalBg = theme.neutral[950];
-                                textColor = theme.neutral[200];
+                                textColor = theme.neutral[400];
                               } else {
                                 // Light mode: Clean paper surface #F5F5F5, subtle pedestal #D4D4D4
                                 faceBg =
                                   pressed || hovered ? theme.neutral[200] : theme.neutral[100];
                                 pedestalBg = theme.neutral[300];
-                                textColor = theme.neutral[700];
+                                textColor = theme.neutral[500];
                               }
                             }
 
                             // Tactile displacement:
-                            // Depress down to 0 on press; slight 1px lift on hover
-                            const translateY = pressed ? 0 : hovered ? -7 : -6;
+                            // Depress down to 0 on press; slight lift on hover/idle (disabled if unimplemented)
+                            const translateY = !isImplemented ? -6 : pressed ? 0 : hovered ? -7 : -6;
 
                             return (
                               <View
@@ -507,19 +519,8 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
                                     borderRadius: 38,
                                     backgroundColor: pedestalBg,
                                     overflow: 'hidden',
-                                  }}>
-                                  {isSpecial && (
-                                    <View
-                                      style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        backgroundColor: theme.isDark
-                                          ? 'rgba(0,0,0,0.35)'
-                                          : 'rgba(0,0,0,0.22)',
-                                      }}
-                                    />
-                                  )}
-                                </View>
+                                  }}
+                                />
 
                                 {/* Raised Top Face (100% Solid Opaque, ZERO opacity reduction) */}
                                 <View
@@ -532,7 +533,9 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
                                     justifyContent: 'center',
                                     transform: [{ translateY }],
                                   }}>
-                                  {isCompleted ? (
+                                  {!isImplemented ? (
+                                    <Ionicons name="lock-closed" size={24} color={textColor} />
+                                  ) : isCompleted ? (
                                     <Ionicons name="checkmark" size={32} color="#FFFFFF" />
                                   ) : (
                                     <Text
@@ -626,22 +629,32 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
                 );
                 const firstChunk = lesson?.chunks?.[0];
                 const darsNum = selectedLesson.darsNum;
-                const isCompleted = isLessonCompleted(selectedLesson.chapterId, darsNum);
                 const session = getLessonSession(volumeId, selectedLesson.chapterId, darsNum);
+                const isImplemented = Boolean(session);
+                const isCompleted = isLessonCompleted(selectedLesson.chapterId, darsNum);
                 const stepCount = session?.steps?.length || 10;
                 const estMinutes = Math.max(2, Math.ceil((stepCount * 20) / 60));
 
-                const meta = (chapter?.id === 1
-                  ? CHAPTER_1_LESSONS_INFO[darsNum]
-                  : chapter?.id === 2
-                    ? CHAPTER_2_LESSONS_INFO[darsNum]
-                    : chapter?.id === 3
-                      ? CHAPTER_3_LESSONS_INFO[darsNum]
-                      : null) || {
-                  titleEn: firstChunk?.titleEn || `Lesson ${darsNum}`,
-                  arabicTopic: firstChunk?.titleAr || `الدرس ${toArabicNumerals(darsNum)}`,
-                  conceptEn: chapter?.subtitle || 'Classical Arabic interactive drill',
-                };
+                const meta = session
+                  ? {
+                      titleEn: session.titleEn,
+                      arabicTopic: session.titleAr,
+                      conceptEn:
+                        session.steps?.[0]?.instructionEn ||
+                        chapter?.subtitle ||
+                        'Classical Arabic interactive drill',
+                    }
+                  : (volumeId === 1 && chapter?.id === 1
+                      ? CHAPTER_1_LESSONS_INFO[darsNum]
+                      : volumeId === 1 && chapter?.id === 2
+                        ? CHAPTER_2_LESSONS_INFO[darsNum]
+                        : volumeId === 1 && chapter?.id === 3
+                          ? CHAPTER_3_LESSONS_INFO[darsNum]
+                          : null) || {
+                      titleEn: firstChunk?.titleEn || `Lesson ${darsNum}`,
+                      arabicTopic: firstChunk?.titleAr || `الدرس ${toArabicNumerals(darsNum)}`,
+                      conceptEn: chapter?.subtitle || 'Classical Arabic interactive drill',
+                    };
 
                 return (
                   <View style={{ width: '100%' }}>
@@ -659,18 +672,22 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
                             width: 40,
                             height: 40,
                             borderRadius: 20,
-                            backgroundColor: theme.accentPrimary,
+                            backgroundColor: !isImplemented ? theme.surfaceWell : theme.accentPrimary,
                             alignItems: 'center',
                             justifyContent: 'center',
                           }}>
-                          <Text
-                            style={{
-                              fontFamily: 'Lexend_600SemiBold',
-                              fontSize: 16,
-                              color: '#FFFFFF',
-                            }}>
-                            {darsNum}
-                          </Text>
+                          {!isImplemented ? (
+                            <Ionicons name="lock-closed" size={18} color={theme.textMuted} />
+                          ) : (
+                            <Text
+                              style={{
+                                fontFamily: 'Lexend_600SemiBold',
+                                fontSize: 16,
+                                color: '#FFFFFF',
+                              }}>
+                              {darsNum}
+                            </Text>
+                          )}
                         </View>
                         <View>
                           <Text
@@ -687,7 +704,11 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
                               fontSize: 12,
                               color: theme.textMuted,
                             }}>
-                            {isCompleted ? 'Completed' : 'Available'}
+                            {!isImplemented
+                              ? 'Coming Soon'
+                              : isCompleted
+                                ? 'Completed'
+                                : 'Available'}
                           </Text>
                         </View>
                       </View>
@@ -793,40 +814,64 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
                     </View>
 
                     {/* 56px Action Button */}
-                    <Pressable
-                      onPress={() => {
-                        playTapSound();
-                        const target = selectedLesson;
-                        setSelectedLesson(null);
-                        navigation.navigate('Lesson', {
-                          volumeNumber: volumeId,
-                          chapterId: target.chapterId,
-                          chapterTitleAr: chapter?.titleAr || '',
-                          chapterTitleEn: chapter?.titleEn || '',
-                          darsNumber: target.darsNum,
-                          autoStart: true,
-                        });
-                      }}
-                      style={({ pressed }) => ({
-                        width: '100%',
-                        height: 56,
-                        borderRadius: 9999,
-                        backgroundColor: pressed ? theme.accentPrimaryHover : theme.accentPrimary,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: 8,
-                      })}>
-                      <Text
+                    {!isImplemented ? (
+                      <View
                         style={{
-                          fontFamily: 'Lexend_600SemiBold',
-                          fontSize: 16,
-                          color: '#FFFFFF',
+                          width: '100%',
+                          height: 56,
+                          borderRadius: 9999,
+                          backgroundColor: theme.surfaceWell,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: 8,
                         }}>
-                        {isCompleted ? 'Practice Again' : 'Start Lesson'}
-                      </Text>
-                      <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
-                    </Pressable>
+                        <Ionicons name="lock-closed" size={18} color={theme.textMuted} />
+                        <Text
+                          style={{
+                            fontFamily: 'Lexend_600SemiBold',
+                            fontSize: 16,
+                            color: theme.textMuted,
+                          }}>
+                          Coming Soon
+                        </Text>
+                      </View>
+                    ) : (
+                      <Pressable
+                        onPress={() => {
+                          playTapSound();
+                          const target = selectedLesson;
+                          setSelectedLesson(null);
+                          navigation.navigate('Lesson', {
+                            volumeNumber: volumeId,
+                            chapterId: target.chapterId,
+                            chapterTitleAr: chapter?.titleAr || '',
+                            chapterTitleEn: chapter?.titleEn || '',
+                            darsNumber: target.darsNum,
+                            autoStart: true,
+                          });
+                        }}
+                        style={({ pressed }) => ({
+                          width: '100%',
+                          height: 56,
+                          borderRadius: 9999,
+                          backgroundColor: pressed ? theme.accentPrimaryHover : theme.accentPrimary,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: 8,
+                        })}>
+                        <Text
+                          style={{
+                            fontFamily: 'Lexend_600SemiBold',
+                            fontSize: 16,
+                            color: '#FFFFFF',
+                          }}>
+                          {isCompleted ? 'Practice Again' : 'Start Lesson'}
+                        </Text>
+                        <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
+                      </Pressable>
+                    )}
                   </View>
                 );
               })()}

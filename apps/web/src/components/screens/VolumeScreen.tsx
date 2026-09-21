@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import { Check, Trophy, ArrowRight, X, Sparkles, Clock, Play, RotateCcw, BookmarkCheck, Brain, BookMarked } from 'lucide-react'
+import { Check, Trophy, ArrowRight, X, Sparkles, Clock, Play, RotateCcw, BookmarkCheck, Brain, BookMarked, Lock } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import * as m from '#/paraglide/messages.js'
 
@@ -10,7 +10,7 @@ import { useRetentionStore } from '../../state/retentionStore'
 import { useLessonCheckpointStore } from '../../state/lessonCheckpointStore'
 import { useLanguage } from '../../hooks/useLanguage'
 import { ProgressRing } from './ProgressRing'
-import { getLessonSession } from '../../lib/lessonRegistry'
+import { getLessonSession, hasLessonSession } from '../../lib/lessonRegistry'
 import { LessonSessionRunner } from '../runner/LessonSessionRunner'
 import { playTapSound } from '../../lib/sound'
 
@@ -232,11 +232,14 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
     return fn ? fn() : fallback
   }
 
-  // Find current active lesson along the curriculum path
+  // Find current active lesson along the curriculum path (must be implemented)
   const nextLessonInfo = useMemo(() => {
     for (const chapter of chapters) {
       for (const lesson of chapter.lessons) {
-        if (!isLessonCompleted(chapter.id, lesson.darsNumber)) {
+        if (
+          hasLessonSession(volumeId, chapter.id, lesson.darsNumber) &&
+          !isLessonCompleted(chapter.id, lesson.darsNumber)
+        ) {
           return { chapterId: chapter.id, darsNum: lesson.darsNumber }
         }
       }
@@ -375,10 +378,12 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                 <div className="w-full flex flex-col">
                   {chapter.lessons.map((lesson, idx) => {
                     const darsNum = lesson.darsNumber
+                    const isImplemented = hasLessonSession(volumeId, chapter.id, darsNum)
                     const isCompleted = isLessonCompleted(chapter.id, darsNum)
                     const checkpoint = getCheckpoint(volumeId, chapter.id, darsNum)
                     const hasCheckpoint = Boolean(checkpoint && checkpoint.currentStepIndex > 0)
                     const isCurrent =
+                      isImplemented &&
                       nextLessonInfo.chapterId === chapter.id &&
                       nextLessonInfo.darsNum === darsNum &&
                       !isCompleted
@@ -461,19 +466,38 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                           {/* 3D Circular Stepping Stone Button */}
                           <button
                             type="button"
+                            disabled={!isImplemented}
                             onClick={() => {
+                              if (!isImplemented) return
                               playTapSound()
                               setSelectedNodeLesson({ chapterId: chapter.id, darsNum })
                             }}
-                            className="group relative cursor-pointer border-0 p-0 bg-transparent select-none focus:outline-none transition-transform duration-150 hover:scale-[1.04]"
-                            aria-label={`Lesson ${darsNum}`}
+                            className={`group relative select-none border-0 p-0 bg-transparent transition-transform duration-150 ${
+                              isImplemented
+                                ? 'cursor-pointer hover:scale-[1.04]'
+                                : 'cursor-not-allowed opacity-75'
+                            }`}
+                            aria-label={
+                              isImplemented
+                                ? `Lesson ${darsNum}`
+                                : `Lesson ${darsNum} (Locked - In Development)`
+                            }
+                            title={
+                              isImplemented
+                                ? `Lesson ${darsNum}`
+                                : (isBn
+                                  ? `পাঠ ${toArabicNumerals(darsNum)} (শীঘ্রই আসছে)`
+                                  : `Lesson ${darsNum} (Coming Soon)`)
+                            }
                           >
                             {/* Base Pedestal (3D Circular Bevel - Always Darker than Top Face) */}
                             <div
                               className={`w-20 h-20 rounded-full transition-all duration-150 relative overflow-hidden ${
                                 isCurrent || isCompleted
                                   ? 'bg-accent-primary'
-                                  : 'bg-neutral-300 dark:bg-neutral-900'
+                                  : isImplemented
+                                    ? 'bg-neutral-300 dark:bg-neutral-900'
+                                    : 'bg-neutral-200 dark:bg-neutral-900'
                               }`}
                               style={{ transform: 'translateY(6px)' }}
                             >
@@ -482,15 +506,21 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                               )}
                             </div>
 
-                            {/* Raised Circular Top Face (Depresses on Tap) */}
+                            {/* Raised Circular Top Face (Depresses on Tap if implemented) */}
                             <div
-                              className={`absolute inset-0 w-20 h-20 rounded-full flex items-center justify-center transition-transform duration-100 group-active:translate-y-1.5 ${
+                              className={`absolute inset-0 w-20 h-20 rounded-full flex items-center justify-center transition-transform duration-100 ${
+                                isImplemented ? 'group-active:translate-y-1.5' : ''
+                              } ${
                                 isCurrent || isCompleted
                                   ? 'bg-accent-primary hover:bg-accent-primary-hover text-white'
-                                  : 'bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-400 dark:text-neutral-500'
+                                  : isImplemented
+                                    ? 'bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-500 dark:text-neutral-400'
+                                    : 'bg-neutral-100 dark:bg-neutral-800/60 text-neutral-400 dark:text-neutral-400'
                               }`}
                             >
-                              {isCompleted ? (
+                              {!isImplemented ? (
+                                <Lock size={26} className="stroke-[2.2] text-neutral-400 dark:text-neutral-400" />
+                              ) : isCompleted ? (
                                 <Check size={32} className="stroke-[3.5] text-white" />
                               ) : (
                                 <span className="font-english-bold text-3xl leading-none">
@@ -532,17 +562,20 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
             if (!chapter || !lesson) return null
 
             const darsNum = lesson.darsNumber
-            const isCompleted = isLessonCompleted(chapter.id, darsNum)
             const sessionData = getLessonSession(volumeId, chapter.id, darsNum)
+            const isImplemented = Boolean(sessionData)
+            const isCompleted = isLessonCompleted(chapter.id, darsNum)
             const stepCount = sessionData?.steps.length || 10
             const estimatedMinutes = Math.max(2, Math.ceil((stepCount * 20) / 60))
             const checkpoint = getCheckpoint(volumeId, chapter.id, darsNum)
             const hasCheckpoint = Boolean(
+              isImplemented &&
               checkpoint &&
               checkpoint.currentStepIndex > 0 &&
               checkpoint.currentStepIndex < stepCount
             )
             const isCurrent =
+              isImplemented &&
               nextLessonInfo.chapterId === chapter.id &&
               nextLessonInfo.darsNum === darsNum &&
               !isCompleted
@@ -575,15 +608,27 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                   {/* Top Bar with Integrated Lesson Badge & Close Trigger */}
                   <div className="w-full flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-accent-primary text-white flex items-center justify-center font-english font-extrabold text-base select-none">
-                        {isCompleted ? <Check size={18} className="stroke-[3]" /> : darsNum}
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center font-english font-extrabold text-base select-none ${
+                        !isImplemented
+                          ? 'bg-neutral-200 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500'
+                          : 'bg-accent-primary text-white'
+                      }`}>
+                        {!isImplemented ? (
+                          <Lock size={16} />
+                        ) : isCompleted ? (
+                          <Check size={18} className="stroke-[3]" />
+                        ) : (
+                          darsNum
+                        )}
                       </div>
                       <div className="text-start">
                         <div className="text-xs font-english-bold text-neutral-900 dark:text-white uppercase tracking-wider">
                           Lesson {darsNum}
                         </div>
                         <div className="text-[11px] font-english text-neutral-500 dark:text-neutral-400">
-                          {hasCheckpoint
+                          {!isImplemented
+                            ? (isBn ? 'শীঘ্রই আসছে' : 'Coming Soon')
+                            : hasCheckpoint
                             ? (isCompleted
                               ? (isBn ? 'অনুশীলন চলমান' : 'Practice in Progress')
                               : (isBn ? 'সংরক্ষিত অগ্রগতি' : 'In Progress'))
@@ -703,6 +748,17 @@ export const VolumeScreen: React.FC<Props> = ({ volumeId }) => {
                         </span>
                       </button>
                     </div>
+                  ) : !isImplemented ? (
+                    <button
+                      type="button"
+                      disabled
+                      className="w-full h-14 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500 font-english-semibold text-base flex items-center justify-center gap-2 cursor-not-allowed shadow-none border-0"
+                    >
+                      <Lock size={18} />
+                      <span>
+                        {isBn ? 'পাঠটি প্রস্তুত হচ্ছে (শীঘ্রই আসছে)' : 'Lesson in Development'}
+                      </span>
+                    </button>
                   ) : (
                     <button
                       type="button"

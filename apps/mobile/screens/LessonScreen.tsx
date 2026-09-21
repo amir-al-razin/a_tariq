@@ -293,27 +293,51 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
           )}
 
           {/* 56px Action Button */}
-          <TouchableOpacity
-            activeOpacity={0.88}
-            onPress={() => {
-              playTapSound();
-              setIsRunningSession(true);
-            }}
-            style={{
-              width: '100%',
-              height: 56,
-              borderRadius: 9999,
-              backgroundColor: theme.accentPrimary,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 10,
-            }}>
-            <Ionicons name="play" size={18} color="#FFFFFF" />
-            <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 16, color: '#FFFFFF' }}>
-              {isCompleted ? 'Practice Again' : 'Start Interactive Session'}
-            </Text>
-          </TouchableOpacity>
+          {!registeredSession ? (
+            <View
+              style={{
+                width: '100%',
+                height: 56,
+                borderRadius: 9999,
+                backgroundColor: theme.surfaceWell,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 10,
+              }}>
+              <Ionicons name="lock-closed" size={18} color={theme.textMuted} />
+              <Text
+                style={{
+                  fontFamily: 'Lexend_600SemiBold',
+                  fontSize: 16,
+                  color: theme.textMuted,
+                }}>
+                Coming Soon
+              </Text>
+            </View>
+          ) : (
+            <TouchableOpacity
+              activeOpacity={0.88}
+              onPress={() => {
+                playTapSound();
+                setIsRunningSession(true);
+              }}
+              style={{
+                width: '100%',
+                height: 56,
+                borderRadius: 9999,
+                backgroundColor: theme.accentPrimary,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 10,
+              }}>
+              <Ionicons name="play" size={18} color="#FFFFFF" />
+              <Text style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 16, color: '#FFFFFF' }}>
+                {isCompleted ? 'Practice Again' : 'Start Interactive Session'}
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
     </View>
