@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { ArrowLeft, Play, Check, RotateCcw, BookmarkCheck, Lock } from 'lucide-react'
 
@@ -42,6 +42,19 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
 
   const [activeStepIndex, setActiveStepIndex] = useState<number | undefined>(initialStepIndex)
   const [isRunningSession, setIsRunningSession] = useState(() => initialStepIndex !== undefined)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stepParam = new URLSearchParams(window.location.search).get('step')
+      if (stepParam !== null) {
+        const idx = parseInt(stepParam, 10)
+        if (!isNaN(idx)) {
+          setActiveStepIndex(idx)
+          setIsRunningSession(true)
+        }
+      }
+    }
+  }, [])
 
   const progressStore = useProgressStore((state) => state.progress)
   const sessions = useRetentionStore((state) => state.sessions)

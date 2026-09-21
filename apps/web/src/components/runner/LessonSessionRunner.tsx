@@ -27,6 +27,37 @@ function toArabicNumerals(n: number): string {
   return n.toString().split('').map(d => digits[parseInt(d, 10)] || d).join('');
 }
 
+// Vector car illustration for visual cloze exercises
+const CarIllustration: React.FC<{ className?: string }> = ({ className = 'w-14 h-14' }) => (
+  <svg
+    viewBox="0 0 72 48"
+    className={className}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-label="Car illustration"
+  >
+    <ellipse cx="36" cy="42" rx="30" ry="3" className="fill-neutral-900/15 dark:fill-white/10" />
+    <path
+      d="M6 26C6 24 7.5 22.5 9.5 22.5H16L22.5 13C24 10.8 26.5 9.5 29.2 9.5H46C48.5 9.5 50.8 10.7 52.2 12.7L58 20.5H62.5C64.5 20.5 66 22 66 24V32C66 33.7 64.7 35 63 35H60.5C59.5 31 55.8 28 51.5 28C47.2 28 43.5 31 42.5 35H25.5C24.5 31 20.8 28 16.5 28C12.2 28 8.5 31 7.5 35H6V26Z"
+      className="fill-rose-500 dark:fill-rose-600"
+    />
+    <path
+      d="M24 14.5L19 22.5H34V12H29C27 12 25.1 13 24 14.5Z"
+      className="fill-sky-100 dark:fill-sky-950/80"
+    />
+    <path
+      d="M37 12V22.5H53.5L48.5 14C47.5 12.8 46 12 44.5 12H37Z"
+      className="fill-sky-100 dark:fill-sky-950/80"
+    />
+    <rect x="63" y="24" width="3" height="4" rx="1.5" className="fill-amber-300" />
+    <rect x="6" y="24" width="2.5" height="4" rx="1" className="fill-rose-300" />
+    <circle cx="51.5" cy="35" r="7" className="fill-neutral-800 dark:fill-neutral-900" />
+    <circle cx="51.5" cy="35" r="3.5" className="fill-neutral-300 dark:fill-neutral-600" />
+    <circle cx="16.5" cy="35" r="7" className="fill-neutral-800 dark:fill-neutral-900" />
+    <circle cx="16.5" cy="35" r="3.5" className="fill-neutral-300 dark:fill-neutral-600" />
+  </svg>
+);
+
 export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
   volumeId,
   chapterId,
@@ -1296,15 +1327,54 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
       <div className="w-full max-w-lg mx-auto flex flex-col items-center space-y-6">
         {/* Textbook Q&A Question Card */}
         <div className="w-full p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center text-center space-y-4">
-          {/* Prominent Pedagogical Instruction */}
-          <div className="space-y-1">
-            <h3 className="text-base sm:text-lg font-english-bold text-neutral-900 dark:text-neutral-100">
-              {isBn ? currentStep.instructionBn : currentStep.instructionEn}
-            </h3>
-            <p className="text-xs sm:text-sm font-medium text-neutral-500 dark:text-neutral-400">
+          {/* Visual Cue & Spatial Distance Indicator */}
+          {payload.emoji && (
+            <div className="w-full flex flex-col items-center pt-1 pb-2 select-none">
+              {payload.distance === 'far' ? (
+                <div className="w-full flex items-center justify-between px-6 max-w-sm mb-1">
+                  <span className="text-3xl select-none" aria-label="speaker pointer">👉</span>
+                  <div className="flex-1 mx-4 flex items-center">
+                    <div className="flex-1 border-t-2 border-dashed border-neutral-300 dark:border-neutral-700" />
+                    <span className="text-neutral-400 dark:text-neutral-500 text-sm -mr-1">▶</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="w-20 h-20 rounded-3xl bg-neutral-200/70 dark:bg-neutral-800/70 flex items-center justify-center p-2">
+                      {payload.emoji === '🚗' ? (
+                        <CarIllustration className="w-14 h-14" />
+                      ) : (
+                        <span className="text-4xl">{payload.emoji}</span>
+                      )}
+                    </div>
+                    <span className="text-[10px] font-english-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-neutral-200/80 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">
+                      {isBn ? 'দূরে · تِلْكَ' : 'Far · That'}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-1.5 mb-1">
+                  <div className="w-20 h-20 rounded-3xl bg-neutral-200/70 dark:bg-neutral-800/70 flex items-center justify-center p-2">
+                    {payload.emoji === '🚗' ? (
+                      <CarIllustration className="w-14 h-14" />
+                    ) : (
+                      <span className="text-4xl">{payload.emoji}</span>
+                    )}
+                  </div>
+                  {payload.distance && (
+                    <span className="text-[10px] font-english-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-neutral-200/80 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">
+                      {isBn ? 'কাছে · هَذِهِ' : 'Near · This'}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Question Meaning Subtext */}
+          {(payload.questionBn || payload.questionEn) && (
+            <p className="text-sm font-english-medium text-neutral-500 dark:text-neutral-400">
               {isBn ? (payload.questionBn || payload.questionEn) : payload.questionEn}
             </p>
-          </div>
+          )}
 
           {/* Distinct Question if this is a Q&A Dialogue (e.g. من في المسجد؟) */}
           {!isSingleSentenceCloze && (

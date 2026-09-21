@@ -12,6 +12,7 @@ import {
   getLessonSession,
 } from '@tariq/shared';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import { useRetentionStore } from '../../state/retentionStore';
 import { useProgressStore, LESSON_KEY } from '../../state/progressStore';
 import { useLearningSettingsStore } from '../../state/learningSettingsStore';
@@ -46,6 +47,8 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
 }) => {
   const theme = useThemeTokens();
   const insets = useSafeAreaInsets();
+  const { i18n } = useTranslation();
+  const isBn = i18n.language === 'bn';
   const sessionData: LessonSessionData | null = useMemo(() => {
     return getLessonSession(volumeId, chapterId, lessonNum);
   }, [volumeId, chapterId, lessonNum]);
@@ -1999,11 +2002,65 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                         width: '100%',
                         backgroundColor: theme.surfaceRaised,
                         borderRadius: 24,
-                        paddingVertical: 28,
+                        paddingVertical: 24,
                         paddingHorizontal: 20,
                         alignItems: 'center',
                         marginBottom: 12,
                       }}>
+                      {/* Visual Cue Emoji & Distance Badge */}
+                      {payload.emoji ? (
+                        <View style={{ alignItems: 'center', marginBottom: 12 }}>
+                          {payload.distance === 'far' ? (
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 6, gap: 8 }}>
+                              <Text style={{ fontSize: 22 }}>👉</Text>
+                              <Text style={{ color: theme.textSecondary, fontSize: 14 }}>─────▶</Text>
+                              <View
+                                style={{
+                                  width: 60,
+                                  height: 60,
+                                  borderRadius: 20,
+                                  backgroundColor: theme.canvas,
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                }}>
+                                <Text style={{ fontSize: 30 }}>{payload.emoji}</Text>
+                              </View>
+                            </View>
+                          ) : (
+                            <View
+                              style={{
+                                width: 60,
+                                height: 60,
+                                borderRadius: 20,
+                                backgroundColor: theme.canvas,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginBottom: 6,
+                              }}>
+                              <Text style={{ fontSize: 30 }}>{payload.emoji}</Text>
+                            </View>
+                          )}
+                          {payload.distance ? (
+                            <View
+                              style={{
+                                paddingHorizontal: 12,
+                                paddingVertical: 4,
+                                borderRadius: 12,
+                                backgroundColor: theme.canvas,
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: 'Lexend_600SemiBold',
+                                  fontSize: 11,
+                                  color: theme.textSecondary,
+                                  textTransform: 'uppercase',
+                                }}>
+                                {payload.distance === 'far' ? (isBn ? 'দূরে · تِلْكَ' : 'Far · That') : (isBn ? 'কাছে · هَذِهِ' : 'Near · This')}
+                              </Text>
+                            </View>
+                          ) : null}
+                        </View>
+                      ) : null}
                       <Text
                         style={{
                           fontFamily: 'NotoSansArabic_600SemiBold',
