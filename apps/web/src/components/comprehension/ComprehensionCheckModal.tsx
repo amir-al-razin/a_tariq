@@ -12,7 +12,7 @@ import {
   BookOpen,
   Lightbulb,
 } from 'lucide-react'
-import confetti from 'canvas-confetti'
+import confetti from '../../lib/confetti'
 import {
   generateSocraticExplanation,
   type ChunkExplanationGuide,

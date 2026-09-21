@@ -34,8 +34,8 @@ export const GamificationHeaderWidget: React.FC = () => {
         </div>
 
         {/* Daily Quests Indicator */}
-        <div className="relative pl-1">
-          <div className="w-4 h-4 rounded-full border border-neutral-300 dark:border-neutral-600 flex items-center justify-center text-[9px] text-neutral-600 dark:text-neutral-300">
+        <div className="relative flex items-center">
+          <div className="w-4 h-4 rounded-full bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center text-[9px] text-neutral-700 dark:text-neutral-200 font-bold">
             {completedCount}
           </div>
           {unclaimedCount > 0 && (

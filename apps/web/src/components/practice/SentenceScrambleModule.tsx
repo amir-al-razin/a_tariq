@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, RotateCcw, ArrowRight, Volume2, AlertCircle, Layers } from 'lucide-react'
-import confetti from 'canvas-confetti'
+import confetti from '../../lib/confetti'
 import type { ScrambleChallenge } from './practiceLessonData'
 import { useGamificationStore } from '../../state/gamificationStore'
+import { useLanguage } from '../../hooks/useLanguage'
 
 interface SentenceScrambleModuleProps {
   challenges: ScrambleChallenge[]
@@ -15,9 +16,13 @@ export const SentenceScrambleModule: React.FC<SentenceScrambleModuleProps> = ({
   onCompleteAll,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const currentChallenge = challenges[currentIndex]
+  const { language } = useLanguage()
+  const isBn = language === 'bn'
+
   const [selectedWords, setSelectedWords] = useState<string[]>([])
-  const [availableWords, setAvailableWords] = useState<string[]>(() => [
-    ...challenges[0].scrambledWords,
+  const [availableWords, setAvailableWords] = useState<string[]>([
+    ...currentChallenge.scrambledWords,
   ])
   const [isEvaluated, setIsEvaluated] = useState(false)
   const [isCorrect, setIsCorrect] = useState(false)
@@ -25,29 +30,30 @@ export const SentenceScrambleModule: React.FC<SentenceScrambleModuleProps> = ({
   const recordPracticeResult = useGamificationStore((s) => s.recordPracticeResult)
   const addXp = useGamificationStore((s) => s.addXp)
 
-  const currentChallenge = challenges[currentIndex]
-  const totalSlots = currentChallenge.arSentence.split(/\s+/).length
+  const totalSlots = currentChallenge.scrambledWords.length
 
-  // Audio speech synthesis
   const playAudio = (text: string) => {
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return
-    window.speechSynthesis.cancel()
-    const utterance = new SpeechSynthesisUtterance(text)
-    utterance.lang = 'ar-SA'
-    utterance.rate = 0.85
-    window.speechSynthesis.speak(utterance)
+    if (typeof window === 'undefined') return
+    try {
+      window.speechSynthesis.cancel()
+      const u = new SpeechSynthesisUtterance(text)
+      u.lang = 'ar-SA'
+      u.rate = 0.88
+      window.speechSynthesis.speak(u)
+    } catch {
+      // Audio optional
+    }
   }
 
-  const handleSelectWord = (word: string, indexInAvailable: number) => {
+  const handleSelectWord = (word: string, index: number) => {
     if (isEvaluated) return
-    playAudio(word)
     setSelectedWords((prev) => [...prev, word])
-    setAvailableWords((prev) => prev.filter((_, i) => i !== indexInAvailable))
+    setAvailableWords((prev) => prev.filter((_, i) => i !== index))
   }
 
-  const handleDeselectWord = (word: string, indexInSelected: number) => {
+  const handleDeselectWord = (word: string, index: number) => {
     if (isEvaluated) return
-    setSelectedWords((prev) => prev.filter((_, i) => i !== indexInSelected))
+    setSelectedWords((prev) => prev.filter((_, i) => i !== index))
     setAvailableWords((prev) => [...prev, word])
   }
 
@@ -88,69 +94,69 @@ export const SentenceScrambleModule: React.FC<SentenceScrambleModuleProps> = ({
   }
 
   return (
-    <div className="w-full bg-[#FAF8F5] dark:bg-[#141311] rounded-3xl p-6 sm:p-10 border border-[#E7E2D9] dark:border-[#26231E] shadow-xl font-english space-y-8 transition-colors duration-300">
+    <div className="w-full bg-neutral-100 dark:bg-neutral-900 rounded-4xl p-6 sm:p-10 border-0 shadow-none font-english space-y-8 transition-colors duration-300">
       {/* Header Bar */}
-      <div className="flex items-center justify-between border-b border-[#E7E2D9] dark:border-[#26231E] pb-4">
+      <div className="flex items-center justify-between pb-4 border-0">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-2xl bg-[#F0ECE1] dark:bg-[#201D18] border border-[#DDD6C8] dark:border-[#332E27] text-neutral-800 dark:text-neutral-200 flex items-center justify-center">
-            <Layers className="w-4 h-4" />
+          <div className="w-10 h-10 rounded-2xl bg-neutral-200 dark:bg-neutral-800 text-accent-primary flex items-center justify-center border-0">
+            <Layers className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <span className="font-english-bold text-xs uppercase tracking-widest text-neutral-500">
-                Syntactic Assembly · تَرْتِيبُ الْجُمَلِ
+                {isBn ? 'বাক্য গঠন · تَرْتِيبُ الْجُمَلِ' : 'Syntactic Assembly · تَرْتِيبُ الْجُمَلِ'}
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-700 dark:text-amber-400 text-[10px] font-english-bold">
+              <span className="px-2.5 py-0.5 rounded-full bg-accent-primary/10 text-accent-primary text-[10px] font-english-bold border-0">
                 +25 XP
               </span>
             </div>
             <h2 className="font-english-bold text-base text-neutral-900 dark:text-neutral-100">
-              Grammatical Sentence Scramble
+              {isBn ? 'সঠিক বিন্যাসে শব্দগুলো সাজান' : 'Grammatical Sentence Scramble'}
             </h2>
           </div>
         </div>
 
-        <span className="text-xs font-english-bold px-3 py-1 rounded-full bg-[#EFEAE0] dark:bg-[#201D19] border border-[#DDD6C8] dark:border-[#332E27] text-neutral-700 dark:text-neutral-300">
-          {currentIndex + 1} of {challenges.length}
+        <span className="text-xs font-english-bold px-3 py-1 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border-0">
+          {currentIndex + 1} / {challenges.length}
         </span>
       </div>
 
       {/* Target Translation Plaque */}
-      <div className="text-center py-5 px-6 bg-[#FFFFFF] dark:bg-[#0C0B0A] rounded-2xl border border-[#DFD8CC] dark:border-[#2C2822] shadow-sm space-y-2">
+      <div className="text-center py-6 px-6 bg-neutral-50 dark:bg-neutral-950 rounded-3xl border-0 shadow-none space-y-2">
         <span className="text-[11px] font-english-bold uppercase tracking-wider text-neutral-400">
-          Target English Meaning
+          {isBn ? 'লক্ষ্য অনুবাদ' : 'Target Meaning'}
         </span>
         <h3 className="text-2xl sm:text-3xl font-english-bold text-neutral-900 dark:text-neutral-50 tracking-tight">
           "{currentChallenge.enPrompt}"
         </h3>
         <p className="text-xs text-neutral-500 dark:text-neutral-400">
-          Arrange the Arabic word tokens below into correct syntactic word order.
+          {isBn ? 'নিচের আরবি শব্দগুলো সঠিক ক্রমানুসারে সাজান।' : 'Arrange the Arabic word tokens below into correct syntactic word order.'}
         </p>
       </div>
 
       {/* Assembly Magnetic Tray */}
       <div className="space-y-2">
         <div className="flex items-center justify-between text-xs text-neutral-500 px-1">
-          <span className="font-english-semibold">Sentence Construction Tray:</span>
-          <span>{selectedWords.length} / {totalSlots} tokens placed</span>
+          <span className="font-english-semibold">{isBn ? 'বাক্য গঠনের স্থান:' : 'Sentence Construction Tray:'}</span>
+          <span>{selectedWords.length} / {totalSlots}</span>
         </div>
 
         <div
-          className={`min-h-[105px] p-5 sm:p-6 rounded-2xl border-2 transition-all flex flex-wrap items-center justify-center gap-3 relative shadow-inner ${
+          className={`min-h-[110px] p-5 sm:p-6 rounded-3xl transition-all flex flex-wrap items-center justify-center gap-3 relative border-0 ${
             isEvaluated
               ? isCorrect
-                ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-900 dark:text-emerald-100'
-                : 'bg-red-500/10 border-red-500/40 text-red-900 dark:text-red-100'
+                ? 'bg-emerald-500/10 text-emerald-900 dark:text-emerald-100'
+                : 'bg-rose-500/10 text-rose-900 dark:text-rose-100'
               : selectedWords.length > 0
-                ? 'bg-[#FFFFFF] dark:bg-[#0C0B0A] border-[#C8BFB0] dark:border-[#3D372F]'
-                : 'bg-[#F2ECE1]/60 dark:bg-[#181613] border-dashed border-[#DDD5C5] dark:border-[#2D2821]'
+                ? 'bg-neutral-50 dark:bg-neutral-950'
+                : 'bg-neutral-50/60 dark:bg-neutral-950/60 border-2 border-dashed border-neutral-300 dark:border-neutral-700'
           }`}
           dir="rtl"
         >
           <AnimatePresence>
             {selectedWords.length === 0 ? (
               <span className="text-xs text-neutral-400 dark:text-neutral-500 font-english select-none" dir="ltr">
-                Tap the Arabic word blocks below in order to place them on the tray
+                {isBn ? 'নিচ থেকে আরবি শব্দ নির্বাচন করে এখানে বসান' : 'Tap the Arabic word blocks below in order to place them on the tray'}
               </span>
             ) : (
               selectedWords.map((word, idx) => (
@@ -161,7 +167,7 @@ export const SentenceScrambleModule: React.FC<SentenceScrambleModuleProps> = ({
                   exit={{ scale: 0.85, opacity: 0 }}
                   onClick={() => handleDeselectWord(word, idx)}
                   disabled={isEvaluated}
-                  className="px-5 py-3 rounded-xl bg-[#1C1917] dark:bg-[#F5F5F4] text-[#F5F5F4] dark:text-[#1C1917] font-arabic text-3xl shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer select-none border border-black/10 dark:border-white/10"
+                  className="px-5 py-3 rounded-2xl bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-950 font-arabic text-3xl transition-all cursor-pointer select-none border-0 shadow-none hover:scale-105 active:scale-95"
                 >
                   {word}
                 </motion.button>
@@ -174,12 +180,12 @@ export const SentenceScrambleModule: React.FC<SentenceScrambleModuleProps> = ({
       {/* Available Word Blocks Pool */}
       <div className="space-y-2">
         <span className="text-xs font-english-semibold text-neutral-500 px-1">
-          Available Tokens:
+          {isBn ? 'উপলব্ধ শব্দসমূহ:' : 'Available Tokens:'}
         </span>
-        <div className="flex flex-wrap items-center justify-center gap-3 p-4 bg-[#F2ECE1]/50 dark:bg-[#181613] rounded-2xl border border-[#DFD8CC] dark:border-[#2C2822]" dir="rtl">
+        <div className="flex flex-wrap items-center justify-center gap-3 p-5 bg-neutral-50 dark:bg-neutral-950 rounded-3xl border-0" dir="rtl">
           {availableWords.length === 0 ? (
             <span className="text-xs text-neutral-400 font-english italic py-2" dir="ltr">
-              All tokens placed on tray. Click "Check Word Order" below.
+              {isBn ? 'সব শব্দ সাজানো হয়েছে। যাচাই করতে নিচের বোতামে চাপুন।' : 'All tokens placed on tray. Click Verify below.'}
             </span>
           ) : (
             availableWords.map((word, idx) => (
@@ -187,7 +193,7 @@ export const SentenceScrambleModule: React.FC<SentenceScrambleModuleProps> = ({
                 key={`available-${word}-${idx}`}
                 onClick={() => handleSelectWord(word, idx)}
                 disabled={isEvaluated}
-                className="px-5 py-3 rounded-xl bg-[#FFFFFF] dark:bg-[#201D19] text-neutral-900 dark:text-neutral-100 font-arabic text-3xl border border-[#DFD8CC] dark:border-[#38332A] shadow-sm hover:border-neutral-400 dark:hover:border-neutral-500 hover:scale-105 active:scale-95 transition-all cursor-pointer select-none"
+                className="px-5 py-3 rounded-2xl bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100 font-arabic text-3xl border-0 shadow-none transition-all cursor-pointer select-none hover:scale-105 active:scale-95"
               >
                 {word}
               </button>
@@ -201,10 +207,10 @@ export const SentenceScrambleModule: React.FC<SentenceScrambleModuleProps> = ({
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`p-4 sm:p-5 rounded-2xl border text-sm ${
+          className={`p-5 rounded-3xl border-0 text-sm shadow-none ${
             isCorrect
-              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-950 dark:text-emerald-100'
-              : 'bg-amber-500/10 border-amber-500/30 text-amber-950 dark:text-amber-100'
+              ? 'bg-emerald-500/10 text-emerald-950 dark:text-emerald-100'
+              : 'bg-amber-500/10 text-amber-950 dark:text-amber-100'
           }`}
         >
           <div className="flex items-center justify-between gap-3 mb-1.5">
@@ -212,23 +218,23 @@ export const SentenceScrambleModule: React.FC<SentenceScrambleModuleProps> = ({
               {isCorrect ? (
                 <>
                   <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                  <span>Syntactic Order Verified · أَحْسَنْتَ! (+25 XP)</span>
+                  <span>{isBn ? 'সঠিক বাক্য বিন্যাস · أَحْسَنْتَ! (+25 XP)' : 'Syntactic Order Verified · أَحْسَنْتَ! (+25 XP)'}</span>
                 </>
               ) : (
                 <>
                   <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                  <span>Grammar Review: Check sequence</span>
+                  <span>{isBn ? 'ব্যাকরণ পর্যালোচনা: বাক্যক্রম পরীক্ষা করুন' : 'Grammar Review: Check sequence'}</span>
                 </>
               )}
             </div>
 
             <button
               onClick={() => playAudio(currentChallenge.arSentence)}
-              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 dark:bg-black/30 text-xs font-english-semibold hover:bg-white dark:hover:bg-black/50 transition-colors cursor-pointer border border-black/10 dark:border-white/10"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-xs font-english-semibold hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors cursor-pointer border-0"
               title="Listen to full correct Arabic sentence"
             >
               <Volume2 className="w-3.5 h-3.5" />
-              <span>Pronounce Sentence</span>
+              <span>{isBn ? 'উচ্চারণ শুনুন' : 'Pronounce Sentence'}</span>
             </button>
           </div>
           <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
@@ -237,31 +243,31 @@ export const SentenceScrambleModule: React.FC<SentenceScrambleModuleProps> = ({
         </motion.div>
       )}
 
-      {/* Actions */}
-      <div className="flex items-center justify-between pt-4 border-t border-[#E7E2D9] dark:border-[#26231E]">
+      {/* Actions (56px Action Button & Reset) */}
+      <div className="flex items-center justify-between pt-4 border-0 gap-4">
         <button
           onClick={handleReset}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-200/50 dark:hover:bg-neutral-800 transition-colors text-xs font-english-bold cursor-pointer"
+          className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-200/50 dark:hover:bg-neutral-800 transition-colors text-xs font-english-bold cursor-pointer border-0"
         >
-          <RotateCcw className="w-3.5 h-3.5" />
-          <span>Reset Tray</span>
+          <RotateCcw className="w-4 h-4" />
+          <span>{isBn ? 'পুনরায় সাজান' : 'Reset Tray'}</span>
         </button>
 
         {!isEvaluated ? (
           <button
             onClick={handleCheck}
             disabled={selectedWords.length === 0}
-            className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 font-english-bold text-xs shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer active:scale-95"
+            className="h-14 px-8 rounded-full bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] border-0 shadow-none cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            <span>Verify Syntax</span>
+            <span>{isBn ? 'যাচাই করুন' : 'Verify Syntax'}</span>
             <Check className="w-4 h-4" />
           </button>
         ) : (
           <button
             onClick={handleNext}
-            className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 font-english-bold text-xs shadow-md transition-all cursor-pointer active:scale-95"
+            className="h-14 px-8 rounded-full bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 font-english-semibold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98] border-0 shadow-none cursor-pointer"
           >
-            <span>{currentIndex < challenges.length - 1 ? 'Next Sentence' : 'Finish Module'}</span>
+            <span>{currentIndex < challenges.length - 1 ? (isBn ? 'পরবর্তী বাক্য' : 'Next Sentence') : (isBn ? 'সম্পন্ন করুন' : 'Finish Module')}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         )}

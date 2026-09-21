@@ -11,7 +11,6 @@ import {
 } from 'lucide-react';
 import { useVocabStore } from '../../state/vocabStore';
 import { cleanArabic, QURAN_VOCAB_CATALOG } from '../../data/quranVocabData';
-import { GamificationHeaderWidget } from '../../components/gamification/GamificationHeaderWidget';
 import { useRetentionStore } from '@/state/retentionStore';
 import { buildKnownTokensSet, isWordMatch, calculatePageComprehension } from '@/lib/mushafMatcher';
 
@@ -510,8 +509,6 @@ function MushafV2Page() {
               <Sparkles className="w-3.5 h-3.5" />
               <span>Greenlit ({pageLearnedStats.unlocked}/{pageLearnedStats.total})</span>
             </button>
-
-            <GamificationHeaderWidget />
           </div>
         </div>
       </header>

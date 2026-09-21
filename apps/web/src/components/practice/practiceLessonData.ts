@@ -10,6 +10,7 @@ export interface BlitzPair {
   id: string
   ar: string
   en: string
+  bn?: string
   emoji?: string
 }
 
@@ -64,14 +65,14 @@ export const LESSON_PRACTICE_DATA: Record<number, LessonPracticeSuite> = {
       },
     ],
     blitzPairs: [
-      { id: 'p1-1', ar: 'كِتَابٌ', en: 'Book', emoji: '📖' },
-      { id: 'p1-2', ar: 'قَلَمٌ', en: 'Pen', emoji: '🖊️' },
-      { id: 'p1-3', ar: 'بَيْتٌ', en: 'House', emoji: '🏠' },
-      { id: 'p1-4', ar: 'بَابٌ', en: 'Door', emoji: '🚪' },
-      { id: 'p1-5', ar: 'كُرْسِيٌّ', en: 'Chair', emoji: '🪑' },
-      { id: 'p1-6', ar: 'مِصْبَاحٌ', en: 'Lamp', emoji: '💡' },
-      { id: 'p1-7', ar: 'جِدَارٌ', en: 'Wall', emoji: '🧱' },
-      { id: 'p1-8', ar: 'سَرِيرٌ', en: 'Bed', emoji: '🛏️' },
+      { id: 'p1-1', ar: 'كِتَابٌ', en: 'Book', bn: 'বই', emoji: '📖' },
+      { id: 'p1-2', ar: 'قَلَمٌ', en: 'Pen', bn: 'কলম', emoji: '🖊️' },
+      { id: 'p1-3', ar: 'بَيْتٌ', en: 'House', bn: 'বাড়ি', emoji: '🏠' },
+      { id: 'p1-4', ar: 'بَابٌ', en: 'Door', bn: 'দরজা', emoji: '🚪' },
+      { id: 'p1-5', ar: 'كُرْسِيٌّ', en: 'Chair', bn: 'চেয়ার', emoji: '🪑' },
+      { id: 'p1-6', ar: 'مِصْبَاحٌ', en: 'Lamp', bn: 'বাতি', emoji: '💡' },
+      { id: 'p1-7', ar: 'جِدَارٌ', en: 'Wall', bn: 'দেয়াল', emoji: '🧱' },
+      { id: 'p1-8', ar: 'سَرِيرٌ', en: 'Bed', bn: 'বিছানা', emoji: '🛏️' },
     ],
     harakatChallenges: [
       {
@@ -133,13 +134,13 @@ export const LESSON_PRACTICE_DATA: Record<number, LessonPracticeSuite> = {
       },
     ],
     blitzPairs: [
-      { id: 'p2-1', ar: 'مَسْجِدٌ', en: 'Mosque', emoji: '🕌' },
-      { id: 'p2-2', ar: 'كَبِيرٌ', en: 'Big', emoji: '🐘' },
-      { id: 'p2-3', ar: 'صَغِيرٌ', en: 'Small', emoji: '🐜' },
-      { id: 'p2-4', ar: 'نَظِيفٌ', en: 'Clean', emoji: '✨' },
-      { id: 'p2-5', ar: 'جَدِيدٌ', en: 'New', emoji: '🆕' },
-      { id: 'p2-6', ar: 'قَدِيمٌ', en: 'Old', emoji: '⏳' },
-      { id: 'p2-7', ar: 'جَمِيلٌ', en: 'Beautiful', emoji: '🌸' },
+      { id: 'p2-1', ar: 'مَسْجِدٌ', en: 'Mosque', bn: 'মসজিদ', emoji: '🕌' },
+      { id: 'p2-2', ar: 'كَبِيرٌ', en: 'Big', bn: 'বড়', emoji: '🐘' },
+      { id: 'p2-3', ar: 'صَغِيرٌ', en: 'Small', bn: 'ছোট', emoji: '🐜' },
+      { id: 'p2-4', ar: 'نَظِيفٌ', en: 'Clean', bn: 'পরিষ্কার', emoji: '✨' },
+      { id: 'p2-5', ar: 'جَدِيدٌ', en: 'New', bn: 'নতুন', emoji: '🆕' },
+      { id: 'p2-6', ar: 'قَدِيمٌ', en: 'Old', bn: 'পুরানো', emoji: '⏳' },
+      { id: 'p2-7', ar: 'جَمِيلٌ', en: 'Beautiful', bn: 'সুন্দর', emoji: '🌸' },
     ],
     harakatChallenges: [
       {
@@ -182,13 +183,13 @@ export const LESSON_PRACTICE_DATA: Record<number, LessonPracticeSuite> = {
       },
     ],
     blitzPairs: [
-      { id: 'p3-1', ar: 'مَدْرَسَةٌ', en: 'School', emoji: '🏫' },
-      { id: 'p3-2', ar: 'سَيَّارَةٌ', en: 'Car', emoji: '🚗' },
-      { id: 'p3-3', ar: 'سَبُّورَةٌ', en: 'Blackboard', emoji: '📋' },
-      { id: 'p3-4', ar: 'قَرِيبٌ', en: 'Near', emoji: '📍' },
-      { id: 'p3-5', ar: 'بَعِيدٌ', en: 'Far', emoji: '🚀' },
-      { id: 'p3-6', ar: 'تِلْكَ', en: 'That (f.)', emoji: '👉' },
-      { id: 'p3-7', ar: 'هَٰذِهِ', en: 'This (f.)', emoji: '👇' },
+      { id: 'p3-1', ar: 'مَدْرَسَةٌ', en: 'School', bn: 'বিদ্যালয়', emoji: '🏫' },
+      { id: 'p3-2', ar: 'سَيَّارَةٌ', en: 'Car', bn: 'গাড়ি', emoji: '🚗' },
+      { id: 'p3-3', ar: 'سَبُّورَةٌ', en: 'Blackboard', bn: 'ব্ল্যাকবোর্ড', emoji: '📋' },
+      { id: 'p3-4', ar: 'قَرِيبٌ', en: 'Near', bn: 'নিকটবর্তী', emoji: '📍' },
+      { id: 'p3-5', ar: 'بَعِيدٌ', en: 'Far', bn: 'দূরবর্তী', emoji: '🚀' },
+      { id: 'p3-6', ar: 'تِلْكَ', en: 'That (f.)', bn: 'ঐটি (স্ত্রীবাচক)', emoji: '👉' },
+      { id: 'p3-7', ar: 'هَٰذِهِ', en: 'This (f.)', bn: 'এটি (স্ত্রীবাচক)', emoji: '👇' },
     ],
     harakatChallenges: [
       {
@@ -230,12 +231,12 @@ export const LESSON_PRACTICE_DATA: Record<number, LessonPracticeSuite> = {
       },
     ],
     blitzPairs: [
-      { id: 'p4-1', ar: 'وَلَدٌ', en: 'Boy', emoji: '👦' },
-      { id: 'p4-2', ar: 'بِنْتٌ', en: 'Girl', emoji: '👧' },
-      { id: 'p4-3', ar: 'رَجُلٌ', en: 'Man', emoji: '👨' },
-      { id: 'p4-4', ar: 'امْرَأَةٌ', en: 'Woman', emoji: '👩' },
-      { id: 'p4-5', ar: 'مَاءٌ', en: 'Water', emoji: '💧' },
-      { id: 'p4-6', ar: 'بَارِدٌ', en: 'Cold', emoji: '❄️' },
+      { id: 'p4-1', ar: 'وَلَدٌ', en: 'Boy', bn: 'ছেলে', emoji: '👦' },
+      { id: 'p4-2', ar: 'بِنْتٌ', en: 'Girl', bn: 'মেয়ে', emoji: '👧' },
+      { id: 'p4-3', ar: 'رَجُلٌ', en: 'Man', bn: 'পুরুষ', emoji: '👨' },
+      { id: 'p4-4', ar: 'امْرَأَةٌ', en: 'Woman', bn: 'মহিলা', emoji: '👩' },
+      { id: 'p4-5', ar: 'مَاءٌ', en: 'Water', bn: 'পানি', emoji: '💧' },
+      { id: 'p4-6', ar: 'بَارِدٌ', en: 'Cold', bn: 'ঠান্ডা', emoji: '❄️' },
     ],
     harakatChallenges: [
       {
@@ -277,13 +278,13 @@ export const LESSON_PRACTICE_DATA: Record<number, LessonPracticeSuite> = {
       },
     ],
     blitzPairs: [
-      { id: 'p5-1', ar: 'فِي', en: 'In / Inside', emoji: '📥' },
-      { id: 'p5-2', ar: 'عَلَىٰ', en: 'On / Upon', emoji: '🔝' },
-      { id: 'p5-3', ar: 'مِنْ', en: 'From', emoji: '⬅️' },
-      { id: 'p5-4', ar: 'إِلَىٰ', en: 'To', emoji: '➡️' },
-      { id: 'p5-5', ar: 'ذَهَبَ', en: 'He went', emoji: '🚶' },
-      { id: 'p5-6', ar: 'رَجَعَ', en: 'He returned', emoji: '🔄' },
-      { id: 'p5-7', ar: 'حَقِيبَةٌ', en: 'Bag', emoji: '🎒' },
+      { id: 'p5-1', ar: 'فِي', en: 'In / Inside', bn: 'মধ্যে', emoji: '📥' },
+      { id: 'p5-2', ar: 'عَلَىٰ', en: 'On / Upon', bn: 'উপরে', emoji: '🔝' },
+      { id: 'p5-3', ar: 'مِنْ', en: 'From', bn: 'হতে / থেকে', emoji: '⬅️' },
+      { id: 'p5-4', ar: 'إِلَىٰ', en: 'To', bn: 'দিকে', emoji: '➡️' },
+      { id: 'p5-5', ar: 'ذَهَبَ', en: 'He went', bn: 'সে গেল', emoji: '🚶' },
+      { id: 'p5-6', ar: 'رَجَعَ', en: 'He returned', bn: 'সে ফিরল', emoji: '🔄' },
+      { id: 'p5-7', ar: 'حَقِيبَةٌ', en: 'Bag', bn: 'ব্যাগ', emoji: '🎒' },
     ],
     harakatChallenges: [
       {
@@ -334,12 +335,12 @@ export function getLessonPracticeSuite(lessonNum: number): LessonPracticeSuite {
       },
     ],
     blitzPairs: [
-      { id: `p${lessonNum}-1`, ar: 'هُوَ', en: 'He', emoji: '👨' },
-      { id: `p${lessonNum}-2`, ar: 'هِيَ', en: 'She', emoji: '👩' },
-      { id: `p${lessonNum}-3`, ar: 'أَنَا', en: 'I', emoji: '🙋' },
-      { id: `p${lessonNum}-4`, ar: 'نَحْنُ', en: 'We', emoji: '👥' },
-      { id: `p${lessonNum}-5`, ar: 'هُمْ', en: 'They', emoji: '👨‍👩‍👦' },
-      { id: `p${lessonNum}-6`, ar: 'مُعَلِّمٌ', en: 'Teacher', emoji: '🧑‍🏫' },
+      { id: `p${lessonNum}-1`, ar: 'هُوَ', en: 'He', bn: 'সে (পুং)', emoji: '👨' },
+      { id: `p${lessonNum}-2`, ar: 'هِيَ', en: 'She', bn: 'সে (স্ত্রী)', emoji: '👩' },
+      { id: `p${lessonNum}-3`, ar: 'أَنَا', en: 'I', bn: 'আমি', emoji: '🙋' },
+      { id: `p${lessonNum}-4`, ar: 'نَحْنُ', en: 'We', bn: 'আমরা', emoji: '👥' },
+      { id: `p${lessonNum}-5`, ar: 'هُمْ', en: 'They', bn: 'তারা', emoji: '👨‍👩‍👦' },
+      { id: `p${lessonNum}-6`, ar: 'مُعَلِّمٌ', en: 'Teacher', bn: 'শিক্ষক', emoji: '🧑‍🏫' },
     ],
     harakatChallenges: [
       {

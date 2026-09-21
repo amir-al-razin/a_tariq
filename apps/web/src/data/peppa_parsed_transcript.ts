@@ -1,4 +1,6 @@
-[
+import type { TranscriptSentence } from "../components/curriculum/shared/InteractiveVideoPlayer"
+
+export const peppaParsedTranscript: TranscriptSentence[] = [
   {
     "sentenceId": "s1",
     "words": [
@@ -8,7 +10,7 @@
         "vocalized": "أَنَا",
         "transliteration": "ana",
         "en": "I / me",
-        "start": 0.0,
+        "start": 0,
         "end": 3.08,
         "root": "أ-ن-ا",
         "pos": "pronoun"
@@ -542,7 +544,7 @@
         "transliteration": "min",
         "en": "from",
         "start": 45.4,
-        "end": 47.0,
+        "end": 47,
         "root": null,
         "pos": "preposition"
       },
@@ -552,7 +554,7 @@
         "vocalized": "هُنَا",
         "transliteration": "huna",
         "en": "here",
-        "start": 47.0,
+        "start": 47,
         "end": 47.4,
         "root": null,
         "pos": "adverb"
@@ -1590,7 +1592,7 @@
         "transliteration": "al-tali",
         "en": "next item",
         "start": 129.75,
-        "end": 130.0,
+        "end": 130,
         "root": "ت-ل-و",
         "pos": "noun"
       },
@@ -1840,7 +1842,7 @@
         "transliteration": "la",
         "en": "not / no",
         "start": 155.75,
-        "end": 156.0,
+        "end": 156,
         "root": null,
         "pos": "particle"
       },
@@ -2513,7 +2515,7 @@
         "vocalized": "أَضَعْهَا",
         "transliteration": "ada'ha",
         "en": "put it",
-        "start": 210.0,
+        "start": 210,
         "end": 210.52,
         "root": "و-ض-ع",
         "pos": "verb"
@@ -2830,3 +2832,5 @@
     ]
   }
 ]
+
+export default peppaParsedTranscript;

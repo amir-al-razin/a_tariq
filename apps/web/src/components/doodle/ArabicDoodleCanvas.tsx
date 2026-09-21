@@ -14,8 +14,11 @@ import {
   Type,
   Hash,
   BookOpen,
+  X,
+  PenTool,
 } from 'lucide-react'
-import confetti from 'canvas-confetti'
+import confetti from '../../lib/confetti'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // Standalone XP persistence helper
 const recordDoodleXp = (amount: number, _description?: string) => {
@@ -1138,7 +1141,14 @@ export function evaluateDoodleStroke({
   }
 }
 
-export const ArabicDoodleCanvas: React.FC = () => {
+export interface ArabicDoodleCanvasProps {
+  onClose?: () => void
+}
+
+export const ArabicDoodleCanvas: React.FC<ArabicDoodleCanvasProps> = ({ onClose }) => {
+  const { language } = useLanguage()
+  const isBn = language === 'bn'
+
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const historyRef = useRef<ImageData[]>([])
   const strokePointsRef = useRef<StrokePoint[]>([])
@@ -1439,37 +1449,39 @@ export const ArabicDoodleCanvas: React.FC = () => {
   }
 
   return (
-    <div className="w-full bg-[#FAF8F5] dark:bg-[#141311] rounded-3xl p-6 sm:p-8 border border-[#E7E2D9] dark:border-[#26231E] shadow-sm font-english space-y-6 transition-colors duration-300">
+    <div className="w-full bg-neutral-100 dark:bg-neutral-900 rounded-4xl p-6 sm:p-8 font-english space-y-6 transition-colors duration-300">
       {/* Atelier Header & Navigation */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-[#E7E2D9] dark:border-[#26231E] pb-5">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-[#F0ECE1] dark:bg-[#201D18] border border-[#DDD6C8] dark:border-[#332E27] text-stone-800 dark:text-stone-200 flex items-center justify-center font-arabic text-xl font-bold shadow-inner shrink-0">
-            ق
+          <div className="w-10 h-10 rounded-2xl bg-neutral-200 dark:bg-neutral-800 text-accent-primary flex items-center justify-center shrink-0">
+            <PenTool className="w-5 h-5 stroke-[2]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="font-english-bold text-lg text-stone-900 dark:text-stone-100 tracking-tight">
-                Arabic Calligraphy Atelier
+              <h2 className="font-english-bold text-lg text-neutral-900 dark:text-neutral-100 tracking-tight">
+                {isBn ? 'ক্যালিগ্রাফি স্টুডিও' : 'Calligraphy Atelier'}
               </h2>
-              <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-700 dark:text-amber-400 text-xs font-english-bold whitespace-nowrap shrink-0">
+              <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-400 text-xs font-english-bold whitespace-nowrap shrink-0">
                 ⚡ +30 XP
               </span>
             </div>
-            <p className="text-xs text-stone-500 dark:text-stone-400 font-english">
-              Fluid handwriting & orthography canvas with intelligent endpoint recognition.
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 font-english">
+              {isBn
+                ? 'সঠিক নিয়মে আরবি হরফ ও শব্দ লেখার অনুশীলন ক্যানভাস।'
+                : 'Stroke-by-stroke Arabic handwriting and orthography practice.'}
             </p>
           </div>
         </div>
 
-        {/* Global Toolbar (Prev, Next, Undo, Clear, Guidelines, Template) */}
+        {/* Global Toolbar (Prev, Next, Undo, Clear, Guidelines, Template, Close) */}
         <div className="flex items-center gap-2 flex-wrap self-stretch sm:self-auto">
           {/* Ruling Guidelines Toggle */}
           <button
             onClick={() => setShowGuidelines((g) => !g)}
-            className={`p-2 rounded-xl text-xs font-english-semibold transition-all cursor-pointer border shrink-0 ${
+            className={`p-2 rounded-xl text-xs font-english-semibold transition-all cursor-pointer shrink-0 ${
               showGuidelines
-                ? 'bg-[#EAE4D9] dark:bg-[#28241F] border-[#DFD8CC] dark:border-[#3A342C] text-stone-900 dark:text-stone-100'
-                : 'bg-transparent border-[#DFD8CC] dark:border-[#26231E] text-stone-400 hover:text-stone-600 dark:hover:text-stone-300'
+                ? 'bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100'
+                : 'bg-transparent text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300'
             }`}
             title="Toggle Musattar (Manuscript Grid Guidelines)"
           >
@@ -1479,22 +1491,22 @@ export const ArabicDoodleCanvas: React.FC = () => {
           {/* Trace Guide Toggle */}
           <button
             onClick={() => setShowTraceGuide((g) => !g)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-english-semibold transition-all cursor-pointer border whitespace-nowrap shrink-0 ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-english-semibold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
               showTraceGuide
-                ? 'bg-[#EAE4D9] dark:bg-[#28241F] border-[#DFD8CC] dark:border-[#3A342C] text-stone-900 dark:text-stone-100'
-                : 'bg-transparent border-[#DFD8CC] dark:border-[#26231E] text-stone-400 hover:text-stone-600 dark:hover:text-stone-300'
+                ? 'bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100'
+                : 'bg-transparent text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300'
             }`}
             title="Toggle watermark trace template"
           >
             {showTraceGuide ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
-            <span className="whitespace-nowrap">{showTraceGuide ? 'Template' : 'Freehand'}</span>
+            <span className="whitespace-nowrap">{showTraceGuide ? (isBn ? 'টেমপ্লেট' : 'Template') : (isBn ? 'মুক্তহস্ত' : 'Freehand')}</span>
           </button>
 
           {/* Undo */}
           <button
             onClick={handleUndo}
             disabled={!canUndo}
-            className="p-2 rounded-xl bg-[#F0ECE1] hover:bg-[#E4DDD0] dark:bg-[#201D18] dark:hover:bg-[#2A2620] text-stone-700 dark:text-stone-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer border border-[#DDD6C8] dark:border-[#332E27] shrink-0"
+            className="p-2 rounded-xl bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shrink-0"
             title="Undo stroke"
           >
             <Undo2 className="w-4 h-4" />
@@ -1503,80 +1515,91 @@ export const ArabicDoodleCanvas: React.FC = () => {
           {/* Clear */}
           <button
             onClick={handleClear}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#F0ECE1] hover:bg-[#E4DDD0] dark:bg-[#201D18] dark:hover:bg-[#2A2620] text-stone-700 dark:text-stone-300 text-xs font-english-semibold transition-colors cursor-pointer border border-[#DDD6C8] dark:border-[#332E27] whitespace-nowrap shrink-0"
+            className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 text-xs font-english-semibold transition-colors cursor-pointer whitespace-nowrap shrink-0"
             title="Clear canvas"
           >
             <RotateCcw className="w-3.5 h-3.5 shrink-0" />
-            <span className="whitespace-nowrap">Clear</span>
+            <span className="whitespace-nowrap">{isBn ? 'মুছুন' : 'Clear'}</span>
           </button>
 
           {/* Prev Item */}
           <button
             onClick={handlePrev}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#F0ECE1] hover:bg-[#E4DDD0] dark:bg-[#201D18] dark:hover:bg-[#2A2620] text-stone-800 dark:text-stone-200 text-xs font-english-bold transition-all cursor-pointer border border-[#DDD6C8] dark:border-[#332E27] whitespace-nowrap shrink-0"
+            className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-english-bold transition-all cursor-pointer whitespace-nowrap shrink-0"
             title="Previous character"
           >
             <ChevronLeft className="w-3.5 h-3.5 shrink-0" />
-            <span className="whitespace-nowrap">Prev</span>
+            <span className="whitespace-nowrap">{isBn ? 'পূর্ববর্তী' : 'Prev'}</span>
           </button>
 
           {/* Next Item */}
           <button
             onClick={handleNext}
-            className="flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-950 text-xs font-english-bold transition-all cursor-pointer shadow-sm whitespace-nowrap shrink-0"
+            className="flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-white text-white dark:text-neutral-950 text-xs font-english-bold transition-all cursor-pointer whitespace-nowrap shrink-0"
             title="Next character"
           >
-            <span className="whitespace-nowrap">Next</span>
+            <span className="whitespace-nowrap">{isBn ? 'পরবর্তী' : 'Next'}</span>
             <ChevronRight className="w-3.5 h-3.5 shrink-0" />
           </button>
+
+          {/* Optional Close Modal Button */}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-xl bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-600 dark:text-neutral-300 transition-colors cursor-pointer shrink-0 ml-1"
+              title="Close Atelier"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
 
       {/* Category Tabs: Alphabet | Numerals | Words */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-1">
-        <div className="flex items-center gap-1.5 p-1 bg-[#EAE4D9] dark:bg-[#1E1C18] rounded-2xl border border-[#DFD8CC] dark:border-[#2C2822] overflow-x-auto max-w-full">
+        <div className="flex items-center gap-1.5 p-1 bg-neutral-200/70 dark:bg-neutral-800/70 rounded-2xl overflow-x-auto max-w-full">
           <button
             onClick={() => handleSwitchTab('alphabet')}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-english-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
               activeTab === 'alphabet'
-                ? 'bg-white dark:bg-[#2E2B25] text-stone-900 dark:text-stone-100 shadow-sm'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200'
+                ? 'bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100'
+                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200'
             }`}
           >
             <Type className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-            <span>Alphabet (الحروف · 28)</span>
+            <span>{isBn ? 'বর্ণমালা (الحروف · ২৮)' : 'Alphabet (الحروف · 28)'}</span>
           </button>
 
           <button
             onClick={() => handleSwitchTab('numerals')}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-english-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
               activeTab === 'numerals'
-                ? 'bg-white dark:bg-[#2E2B25] text-stone-900 dark:text-stone-100 shadow-sm'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200'
+                ? 'bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100'
+                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200'
             }`}
           >
             <Hash className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-            <span>Numerals (الأرقام · 10)</span>
+            <span>{isBn ? 'সংখ্যা (الأرقام · ১০)' : 'Numerals (الأرقام · 10)'}</span>
           </button>
 
           <button
             onClick={() => handleSwitchTab('words')}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-english-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
               activeTab === 'words'
-                ? 'bg-white dark:bg-[#2E2B25] text-stone-900 dark:text-stone-100 shadow-sm'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200'
+                ? 'bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100'
+                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200'
             }`}
           >
             <BookOpen className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
-            <span>Words (الكلمات · 8)</span>
+            <span>{isBn ? 'শব্দাবলী (الكلمات · ৮)' : 'Words (الكلمات · 8)'}</span>
           </button>
         </div>
 
         {/* Current position counter */}
-        <div className="text-xs font-english-medium text-stone-500 dark:text-stone-400 whitespace-nowrap">
-          {activeTab === 'alphabet' && `Letter ${alphabetIndex + 1} of ${ARABIC_ALPHABET.length}`}
-          {activeTab === 'numerals' && `Digit ${numeralIndex + 1} of ${ARABIC_NUMERALS.length}`}
-          {activeTab === 'words' && `Word ${wordIndex + 1} of ${DOODLE_WORDS.length}`}
+        <div className="text-xs font-english-medium text-neutral-500 dark:text-neutral-400 whitespace-nowrap">
+          {activeTab === 'alphabet' && (isBn ? `অক্ষর ${alphabetIndex + 1} / ${ARABIC_ALPHABET.length}` : `Letter ${alphabetIndex + 1} of ${ARABIC_ALPHABET.length}`)}
+          {activeTab === 'numerals' && (isBn ? `সংখ্যা ${numeralIndex + 1} / ${ARABIC_NUMERALS.length}` : `Digit ${numeralIndex + 1} of ${ARABIC_NUMERALS.length}`)}
+          {activeTab === 'words' && (isBn ? `শব্দ ${wordIndex + 1} / ${DOODLE_WORDS.length}` : `Word ${wordIndex + 1} of ${DOODLE_WORDS.length}`)}
         </div>
       </div>
 
@@ -1590,10 +1613,10 @@ export const ArabicDoodleCanvas: React.FC = () => {
                 setAlphabetIndex(idx)
                 handleClear()
               }}
-              className={`px-3 py-1.5 rounded-xl font-arabic text-lg font-bold transition-all cursor-pointer shrink-0 border whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-xl font-arabic text-lg font-bold transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                 alphabetIndex === idx
-                  ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 border-stone-900 dark:border-stone-100 shadow-sm'
-                  : 'bg-white dark:bg-[#1A1815] text-stone-700 dark:text-stone-300 border-[#DFD8CC] dark:border-[#2C2822] hover:bg-[#F5F1E8] dark:hover:bg-[#24211C]'
+                  ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-950'
+                  : 'bg-neutral-50 dark:bg-neutral-950 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200/80 dark:hover:bg-neutral-800'
               }`}
               title={letter.nameEn}
             >
@@ -1609,10 +1632,10 @@ export const ArabicDoodleCanvas: React.FC = () => {
                 setNumeralIndex(idx)
                 handleClear()
               }}
-              className={`px-3.5 py-1 rounded-xl font-arabic text-lg font-bold transition-all cursor-pointer shrink-0 border whitespace-nowrap flex items-center gap-1.5 ${
+              className={`px-3.5 py-1 rounded-xl font-arabic text-lg font-bold transition-all cursor-pointer shrink-0 whitespace-nowrap flex items-center gap-1.5 ${
                 numeralIndex === idx
-                  ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 border-stone-900 dark:border-stone-100 shadow-sm'
-                  : 'bg-white dark:bg-[#1A1815] text-stone-700 dark:text-stone-300 border-[#DFD8CC] dark:border-[#2C2822] hover:bg-[#F5F1E8] dark:hover:bg-[#24211C]'
+                  ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-950'
+                  : 'bg-neutral-50 dark:bg-neutral-950 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200/80 dark:hover:bg-neutral-800'
               }`}
               title={num.nameEn}
             >
@@ -1629,10 +1652,10 @@ export const ArabicDoodleCanvas: React.FC = () => {
                 setWordIndex(idx)
                 handleClear()
               }}
-              className={`px-3.5 py-1 rounded-xl font-arabic text-base font-bold transition-all cursor-pointer shrink-0 border whitespace-nowrap ${
+              className={`px-3.5 py-1 rounded-xl font-arabic text-base font-bold transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                 wordIndex === idx
-                  ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 border-stone-900 dark:border-stone-100 shadow-sm'
-                  : 'bg-white dark:bg-[#1A1815] text-stone-700 dark:text-stone-300 border-[#DFD8CC] dark:border-[#2C2822] hover:bg-[#F5F1E8] dark:hover:bg-[#24211C]'
+                  ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-950'
+                  : 'bg-neutral-50 dark:bg-neutral-950 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200/80 dark:hover:bg-neutral-800'
               }`}
               title={w.en}
             >
@@ -1646,7 +1669,7 @@ export const ArabicDoodleCanvas: React.FC = () => {
         {/* Left Side: Calligraphy Canvas & Nib Controls */}
         <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
           {/* Canvas Area with Classical Musattar Ruling Lines */}
-          <div className="relative w-full h-[300px] sm:h-[340px] bg-white dark:bg-[#0C0B0A] rounded-2xl border-2 border-[#DFD8CC] dark:border-[#2C2822] overflow-hidden select-none touch-none shadow-inner">
+          <div className="relative w-full h-[300px] sm:h-[340px] bg-neutral-50 dark:bg-neutral-950 rounded-3xl overflow-hidden select-none touch-none">
             {/* Musattar (Manuscript Calligraphy Guidelines) */}
             {showGuidelines && (
               <div className="absolute inset-0 pointer-events-none flex flex-col justify-between py-12 px-6 opacity-35 dark:opacity-20">
@@ -1658,7 +1681,7 @@ export const ArabicDoodleCanvas: React.FC = () => {
 
             {/* Trace Watermark Outline */}
             <div
-              className={`absolute inset-0 flex items-center justify-center pointer-events-none select-none text-stone-300/85 dark:text-stone-800 font-arabic font-bold transition-opacity ${
+              className={`absolute inset-0 flex items-center justify-center pointer-events-none select-none text-neutral-300/80 dark:text-neutral-800 font-arabic font-bold transition-opacity ${
                 activeTab === 'words' ? 'text-6xl sm:text-7xl' : 'text-8xl sm:text-9xl'
               } ${showTraceGuide ? 'opacity-100' : 'opacity-0'}`}
               dir="rtl"
@@ -1678,23 +1701,23 @@ export const ArabicDoodleCanvas: React.FC = () => {
 
             {/* Canvas Footer Bar */}
             <div className="absolute bottom-2.5 left-3 right-3 z-20 flex items-center justify-between pointer-events-none gap-2">
-              <span className="text-[10px] font-english-medium text-stone-500 dark:text-stone-400 bg-stone-100/90 dark:bg-stone-900/90 px-2.5 py-1 rounded-md backdrop-blur-sm border border-stone-200 dark:border-stone-800 whitespace-nowrap">
-                {strokeCount > 0 ? `${strokeCount} stroke nodes captured` : 'Touch or drag to draw loose curves'}
+              <span className="text-[10px] font-english-medium text-neutral-600 dark:text-neutral-400 bg-neutral-200/90 dark:bg-neutral-800/90 px-2.5 py-1 rounded-md backdrop-blur-sm whitespace-nowrap">
+                {strokeCount > 0 ? (isBn ? `${strokeCount}টি স্ট্রোক নোড সংরক্ষিত` : `${strokeCount} stroke nodes captured`) : (isBn ? 'অঙ্কন করতে স্পর্শ করুন বা ড্র্যাগ করুন' : 'Touch or drag to draw loose curves')}
               </span>
 
               {/* Ink & Nib Status Indicator */}
-              <span className="text-[10px] font-english-semibold text-stone-600 dark:text-stone-300 bg-stone-100/90 dark:bg-stone-900/90 px-2.5 py-1 rounded-md backdrop-blur-sm border border-stone-200 dark:border-stone-800 capitalize whitespace-nowrap">
+              <span className="text-[10px] font-english-semibold text-neutral-700 dark:text-neutral-300 bg-neutral-200/90 dark:bg-neutral-800/90 px-2.5 py-1 rounded-md backdrop-blur-sm capitalize whitespace-nowrap">
                 {activeNib} Qalam · {activeInk}
               </span>
             </div>
           </div>
 
           {/* Tool Palettes: Ink Colors & Nib Widths */}
-          <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-[#F4EFE6] dark:bg-[#1A1815] rounded-2xl border border-[#E5DFD4] dark:border-[#2A2620]">
+          <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-neutral-200/60 dark:bg-neutral-800/60 rounded-2xl">
             {/* Ink Tones */}
             <div className="flex items-center gap-1.5">
-              <span className="text-[11px] font-english-bold text-stone-600 dark:text-stone-400 mr-1 whitespace-nowrap">
-                Ink:
+              <span className="text-[11px] font-english-bold text-neutral-700 dark:text-neutral-300 mr-1 whitespace-nowrap">
+                {isBn ? 'কালি:' : 'Ink:'}
               </span>
               <button
                 onClick={() => setActiveInk('obsidian')}
@@ -1728,15 +1751,15 @@ export const ArabicDoodleCanvas: React.FC = () => {
 
             {/* Nib Widths */}
             <div className="flex items-center gap-1">
-              <span className="text-[11px] font-english-bold text-stone-600 dark:text-stone-400 mr-1 whitespace-nowrap">
-                Nib:
+              <span className="text-[11px] font-english-bold text-neutral-700 dark:text-neutral-300 mr-1 whitespace-nowrap">
+                {isBn ? 'নিব:' : 'Nib:'}
               </span>
               <button
                 onClick={() => setActiveNib('fine')}
                 className={`px-2.5 py-1 rounded-lg text-[11px] font-english-bold transition-all cursor-pointer whitespace-nowrap ${
                   activeNib === 'fine'
-                    ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 shadow-sm'
-                    : 'text-stone-600 dark:text-stone-400 hover:bg-stone-200/60 dark:hover:bg-stone-800'
+                    ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-950'
+                    : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-300/60 dark:hover:bg-neutral-700'
                 }`}
               >
                 Fine
@@ -1745,8 +1768,8 @@ export const ArabicDoodleCanvas: React.FC = () => {
                 onClick={() => setActiveNib('medium')}
                 className={`px-2.5 py-1 rounded-lg text-[11px] font-english-bold transition-all cursor-pointer whitespace-nowrap ${
                   activeNib === 'medium'
-                    ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 shadow-sm'
-                    : 'text-stone-600 dark:text-stone-400 hover:bg-stone-200/60 dark:hover:bg-stone-800'
+                    ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-950'
+                    : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-300/60 dark:hover:bg-neutral-700'
                 }`}
               >
                 Naskh
@@ -1755,8 +1778,8 @@ export const ArabicDoodleCanvas: React.FC = () => {
                 onClick={() => setActiveNib('broad')}
                 className={`px-2.5 py-1 rounded-lg text-[11px] font-english-bold transition-all cursor-pointer whitespace-nowrap ${
                   activeNib === 'broad'
-                    ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 shadow-sm'
-                    : 'text-stone-600 dark:text-stone-400 hover:bg-stone-200/60 dark:hover:bg-stone-800'
+                    ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-950'
+                    : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-300/60 dark:hover:bg-neutral-700'
                 }`}
               >
                 Thuluth
@@ -1769,10 +1792,10 @@ export const ArabicDoodleCanvas: React.FC = () => {
             <div className="flex-1 w-full">
               {evaluationResult.status !== 'idle' && (
                 <div
-                  className={`flex items-center gap-2 text-xs font-english-semibold px-3.5 py-2 rounded-xl border ${
+                  className={`flex items-center gap-2 text-xs font-english-semibold px-3.5 py-2 rounded-xl ${
                     evaluationResult.status === 'success'
-                      ? 'bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border-emerald-500/30'
-                      : 'bg-amber-500/10 text-amber-900 dark:text-amber-300 border-amber-500/30'
+                      ? 'bg-emerald-500/15 text-emerald-800 dark:text-emerald-300'
+                      : 'bg-amber-500/15 text-amber-900 dark:text-amber-300'
                   }`}
                 >
                   {evaluationResult.status === 'success' ? (
@@ -1787,20 +1810,20 @@ export const ArabicDoodleCanvas: React.FC = () => {
 
             <button
               onClick={handleCheckDoodle}
-              className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-950 font-english-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
+              className="h-14 px-8 rounded-full bg-accent-primary hover:bg-accent-primary-hover text-white font-english-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer whitespace-nowrap shrink-0 shadow-none border-0"
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-              <span className="whitespace-nowrap">Recognize & Evaluate (+30 XP)</span>
+              <Sparkles className="w-4 h-4 text-white fill-current shrink-0" />
+              <span className="text-white whitespace-nowrap">{isBn ? 'মূল্যায়ন করুন (+৩০ XP)' : 'Recognize & Evaluate (+30 XP)'}</span>
             </button>
           </div>
         </div>
 
         {/* Right Side: Manuscript Character / Word Dossier Card */}
-        <div className="lg:col-span-5 flex flex-col justify-between p-6 bg-white dark:bg-[#0C0B0A] rounded-2xl border border-[#DFD8CC] dark:border-[#2C2822] shadow-sm space-y-5">
+        <div className="lg:col-span-5 flex flex-col justify-between p-6 bg-neutral-50 dark:bg-neutral-950 rounded-3xl space-y-5">
           <div className="space-y-4">
             {/* Header / Category Tag */}
-            <div className="flex items-center justify-between border-b border-[#EAE4D9] dark:border-[#221F1B] pb-3">
-              <span className="text-[11px] font-english-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 whitespace-nowrap">
+            <div className="flex items-center justify-between pb-3">
+              <span className="text-[11px] font-english-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 whitespace-nowrap">
                 {activeTab === 'alphabet' && currentAlphabet.tag}
                 {activeTab === 'numerals' && currentNumeral.tag}
                 {activeTab === 'words' && currentWord.category}
@@ -1808,25 +1831,25 @@ export const ArabicDoodleCanvas: React.FC = () => {
 
               <button
                 onClick={() => playItemAudio(currentAudioText)}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F5F1E8] hover:bg-[#EAE4D9] dark:bg-[#1C1A16] dark:hover:bg-[#25221E] text-stone-800 dark:text-stone-200 text-xs font-english-semibold transition-colors cursor-pointer border border-[#DFD8CC] dark:border-[#2C2822] whitespace-nowrap shrink-0"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-english-semibold transition-colors cursor-pointer whitespace-nowrap shrink-0"
                 title="Listen to native Arabic pronunciation"
               >
                 <Volume2 className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-                <span className="whitespace-nowrap">Audio</span>
+                <span className="whitespace-nowrap">{isBn ? 'উচ্চারণ' : 'Audio'}</span>
               </button>
             </div>
 
             {/* Vocalized Classical Amiri Display */}
-            <div className="text-center py-6 bg-[#FAF7F2] dark:bg-[#14120F] rounded-xl border border-[#ECE6DB] dark:border-[#24211C]">
+            <div className="text-center py-6 bg-neutral-100 dark:bg-neutral-900 rounded-2xl">
               <h3
-                className={`font-arabic text-stone-900 dark:text-stone-50 mb-2 select-all leading-normal ${
+                className={`font-arabic text-neutral-900 dark:text-neutral-50 mb-2 select-all leading-normal ${
                   activeTab === 'words' ? 'text-6xl' : 'text-7xl sm:text-8xl'
                 }`}
                 dir="rtl"
               >
                 {currentChar}
               </h3>
-              <p className="text-sm font-english-semibold text-stone-600 dark:text-stone-400 italic">
+              <p className="text-sm font-english-semibold text-neutral-600 dark:text-neutral-400 italic">
                 {activeTab === 'alphabet' && `${currentAlphabet.nameEn} · ${currentAlphabet.transliteration}`}
                 {activeTab === 'numerals' && `${currentNumeral.nameEn} · ${currentNumeral.transliteration}`}
                 {activeTab === 'words' && currentWord.transliteration}
@@ -1837,21 +1860,21 @@ export const ArabicDoodleCanvas: React.FC = () => {
             <div className="space-y-2 pt-1 text-xs">
               {activeTab === 'alphabet' && (
                 <>
-                  <div className="flex items-center justify-between py-1.5 border-b border-[#EAE4D9] dark:border-[#221F1B]">
-                    <span className="text-stone-500">Letter Name (Arabic):</span>
-                    <span className="font-arabic text-base font-bold text-stone-900 dark:text-stone-100" dir="rtl">
+                  <div className="flex items-center justify-between py-1.5">
+                    <span className="text-neutral-500 dark:text-neutral-400">{isBn ? 'আরবি নাম:' : 'Letter Name (Arabic):'}</span>
+                    <span className="font-arabic text-base font-bold text-neutral-900 dark:text-neutral-100" dir="rtl">
                       {currentAlphabet.nameAr}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between py-1.5 border-b border-[#EAE4D9] dark:border-[#221F1B]">
-                    <span className="text-stone-500">Bangla Name:</span>
-                    <span className="font-english-bold text-stone-900 dark:text-stone-100">
+                  <div className="flex items-center justify-between py-1.5">
+                    <span className="text-neutral-500 dark:text-neutral-400">{isBn ? 'বাংলা নাম:' : 'Bangla Name:'}</span>
+                    <span className="font-english-bold text-neutral-900 dark:text-neutral-100">
                       {currentAlphabet.bn}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between py-1.5 border-b border-[#EAE4D9] dark:border-[#221F1B]">
-                    <span className="text-stone-500">Example Word:</span>
-                    <span className="font-english-medium text-stone-900 dark:text-stone-100 flex items-center gap-1.5">
+                  <div className="flex items-center justify-between py-1.5">
+                    <span className="text-neutral-500 dark:text-neutral-400">{isBn ? 'উদাহরণ শব্দ:' : 'Example Word:'}</span>
+                    <span className="font-english-medium text-neutral-900 dark:text-neutral-100 flex items-center gap-1.5">
                       <span className="font-arabic font-bold text-base" dir="rtl">
                         {currentAlphabet.exampleWord.ar}
                       </span>
@@ -1859,8 +1882,8 @@ export const ArabicDoodleCanvas: React.FC = () => {
                     </span>
                   </div>
                   <div className="py-1.5">
-                    <span className="text-stone-500 block mb-0.5">Sound & Articulation:</span>
-                    <p className="text-stone-700 dark:text-stone-300 font-english-medium leading-relaxed">
+                    <span className="text-neutral-500 dark:text-neutral-400 block mb-0.5">{isBn ? 'উচ্চারণ ও মাখরাজ:' : 'Sound & Articulation:'}</span>
+                    <p className="text-neutral-700 dark:text-neutral-300 font-english-medium leading-relaxed">
                       {currentAlphabet.soundGuide}
                     </p>
                   </div>
@@ -1869,27 +1892,29 @@ export const ArabicDoodleCanvas: React.FC = () => {
 
               {activeTab === 'numerals' && (
                 <>
-                  <div className="flex items-center justify-between py-1.5 border-b border-[#EAE4D9] dark:border-[#221F1B]">
-                    <span className="text-stone-500">Numeral Name:</span>
-                    <span className="font-arabic text-base font-bold text-stone-900 dark:text-stone-100" dir="rtl">
+                  <div className="flex items-center justify-between py-1.5">
+                    <span className="text-neutral-500 dark:text-neutral-400">{isBn ? 'আরবি সংখ্যার নাম:' : 'Numeral Name:'}</span>
+                    <span className="font-arabic text-base font-bold text-neutral-900 dark:text-neutral-100" dir="rtl">
                       {currentNumeral.nameAr}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between py-1.5 border-b border-[#EAE4D9] dark:border-[#221F1B]">
-                    <span className="text-stone-500">Western Value:</span>
+                  <div className="flex items-center justify-between py-1.5">
+                    <span className="text-neutral-500 dark:text-neutral-400">{isBn ? 'আন্তর্জাতিক মান:' : 'Western Value:'}</span>
                     <span className="font-english-bold text-base text-emerald-700 dark:text-emerald-400">
                       {currentNumeral.western}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between py-1.5 border-b border-[#EAE4D9] dark:border-[#221F1B]">
-                    <span className="text-stone-500">Bangla Digit:</span>
-                    <span className="font-english-bold text-stone-900 dark:text-stone-100">
+                  <div className="flex items-center justify-between py-1.5">
+                    <span className="text-neutral-500 dark:text-neutral-400">{isBn ? 'বাংলা সংখ্যা:' : 'Bangla Digit:'}</span>
+                    <span className="font-english-bold text-neutral-900 dark:text-neutral-100">
                       {currentNumeral.bn}
                     </span>
                   </div>
                   <div className="py-2">
-                    <p className="text-stone-600 dark:text-stone-400 font-english leading-relaxed">
-                      Eastern Arabic numerals are written left-to-right within numbers, matching the direction of Western mathematics.
+                    <p className="text-neutral-600 dark:text-neutral-400 font-english leading-relaxed">
+                      {isBn
+                        ? 'আরবি সংখ্যাগুলো বাম থেকে ডানে লেখা হয়, যা আন্তর্জাতিক গণিতের নিয়মের সাথে মিলে যায়।'
+                        : 'Eastern Arabic numerals are written left-to-right within numbers, matching the direction of Western mathematics.'}
                     </p>
                   </div>
                 </>
@@ -1897,23 +1922,19 @@ export const ArabicDoodleCanvas: React.FC = () => {
 
               {activeTab === 'words' && (
                 <>
-                  <div className="flex items-center justify-between py-1.5 border-b border-[#EAE4D9] dark:border-[#221F1B]">
-                    <span className="text-stone-500">Meaning (English):</span>
-                    <span className="font-english-bold text-stone-900 dark:text-stone-100">{currentWord.en}</span>
+                  <div className="flex items-center justify-between py-1.5">
+                    <span className="text-neutral-500 dark:text-neutral-400">{isBn ? 'অর্থ (বাংলা):' : 'Meaning (English):'}</span>
+                    <span className="font-english-bold text-neutral-900 dark:text-neutral-100">{isBn ? currentWord.bn : currentWord.en}</span>
                   </div>
-                  <div className="flex items-center justify-between py-1.5 border-b border-[#EAE4D9] dark:border-[#221F1B]">
-                    <span className="text-stone-500">Meaning (Bangla):</span>
-                    <span className="font-english-bold text-stone-900 dark:text-stone-100">{currentWord.bn}</span>
-                  </div>
-                  <div className="flex items-center justify-between py-1.5 border-b border-[#EAE4D9] dark:border-[#221F1B]">
-                    <span className="text-stone-500">Quranic Root:</span>
+                  <div className="flex items-center justify-between py-1.5">
+                    <span className="text-neutral-500 dark:text-neutral-400">{isBn ? 'কুরআনিক মূলশব্দ (রুট):' : 'Quranic Root:'}</span>
                     <span className="font-arabic font-bold text-amber-700 dark:text-amber-400 text-sm" dir="rtl">
                       {currentWord.root}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between py-1.5 border-b border-[#EAE4D9] dark:border-[#221F1B]">
-                    <span className="text-stone-500">Grammar Note:</span>
-                    <span className="font-english-medium text-stone-700 dark:text-stone-300">{currentWord.grammar}</span>
+                  <div className="flex items-center justify-between py-1.5">
+                    <span className="text-neutral-500 dark:text-neutral-400">{isBn ? 'ব্যাকরণগত নোট:' : 'Grammar Note:'}</span>
+                    <span className="font-english-medium text-neutral-700 dark:text-neutral-300">{currentWord.grammar}</span>
                   </div>
                 </>
               )}
@@ -1921,9 +1942,19 @@ export const ArabicDoodleCanvas: React.FC = () => {
           </div>
 
           {/* Quick Step Guide */}
-          <div className="p-3 bg-[#FAF7F2] dark:bg-[#14120F] rounded-xl border border-[#ECE6DB] dark:border-[#24211C] text-[11px] text-stone-500 dark:text-stone-400">
-            <span className="font-english-bold text-stone-700 dark:text-stone-300 mr-1">Tariq Atelier Tip:</span>
-            Draw the loose shape of <span className="font-arabic font-bold text-stone-900 dark:text-stone-100">{currentChar}</span>. The intelligent waypoint engine recognizes natural curves without strict line-tracing!
+          <div className="p-3 bg-neutral-100 dark:bg-neutral-900 rounded-2xl text-[11px] text-neutral-500 dark:text-neutral-400">
+            <span className="font-english-bold text-neutral-700 dark:text-neutral-300 mr-1">
+              {isBn ? 'তারিক টিপস:' : 'Tariq Atelier Tip:'}
+            </span>
+            {isBn ? (
+              <>
+                <span className="font-arabic font-bold text-neutral-900 dark:text-neutral-100">{currentChar}</span> এর প্রাকৃতিক আকৃতি আঁকুন। বুদ্ধিমান ওয়েপয়েন্ট ইঞ্জিন সাধারণ প্রাকৃতিক বক্ররেখাকে নির্ভুলভাবে শনাক্ত করতে পারে!
+              </>
+            ) : (
+              <>
+                Draw the loose shape of <span className="font-arabic font-bold text-neutral-900 dark:text-neutral-100">{currentChar}</span>. The intelligent waypoint engine recognizes natural curves without strict line-tracing!
+              </>
+            )}
           </div>
         </div>
       </div>

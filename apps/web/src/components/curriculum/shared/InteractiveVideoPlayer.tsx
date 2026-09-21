@@ -201,7 +201,7 @@ export function InteractiveVideoPlayer({ videoUrl, transcript }: InteractiveVide
         {isMusicInterlude && nextSpokenWord && (
           <div className="flex items-center gap-1.5 text-xs px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 animate-pulse border border-amber-200 dark:border-amber-800">
             <span>🎵</span>
-            <span>Music / Scene transition — next speech at {formatTime(nextSpokenWord.start)}</span>
+            <span>Music / Scene transition - next speech at {formatTime(nextSpokenWord.start)}</span>
           </div>
         )}
       </div>

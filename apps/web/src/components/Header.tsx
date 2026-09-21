@@ -51,42 +51,42 @@ export default function Header() {
           <TariqLogo />
         </Link>
 
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Lexical Vault Words Link */}
           <Link
             to="/words"
-            className="h-9 flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-2 sm:px-3 py-2 rounded-full hover:bg-neutral-200/60 dark:hover:bg-neutral-800 outline-none"
-            activeProps={{ className: "text-neutral-950 dark:text-white font-bold bg-neutral-200/80 dark:bg-neutral-850" }}
+            className="h-9 flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-2.5 sm:px-3 py-2 rounded-full hover:bg-neutral-200/60 dark:hover:bg-neutral-800 outline-none whitespace-nowrap shrink-0"
+            activeProps={{ className: "text-neutral-950 dark:text-white font-bold bg-neutral-200/80 dark:bg-neutral-800" }}
           >
-            <BookMarked size={15} className="opacity-80" />
-            <span className="hidden sm:inline">Words</span>
+            <BookMarked size={15} className="opacity-80 shrink-0" />
+            <span className="hidden sm:inline whitespace-nowrap">Words</span>
           </Link>
 
           {/* Daily SRS Review Link */}
           <Link
             to="/review"
-            className="h-9 flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-2 sm:px-3 py-2 rounded-full hover:bg-neutral-200/60 dark:hover:bg-neutral-800 outline-none"
-            activeProps={{ className: "text-neutral-950 dark:text-white font-bold bg-neutral-200/80 dark:bg-neutral-850" }}
+            className="h-9 flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-2.5 sm:px-3 py-2 rounded-full hover:bg-neutral-200/60 dark:hover:bg-neutral-800 outline-none whitespace-nowrap shrink-0"
+            activeProps={{ className: "text-neutral-950 dark:text-white font-bold bg-neutral-200/80 dark:bg-neutral-800" }}
           >
-            <Brain size={15} className="opacity-80" />
-            <span className="hidden sm:inline">Review</span>
+            <Brain size={15} className="opacity-80 shrink-0" />
+            <span className="hidden sm:inline whitespace-nowrap">Review</span>
             {dueCount > 0 && (
-              <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 text-[10px] font-bold leading-none">
+              <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 text-[10px] font-bold leading-none shrink-0">
                 {dueCount}
               </span>
             )}
           </Link>
 
-          <div className="relative hidden md:block" ref={dropdownRef}>
+          <div className="relative hidden md:block shrink-0" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className={`h-9 flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 outline-none cursor-pointer ${
+              className={`h-9 flex items-center gap-1.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 outline-none cursor-pointer whitespace-nowrap shrink-0 ${
                 isDropdownOpen ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100' : ''
               }`}
             >
-              <Code2 size={16} />
-              <span className="hidden sm:inline">Dev Tools</span>
-              <ChevronDown size={14} className={`transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              <Code2 size={16} className="shrink-0" />
+              <span className="hidden sm:inline whitespace-nowrap">Dev Tools</span>
+              <ChevronDown size={14} className={`transition-transform duration-200 shrink-0 ${isDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
             
             <AnimatePresence>
@@ -96,13 +96,19 @@ export default function Header() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 top-full mt-2 w-48 bg-neutral-100 dark:bg-neutral-900 rounded-3xl overflow-hidden flex flex-col p-2 backdrop-blur-md"
+                  className="absolute right-0 top-full mt-2 w-56 bg-neutral-100 dark:bg-neutral-900 rounded-3xl overflow-hidden flex flex-col p-2 backdrop-blur-md shadow-xl border border-neutral-200/60 dark:border-neutral-800"
                 >
+                  {/* Gamification Sandbox Section inside Dev Tools */}
+                  <div className="px-3 py-2 mb-1 flex items-center justify-between border-b border-neutral-200/60 dark:border-neutral-800">
+                    <span className="text-[10px] font-english-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">Sandbox XP</span>
+                    <GamificationHeaderWidget />
+                  </div>
+
                   <Link
                     to="/vocabulary"
                     onClick={() => setIsDropdownOpen(false)}
                     activeProps={{ className: "text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-800 font-bold" }}
-                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none"
+                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none whitespace-nowrap"
                   >
                     Vocab & Quran Meter
                   </Link>
@@ -111,7 +117,7 @@ export default function Header() {
                     params={{ volumeId: 'vol1', lessonId: 'lesson1' }}
                     onClick={() => setIsDropdownOpen(false)}
                     activeProps={{ className: "text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-800 font-bold" }}
-                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none"
+                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none whitespace-nowrap"
                   >
                     Practice Hub
                   </Link>
@@ -119,7 +125,7 @@ export default function Header() {
                     to="/design-system"
                     onClick={() => setIsDropdownOpen(false)}
                     activeProps={{ className: "text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-800 font-bold" }}
-                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none"
+                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none whitespace-nowrap"
                   >
                     Design System
                   </Link>
@@ -127,7 +133,7 @@ export default function Header() {
                     to="/mushaf-v2"
                     onClick={() => setIsDropdownOpen(false)}
                     activeProps={{ className: "text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-800 font-bold" }}
-                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none"
+                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none whitespace-nowrap"
                   >
                     Mushaf Viewer
                   </Link>
@@ -135,7 +141,7 @@ export default function Header() {
                     to="/demo-v2"
                     onClick={() => setIsDropdownOpen(false)}
                     activeProps={{ className: "text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-800 font-bold" }}
-                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none"
+                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none whitespace-nowrap"
                   >
                     Pedagogy Engine
                   </Link>
@@ -143,7 +149,7 @@ export default function Header() {
                     to="/demo/video"
                     onClick={() => setIsDropdownOpen(false)}
                     activeProps={{ className: "text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-800 font-bold" }}
-                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none"
+                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none whitespace-nowrap"
                   >
                     Video Player
                   </Link>
@@ -151,7 +157,7 @@ export default function Header() {
                     to="/pedagogy-lab"
                     onClick={() => setIsDropdownOpen(false)}
                     activeProps={{ className: "text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-800 font-bold" }}
-                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none"
+                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none whitespace-nowrap"
                   >
                     Pedagogy Lab
                   </Link>
@@ -160,7 +166,7 @@ export default function Header() {
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => setIsDropdownOpen(false)}
-                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none flex items-center justify-between"
+                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none flex items-center justify-between whitespace-nowrap"
                   >
                     <span>Architecture / PRD</span>
                     <span className="text-[10px] font-mono uppercase bg-accent-primary-subtle text-accent-primary px-1.5 py-0.5 rounded font-bold">HTML</span>
@@ -169,8 +175,7 @@ export default function Header() {
               )}
             </AnimatePresence>
           </div>
-          <div className="flex items-center gap-2">
-            <GamificationHeaderWidget />
+          <div className="flex items-center gap-1.5 shrink-0">
             <PaletteToggle />
             <FontToggle />
             <ThemeToggle />

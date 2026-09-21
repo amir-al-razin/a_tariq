@@ -12,7 +12,7 @@ import {
   Radio,
   Sliders,
 } from 'lucide-react'
-import confetti from 'canvas-confetti'
+import confetti from '../../lib/confetti'
 import { cleanArabic } from '../../data/quranVocabData'
 import { useGamificationStore } from '../../state/gamificationStore'
 

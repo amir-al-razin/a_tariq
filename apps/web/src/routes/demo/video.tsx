@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { InteractiveVideoPlayer, type TranscriptSentence } from '../../components/curriculum/shared/InteractiveVideoPlayer'
 import { transcribeVideoServerFn } from '../../server/transcribe'
-import parsedTranscript from '../../data/peppa_parsed_transcript.json'
+import parsedTranscript from '../../data/peppa_parsed_transcript'
 
 export const Route = createFileRoute('/demo/video')({
   component: VideoDemoRoute,
