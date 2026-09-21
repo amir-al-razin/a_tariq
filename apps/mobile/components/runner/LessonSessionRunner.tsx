@@ -5,8 +5,13 @@ import {
   type SessionStep,
   type LessonSessionData,
   type ConceptItem,
+  type VerbConjugatorForm,
+  getConjugationMeaning,
+  getRootVerbMeaning,
+  getRootVerbArabic,
   getLessonSession,
 } from '@tariq/shared';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRetentionStore } from '../../state/retentionStore';
 import { useProgressStore, LESSON_KEY } from '../../state/progressStore';
 import { useLearningSettingsStore } from '../../state/learningSettingsStore';
@@ -40,6 +45,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
   onExit,
 }) => {
   const theme = useThemeTokens();
+  const insets = useSafeAreaInsets();
   const sessionData: LessonSessionData | null = useMemo(() => {
     return getLessonSession(volumeId, chapterId, lessonNum);
   }, [volumeId, chapterId, lessonNum]);
@@ -127,6 +133,46 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
   const [activeMatrixNounIndex, setActiveMatrixNounIndex] = useState<number>(0);
   const [selectedSuffixIndex, setSelectedSuffixIndex] = useState<number>(0);
 
+  // Verb Preview Grid local state (Vol 2)
+  const [activeVerbPreviewIndex, setActiveVerbPreviewIndex] = useState<number>(0);
+  const [revealConjugations, setRevealConjugations] = useState<boolean>(true);
+
+  // Masdar Factory local state (Vol 2)
+  const [activeMasdarIndex, setActiveMasdarIndex] = useState<number>(0);
+  const [completedMasdarItems, setCompletedMasdarItems] = useState<Record<string, string>>({});
+  const [wrongMasdarOption, setWrongMasdarOption] = useState<string | null>(null);
+
+  // Verb Conjugator local state (Vol 2)
+  const [activeConjugatorVerbIndex, setActiveConjugatorVerbIndex] = useState<number>(0);
+  const [selectedConjugatorTense, setSelectedConjugatorTense] = useState<
+    'past' | 'present' | 'imperative' | 'prohibition'
+  >('past');
+  const [selectedConjugatorDrillChoice, setSelectedConjugatorDrillChoice] = useState<string | null>(
+    null
+  );
+  const [completedConjugatorSlots, setCompletedConjugatorSlots] = useState<
+    Record<string, Record<string, boolean>>
+  >({});
+  const [availableConjugatorChips, setAvailableConjugatorChips] = useState<
+    { id: string; subjectAr: string; textAr: string }[]
+  >([]);
+  const [selectedTargetConjugatorSubject, setSelectedTargetConjugatorSubject] = useState<
+    string | null
+  >(null);
+  const [wrongConjugatorChipId, setWrongConjugatorChipId] = useState<string | null>(null);
+
+  // Word Construction local state (Vol 2)
+  const [activeWordConstructionIndex, setActiveWordConstructionIndex] = useState<number>(0);
+  const [constructedLetterChips, setConstructedLetterChips] = useState<
+    { id: string; letter: string }[]
+  >([]);
+  const [availableLetterChips, setAvailableLetterChips] = useState<
+    { id: string; letter: string }[]
+  >([]);
+  const [wordConstructionStatus, setWordConstructionStatus] = useState<
+    'idle' | 'success' | 'error'
+  >('idle');
+
   // Stores
   const recordItemResult = useRetentionStore((state) => state.recordItemResult);
   const recordSessionComplete = useRetentionStore((state) => state.recordSessionComplete);
@@ -154,6 +200,45 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
     setSelectedSunMoonChoice(null);
     setActiveMatrixNounIndex(0);
     setSelectedSuffixIndex(0);
+    setActiveVerbPreviewIndex(0);
+    setRevealConjugations(true);
+    setActiveMasdarIndex(0);
+    setCompletedMasdarItems({});
+    setWrongMasdarOption(null);
+    setActiveConjugatorVerbIndex(0);
+    setSelectedConjugatorTense(currentStep?.conjugatorPayload?.targetTense || 'past');
+    setSelectedConjugatorDrillChoice(null);
+    setCompletedConjugatorSlots({});
+    setAvailableConjugatorChips([]);
+    setSelectedTargetConjugatorSubject(null);
+    setWrongConjugatorChipId(null);
+
+    // Initialize Word Construction chips
+    if (currentStep?.type === 'word_construction' && currentStep.wordConstructionPayload) {
+      const payload = currentStep.wordConstructionPayload;
+      setActiveWordConstructionIndex(0);
+      setConstructedLetterChips([]);
+      setWordConstructionStatus('idle');
+      if (payload.items.length > 0) {
+        const item = payload.items[0];
+        const chipsWithId = item.chips.map((ch, idx) => ({
+          id: `${ch}-${idx}-${Math.random().toString(36).slice(2, 6)}`,
+          letter: ch,
+        }));
+        for (let i = chipsWithId.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [chipsWithId[i], chipsWithId[j]] = [chipsWithId[j], chipsWithId[i]];
+        }
+        setAvailableLetterChips(chipsWithId);
+      } else {
+        setAvailableLetterChips([]);
+      }
+    } else {
+      setActiveWordConstructionIndex(0);
+      setConstructedLetterChips([]);
+      setAvailableLetterChips([]);
+      setWordConstructionStatus('idle');
+    }
 
     if (currentStep?.assemblyPayload?.chips) {
       const chips = [...currentStep.assemblyPayload.chips];
@@ -166,6 +251,69 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
       setAssembledChips([]);
     }
   }, [currentStepIndex, currentStep]);
+
+  // Initialize Verb Conjugator practice chips and selection for Verbs 1..N
+  useEffect(() => {
+    if (currentStep?.type !== 'verb_conjugator' || !currentStep.conjugatorPayload) return;
+    const payload = currentStep.conjugatorPayload;
+    if (payload.mode === 'drill' || payload.verbs.length <= 1) {
+      setAvailableConjugatorChips([]);
+      setSelectedTargetConjugatorSubject(null);
+      return;
+    }
+
+    // Verb 0 is the Reference Model (النموذج) - all forms visible
+    if (activeConjugatorVerbIndex === 0) {
+      setAvailableConjugatorChips([]);
+      setSelectedTargetConjugatorSubject(null);
+      return;
+    }
+
+    const currentVerb = payload.verbs[activeConjugatorVerbIndex];
+    if (!currentVerb) return;
+
+    const verbKey = `${currentVerb.id || activeConjugatorVerbIndex}-${selectedConjugatorTense}`;
+    const verbCompleted = completedConjugatorSlots[verbKey] || {};
+
+    const availableForms =
+      selectedConjugatorTense === 'imperative'
+        ? currentVerb.forms.filter((f) => Boolean(f.imperativeAr))
+        : selectedConjugatorTense === 'prohibition'
+          ? currentVerb.forms.filter((f) => Boolean(f.prohibitionAr))
+          : currentVerb.forms;
+
+    const practiceForms = availableForms.slice(1);
+    const uncompletedForms = practiceForms.filter((f) => !verbCompleted[f.subjectAr]);
+
+    const chips = uncompletedForms.map((f, idx) => {
+      const formAr =
+        selectedConjugatorTense === 'past'
+          ? f.pastAr
+          : selectedConjugatorTense === 'present'
+            ? f.presentAr || f.pastAr
+            : selectedConjugatorTense === 'prohibition'
+              ? f.prohibitionAr || f.presentAr || f.pastAr
+              : f.imperativeAr || f.presentAr || f.pastAr;
+      return {
+        id: `${f.subjectAr}-${idx}-${Math.random().toString(36).slice(2, 6)}`,
+        subjectAr: f.subjectAr,
+        textAr: formAr,
+      };
+    });
+
+    for (let i = chips.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [chips[i], chips[j]] = [chips[j], chips[i]];
+    }
+
+    setAvailableConjugatorChips(chips);
+
+    if (uncompletedForms.length > 0) {
+      setSelectedTargetConjugatorSubject(uncompletedForms[0].subjectAr);
+    } else {
+      setSelectedTargetConjugatorSubject(null);
+    }
+  }, [currentStep, activeConjugatorVerbIndex, selectedConjugatorTense, completedConjugatorSlots]);
 
   // Audio auto-trigger
   useEffect(() => {
@@ -536,7 +684,8 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
           justifyContent: 'center',
           alignItems: 'center',
           paddingHorizontal: 16,
-          paddingVertical: 20,
+          paddingTop: 16,
+          paddingBottom: Math.max(insets.bottom, 20) + 16,
         }}
         showsVerticalScrollIndicator={false}>
         <View style={{ width: '100%', maxWidth: 480, alignItems: 'center' }}>
@@ -2442,7 +2591,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                         style={{
                           fontFamily: 'NotoSansArabic_600SemiBold',
                           fontSize: 48,
-                          lineHeight: 68,
+                          lineHeight: 76,
                           color: theme.textPrimary,
                           textAlign: 'center',
                           marginBottom: 8,
@@ -2836,7 +2985,7 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                         style={{
                           fontFamily: 'NotoSansArabic_600SemiBold',
                           fontSize: 44,
-                          lineHeight: 64,
+                          lineHeight: 74,
                           color: theme.textPrimary,
                           textAlign: 'center',
                           marginBottom: 6,
@@ -3177,6 +3326,1909 @@ export const LessonSessionRunner: React.FC<LessonSessionRunnerProps> = ({
                       Continue
                     </Text>
                   </Pressable>
+                </View>
+              );
+            })()}
+
+          {/* STEP 16: VERB PREVIEW GRID (Vol 2) */}
+          {currentStep?.type === 'verb_preview_grid' &&
+            currentStep.verbPreviewPayload &&
+            (() => {
+              const payload = currentStep.verbPreviewPayload;
+              if (!payload || payload.verbs.length === 0) return null;
+              const currentVerb = payload.verbs[activeVerbPreviewIndex] || payload.verbs[0];
+
+              return (
+                <View style={{ width: '100%', alignItems: 'center' }}>
+                  {/* Author Pedagogical Disclaimer Banner */}
+                  <View
+                    style={{
+                      width: '100%',
+                      padding: 16,
+                      borderRadius: 24,
+                      backgroundColor: '#FEF3C7',
+                      alignItems: 'center',
+                      marginBottom: 16,
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: 6,
+                        marginBottom: 4,
+                      }}>
+                      <Ionicons name="warning" size={16} color="#D97706" />
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_600SemiBold',
+                          fontSize: 12,
+                          color: '#B45309',
+                          textTransform: 'uppercase',
+                          letterSpacing: 1,
+                        }}>
+                        {payload.disclaimerEn}
+                      </Text>
+                    </View>
+                    <Text
+                      style={{
+                        fontFamily: 'NotoSansArabic_600SemiBold',
+                        fontSize: 16,
+                        color: '#78350F',
+                        textAlign: 'center',
+                        marginBottom: 4,
+                      }}>
+                      {payload.disclaimerAr}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Lexend_500Medium',
+                        fontSize: 12,
+                        color: '#92400E',
+                      }}>
+                      {payload.tenseLabelEn}
+                    </Text>
+                  </View>
+
+                  {/* Verb Selector Pills */}
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{ gap: 8, paddingHorizontal: 4, marginBottom: 16 }}>
+                    {payload.verbs.map((verb, idx) => {
+                      const isSelected = idx === activeVerbPreviewIndex;
+                      return (
+                        <Pressable
+                          key={verb.id}
+                          onPress={() => {
+                            playTapSound();
+                            setActiveVerbPreviewIndex(idx);
+                            playArabicAudio(verb.rootAr);
+                          }}
+                          style={{
+                            paddingHorizontal: 12,
+                            paddingVertical: 8,
+                            borderRadius: 20,
+                            backgroundColor: isSelected ? theme.accentPrimary : theme.surfaceWell,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 6,
+                          }}>
+                          <Text style={{ fontSize: 14 }}>{verb.emoji}</Text>
+                          <Text
+                            style={{
+                              fontFamily: 'NotoSansArabic_600SemiBold',
+                              fontSize: 15,
+                              color: isSelected ? '#FFFFFF' : theme.textPrimary,
+                            }}>
+                            {verb.rootAr}
+                          </Text>
+                          <Text
+                            style={{
+                              fontFamily: 'Lexend_400Regular',
+                              fontSize: 11,
+                              color: isSelected ? '#FFFFFF' : theme.textMuted,
+                            }}>
+                            ({verb.rootEn})
+                          </Text>
+                        </Pressable>
+                      );
+                    })}
+                  </ScrollView>
+
+                  {/* Active Verb Card & Forms */}
+                  <View
+                    style={{
+                      width: '100%',
+                      padding: 20,
+                      borderRadius: 28,
+                      backgroundColor: theme.surfaceWell,
+                      marginBottom: 20,
+                    }}>
+                    {/* Header with Active Recall Memory Test Toggle */}
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginBottom: 16,
+                      }}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                        <Text style={{ fontSize: 24 }}>{currentVerb.emoji}</Text>
+                        <View>
+                          <Text
+                            style={{
+                              fontFamily: 'Lexend_600SemiBold',
+                              fontSize: 16,
+                              color: theme.textPrimary,
+                            }}>
+                            {currentVerb.rootEn}
+                          </Text>
+                          <Text
+                            style={{
+                              fontFamily: 'Lexend_400Regular',
+                              fontSize: 11,
+                              color: theme.textMuted,
+                            }}>
+                            {activeVerbPreviewIndex + 1} / {payload.verbs.length}
+                          </Text>
+                        </View>
+                      </View>
+
+                      <Pressable
+                        onPress={() => {
+                          playTapSound();
+                          setRevealConjugations((prev) => !prev);
+                        }}
+                        style={{
+                          paddingHorizontal: 10,
+                          paddingVertical: 6,
+                          borderRadius: 12,
+                          backgroundColor: theme.surfaceRaised,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 6,
+                        }}>
+                        <Ionicons
+                          name={revealConjugations ? 'eye-off' : 'eye'}
+                          size={14}
+                          color={theme.textPrimary}
+                        />
+                        <Text
+                          style={{
+                            fontFamily: 'Lexend_500Medium',
+                            fontSize: 11,
+                            color: theme.textPrimary,
+                          }}>
+                          {revealConjugations ? 'Hide (Test Memory)' : 'Reveal'}
+                        </Text>
+                      </Pressable>
+                    </View>
+
+                    {/* Forms List */}
+                    <View style={{ gap: 10 }}>
+                      {currentVerb.forms.map((form) => (
+                        <View
+                          key={form.id}
+                          style={{
+                            padding: 14,
+                            borderRadius: 18,
+                            backgroundColor: theme.surfaceRaised,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                          }}>
+                          <View style={{ flex: 1, paddingRight: 10 }}>
+                            <View
+                              style={{
+                                alignSelf: 'flex-start',
+                                paddingHorizontal: 8,
+                                paddingVertical: 2,
+                                borderRadius: 8,
+                                backgroundColor: theme.surfaceWell,
+                                marginBottom: 4,
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: 'Lexend_600SemiBold',
+                                  fontSize: 11,
+                                  color: theme.accentPrimary,
+                                }}>
+                                {form.roleEn}
+                              </Text>
+                            </View>
+                            <Text
+                              style={{
+                                fontFamily: 'Lexend_400Regular',
+                                fontSize: 13,
+                                color: theme.textSecondary,
+                              }}>
+                              {`"${form.masculineEn || form.roleEn}"`}
+                            </Text>
+                          </View>
+
+                          {revealConjugations ? (
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                              <Text
+                                style={{
+                                  fontFamily: 'NotoSansArabic_600SemiBold',
+                                  fontSize: 22,
+                                  color: theme.textPrimary,
+                                }}>
+                                {form.masculineAr}
+                              </Text>
+                              <Pressable
+                                onPress={() => playArabicAudio(form.masculineAr)}
+                                style={{
+                                  width: 34,
+                                  height: 34,
+                                  borderRadius: 17,
+                                  backgroundColor: theme.surfaceWell,
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                }}>
+                                <Ionicons
+                                  name="volume-high"
+                                  size={16}
+                                  color={theme.accentPrimary}
+                                />
+                              </Pressable>
+                            </View>
+                          ) : (
+                            <Pressable
+                              onPress={() => playArabicAudio(form.masculineAr)}
+                              style={{
+                                paddingHorizontal: 12,
+                                paddingVertical: 6,
+                                borderRadius: 10,
+                                backgroundColor: theme.surfaceWell,
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: 'Lexend_500Medium',
+                                  fontSize: 12,
+                                  color: theme.textMuted,
+                                }}>
+                                Tap for sound
+                              </Text>
+                            </Pressable>
+                          )}
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+
+                  {/* 56px Action Button */}
+                  <Pressable
+                    onPress={() => {
+                      playTapSound();
+                      if (activeVerbPreviewIndex < payload.verbs.length - 1) {
+                        const nextIdx = activeVerbPreviewIndex + 1;
+                        setActiveVerbPreviewIndex(nextIdx);
+                        playArabicAudio(payload.verbs[nextIdx].rootAr);
+                      } else {
+                        handleRegisterSuccess();
+                        handleNextStep();
+                      }
+                    }}
+                    style={({ pressed }) => ({
+                      width: '100%',
+                      height: 56,
+                      borderRadius: 9999,
+                      backgroundColor: pressed ? theme.accentPrimaryHover : theme.accentPrimary,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    })}>
+                    <Text
+                      style={{ fontFamily: 'Lexend_600SemiBold', fontSize: 16, color: '#FFFFFF' }}>
+                      {activeVerbPreviewIndex < payload.verbs.length - 1
+                        ? `Next Verb (${payload.verbs[activeVerbPreviewIndex + 1].rootAr})`
+                        : 'Continue'}
+                    </Text>
+                  </Pressable>
+                </View>
+              );
+            })()}
+
+          {/* STEP 17: MASDAR FACTORY (Vol 2) */}
+          {currentStep?.type === 'masdar_factory' &&
+            currentStep.masdarPayload &&
+            (() => {
+              const payload = currentStep.masdarPayload;
+              if (!payload || payload.items.length === 0) return null;
+              const currentItem = payload.items[activeMasdarIndex] || payload.items[0];
+              const isSolved = Boolean(completedMasdarItems[currentItem.id]);
+              const options =
+                currentItem.presentOptionsAr && currentItem.presentOptionsAr.length > 0
+                  ? currentItem.presentOptionsAr
+                  : [currentItem.presentAr];
+
+              const handlePresentChoice = (choice: string) => {
+                if (isSolved) return;
+                playArabicAudio(choice);
+
+                if (choice === currentItem.presentAr) {
+                  playSuccessChime();
+                  setCompletedMasdarItems((prev) => ({
+                    ...prev,
+                    [currentItem.id]: choice,
+                  }));
+                } else {
+                  playErrorCue();
+                  setWrongMasdarOption(choice);
+                  setTimeout(() => {
+                    setWrongMasdarOption(null);
+                  }, 500);
+                }
+              };
+
+              return (
+                <View style={{ width: '100%', alignItems: 'center' }}>
+                  {/* Navigation Counter Bar */}
+                  <View
+                    style={{
+                      width: '100%',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginBottom: 12,
+                      paddingHorizontal: 4,
+                    }}>
+                    {activeMasdarIndex > 0 ? (
+                      <Pressable
+                        onPress={() => {
+                          playTapSound();
+                          const prevIdx = activeMasdarIndex - 1;
+                          setActiveMasdarIndex(prevIdx);
+                          playArabicAudio(payload.items[prevIdx].masdarAr);
+                        }}
+                        style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                        <Ionicons name="chevron-back" size={16} color={theme.textMuted} />
+                        <Text
+                          style={{
+                            fontFamily: 'Lexend_500Medium',
+                            fontSize: 12,
+                            color: theme.textMuted,
+                          }}>
+                          Previous
+                        </Text>
+                      </Pressable>
+                    ) : (
+                      <View />
+                    )}
+                    <Text
+                      style={{
+                        fontFamily: 'Lexend_600SemiBold',
+                        fontSize: 12,
+                        color: theme.textMuted,
+                      }}>
+                      {activeMasdarIndex + 1} / {payload.items.length}
+                    </Text>
+                  </View>
+
+                  {/* 1. Masdar Hero Card */}
+                  <View
+                    style={{
+                      width: '100%',
+                      padding: 24,
+                      borderRadius: 28,
+                      backgroundColor: theme.surfaceWell,
+                      alignItems: 'center',
+                      marginBottom: 16,
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: 10,
+                        marginBottom: 8,
+                      }}>
+                      <Text style={{ fontSize: 28 }}>{currentItem.emoji}</Text>
+                      <Text
+                        style={{
+                          fontFamily: 'NotoSansArabic_600SemiBold',
+                          fontSize: 38,
+                          lineHeight: 64,
+                          color: theme.textPrimary,
+                        }}>
+                        {currentItem.masdarAr}
+                      </Text>
+                      <Pressable
+                        onPress={() =>
+                          playArabicAudio(currentItem.audioKey || currentItem.masdarAr)
+                        }
+                        style={{
+                          width: 36,
+                          height: 36,
+                          borderRadius: 18,
+                          backgroundColor: theme.surfaceRaised,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Ionicons name="volume-high" size={18} color={theme.accentPrimary} />
+                      </Pressable>
+                    </View>
+
+                    <Text
+                      style={{
+                        fontFamily: 'Lexend_600SemiBold',
+                        fontSize: 18,
+                        color: theme.textPrimary,
+                        textAlign: 'center',
+                        marginBottom: 4,
+                      }}>
+                      {currentItem.masdarMeaningEn}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Lexend_500Medium',
+                        fontSize: 12,
+                        color: theme.textMuted,
+                      }}>
+                      Verbal Noun (Masdar)
+                    </Text>
+                  </View>
+
+                  {/* 2. Verb Pattern Anchor: Past Form & Bab Rule */}
+                  <View
+                    style={{
+                      width: '100%',
+                      padding: 18,
+                      borderRadius: 24,
+                      backgroundColor: theme.surfaceWell,
+                      marginBottom: 16,
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginBottom: 12,
+                      }}>
+                      <View
+                        style={{
+                          paddingHorizontal: 10,
+                          paddingVertical: 4,
+                          borderRadius: 10,
+                          backgroundColor: theme.accentPrimarySubtle,
+                        }}>
+                        <Text
+                          style={{
+                            fontFamily: 'Lexend_600SemiBold',
+                            fontSize: 11,
+                            color: theme.accentPrimaryText,
+                          }}>
+                          {currentItem.baabPatternEn}
+                        </Text>
+                      </View>
+                      {Boolean(currentItem.vowelShiftEn) && (
+                        <View
+                          style={{
+                            paddingHorizontal: 10,
+                            paddingVertical: 4,
+                            borderRadius: 10,
+                            backgroundColor: theme.surfaceRaised,
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: 'Lexend_600SemiBold',
+                              fontSize: 11,
+                              color: theme.textSecondary,
+                            }}>
+                            {currentItem.vowelShiftEn}
+                          </Text>
+                        </View>
+                      )}
+                    </View>
+
+                    {/* Past Tense Row */}
+                    <View
+                      style={{
+                        padding: 14,
+                        borderRadius: 18,
+                        backgroundColor: theme.surfaceRaised,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}>
+                      <View>
+                        <Text
+                          style={{
+                            fontFamily: 'Lexend_600SemiBold',
+                            fontSize: 10,
+                            color: theme.textMuted,
+                            textTransform: 'uppercase',
+                          }}>
+                          Past Tense · المَاضِي
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: 'Lexend_500Medium',
+                            fontSize: 13,
+                            color: theme.textSecondary,
+                            marginTop: 2,
+                          }}>
+                          {currentItem.pastMeaningEn}
+                        </Text>
+                      </View>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                        <Text
+                          style={{
+                            fontFamily: 'NotoSansArabic_600SemiBold',
+                            fontSize: 24,
+                            color: theme.textPrimary,
+                          }}>
+                          {currentItem.pastAr}
+                        </Text>
+                        <Pressable
+                          onPress={() => playArabicAudio(currentItem.pastAr)}
+                          style={{
+                            width: 32,
+                            height: 32,
+                            borderRadius: 16,
+                            backgroundColor: theme.surfaceWell,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                          <Ionicons name="volume-high" size={15} color={theme.accentPrimary} />
+                        </Pressable>
+                      </View>
+                    </View>
+                  </View>
+
+                  {/* 3. Interactive Pattern Discovery: Choice or Solved Matrix */}
+                  {!isSolved ? (
+                    <View
+                      style={{
+                        width: '100%',
+                        padding: 20,
+                        borderRadius: 24,
+                        backgroundColor: theme.surfaceWell,
+                        alignItems: 'center',
+                        marginBottom: 20,
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_600SemiBold',
+                          fontSize: 11,
+                          color: theme.accentPrimary,
+                          textTransform: 'uppercase',
+                          letterSpacing: 1,
+                          marginBottom: 4,
+                        }}>
+                        Apply Pattern Rule
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_600SemiBold',
+                          fontSize: 14,
+                          color: theme.textPrimary,
+                          textAlign: 'center',
+                          marginBottom: 16,
+                        }}>
+                        Which form follows this pattern in the present tense?
+                      </Text>
+
+                      {/* Options Chips */}
+                      <View style={{ width: '100%', gap: 10 }}>
+                        {options.map((opt) => {
+                          const isWrong = wrongMasdarOption === opt;
+                          return (
+                            <Pressable
+                              key={opt}
+                              onPress={() => handlePresentChoice(opt)}
+                              style={{
+                                width: '100%',
+                                minHeight: 56,
+                                borderRadius: 18,
+                                backgroundColor: isWrong ? '#FEE2E2' : theme.surfaceRaised,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                paddingHorizontal: 16,
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: 'NotoSansArabic_600SemiBold',
+                                  fontSize: 24,
+                                  color: isWrong ? '#DC2626' : theme.textPrimary,
+                                }}>
+                                {opt}
+                              </Text>
+                            </Pressable>
+                          );
+                        })}
+                      </View>
+                    </View>
+                  ) : (
+                    /* Solved State: Full Derivation Revealed */
+                    <View style={{ width: '100%', gap: 12, marginBottom: 20 }}>
+                      {/* Success confirmation */}
+                      <View
+                        style={{
+                          width: '100%',
+                          padding: 14,
+                          borderRadius: 18,
+                          backgroundColor: '#D1FAE5',
+                          alignItems: 'center',
+                        }}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 6,
+                            marginBottom: 2,
+                          }}>
+                          <Ionicons name="sparkles" size={14} color="#059669" />
+                          <Text
+                            style={{
+                              fontFamily: 'Lexend_600SemiBold',
+                              fontSize: 12,
+                              color: '#065F46',
+                            }}>
+                            Pattern Applied!
+                          </Text>
+                        </View>
+                        <Text
+                          style={{
+                            fontFamily: 'Lexend_500Medium',
+                            fontSize: 12,
+                            color: '#047857',
+                            textAlign: 'center',
+                          }}>
+                          {currentItem.patternRuleEn || currentItem.baabPatternEn}
+                        </Text>
+                      </View>
+
+                      {/* Present Tense Card */}
+                      <View
+                        style={{
+                          padding: 14,
+                          borderRadius: 18,
+                          backgroundColor: theme.surfaceWell,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                        <View>
+                          <Text
+                            style={{
+                              fontFamily: 'Lexend_600SemiBold',
+                              fontSize: 10,
+                              color: '#059669',
+                              textTransform: 'uppercase',
+                            }}>
+                            Present Tense · المُضَارِع
+                          </Text>
+                          <Text
+                            style={{
+                              fontFamily: 'Lexend_500Medium',
+                              fontSize: 13,
+                              color: theme.textSecondary,
+                              marginTop: 2,
+                            }}>
+                            {currentItem.presentMeaningEn}
+                          </Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                          <Text
+                            style={{
+                              fontFamily: 'NotoSansArabic_600SemiBold',
+                              fontSize: 24,
+                              color: theme.textPrimary,
+                            }}>
+                            {currentItem.presentAr}
+                          </Text>
+                          <Pressable
+                            onPress={() => playArabicAudio(currentItem.presentAr)}
+                            style={{
+                              width: 32,
+                              height: 32,
+                              borderRadius: 16,
+                              backgroundColor: theme.surfaceRaised,
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+                            <Ionicons name="volume-high" size={15} color={theme.accentPrimary} />
+                          </Pressable>
+                        </View>
+                      </View>
+
+                      {/* Command & Prohibition */}
+                      <View style={{ flexDirection: 'row', gap: 10 }}>
+                        {/* Command */}
+                        <View
+                          style={{
+                            flex: 1,
+                            padding: 12,
+                            borderRadius: 16,
+                            backgroundColor: theme.surfaceWell,
+                            justifyContent: 'space-between',
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: 'Lexend_600SemiBold',
+                              fontSize: 10,
+                              color: theme.textMuted,
+                              textTransform: 'uppercase',
+                            }}>
+                            Command · الأَمْر
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              marginTop: 6,
+                            }}>
+                            <Text
+                              style={{
+                                fontFamily: 'NotoSansArabic_600SemiBold',
+                                fontSize: 18,
+                                color: theme.textPrimary,
+                              }}>
+                              {currentItem.imperativeAr}
+                            </Text>
+                            <Pressable
+                              onPress={() => playArabicAudio(currentItem.imperativeAr)}
+                              style={{
+                                width: 28,
+                                height: 28,
+                                borderRadius: 14,
+                                backgroundColor: theme.surfaceRaised,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}>
+                              <Ionicons name="volume-high" size={13} color={theme.accentPrimary} />
+                            </Pressable>
+                          </View>
+                          <Text
+                            style={{
+                              fontFamily: 'Lexend_400Regular',
+                              fontSize: 11,
+                              color: theme.textMuted,
+                              marginTop: 4,
+                            }}>
+                            {currentItem.imperativeMeaningEn}
+                          </Text>
+                        </View>
+
+                        {/* Prohibition */}
+                        <View
+                          style={{
+                            flex: 1,
+                            padding: 12,
+                            borderRadius: 16,
+                            backgroundColor: theme.surfaceWell,
+                            justifyContent: 'space-between',
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: 'Lexend_600SemiBold',
+                              fontSize: 10,
+                              color: theme.textMuted,
+                              textTransform: 'uppercase',
+                            }}>
+                            Forbidding · النَّهْي
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              marginTop: 6,
+                            }}>
+                            <Text
+                              style={{
+                                fontFamily: 'NotoSansArabic_600SemiBold',
+                                fontSize: 18,
+                                color: theme.textPrimary,
+                              }}>
+                              {currentItem.prohibitionAr}
+                            </Text>
+                            <Pressable
+                              onPress={() => playArabicAudio(currentItem.prohibitionAr)}
+                              style={{
+                                width: 28,
+                                height: 28,
+                                borderRadius: 14,
+                                backgroundColor: theme.surfaceRaised,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}>
+                              <Ionicons name="volume-high" size={13} color={theme.accentPrimary} />
+                            </Pressable>
+                          </View>
+                          <Text
+                            style={{
+                              fontFamily: 'Lexend_400Regular',
+                              fontSize: 11,
+                              color: theme.textMuted,
+                              marginTop: 4,
+                            }}>
+                            {currentItem.prohibitionMeaningEn}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  )}
+
+                  {/* 56px Action Button */}
+                  {!isSolved ? (
+                    <View
+                      style={{
+                        width: '100%',
+                        height: 56,
+                        borderRadius: 9999,
+                        backgroundColor: theme.surfaceWell,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_600SemiBold',
+                          fontSize: 14,
+                          color: theme.textMuted,
+                        }}>
+                        Select the correct present form above
+                      </Text>
+                    </View>
+                  ) : (
+                    <Pressable
+                      onPress={() => {
+                        playTapSound();
+                        if (activeMasdarIndex < payload.items.length - 1) {
+                          const nextIdx = activeMasdarIndex + 1;
+                          setActiveMasdarIndex(nextIdx);
+                          playArabicAudio(payload.items[nextIdx].masdarAr);
+                        } else {
+                          handleRegisterSuccess();
+                          handleNextStep();
+                        }
+                      }}
+                      style={({ pressed }) => ({
+                        width: '100%',
+                        height: 56,
+                        borderRadius: 9999,
+                        backgroundColor: pressed ? theme.accentPrimaryHover : theme.accentPrimary,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      })}>
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_600SemiBold',
+                          fontSize: 16,
+                          color: '#FFFFFF',
+                        }}>
+                        {activeMasdarIndex < payload.items.length - 1 ? 'Next Verb' : 'Continue'}
+                      </Text>
+                    </Pressable>
+                  )}
+                </View>
+              );
+            })()}
+
+          {/* STEP 18: VERB CONJUGATOR (Vol 2) */}
+          {currentStep?.type === 'verb_conjugator' &&
+            currentStep.conjugatorPayload &&
+            (() => {
+              const payload = currentStep.conjugatorPayload;
+              if (!payload || payload.verbs.length === 0) return null;
+              const currentVerb = payload.verbs[activeConjugatorVerbIndex] || payload.verbs[0];
+
+              // In 'drill' mode:
+              if (payload.mode === 'drill' && payload.optionsAr && payload.correctAnswerAr) {
+                const handleDrillChoice = (choice: string) => {
+                  if (selectedConjugatorDrillChoice !== null) return;
+                  playArabicAudio(choice);
+                  setSelectedConjugatorDrillChoice(choice);
+                  if (choice === payload.correctAnswerAr) {
+                    playSuccessChime();
+                    setStepStatus('correct');
+                    handleRegisterSuccess();
+                  } else {
+                    playErrorCue();
+                    setStepStatus('incorrect');
+                    handleRegisterMistake();
+                  }
+                };
+
+                return (
+                  <View style={{ width: '100%', alignItems: 'center' }}>
+                    {/* Prompt Card */}
+                    <View
+                      style={{
+                        width: '100%',
+                        padding: 24,
+                        borderRadius: 28,
+                        backgroundColor: theme.surfaceWell,
+                        alignItems: 'center',
+                        marginBottom: 20,
+                      }}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 8,
+                          marginBottom: 8,
+                        }}>
+                        <Text style={{ fontSize: 24 }}>{currentVerb.emoji}</Text>
+                        <Text
+                          style={{
+                            fontFamily: 'NotoSansArabic_600SemiBold',
+                            fontSize: 28,
+                            color: theme.textPrimary,
+                          }}>
+                          {currentVerb.rootAr}
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: 'Lexend_400Regular',
+                            fontSize: 12,
+                            color: theme.textMuted,
+                          }}>
+                          ({currentVerb.meaningEn})
+                        </Text>
+                      </View>
+
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_600SemiBold',
+                          fontSize: 16,
+                          color: theme.textPrimary,
+                          textAlign: 'center',
+                          marginBottom: 4,
+                        }}>
+                        {payload.drillQuestionEn}
+                      </Text>
+
+                      {Boolean(payload.drillQuestionAr) && (
+                        <Text
+                          style={{
+                            fontFamily: 'NotoSansArabic_600SemiBold',
+                            fontSize: 22,
+                            color: theme.accentPrimary,
+                            textAlign: 'center',
+                          }}>
+                          {payload.drillQuestionAr}
+                        </Text>
+                      )}
+                    </View>
+
+                    {/* Drill Options */}
+                    <View style={{ width: '100%', gap: 10, marginBottom: 20 }}>
+                      {payload.optionsAr.map((opt) => {
+                        const isSelected = selectedConjugatorDrillChoice === opt;
+                        const isCorrect = opt === payload.correctAnswerAr;
+                        let bgColor = theme.surfaceWell;
+                        let textColor = theme.textPrimary;
+
+                        if (selectedConjugatorDrillChoice !== null) {
+                          if (isSelected && isCorrect) {
+                            bgColor = '#D1FAE5';
+                            textColor = '#065F46';
+                          } else if (isSelected && !isCorrect) {
+                            bgColor = '#FEE2E2';
+                            textColor = '#DC2626';
+                          } else if (isCorrect) {
+                            bgColor = '#D1FAE5';
+                            textColor = '#065F46';
+                          }
+                        }
+
+                        return (
+                          <Pressable
+                            key={opt}
+                            disabled={selectedConjugatorDrillChoice !== null}
+                            onPress={() => handleDrillChoice(opt)}
+                            style={{
+                              width: '100%',
+                              minHeight: 56,
+                              borderRadius: 20,
+                              backgroundColor: bgColor,
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              paddingHorizontal: 20,
+                            }}>
+                            <Text
+                              style={{
+                                fontFamily: 'NotoSansArabic_600SemiBold',
+                                fontSize: 24,
+                                color: textColor,
+                              }}>
+                              {opt}
+                            </Text>
+                          </Pressable>
+                        );
+                      })}
+                    </View>
+
+                    {/* Continue Button when answered */}
+                    {stepStatus !== 'idle' && (
+                      <Pressable
+                        onPress={() => handleNextStep()}
+                        style={({ pressed }) => ({
+                          width: '100%',
+                          height: 56,
+                          borderRadius: 9999,
+                          backgroundColor:
+                            stepStatus === 'correct'
+                              ? pressed
+                                ? '#047857'
+                                : '#059669'
+                              : pressed
+                                ? '#B91C1C'
+                                : '#DC2626',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        })}>
+                        <Text
+                          style={{
+                            fontFamily: 'Lexend_600SemiBold',
+                            fontSize: 16,
+                            color: '#FFFFFF',
+                          }}>
+                          {stepStatus === 'correct' ? 'Continue' : 'Got it! Continue'}
+                        </Text>
+                      </Pressable>
+                    )}
+                  </View>
+                );
+              }
+
+              // In 'explore' mode:
+              const allTenses: {
+                key: 'past' | 'present' | 'imperative' | 'prohibition';
+                labelEn: string;
+                labelAr: string;
+              }[] = [
+                { key: 'past', labelEn: 'Past', labelAr: 'المَاضِي' },
+                { key: 'present', labelEn: 'Present', labelAr: 'المُضَارِع' },
+                { key: 'imperative', labelEn: 'Command', labelAr: 'الأَمْر' },
+                { key: 'prohibition', labelEn: 'Forbidding', labelAr: 'النَّهْي' },
+              ];
+
+              const tenses = payload.targetTense
+                ? allTenses.filter((t) => t.key === payload.targetTense)
+                : allTenses.filter((t) => {
+                    if (t.key === 'imperative')
+                      return currentVerb.forms.some((f) => Boolean(f.imperativeAr));
+                    if (t.key === 'prohibition')
+                      return currentVerb.forms.some((f) => Boolean(f.prohibitionAr));
+                    if (t.key === 'present')
+                      return currentVerb.forms.some((f) => Boolean(f.presentAr));
+                    return true;
+                  });
+
+              const availableForms =
+                selectedConjugatorTense === 'imperative'
+                  ? currentVerb.forms.filter((f) => Boolean(f.imperativeAr))
+                  : selectedConjugatorTense === 'prohibition'
+                    ? currentVerb.forms.filter((f) => Boolean(f.prohibitionAr))
+                    : currentVerb.forms;
+
+              const getFormArabic = (
+                form: VerbConjugatorForm,
+                tense: 'past' | 'present' | 'imperative' | 'prohibition'
+              ) => {
+                if (tense === 'past') return form.pastAr;
+                if (tense === 'present') return form.presentAr || form.pastAr;
+                if (tense === 'prohibition')
+                  return form.prohibitionAr || form.presentAr || form.pastAr;
+                return form.imperativeAr || form.presentAr || form.pastAr;
+              };
+
+              const isModelVerb = activeConjugatorVerbIndex === 0;
+              const rootMeaning = getRootVerbMeaning(currentVerb, selectedConjugatorTense);
+              const rootArabic = getRootVerbArabic(currentVerb, selectedConjugatorTense);
+              const verbKey = `${currentVerb.id || activeConjugatorVerbIndex}-${selectedConjugatorTense}`;
+              const verbCompleted = completedConjugatorSlots[verbKey] || {};
+
+              const practiceForms = availableForms.slice(1);
+              const isAllSlotsCompleted =
+                isModelVerb || practiceForms.every((f) => verbCompleted[f.subjectAr]);
+
+              const handleConjugatorChipTap = (chip: {
+                id: string;
+                subjectAr: string;
+                textAr: string;
+              }) => {
+                if (wrongConjugatorChipId !== null) return;
+                playTapSound();
+
+                const targetSubject =
+                  selectedTargetConjugatorSubject ||
+                  practiceForms.find((f) => !verbCompleted[f.subjectAr])?.subjectAr;
+
+                if (!targetSubject) return;
+
+                const targetForm = practiceForms.find((f) => f.subjectAr === targetSubject);
+                if (!targetForm) return;
+
+                const expectedAr = getFormArabic(targetForm, selectedConjugatorTense);
+
+                if (chip.textAr === expectedAr) {
+                  playArabicAudio(chip.textAr);
+                  const updatedSlots = { ...verbCompleted, [targetSubject]: true };
+
+                  setCompletedConjugatorSlots((prev) => ({
+                    ...prev,
+                    [verbKey]: updatedSlots,
+                  }));
+
+                  setAvailableConjugatorChips((prev) => prev.filter((c) => c.id !== chip.id));
+
+                  const nextUnfilled = practiceForms.find((f) => !updatedSlots[f.subjectAr]);
+                  if (nextUnfilled) {
+                    setSelectedTargetConjugatorSubject(nextUnfilled.subjectAr);
+                  } else {
+                    setSelectedTargetConjugatorSubject(null);
+                    playSuccessChime();
+                  }
+                } else {
+                  playErrorCue();
+                  setWrongConjugatorChipId(chip.id);
+                  setTimeout(() => {
+                    setWrongConjugatorChipId(null);
+                  }, 500);
+                }
+              };
+
+              return (
+                <View style={{ width: '100%', alignItems: 'center' }}>
+                  {/* Prev / Next Verb Nav Bar */}
+                  {activeConjugatorVerbIndex > 0 && (
+                    <View
+                      style={{
+                        width: '100%',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginBottom: 12,
+                        paddingHorizontal: 4,
+                      }}>
+                      <Pressable
+                        onPress={() => {
+                          playTapSound();
+                          const prevIdx = activeConjugatorVerbIndex - 1;
+                          setActiveConjugatorVerbIndex(prevIdx);
+                          const prevVerb = payload.verbs[prevIdx];
+                          if (prevVerb) {
+                            playArabicAudio(getRootVerbArabic(prevVerb, selectedConjugatorTense));
+                          }
+                        }}
+                        style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                        <Ionicons name="chevron-back" size={16} color={theme.textMuted} />
+                        <Text
+                          style={{
+                            fontFamily: 'Lexend_500Medium',
+                            fontSize: 12,
+                            color: theme.textMuted,
+                          }}>
+                          Previous Verb
+                        </Text>
+                      </Pressable>
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_600SemiBold',
+                          fontSize: 12,
+                          color: theme.textMuted,
+                        }}>
+                        {activeConjugatorVerbIndex + 1} / {payload.verbs.length}
+                      </Text>
+                    </View>
+                  )}
+
+                  {/* Hero Section: Centered Tense Anchor Pill, Concrete Meaning & Root Word */}
+                  <View style={{ width: '100%', alignItems: 'center', marginBottom: 20 }}>
+                    <View
+                      style={{
+                        paddingHorizontal: 12,
+                        paddingVertical: 5,
+                        borderRadius: 14,
+                        backgroundColor: theme.accentPrimarySubtle,
+                        marginBottom: 8,
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_600SemiBold',
+                          fontSize: 11,
+                          color: theme.accentPrimaryText,
+                          textTransform: 'uppercase',
+                          letterSpacing: 1,
+                        }}>
+                        {selectedConjugatorTense === 'past'
+                          ? 'Past Tense · المَاضِي'
+                          : selectedConjugatorTense === 'present'
+                            ? 'Present Tense · المُضَارِع'
+                            : selectedConjugatorTense === 'prohibition'
+                              ? 'Forbidding · النَّهْي'
+                              : 'Command · الأَمْر'}
+                      </Text>
+                    </View>
+
+                    <Text
+                      style={{
+                        fontFamily: 'Lexend_600SemiBold',
+                        fontSize: 24,
+                        color: theme.textPrimary,
+                        textAlign: 'center',
+                        marginBottom: 4,
+                      }}>
+                      {rootMeaning.en}
+                    </Text>
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                      <Text
+                        style={{
+                          fontFamily: 'NotoSansArabic_600SemiBold',
+                          fontSize: 38,
+                          lineHeight: 64,
+                          color: theme.textPrimary,
+                        }}>
+                        {rootArabic}
+                      </Text>
+                      <Pressable
+                        onPress={() => playArabicAudio(rootArabic)}
+                        style={{
+                          width: 36,
+                          height: 36,
+                          borderRadius: 18,
+                          backgroundColor: theme.surfaceWell,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Ionicons name="volume-high" size={18} color={theme.accentPrimary} />
+                      </Pressable>
+                    </View>
+
+                    {/* Multi-tense selector */}
+                    {tenses.length > 1 && (
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          backgroundColor: theme.surfaceWell,
+                          borderRadius: 16,
+                          padding: 3,
+                          marginTop: 12,
+                        }}>
+                        {tenses.map((t) => {
+                          const isSel = selectedConjugatorTense === t.key;
+                          return (
+                            <Pressable
+                              key={t.key}
+                              onPress={() => {
+                                playTapSound();
+                                setSelectedConjugatorTense(t.key);
+                              }}
+                              style={{
+                                paddingHorizontal: 12,
+                                paddingVertical: 6,
+                                borderRadius: 13,
+                                backgroundColor: isSel ? theme.surfaceRaised : 'transparent',
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: 'Lexend_600SemiBold',
+                                  fontSize: 12,
+                                  color: isSel ? theme.textPrimary : theme.textMuted,
+                                }}>
+                                {t.labelEn}
+                              </Text>
+                            </Pressable>
+                          );
+                        })}
+                      </View>
+                    )}
+                  </View>
+
+                  {/* Paradigm List: Vertical Stack of All Forms */}
+                  <View style={{ width: '100%', gap: 10, marginBottom: 16 }}>
+                    {availableForms.map((form, index) => {
+                      const formAr = getFormArabic(form, selectedConjugatorTense);
+                      const meaning = getConjugationMeaning(
+                        form,
+                        selectedConjugatorTense,
+                        currentVerb
+                      );
+                      const isSlotFilled =
+                        isModelVerb || index === 0 || verbCompleted[form.subjectAr] === true;
+                      const isTargeted =
+                        !isSlotFilled && selectedTargetConjugatorSubject === form.subjectAr;
+
+                      return (
+                        <Pressable
+                          key={form.subjectAr}
+                          onPress={() => {
+                            if (!isSlotFilled) {
+                              playTapSound();
+                              setSelectedTargetConjugatorSubject(form.subjectAr);
+                            }
+                          }}
+                          style={{
+                            width: '100%',
+                            paddingHorizontal: 16,
+                            paddingVertical: 12,
+                            borderRadius: 20,
+                            backgroundColor:
+                              !isSlotFilled && isTargeted
+                                ? theme.accentPrimarySubtle
+                                : theme.surfaceWell,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                          }}>
+                          {/* Left: Pronoun Badge & Concrete Meaning */}
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              gap: 12,
+                              flex: 1,
+                            }}>
+                            <View
+                              style={{
+                                width: 44,
+                                height: 34,
+                                borderRadius: 12,
+                                backgroundColor: theme.surfaceRaised,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: 'NotoSansArabic_600SemiBold',
+                                  fontSize: 15,
+                                  color: theme.textPrimary,
+                                }}>
+                                {form.subjectAr}
+                              </Text>
+                            </View>
+                            <Text
+                              style={{
+                                fontFamily: 'Lexend_600SemiBold',
+                                fontSize: 14,
+                                color: theme.textPrimary,
+                                flex: 1,
+                              }}>
+                              {meaning.en}
+                            </Text>
+                          </View>
+
+                          {/* Right: Inflected Form or Target Slot */}
+                          {isSlotFilled ? (
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                              <Text
+                                style={{
+                                  fontFamily: 'NotoSansArabic_600SemiBold',
+                                  fontSize: 22,
+                                  color: theme.textPrimary,
+                                }}>
+                                {formAr}
+                              </Text>
+                              <Pressable
+                                onPress={() => playArabicAudio(formAr)}
+                                style={{
+                                  width: 32,
+                                  height: 32,
+                                  borderRadius: 16,
+                                  backgroundColor: theme.surfaceRaised,
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                }}>
+                                <Ionicons
+                                  name="volume-high"
+                                  size={15}
+                                  color={theme.accentPrimary}
+                                />
+                              </Pressable>
+                            </View>
+                          ) : (
+                            <View
+                              style={{
+                                paddingHorizontal: 12,
+                                paddingVertical: 8,
+                                borderRadius: 12,
+                                borderWidth: 1.5,
+                                borderStyle: 'dashed',
+                                borderColor: isTargeted ? theme.accentPrimary : theme.borderSubtle,
+                                backgroundColor: isTargeted ? theme.surfaceRaised : 'transparent',
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: 'Lexend_500Medium',
+                                  fontSize: 11,
+                                  color: isTargeted ? theme.accentPrimaryText : theme.textMuted,
+                                }}>
+                                {isTargeted ? 'Select chip' : 'Tap to fill'}
+                              </Text>
+                            </View>
+                          )}
+                        </Pressable>
+                      );
+                    })}
+                  </View>
+
+                  {/* Word Chip Bank (Verbs 1..N Practice) */}
+                  {!isModelVerb && availableConjugatorChips.length > 0 && (
+                    <View style={{ width: '100%', alignItems: 'center', marginBottom: 20 }}>
+                      <View
+                        style={{
+                          width: '100%',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginBottom: 10,
+                          paddingHorizontal: 4,
+                        }}>
+                        <Text
+                          style={{
+                            fontFamily: 'Lexend_600SemiBold',
+                            fontSize: 11,
+                            color: theme.textMuted,
+                            textTransform: 'uppercase',
+                          }}>
+                          Select matching form:
+                        </Text>
+                        {Boolean(selectedTargetConjugatorSubject) && (
+                          <View
+                            style={{
+                              paddingHorizontal: 8,
+                              paddingVertical: 2,
+                              borderRadius: 8,
+                              backgroundColor: theme.accentPrimarySubtle,
+                            }}>
+                            <Text
+                              style={{
+                                fontFamily: 'Lexend_600SemiBold',
+                                fontSize: 11,
+                                color: theme.accentPrimaryText,
+                              }}>
+                              Target: {selectedTargetConjugatorSubject}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+
+                      <View
+                        style={{
+                          flexDirection: 'row-reverse',
+                          flexWrap: 'wrap',
+                          justifyContent: 'center',
+                          gap: 8,
+                        }}>
+                        {availableConjugatorChips.map((chip) => {
+                          const isWrong = wrongConjugatorChipId === chip.id;
+                          return (
+                            <Pressable
+                              key={chip.id}
+                              onPress={() => handleConjugatorChipTap(chip)}
+                              style={{
+                                minHeight: 48,
+                                paddingHorizontal: 16,
+                                borderRadius: 16,
+                                backgroundColor: isWrong ? '#FEE2E2' : theme.surfaceWell,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: 'NotoSansArabic_600SemiBold',
+                                  fontSize: 22,
+                                  color: isWrong ? '#DC2626' : theme.textPrimary,
+                                }}>
+                                {chip.textAr}
+                              </Text>
+                            </Pressable>
+                          );
+                        })}
+                      </View>
+                    </View>
+                  )}
+
+                  {/* Single 56px Action Button */}
+                  {isModelVerb ? (
+                    payload.verbs.length > 1 ? (
+                      <Pressable
+                        onPress={() => {
+                          playTapSound();
+                          const nextIdx = activeConjugatorVerbIndex + 1;
+                          setActiveConjugatorVerbIndex(nextIdx);
+                          const nextVerb = payload.verbs[nextIdx];
+                          if (nextVerb) {
+                            playArabicAudio(getRootVerbArabic(nextVerb, selectedConjugatorTense));
+                          }
+                        }}
+                        style={({ pressed }) => ({
+                          width: '100%',
+                          height: 56,
+                          borderRadius: 9999,
+                          backgroundColor: pressed ? theme.accentPrimaryHover : theme.accentPrimary,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        })}>
+                        <Text
+                          style={{
+                            fontFamily: 'Lexend_600SemiBold',
+                            fontSize: 16,
+                            color: '#FFFFFF',
+                          }}>
+                          Start Practice (
+                          {getRootVerbArabic(payload.verbs[1], selectedConjugatorTense)})
+                        </Text>
+                      </Pressable>
+                    ) : (
+                      <Pressable
+                        onPress={() => {
+                          playTapSound();
+                          handleRegisterSuccess();
+                          handleNextStep();
+                        }}
+                        style={({ pressed }) => ({
+                          width: '100%',
+                          height: 56,
+                          borderRadius: 9999,
+                          backgroundColor: pressed ? theme.accentPrimaryHover : theme.accentPrimary,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        })}>
+                        <Text
+                          style={{
+                            fontFamily: 'Lexend_600SemiBold',
+                            fontSize: 16,
+                            color: '#FFFFFF',
+                          }}>
+                          Continue
+                        </Text>
+                      </Pressable>
+                    )
+                  ) : !isAllSlotsCompleted ? (
+                    <View
+                      style={{
+                        width: '100%',
+                        height: 56,
+                        borderRadius: 9999,
+                        backgroundColor: theme.surfaceWell,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_600SemiBold',
+                          fontSize: 14,
+                          color: theme.textMuted,
+                        }}>
+                        Complete the conjugations above
+                      </Text>
+                    </View>
+                  ) : activeConjugatorVerbIndex < payload.verbs.length - 1 ? (
+                    <Pressable
+                      onPress={() => {
+                        playTapSound();
+                        const nextIdx = activeConjugatorVerbIndex + 1;
+                        setActiveConjugatorVerbIndex(nextIdx);
+                        const nextVerb = payload.verbs[nextIdx];
+                        if (nextVerb) {
+                          playArabicAudio(getRootVerbArabic(nextVerb, selectedConjugatorTense));
+                        }
+                      }}
+                      style={({ pressed }) => ({
+                        width: '100%',
+                        height: 56,
+                        borderRadius: 9999,
+                        backgroundColor: pressed ? theme.accentPrimaryHover : theme.accentPrimary,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      })}>
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_600SemiBold',
+                          fontSize: 16,
+                          color: '#FFFFFF',
+                        }}>
+                        Next Verb
+                      </Text>
+                    </Pressable>
+                  ) : (
+                    <Pressable
+                      onPress={() => {
+                        playTapSound();
+                        handleRegisterSuccess();
+                        handleNextStep();
+                      }}
+                      style={({ pressed }) => ({
+                        width: '100%',
+                        height: 56,
+                        borderRadius: 9999,
+                        backgroundColor: pressed ? theme.accentPrimaryHover : theme.accentPrimary,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      })}>
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_600SemiBold',
+                          fontSize: 16,
+                          color: '#FFFFFF',
+                        }}>
+                        Continue
+                      </Text>
+                    </Pressable>
+                  )}
+                </View>
+              );
+            })()}
+
+          {/* STEP 19: WORD CONSTRUCTION (Vol 2) */}
+          {currentStep?.type === 'word_construction' &&
+            currentStep.wordConstructionPayload &&
+            (() => {
+              const payload = currentStep.wordConstructionPayload;
+              if (!payload || !payload.items || payload.items.length === 0) return null;
+              const currentItem = payload.items[activeWordConstructionIndex] || payload.items[0];
+              const assembledWord = constructedLetterChips.map((c) => c.letter).join('');
+              const hasPlacedChips = constructedLetterChips.length > 0;
+
+              const handleAddLetterChip = (chip: { id: string; letter: string }) => {
+                if (wordConstructionStatus === 'success') return;
+                playTapSound();
+                setAvailableLetterChips((prev) => prev.filter((c) => c.id !== chip.id));
+                setConstructedLetterChips((prev) => [...prev, chip]);
+                if (wordConstructionStatus === 'error') {
+                  setWordConstructionStatus('idle');
+                }
+              };
+
+              const handleRemoveLetterChip = (chipId: string) => {
+                if (wordConstructionStatus === 'success') return;
+                playTapSound();
+                const chipToRemove = constructedLetterChips.find((c) => c.id === chipId);
+                if (!chipToRemove) return;
+                setConstructedLetterChips((prev) => prev.filter((c) => c.id !== chipId));
+                setAvailableLetterChips((prev) => [...prev, chipToRemove]);
+                if (wordConstructionStatus === 'error') {
+                  setWordConstructionStatus('idle');
+                }
+              };
+
+              const handleCheckConstruction = () => {
+                if (constructedLetterChips.length === 0 || wordConstructionStatus === 'success')
+                  return;
+                const cleanAssembled = assembledWord.trim();
+                const cleanTarget = currentItem.targetWordAr.trim();
+                const isCorrect = cleanAssembled === cleanTarget;
+
+                if (isCorrect) {
+                  setWordConstructionStatus('success');
+                  playSuccessChime();
+                  playArabicAudio(currentItem.targetWordAr);
+                  if (activeWordConstructionIndex === payload.items.length - 1) {
+                    handleRegisterSuccess();
+                  }
+                } else {
+                  setWordConstructionStatus('error');
+                  playErrorCue();
+                  handleRegisterMistake();
+                }
+              };
+
+              const handleNextWordOrStep = () => {
+                if (activeWordConstructionIndex < payload.items.length - 1) {
+                  const nextIdx = activeWordConstructionIndex + 1;
+                  setActiveWordConstructionIndex(nextIdx);
+                  setConstructedLetterChips([]);
+                  setWordConstructionStatus('idle');
+                  const nextItem = payload.items[nextIdx];
+                  const chipsWithId = nextItem.chips.map((ch, idx) => ({
+                    id: `${ch}-${idx}-${Math.random().toString(36).slice(2, 6)}`,
+                    letter: ch,
+                  }));
+                  for (let i = chipsWithId.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [chipsWithId[i], chipsWithId[j]] = [chipsWithId[j], chipsWithId[i]];
+                  }
+                  setAvailableLetterChips(chipsWithId);
+                  playTapSound();
+                } else {
+                  handleNextStep();
+                }
+              };
+
+              return (
+                <View style={{ width: '100%', alignItems: 'center' }}>
+                  {/* Multi-item counter */}
+                  {payload.items.length > 1 && (
+                    <Text
+                      style={{
+                        fontFamily: 'Lexend_600SemiBold',
+                        fontSize: 12,
+                        color: theme.textMuted,
+                        marginBottom: 12,
+                      }}>
+                      {activeWordConstructionIndex + 1} / {payload.items.length}
+                    </Text>
+                  )}
+
+                  {/* Target Prompt Card */}
+                  <View
+                    style={{
+                      width: '100%',
+                      padding: 24,
+                      borderRadius: 28,
+                      backgroundColor: theme.surfaceWell,
+                      alignItems: 'center',
+                      marginBottom: 20,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'Lexend_600SemiBold',
+                        fontSize: 18,
+                        color: theme.textPrimary,
+                        textAlign: 'center',
+                        marginBottom: 4,
+                      }}>
+                      {currentItem.promptEn || currentItem.targetMeaningEn}
+                    </Text>
+                    {Boolean(currentItem.promptEn) && Boolean(currentItem.targetMeaningEn) && (
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_500Medium',
+                          fontSize: 13,
+                          color: theme.textMuted,
+                          textAlign: 'center',
+                          marginTop: 2,
+                        }}>
+                        {`"${currentItem.targetMeaningEn}"`}
+                      </Text>
+                    )}
+                  </View>
+
+                  {/* Construction Stage: Drop Targets / Assembled Letters */}
+                  <View
+                    style={{
+                      width: '100%',
+                      minHeight: 88,
+                      padding: 16,
+                      borderRadius: 24,
+                      borderWidth: 2,
+                      borderStyle: hasPlacedChips ? 'solid' : 'dashed',
+                      borderColor:
+                        wordConstructionStatus === 'success'
+                          ? '#10B981'
+                          : wordConstructionStatus === 'error'
+                            ? '#EF4444'
+                            : theme.borderSubtle,
+                      backgroundColor:
+                        wordConstructionStatus === 'success'
+                          ? '#D1FAE5'
+                          : wordConstructionStatus === 'error'
+                            ? '#FEE2E2'
+                            : theme.surfaceWell,
+                      flexDirection: 'row-reverse',
+                      flexWrap: 'wrap',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 8,
+                      marginBottom: 20,
+                    }}>
+                    {constructedLetterChips.length === 0 ? (
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_500Medium',
+                          fontSize: 13,
+                          color: theme.textMuted,
+                        }}>
+                        Tap letters below to construct the word
+                      </Text>
+                    ) : (
+                      constructedLetterChips.map((chip) => (
+                        <Pressable
+                          key={chip.id}
+                          onPress={() => handleRemoveLetterChip(chip.id)}
+                          style={{
+                            minWidth: 44,
+                            height: 48,
+                            paddingHorizontal: 12,
+                            borderRadius: 14,
+                            backgroundColor: theme.surfaceRaised,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: 'NotoSansArabic_600SemiBold',
+                              fontSize: 24,
+                              color: theme.textPrimary,
+                            }}>
+                            {chip.letter}
+                          </Text>
+                        </Pressable>
+                      ))
+                    )}
+                  </View>
+
+                  {/* Available Letter Chips Bank */}
+                  <View
+                    style={{
+                      width: '100%',
+                      flexDirection: 'row-reverse',
+                      flexWrap: 'wrap',
+                      justifyContent: 'center',
+                      gap: 10,
+                      marginBottom: 24,
+                    }}>
+                    {availableLetterChips.map((chip) => (
+                      <Pressable
+                        key={chip.id}
+                        onPress={() => handleAddLetterChip(chip)}
+                        style={{
+                          minWidth: 48,
+                          height: 52,
+                          paddingHorizontal: 14,
+                          borderRadius: 16,
+                          backgroundColor: theme.surfaceWell,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            fontFamily: 'NotoSansArabic_600SemiBold',
+                            fontSize: 24,
+                            color: theme.textPrimary,
+                          }}>
+                          {chip.letter}
+                        </Text>
+                      </Pressable>
+                    ))}
+                  </View>
+
+                  {/* 56px Action Button */}
+                  {wordConstructionStatus === 'idle' || wordConstructionStatus === 'error' ? (
+                    <Pressable
+                      disabled={constructedLetterChips.length === 0}
+                      onPress={handleCheckConstruction}
+                      style={({ pressed }) => ({
+                        width: '100%',
+                        height: 56,
+                        borderRadius: 9999,
+                        backgroundColor:
+                          constructedLetterChips.length === 0
+                            ? theme.surfaceWell
+                            : pressed
+                              ? theme.accentPrimaryHover
+                              : theme.accentPrimary,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      })}>
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_600SemiBold',
+                          fontSize: 16,
+                          color: constructedLetterChips.length === 0 ? theme.textMuted : '#FFFFFF',
+                        }}>
+                        Check Word
+                      </Text>
+                    </Pressable>
+                  ) : (
+                    <Pressable
+                      onPress={handleNextWordOrStep}
+                      style={({ pressed }) => ({
+                        width: '100%',
+                        height: 56,
+                        borderRadius: 9999,
+                        backgroundColor: pressed ? '#047857' : '#059669',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      })}>
+                      <Text
+                        style={{
+                          fontFamily: 'Lexend_600SemiBold',
+                          fontSize: 16,
+                          color: '#FFFFFF',
+                        }}>
+                        {activeWordConstructionIndex < payload.items.length - 1
+                          ? 'Next Word'
+                          : 'Continue'}
+                      </Text>
+                    </Pressable>
+                  )}
                 </View>
               );
             })()}

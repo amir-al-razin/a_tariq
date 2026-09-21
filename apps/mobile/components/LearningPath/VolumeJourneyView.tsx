@@ -3,7 +3,13 @@ import { View, Text, ScrollView, Modal, Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3, getLessonSession, hasLessonSession } from '@tariq/shared';
+import {
+  CHAPTERS,
+  CHAPTERS_VOL2,
+  CHAPTERS_VOL3,
+  getLessonSession,
+  hasLessonSession,
+} from '@tariq/shared';
 import { useProgressStore, LESSON_KEY } from '../../state/progressStore';
 import { useRetentionStore } from '../../state/retentionStore';
 import { useThemeTokens } from '../../theme/colors';
@@ -433,7 +439,7 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
                                   letterSpacing: 1,
                                   color: '#FFFFFF',
                                   textTransform: 'uppercase',
-                                  }}>
+                                }}>
                                 {isFirst ? 'START' : 'CURRENT'}
                               </Text>
                             </View>
@@ -462,7 +468,7 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
                             height: 82,
                             justifyContent: 'flex-end',
                             alignItems: 'center',
-                            opacity: isImplemented ? 1 : 0.7,
+                            opacity: 1,
                           }}>
                           {({ pressed, hovered }: any) => {
                             const isSpecial = isCurrent || isCompleted;
@@ -479,7 +485,7 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
                             } else if (isSpecial) {
                               faceBg =
                                 pressed || hovered ? theme.accentPrimaryHover : theme.accentPrimary;
-                              pedestalBg = theme.isDark ? '#172554' : '#1E40AF';
+                              pedestalBg = theme.accentPrimaryHover;
                               textColor = '#FFFFFF';
                             } else {
                               if (theme.isDark) {
@@ -499,7 +505,13 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
 
                             // Tactile displacement:
                             // Depress down to 0 on press; slight lift on hover/idle (disabled if unimplemented)
-                            const translateY = !isImplemented ? -6 : pressed ? 0 : hovered ? -7 : -6;
+                            const translateY = !isImplemented
+                              ? -6
+                              : pressed
+                                ? 0
+                                : hovered
+                                  ? -7
+                                  : -6;
 
                             return (
                               <View
@@ -672,7 +684,9 @@ export const VolumeJourneyView: React.FC<Props> = ({ volumeId }) => {
                             width: 40,
                             height: 40,
                             borderRadius: 20,
-                            backgroundColor: !isImplemented ? theme.surfaceWell : theme.accentPrimary,
+                            backgroundColor: !isImplemented
+                              ? theme.surfaceWell
+                              : theme.accentPrimary,
                             alignItems: 'center',
                             justifyContent: 'center',
                           }}>

@@ -127,6 +127,10 @@
   },
   "nav": {
     "home": "হোম",
+    "learn": "শিখুন",
+    "review": "রিভিউ",
+    "vocabulary": "শব্দকোষ",
+    "mushaf": "মুসহাফ",
     "settings": "সেটিংস"
   }
 }

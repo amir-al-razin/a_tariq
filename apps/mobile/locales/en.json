@@ -127,6 +127,10 @@
   },
   "nav": {
     "home": "Home",
+    "learn": "Learn",
+    "review": "Review",
+    "vocabulary": "Vocabulary",
+    "mushaf": "Mushaf",
     "settings": "Settings"
   }
 }
