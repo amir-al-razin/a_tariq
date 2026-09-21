@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Arabic Live Transcription & Word-Meaning Player</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --highlight: #f59e0b;
+      --accent: #38bdf8;
+      --border: #334155;
+    }
+    body {
+      font-family: 'Amiri', 'Traditional Arabic', 'Segoe UI', Tahoma, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 900px;
+      width: 100%;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      color: var(--accent);
+      font-size: 1.8rem;
+    }
+    .subtitle {
+      font-size: 0.95rem;
+      color: #94a3b8;
+    }
+    .media-box {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    audio {
+      width: 100%;
+      margin-top: 10px;
+    }
+    .transcript-box {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      max-height: 480px;
+      overflow-y: auto;
+    }
+    .segment {
+      margin-bottom: 24px;
+      padding: 16px;
+      border-radius: 8px;
+      background: #0f172a80;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .segment.active-segment {
+      border-color: var(--accent);
+      background: #1e293b;
+    }
+    .arabic-line {
+      font-size: 2rem;
+      line-height: 2.2;
+      margin-bottom: 8px;
+    }
+    .word {
+      display: inline-block;
+      padding: 2px 6px;
+      margin: 0 3px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
+    }
+    .word:hover {
+      background: #334155;
+    }
+    .word.active-word {
+      background: var(--highlight);
+      color: #000;
+      font-weight: bold;
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+    }
+    .translation-line {
+      font-size: 1.05rem;
+      color: #94a3b8;
+      direction: ltr;
+      text-align: left;
+      font-family: sans-serif;
+    }
+    .word-details-card {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 16px 24px;
+      display: none;
+      direction: ltr;
+      text-align: left;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      z-index: 100;
+      min-width: 320px;
+    }
+    .word-details-card h3 {
+      margin: 0 0 6px 0;
+      color: var(--highlight);
+      font-size: 1.4rem;
+      direction: rtl;
+      text-align: right;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      background: #334155;
+      color: var(--accent);
+      font-size: 0.8rem;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>مُشغّل التفريغ الصوتي التفاعلي — Peppa Pig Arabic</h1>
+      <div class="subtitle">Live Word-by-Word Alignment & English Vocabulary Meaning</div>
+    </header>
+
+    <div class="media-box">
+      <input type="file" id="jsonInput" accept=".json" style="margin-bottom: 8px;">
+      <p style="font-size: 0.85rem; color: #94a3b8; margin: 4px 0 12px 0;">Load any transcription .json file or use the preloaded pilot test.</p>
+      <audio id="audioPlayer" controls></audio>
+    </div>
+
+    <div class="transcript-box" id="transcriptContainer">
+      <!-- Segments rendered here -->
+    </div>
+  </div>
+
+  <div class="word-details-card" id="wordCard">
+    <h3 id="cardVocalized"></h3>
+    <span class="badge" id="cardPos"></span>
+    <div style="font-size: 1.1rem; color: #f8fafc;" id="cardMeaning"></div>
+    <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 4px;" id="cardRoot"></div>
+  </div>
+
+  <script>
+    const sampleData = {
+      "segments": [
+        {
+          "start": 1.20,
+          "end": 3.85,
+          "text_vocalized": "أَنَا بِيْبَا بِيغْ، وَهٰذَا أَخِي الصَّغِيرُ جُورْج",
+          "translation_en": "I am Peppa Pig, and this is my little brother George.",
+          "words": [
+            { "word_vocalized": "أَنَا", "start": 1.20, "end": 1.45, "meaning_en": "I / me", "root": "أ-ن-ا", "pos": "Pronoun" },
+            { "word_vocalized": "بِيبَا", "start": 1.46, "end": 1.80, "meaning_en": "Peppa", "root": null, "pos": "Proper Noun" },
+            { "word_vocalized": "بِيغْ", "start": 1.82, "end": 2.10, "meaning_en": "Pig", "root": null, "pos": "Proper Noun" },
+            { "word_vocalized": "وَهٰذَا", "start": 2.15, "end": 2.45, "meaning_en": "and this", "root": "ذ-ا", "pos": "Demonstrative" },
+            { "word_vocalized": "أَخِي", "start": 2.50, "end": 2.80, "meaning_en": "my brother", "root": "أ-خ-و", "pos": "Noun" },
+            { "word_vocalized": "الصَّغِيرُ", "start": 2.85, "end": 3.30, "meaning_en": "the little / young", "root": "ص-غ-ر", "pos": "Adjective" },
+            { "word_vocalized": "جُورْج", "start": 3.35, "end": 3.80, "meaning_en": "George", "root": null, "pos": "Proper Noun" }
+          ]
+        }
+      ]
+    };
+
+    let activeData = sampleData;
+    const container = document.getElementById("transcriptContainer");
+    const audio = document.getElementById("audioPlayer");
+    const wordCard = document.getElementById("wordCard");
+
+    function renderTranscript(data) {
+      container.innerHTML = "";
+      data.segments.forEach((seg, sIdx) => {
+        const segDiv = document.createElement("div");
+        segDiv.className = "segment";
+        segDiv.id = `seg-${sIdx}`;
+
+        const arLine = document.createElement("div");
+        arLine.className = "arabic-line";
+
+        seg.words.forEach((w, wIdx) => {
+          const wSpan = document.createElement("span");
+          wSpan.className = "word";
+          wSpan.id = `w-${sIdx}-${wIdx}`;
+          wSpan.textContent = w.word_vocalized;
+          wSpan.onclick = () => showWordDetails(w);
+          arLine.appendChild(wSpan);
+        });
+
+        const enLine = document.createElement("div");
+        enLine.className = "translation-line";
+        enLine.textContent = seg.translation_en;
+
+        segDiv.appendChild(arLine);
+        segDiv.appendChild(enLine);
+        container.appendChild(segDiv);
+      });
+    }
+
+    function showWordDetails(word) {
+      document.getElementById("cardVocalized").textContent = word.word_vocalized;
+      document.getElementById("cardPos").textContent = word.pos || "word";
+      document.getElementById("cardMeaning").textContent = word.meaning_en || "N/A";
+      document.getElementById("cardRoot").textContent = word.root ? `Root: ${word.root}` : "Root: —";
+      wordCard.style.display = "block";
+      setTimeout(() => {
+        window.addEventListener("click", () => { wordCard.style.display = "none"; }, { once: true });
+      }, 50);
+    }
+
+    // Audio timeupdate synchronization
+    audio.ontimeupdate = () => {
+      const cur = audio.currentTime;
+      activeData.segments.forEach((seg, sIdx) => {
+        const segEl = document.getElementById(`seg-${sIdx}`);
+        const isSegActive = cur >= seg.start && cur <= seg.end;
+        if (segEl) {
+          segEl.classList.toggle("active-segment", isSegActive);
+        }
+        seg.words.forEach((w, wIdx) => {
+          const wEl = document.getElementById(`w-${sIdx}-${wIdx}`);
+          if (wEl) {
+            const isWordActive = cur >= w.start && cur <= w.end;
+            wEl.classList.toggle("active-word", isWordActive);
+          }
+        });
+      });
+    };
+
+    // Load custom JSON file
+    document.getElementById("jsonInput").onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        try {
+          activeData = JSON.parse(evt.target.result);
+          renderTranscript(activeData);
+        } catch (err) {
+          alert("Invalid JSON file");
+        }
+      };
+      reader.readAsText(file);
+    };
+
+    renderTranscript(sampleData);
+  </script>
+</body>
+</html>

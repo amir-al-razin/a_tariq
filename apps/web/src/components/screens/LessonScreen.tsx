@@ -4,6 +4,8 @@ import { ArrowLeft, Play, Check, RotateCcw, BookmarkCheck, Lock } from 'lucide-r
 
 import { CHAPTERS, CHAPTERS_VOL2, CHAPTERS_VOL3 } from '@tariq/shared'
 import { useProgressStore } from '../../state/progressStore'
+import { ComprehensionCheckModal } from '../comprehension/ComprehensionCheckModal'
+import { RewardCelebrationModal } from '../gamification/RewardCelebrationModal'
 import { useRetentionStore } from '../../state/retentionStore'
 import { useLessonCheckpointStore } from '../../state/lessonCheckpointStore'
 import { useLanguage } from '../../hooks/useLanguage'
@@ -28,6 +30,7 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
   const navigate = useNavigate()
   const { language } = useLanguage()
   const isBn = language === 'bn'
+  const [showComprehensionModal, setShowComprehensionModal] = useState(false)
 
   const initialStepParam = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('step') : null
   const initialStepIndex = initialStepParam !== null ? parseInt(initialStepParam, 10) : undefined
@@ -115,6 +118,17 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
         <div className="flex items-center gap-2">
           <TransliterationToggle compact />
         </div>
+      </div>
+      {/* Interactive Comprehension Check Action */}
+      <div className="flex items-center justify-center gap-2 mb-6 px-4">
+        <button
+          type="button"
+          onClick={() => setShowComprehensionModal(true)}
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-100 hover:bg-neutral-200/80 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-english-bold transition-all shadow-sm cursor-pointer border-0"
+        >
+          <span className="font-arabic text-sm" dir="rtl">هَلْ فَهِمْتَ؟</span>
+          <span>{isBn ? 'বোঝার পরীক্ষা' : 'Check Understanding'}</span>
+        </button>
       </div>
 
       {/* Main Single-Focus Launch Stage */}
@@ -298,6 +312,25 @@ export const LessonScreen: React.FC<Props> = ({ volumeId, chapterId, darsNum }) 
           )}
         </div>
       </div>
+
+      <RewardCelebrationModal />
+
+      <ComprehensionCheckModal
+        isOpen={showComprehensionModal}
+        onClose={() => setShowComprehensionModal(false)}
+        darsNum={darsNum}
+        volumeId={volumeId}
+        chapterId={chapterId}
+        chunks={lesson.chunks.map((c) => ({ id: c.id, titleEn: c.titleEn, titleAr: c.titleAr }))}
+        onRedirectToChunk={(_targetChunkId) => {
+          setShowComprehensionModal(false)
+          setActiveStepIndex(0)
+          setIsRunningSession(true)
+        }}
+        onLessonMastered={() => {
+          setShowComprehensionModal(false)
+        }}
+      />
     </div>
   )
 }

@@ -34,6 +34,9 @@ export default {
         'arabic-body': ['18px', { lineHeight: '34px' }],
       },
       colors: {
+        neutral: {
+          850: '#1f1f1f',
+        },
         accent: {
           primary: {
             DEFAULT: 'var(--accent-primary)',
@@ -41,6 +44,7 @@ export default {
             subtle: 'var(--accent-primary-subtle)',
             text: 'var(--accent-primary-text)',
             glow: 'var(--accent-primary-glow)',
+            foreground: '#ffffff',
           },
           secondary: {
             DEFAULT: 'var(--accent-secondary)',

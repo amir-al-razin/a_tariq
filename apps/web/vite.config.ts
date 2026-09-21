@@ -116,6 +116,9 @@ const config = defineConfig({
     dedupe: ['react', 'react-dom'],
     tsconfigPaths: true,
   },
+  optimizeDeps: {
+    include: ['react-player'],
+  },
   plugins: [
     arabicTtsPlugin(),
     devtools(),

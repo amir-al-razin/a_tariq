@@ -518,7 +518,7 @@ export const VOL2_CH1_LESSON_03_STEPS: SessionStep[] = [
       surahNameEn: 'Al-Baqarah',
       arabicText: 'شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ هُدًى لِّلنَّاسِ',
       translationEn: 'The month of Ramadan in which was revealed the Quran, a guidance for the people.',
-      translationBn: 'রমযান মাস—যার মধ্যে কুরআন অবতীর্ণ করা হয়েছে মানবজাতির পথপ্রদর্শক হিসেবে।',
+      translationBn: 'রমযান মাস - যার মধ্যে কুরআন অবতীর্ণ করা হয়েছে মানবজাতির পথপ্রদর্শক হিসেবে।',
       highlightedWords: ['شَهْرُ', 'رَمَضَانَ', 'أُنزِلَ'],
       reflection: 'The exact nouns "شَهْرُ رَمَضَانَ" (the month of Ramadan) and the root "نَزَلَ" (to descend/reveal) you mastered today form the magnificent declaration of Allah when defining the month of fasting in Surah Al-Baqarah.',
       audioKey: 'quran_002_185',

@@ -143,41 +143,48 @@
 
 ---
 
-## 8. Teammate Branch (`Paragraph-Composition`) Audit & Integration Plan
+## 8. Teammate Branch Integration: Gamification, Paragraph Composition & Calligraphy Atelier
 
-### A. Branch Overview
-- **Branch Name**: `origin/Paragraph-Composition`
-- **Merge Base**: `44d0e71`
-- **Commit**: `82c02b9465e84e7f8ed418f825ccbdcc43f90bf7`
-- **Author**: `Saad0110meh <sajid589karim@gmail.com>`
-- **Core Feature**: Interactive paragraph composition and translation drilling for Volume 1 Lessons 1 - 9.
+### A. Integrated Branch Overview
+- **Branch Integrated**: `origin/feat/gamification-paragraph-merged`
+- **Staging Branch**: `integration/gamification-paragraph` (branched from `main` at `2c8bd9e`)
+- **Merge Commit**: `b577e50` (`--no-ff` merge preserving all 13 commits and author attribution for both teammates: `Saad0110meh <sajid589karim@gmail.com>` and `Mostafa Galeeb <galeeb8917@gmail.com>`).
+- **Core Features**:
+  1. Interactive Paragraph Composition & Translation Drill for Volume 1 Lessons 1 - 9.
+  2. Sentence Scramble Syntactic Assembly.
+  3. Vocabulary Speed Blitz Match challenge.
+  4. Harakat Detective grammar case ending identifier.
+  5. Arabic Calligraphy & Doodle Atelier with intelligent stroke evaluation.
+  6. Daily Quests, Streak & XP Gamification Header Widget & Celebration Modal.
 
-### B. Assets to Retain
-- High-pedagogy exercise concept: drilling paragraph-level comprehension with inline blanks and word chips.
-- Word-level mapping schema between Arabic text tokens and English translation tokens.
+### B. Pruned Bloatware (43,000+ lines removed)
+1. **Raw SQL Dump Deleted**: `scripts/seed_video_transcripts.sql` (20,027 lines).
+2. **Raw JSON Transcripts Deleted**: `apps/web/public/downloads/*_transcript.json` (over 20,000 lines).
+3. **Raw Audio Model Dump Deleted**: `scripts/raw_whisper_result.json` (3,009 lines).
+4. **Third-Party Dependency Bloat Eliminated**:
+   - Removed `canvas-confetti`, `@types/canvas-confetti`, and `react-tooltip` from `apps/web/package.json`.
+   - Replaced with zero-dependency native canvas particle confetti (`apps/web/src/lib/confetti.ts`).
+   - Cleaned lockfile churn in `pnpm-lock.yaml`.
 
-### C. Bloatware & Invariant Violations to Refactor
-1. **Design System Violations**:
-   - Contains 1px solid borders (`border border-neutral-200/60`, `border border-neutral-100`).
-   - Contains arbitrary drop shadows (`shadow-[0_8px_30px_rgb(0,0,0,0.12)]`, `shadow-sm`).
-2. **Legacy / Hardcoded Color Classes**:
-   - Uses obsolete classes: `bg-primary-50`, `focus:ring-primary-500`, `border-primary-500`, `border-red-300`, `text-red-900`.
-3. **Missing Tashkeel (Severe Invariant Failure)**:
-   - Arabic text in `practice-data.ts` is completely unvowelled (e.g. `هذا بيت كبير` instead of `هَٰذَا بَيْتٌ كَبِيرٌ`).
-4. **Missing Bengali Support**:
-   - Purely English-only; zero Bengali translation fields (`bnClean`, `bnSentence`).
-5. **Dependency Bloat**:
-   - Added `canvas-confetti` and `react-tooltip` (with extra CSS), resulting in 2,500 lines of `pnpm-lock.yaml` churn. Tooltips and celebrations should use lightweight internal components without external packages.
-6. **Isolated Routing**:
-   - Built as a disconnected route `/practice/$volumeId/$lessonId` instead of an integrated chunk type inside the unified `LessonSessionRunner`.
+### C. Pedagogical & Design System Normalization
+1. **Arabic Tashkeel Fidelity**:
+   - Rewrote `apps/web/src/lib/practice-data.ts` with complete, verified Harakat on all Arabic words (e.g. `هَٰذَا بَيْتٌ كَبِيرٌ`, `فِي البَيْتِ سَرِيرٌ وَكُرْسِيٌّ`).
+   - Added `bn` vocabulary translations for all blitz pairs in `practiceLessonData.ts`.
+2. **Strict Script Isolation (English & Bengali)**:
+   - Added complete Bengali translations across all practice modes (`bnSentence`, `mappingsBn`, `bnClean`, `hintBn`).
+   - Pure Bengali mode renders Bengali translation blanks and Bengali hints without English contamination.
+3. **Raw Neutral Compliance**:
+   - Zero 1px borders, zero drop shadows (`shadow-*` completely eliminated).
+   - 100% luminance-based depth with designated design tokens (`bg-neutral-100`, `bg-neutral-200`, `bg-neutral-900`, `bg-accent-primary`).
+   - 56px (`h-14`) touch target standards applied to all primary action buttons.
+4. **Home Screen Decongestion & Minimalist Card Design (User Preference Mandate)**:
+   - **Problem**: Embedding the 1,932-line `ArabicDoodleCanvas` directly onto `HomeScreen.tsx` created immense vertical clutter under the volume selection cards. Additionally, verbose marketing copy and non-standard Arabic letters in logo badges added visual noise.
+   - **Solution**: Removed the embedded canvas from the home screen and replaced it with a clean, elegant launcher card ("Calligraphy Atelier") featuring:
+     - A clean `PenTool` icon in a rounded container (eliminating confusing 2-letter Arabic text and nested mini-circles).
+     - Crisp, human copy: "Practice writing Arabic letters, numerals, and words with guided strokes."
+     - Dedicated modal dialog with identical clean header, pen icon, and stroke-by-stroke guidance.
+5. **High-Contrast Button Typography (White Text Standard)**:
+   - All buttons with vibrant backgrounds (`bg-accent-primary`) MUST use explicit `text-white` across both light and dark modes.
+   - Added `--accent-primary-foreground: #FFFFFF;` to `:root` and `.dark` in `styles.css` and `foreground: '#ffffff'` in `tailwind.config.js` to ensure zero low-contrast text inheritance in light mode.
+   - Verified visually via `agent-browser` in both light and dark modes.
 
-### D. Safe Integration Procedure (Preserving Teammate Attribution)
-To ensure `Saad0110meh` remains properly credited on the GitHub contributor graph without introducing bloat into production:
-1. **Step 1 (Merge Commit)**: Execute a non-fast-forward merge (`git merge --no-ff Paragraph-Composition`) to preserve commit `82c02b9` in git history with Saad0110meh as author.
-2. **Step 2 (Normalization & Cleanup Commit)**:
-   - Remove unused external packages (`canvas-confetti`, `react-tooltip`) and restore clean `pnpm-lock.yaml`.
-   - Add full, accurate Tashkeel to all Arabic sentences in `practice-data.ts`.
-   - Add complete Bengali translations for strict script isolation.
-   - Refactor UI components to strictly adhere to Raw Neutral design tokens (zero 1px borders, zero shadows, luminance depth, 56px action button).
-   - Integrate paragraph composition into the shared lesson runner chunk registry.
-3. **Explicit Consent Rule**: No git merge or commit commands will be executed until explicitly approved by the user.

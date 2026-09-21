@@ -73,6 +73,7 @@ body {
   --accent-primary-hover: #3730A3;
   --accent-primary-subtle: #EEF2FF;
   --accent-primary-text: #3730A3;
+  --accent-primary-foreground: #FFFFFF;
   --accent-primary-glow: rgba(67, 56, 202, 0.08);
 
   --accent-secondary: #C28135;
@@ -142,6 +143,7 @@ body {
   --accent-primary-hover: #4F46E5;
   --accent-primary-subtle: rgba(67, 56, 202, 0.16);
   --accent-primary-text: #A5B4FC;
+  --accent-primary-foreground: #FFFFFF;
   --accent-primary-glow: rgba(99, 102, 241, 0.24);
 
   --accent-secondary: #D99B4B;
@@ -204,6 +206,7 @@ body {
   --color-accent-secondary: var(--accent-secondary, #C28135);
   --color-accent-amber: #D97706;
   --color-accent-rose: #E11D48;
+  --color-neutral-850: #1f1f1f;
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
