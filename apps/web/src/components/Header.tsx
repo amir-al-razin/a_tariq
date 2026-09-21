@@ -7,6 +7,7 @@ import ThemeToggle from './ThemeToggle'
 import FontToggle from './FontToggle'
 import PaletteToggle from './PaletteToggle'
 import TariqLogo from './TariqLogo'
+import { GamificationHeaderWidget } from './gamification/GamificationHeaderWidget'
 
 export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -98,6 +99,23 @@ export default function Header() {
                   className="absolute right-0 top-full mt-2 w-48 bg-neutral-100 dark:bg-neutral-900 rounded-3xl overflow-hidden flex flex-col p-2 backdrop-blur-md"
                 >
                   <Link
+                    to="/vocabulary"
+                    onClick={() => setIsDropdownOpen(false)}
+                    activeProps={{ className: "text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-800 font-bold" }}
+                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none"
+                  >
+                    Vocab & Quran Meter
+                  </Link>
+                  <Link
+                    to="/practice/$volumeId/$lessonId"
+                    params={{ volumeId: 'vol1', lessonId: 'lesson1' }}
+                    onClick={() => setIsDropdownOpen(false)}
+                    activeProps={{ className: "text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-800 font-bold" }}
+                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none"
+                  >
+                    Practice Hub
+                  </Link>
+                  <Link
                     to="/design-system"
                     onClick={() => setIsDropdownOpen(false)}
                     activeProps={{ className: "text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-800 font-bold" }}
@@ -122,6 +140,14 @@ export default function Header() {
                     Pedagogy Engine
                   </Link>
                   <Link
+                    to="/demo/video"
+                    onClick={() => setIsDropdownOpen(false)}
+                    activeProps={{ className: "text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-800 font-bold" }}
+                    className="px-4 py-2.5 text-sm font-english-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors outline-none"
+                  >
+                    Video Player
+                  </Link>
+                  <Link
                     to="/pedagogy-lab"
                     onClick={() => setIsDropdownOpen(false)}
                     activeProps={{ className: "text-neutral-900 dark:text-neutral-100 bg-neutral-100 dark:bg-neutral-800 font-bold" }}
@@ -143,9 +169,12 @@ export default function Header() {
               )}
             </AnimatePresence>
           </div>
-          <PaletteToggle />
-          <FontToggle />
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <GamificationHeaderWidget />
+            <PaletteToggle />
+            <FontToggle />
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </header>

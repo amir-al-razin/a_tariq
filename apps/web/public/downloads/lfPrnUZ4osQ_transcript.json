@@ -1,0 +1,3941 @@
+[
+  {
+    "sentenceId": "s1",
+    "words": [
+      {
+        "id": "w1",
+        "ar": "ماذا",
+        "vocalized": "ماذا",
+        "transliteration": "ma'dhā",
+        "en": "what",
+        "start": 0.0,
+        "end": 0.36,
+        "root": "ذ-ح-ث",
+        "pos": "interrogative"
+      },
+      {
+        "id": "w2",
+        "ar": "تفعل",
+        "vocalized": "تَفْعَلُ",
+        "transliteration": "taf'alu",
+        "en": "do",
+        "start": 0.36,
+        "end": 0.74,
+        "root": "ف-ع-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w3",
+        "ar": "يا",
+        "vocalized": "يَا",
+        "transliteration": "ya",
+        "en": "O",
+        "start": 0.74,
+        "end": 1.02,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w4",
+        "ar": "أخي",
+        "vocalized": "أَخِي",
+        "transliteration": "Achi",
+        "en": "my brother",
+        "start": 1.02,
+        "end": 1.4,
+        "root": "أَخ-ي",
+        "pos": "noun"
+      },
+      {
+        "id": "w5",
+        "ar": "أنا",
+        "vocalized": "أَنَا",
+        "transliteration": "ana",
+        "en": "I",
+        "start": 1.12,
+        "end": 1.84,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w6",
+        "ar": "أنظر",
+        "vocalized": "أَنْظُرُ",
+        "transliteration": "anadur",
+        "en": "look",
+        "start": 1.84,
+        "end": 2.22,
+        "root": "ن-ظ-ر",
+        "pos": "verb"
+      },
+      {
+        "id": "w7",
+        "ar": "إلى",
+        "vocalized": "إِلَى",
+        "transliteration": "ila",
+        "en": "to / towards",
+        "start": 2.22,
+        "end": 2.5,
+        "root": null,
+        "pos": "preposition"
+      },
+      {
+        "id": "w8",
+        "ar": "صور",
+        "vocalized": "صُوَر",
+        "transliteration": "sawar",
+        "en": "Pictures",
+        "start": 2.5,
+        "end": 2.98,
+        "root": "ص-و-ر",
+        "pos": "noun"
+      },
+      {
+        "id": "w9",
+        "ar": "أريني",
+        "vocalized": "أَرِنِي",
+        "transliteration": "arini",
+        "en": "Show me",
+        "start": 3.06,
+        "end": 3.68,
+        "root": "أ-ر-ن",
+        "pos": "verb"
+      },
+      {
+        "id": "w10",
+        "ar": "هذه",
+        "vocalized": "هٰذِهِ",
+        "transliteration": "hadhihi",
+        "en": "this (f)",
+        "start": 3.68,
+        "end": 4.02,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w11",
+        "ar": "الصورة",
+        "vocalized": "الصُّورَةُ",
+        "transliteration": "al-sawra",
+        "en": "the picture",
+        "start": 4.02,
+        "end": 4.86,
+        "root": "ص-و-ر",
+        "pos": "noun"
+      },
+      {
+        "id": "w12",
+        "ar": "تفضل",
+        "vocalized": "تَفَضَّل",
+        "transliteration": "tafaddal",
+        "en": "prefer",
+        "start": 4.98,
+        "end": 5.58,
+        "root": "ف ض ل",
+        "pos": "verb"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s2",
+    "words": [
+      {
+        "id": "w13",
+        "ar": "انظر",
+        "vocalized": "انْظُرْ",
+        "transliteration": "an-ta xuru",
+        "en": "look",
+        "start": 5.62,
+        "end": 6.18,
+        "root": "ن-ظ-ر",
+        "pos": "verb"
+      },
+      {
+        "id": "w14",
+        "ar": "من",
+        "vocalized": "مِنْ",
+        "transliteration": "min",
+        "en": "from / of",
+        "start": 6.2,
+        "end": 6.52,
+        "root": null,
+        "pos": "preposition"
+      },
+      {
+        "id": "w15",
+        "ar": "هؤلاء",
+        "vocalized": "هٰؤُلَاءِ",
+        "transliteration": "ha'ula'i",
+        "en": "these",
+        "start": 6.52,
+        "end": 7.08,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w16",
+        "ar": "على",
+        "vocalized": "عَلَى",
+        "transliteration": "‘ala",
+        "en": "on / upon",
+        "start": 7.08,
+        "end": 7.36,
+        "root": null,
+        "pos": "preposition"
+      },
+      {
+        "id": "w17",
+        "ar": "الصورة",
+        "vocalized": "الصُّورَةُ",
+        "transliteration": "al-sawra",
+        "en": "the picture",
+        "start": 7.36,
+        "end": 7.96,
+        "root": "ص-و-ر",
+        "pos": "noun"
+      },
+      {
+        "id": "w18",
+        "ar": "هؤلاء",
+        "vocalized": "هٰؤُلَاءِ",
+        "transliteration": "ha'ula'i",
+        "en": "these",
+        "start": 8.36,
+        "end": 8.92,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w19",
+        "ar": "على",
+        "vocalized": "عَلَى",
+        "transliteration": "‘ala",
+        "en": "on / upon",
+        "start": 8.92,
+        "end": 9.18,
+        "root": null,
+        "pos": "preposition"
+      },
+      {
+        "id": "w20",
+        "ar": "الصورة",
+        "vocalized": "الصُّورَةُ",
+        "transliteration": "al-sawra",
+        "en": "the picture",
+        "start": 9.18,
+        "end": 9.78,
+        "root": "ص-و-ر",
+        "pos": "noun"
+      },
+      {
+        "id": "w21",
+        "ar": "أسرتي",
+        "vocalized": "أُسْرَتِي",
+        "transliteration": "Usratii",
+        "en": "my family",
+        "start": 9.78,
+        "end": 10.72,
+        "root": "أُس-ر-ت",
+        "pos": "noun"
+      },
+      {
+        "id": "w22",
+        "ar": "وأقاربي",
+        "vocalized": "وَأَقَارِبِي",
+        "transliteration": "wa-aqāribī",
+        "en": "and my relatives",
+        "start": 10.72,
+        "end": 12.2,
+        "root": "ق-ر-ب",
+        "pos": "noun"
+      },
+      {
+        "id": "w23",
+        "ar": "ما",
+        "vocalized": "مَا",
+        "transliteration": "ma",
+        "en": "what / not",
+        "start": 12.6,
+        "end": 12.8,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w24",
+        "ar": "شاء",
+        "vocalized": "شَاءَ",
+        "transliteration": "sha",
+        "en": "wanted",
+        "start": 12.78,
+        "end": 13.0,
+        "root": "ش-أ-ء",
+        "pos": "verb"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s3",
+    "words": [
+      {
+        "id": "w25",
+        "ar": "الله",
+        "vocalized": "اللَّهُ",
+        "transliteration": "Allah",
+        "en": "Allah / God",
+        "start": 13.0,
+        "end": 13.2,
+        "root": "إ-ل-ه",
+        "pos": "proper_noun"
+      },
+      {
+        "id": "w26",
+        "ar": "أسرتك",
+        "vocalized": "أُسْرَتِي",
+        "transliteration": "usratî",
+        "en": "my family",
+        "start": 13.18,
+        "end": 13.84,
+        "root": "أُسْر-ت",
+        "pos": "noun"
+      },
+      {
+        "id": "w27",
+        "ar": "كبيرة",
+        "vocalized": "كَبِيرَة",
+        "transliteration": "kabira",
+        "en": "big",
+        "start": 13.84,
+        "end": 14.34,
+        "root": "ك-ب-ر",
+        "pos": "adjective"
+      },
+      {
+        "id": "w28",
+        "ar": "جدا",
+        "vocalized": "جَدًّا",
+        "transliteration": "Jadda",
+        "en": "very",
+        "start": 14.34,
+        "end": 14.92,
+        "root": "ج-د-د",
+        "pos": "adjective"
+      },
+      {
+        "id": "w29",
+        "ar": "الحمد",
+        "vocalized": "الْحَمْدُ",
+        "transliteration": "al-hamdu",
+        "en": "praise",
+        "start": 14.94,
+        "end": 15.56,
+        "root": "ح-م-د",
+        "pos": "noun"
+      },
+      {
+        "id": "w30",
+        "ar": "لله",
+        "vocalized": "لِلَّهِ",
+        "transliteration": "lillahi",
+        "en": "to God",
+        "start": 15.56,
+        "end": 15.86,
+        "root": "إ-ل-ه",
+        "pos": "particle"
+      },
+      {
+        "id": "w31",
+        "ar": "ومن",
+        "vocalized": "وَمِنْ",
+        "transliteration": "wa-min",
+        "en": "and",
+        "start": 16.18,
+        "end": 16.48,
+        "root": "و-م-ن",
+        "pos": "preposition"
+      },
+      {
+        "id": "w32",
+        "ar": "هذا",
+        "vocalized": "هٰذَا",
+        "transliteration": "hadha",
+        "en": "this",
+        "start": 16.48,
+        "end": 16.84,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w33",
+        "ar": "الشيخ",
+        "vocalized": "الشَّيْخُ",
+        "transliteration": "al-shaykh",
+        "en": "the elder",
+        "start": 16.84,
+        "end": 17.5,
+        "root": "ش-ي-خ",
+        "pos": "noun"
+      },
+      {
+        "id": "w34",
+        "ar": "هذا",
+        "vocalized": "هٰذَا",
+        "transliteration": "hadha",
+        "en": "this",
+        "start": 17.36,
+        "end": 18.0,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w35",
+        "ar": "الشيخ",
+        "vocalized": "الشَّيْخُ",
+        "transliteration": "al-shaykh",
+        "en": "the elder",
+        "start": 18.0,
+        "end": 18.54,
+        "root": "ش-ي-خ",
+        "pos": "noun"
+      },
+      {
+        "id": "w36",
+        "ar": "جدي",
+        "vocalized": "جَدِّي",
+        "transliteration": "jaddî",
+        "en": "my grandfather",
+        "start": 18.54,
+        "end": 19.1,
+        "root": "ج-د-",
+        "pos": "noun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s4",
+    "words": [
+      {
+        "id": "w37",
+        "ar": "ما",
+        "vocalized": "مَا",
+        "transliteration": "ma",
+        "en": "what / not",
+        "start": 19.74,
+        "end": 19.94,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w38",
+        "ar": "اسمه",
+        "vocalized": "اسْمُهُ",
+        "transliteration": "asmahu",
+        "en": "His name",
+        "start": 19.94,
+        "end": 20.62,
+        "root": "أ-س-م",
+        "pos": "noun"
+      },
+      {
+        "id": "w39",
+        "ar": "اسمه",
+        "vocalized": "اسْمُهُ",
+        "transliteration": "asmahu",
+        "en": "His name",
+        "start": 21.16,
+        "end": 21.94,
+        "root": "أ-س-م",
+        "pos": "noun"
+      },
+      {
+        "id": "w40",
+        "ar": "علي",
+        "vocalized": "عَلِيٌّ",
+        "transliteration": "ali",
+        "en": "Ali",
+        "start": 21.94,
+        "end": 22.4,
+        "root": "ع ل ي",
+        "pos": "noun"
+      },
+      {
+        "id": "w41",
+        "ar": "وكم",
+        "vocalized": "وَكَمْ",
+        "transliteration": "wakam",
+        "en": "how much",
+        "start": 22.62,
+        "end": 23.22,
+        "root": "و-ك-م",
+        "pos": "interjection"
+      },
+      {
+        "id": "w42",
+        "ar": "عمره",
+        "vocalized": "عُمْرُهُ",
+        "transliteration": "umruh",
+        "en": "His age",
+        "start": 23.22,
+        "end": 23.92,
+        "root": "ع-م-ر",
+        "pos": "noun"
+      },
+      {
+        "id": "w43",
+        "ar": "عمره",
+        "vocalized": "عُمْرُهُ",
+        "transliteration": "umruh",
+        "en": "His age",
+        "start": 24.1,
+        "end": 24.68,
+        "root": "ع-م-ر",
+        "pos": "noun"
+      },
+      {
+        "id": "w44",
+        "ar": "تسعون",
+        "vocalized": "تِسعون",
+        "transliteration": "tisعون",
+        "en": "ninety",
+        "start": 24.68,
+        "end": 25.24,
+        "root": "س ع ن",
+        "pos": "numeral"
+      },
+      {
+        "id": "w45",
+        "ar": "عاما",
+        "vocalized": "عَامًا",
+        "transliteration": "amma",
+        "en": "years",
+        "start": 25.24,
+        "end": 25.7,
+        "root": "ع-م-ا",
+        "pos": "noun"
+      },
+      {
+        "id": "w46",
+        "ar": "ما",
+        "vocalized": "مَا",
+        "transliteration": "ma",
+        "en": "what / not",
+        "start": 25.72,
+        "end": 25.98,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w47",
+        "ar": "شاء",
+        "vocalized": "شَاءَ",
+        "transliteration": "sha",
+        "en": "wanted",
+        "start": 25.98,
+        "end": 26.2,
+        "root": "ش-أ-ء",
+        "pos": "verb"
+      },
+      {
+        "id": "w48",
+        "ar": "الله",
+        "vocalized": "اللَّهُ",
+        "transliteration": "Allah",
+        "en": "Allah / God",
+        "start": 26.2,
+        "end": 26.4,
+        "root": "إ-ل-ه",
+        "pos": "proper_noun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s5",
+    "words": [
+      {
+        "id": "w49",
+        "ar": "هو",
+        "vocalized": "هُوَ",
+        "transliteration": "huwa",
+        "en": "he",
+        "start": 26.34,
+        "end": 26.58,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w50",
+        "ar": "كبير",
+        "vocalized": "كَبِيرًا",
+        "transliteration": "kabīran",
+        "en": "great",
+        "start": 26.58,
+        "end": 26.98,
+        "root": "ك ب ر",
+        "pos": "Adjective"
+      },
+      {
+        "id": "w51",
+        "ar": "في",
+        "vocalized": "فِي",
+        "transliteration": "fi",
+        "en": "in",
+        "start": 26.98,
+        "end": 27.26,
+        "root": null,
+        "pos": "preposition"
+      },
+      {
+        "id": "w52",
+        "ar": "السن",
+        "vocalized": "السن",
+        "transliteration": "السن",
+        "en": "...",
+        "start": 27.26,
+        "end": 27.54,
+        "root": null,
+        "pos": "word"
+      },
+      {
+        "id": "w53",
+        "ar": "هل",
+        "vocalized": "هَلْ",
+        "transliteration": "hal",
+        "en": "do",
+        "start": 27.54,
+        "end": 27.86,
+        "root": "ه-ل",
+        "pos": "interrogative"
+      },
+      {
+        "id": "w54",
+        "ar": "هو",
+        "vocalized": "هُوَ",
+        "transliteration": "huwa",
+        "en": "he",
+        "start": 27.86,
+        "end": 28.06,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w55",
+        "ar": "يعمل",
+        "vocalized": "يعْمَل",
+        "transliteration": "yumil",
+        "en": "works",
+        "start": 28.02,
+        "end": 28.68,
+        "root": "ع-م-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w56",
+        "ar": "الآن",
+        "vocalized": "الآن",
+        "transliteration": "al-آن",
+        "en": "now",
+        "start": 28.94,
+        "end": 29.26,
+        "root": "",
+        "pos": "interjection"
+      },
+      {
+        "id": "w57",
+        "ar": "هو",
+        "vocalized": "هُوَ",
+        "transliteration": "huwa",
+        "en": "he",
+        "start": 29.26,
+        "end": 29.52,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w58",
+        "ar": "لا",
+        "vocalized": "لَا",
+        "transliteration": "la",
+        "en": "no / not",
+        "start": 29.52,
+        "end": 29.72,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w59",
+        "ar": "يعمل",
+        "vocalized": "يعْمَل",
+        "transliteration": "yumil",
+        "en": "works",
+        "start": 29.72,
+        "end": 30.16,
+        "root": "ع-م-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w60",
+        "ar": "هو",
+        "vocalized": "هُوَ",
+        "transliteration": "huwa",
+        "en": "he",
+        "start": 30.16,
+        "end": 30.38,
+        "root": null,
+        "pos": "pronoun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s6",
+    "words": [
+      {
+        "id": "w61",
+        "ar": "متقاعد",
+        "vocalized": "مُتَقَاعِد",
+        "transliteration": "mutaqa‘id",
+        "en": "retired",
+        "start": 30.38,
+        "end": 31.24,
+        "root": "ت-ق-ع",
+        "pos": "noun"
+      },
+      {
+        "id": "w62",
+        "ar": "ومن",
+        "vocalized": "وَمِنْ",
+        "transliteration": "wa-min",
+        "en": "and",
+        "start": 31.76,
+        "end": 32.04,
+        "root": "و-م-ن",
+        "pos": "preposition"
+      },
+      {
+        "id": "w63",
+        "ar": "هذه",
+        "vocalized": "هٰذِهِ",
+        "transliteration": "hadhihi",
+        "en": "this (f)",
+        "start": 32.04,
+        "end": 32.46,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w64",
+        "ar": "العجوز",
+        "vocalized": "العَجُوز",
+        "transliteration": "al-ajuz",
+        "en": "the old woman",
+        "start": 32.46,
+        "end": 33.28,
+        "root": "ع ج ز",
+        "pos": "noun"
+      },
+      {
+        "id": "w65",
+        "ar": "هذه",
+        "vocalized": "هٰذِهِ",
+        "transliteration": "hadhihi",
+        "en": "this (f)",
+        "start": 33.52,
+        "end": 33.94,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w66",
+        "ar": "العجوز",
+        "vocalized": "العَجُوز",
+        "transliteration": "al-ajuz",
+        "en": "the old woman",
+        "start": 33.94,
+        "end": 34.56,
+        "root": "ع ج ز",
+        "pos": "noun"
+      },
+      {
+        "id": "w67",
+        "ar": "جدتي",
+        "vocalized": "جَدَّتي",
+        "transliteration": "jaddati",
+        "en": "my grandmother",
+        "start": 34.56,
+        "end": 35.2,
+        "root": "ج د د",
+        "pos": "noun"
+      },
+      {
+        "id": "w68",
+        "ar": "ما",
+        "vocalized": "مَا",
+        "transliteration": "ma",
+        "en": "what / not",
+        "start": 35.64,
+        "end": 35.84,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w69",
+        "ar": "اسمها",
+        "vocalized": "اسْمُهَا",
+        "transliteration": "asmُهa",
+        "en": "her name",
+        "start": 35.84,
+        "end": 36.42,
+        "root": "س-م-",
+        "pos": "nominative noun"
+      },
+      {
+        "id": "w70",
+        "ar": "اسمها",
+        "vocalized": "اسْمُهَا",
+        "transliteration": "asmُهa",
+        "en": "her name",
+        "start": 37.04,
+        "end": 37.54,
+        "root": "س-م-",
+        "pos": "nominative noun"
+      },
+      {
+        "id": "w71",
+        "ar": "صفية",
+        "vocalized": "صَفِيَّةُ",
+        "transliteration": "Ṣāfiyyatu",
+        "en": "Safiya",
+        "start": 37.54,
+        "end": 38.06,
+        "root": "ص-ف-و",
+        "pos": "proper noun"
+      },
+      {
+        "id": "w72",
+        "ar": "وكم",
+        "vocalized": "وَكَمْ",
+        "transliteration": "wakam",
+        "en": "how much",
+        "start": 38.2,
+        "end": 38.62,
+        "root": "و-ك-م",
+        "pos": "interjection"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s7",
+    "words": [
+      {
+        "id": "w73",
+        "ar": "عمرها",
+        "vocalized": "عُمْرُهَا",
+        "transliteration": "umruha",
+        "en": "her age",
+        "start": 38.62,
+        "end": 39.42,
+        "root": "ع-م-ر",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w74",
+        "ar": "عمرها",
+        "vocalized": "عُمْرُهَا",
+        "transliteration": "umruha",
+        "en": "her age",
+        "start": 39.6,
+        "end": 40.16,
+        "root": "ع-م-ر",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w75",
+        "ar": "ثمانون",
+        "vocalized": "ثَمَانُونَ",
+        "transliteration": "thamanun",
+        "en": "eighty",
+        "start": 40.16,
+        "end": 40.84,
+        "root": "ث-م-ن",
+        "pos": "numeral"
+      },
+      {
+        "id": "w76",
+        "ar": "عاما",
+        "vocalized": "عَامًا",
+        "transliteration": "amma",
+        "en": "years",
+        "start": 40.84,
+        "end": 41.34,
+        "root": "ع-م-ا",
+        "pos": "noun"
+      },
+      {
+        "id": "w77",
+        "ar": "ومن",
+        "vocalized": "وَمِنْ",
+        "transliteration": "wa-min",
+        "en": "and",
+        "start": 42.24,
+        "end": 42.52,
+        "root": "و-م-ن",
+        "pos": "preposition"
+      },
+      {
+        "id": "w78",
+        "ar": "هذا",
+        "vocalized": "هٰذَا",
+        "transliteration": "hadha",
+        "en": "this",
+        "start": 42.52,
+        "end": 42.92,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w79",
+        "ar": "الرجل",
+        "vocalized": "الرجل",
+        "transliteration": "الرجل",
+        "en": "...",
+        "start": 42.92,
+        "end": 43.42,
+        "root": null,
+        "pos": "word"
+      },
+      {
+        "id": "w80",
+        "ar": "هذا",
+        "vocalized": "هٰذَا",
+        "transliteration": "hadha",
+        "en": "this",
+        "start": 43.92,
+        "end": 44.26,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w81",
+        "ar": "الرجل",
+        "vocalized": "الرجل",
+        "transliteration": "الرجل",
+        "en": "...",
+        "start": 44.26,
+        "end": 44.8,
+        "root": null,
+        "pos": "word"
+      },
+      {
+        "id": "w82",
+        "ar": "أبي",
+        "vocalized": "أَبِي",
+        "transliteration": "Abi",
+        "en": "my father",
+        "start": 44.8,
+        "end": 45.22,
+        "root": "أَب-ي",
+        "pos": "noun"
+      },
+      {
+        "id": "w83",
+        "ar": "ما",
+        "vocalized": "مَا",
+        "transliteration": "ma",
+        "en": "what / not",
+        "start": 45.98,
+        "end": 46.26,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w84",
+        "ar": "اسمه",
+        "vocalized": "اسْمُهُ",
+        "transliteration": "asmahu",
+        "en": "His name",
+        "start": 46.26,
+        "end": 46.9,
+        "root": "أ-س-م",
+        "pos": "noun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s8",
+    "words": [
+      {
+        "id": "w85",
+        "ar": "اسمه",
+        "vocalized": "اسْمُهُ",
+        "transliteration": "asmahu",
+        "en": "His name",
+        "start": 47.08,
+        "end": 47.58,
+        "root": "أ-س-م",
+        "pos": "noun"
+      },
+      {
+        "id": "w86",
+        "ar": "خالد",
+        "vocalized": "خالد",
+        "transliteration": "خالد",
+        "en": "...",
+        "start": 47.58,
+        "end": 48.06,
+        "root": null,
+        "pos": "word"
+      },
+      {
+        "id": "w87",
+        "ar": "وما",
+        "vocalized": "وَمَا",
+        "transliteration": "Wama",
+        "en": "what",
+        "start": 48.32,
+        "end": 48.66,
+        "root": "و-م-ا",
+        "pos": "interjection"
+      },
+      {
+        "id": "w88",
+        "ar": "مهنته",
+        "vocalized": "مِهْنَتُهُ",
+        "transliteration": "mihnahtu",
+        "en": "His occupation",
+        "start": 48.66,
+        "end": 49.42,
+        "root": "م-ه-ن",
+        "pos": "noun"
+      },
+      {
+        "id": "w89",
+        "ar": "هو",
+        "vocalized": "هُوَ",
+        "transliteration": "huwa",
+        "en": "he",
+        "start": 50.08,
+        "end": 50.32,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w90",
+        "ar": "رجل",
+        "vocalized": "رَجُل",
+        "transliteration": "rajul",
+        "en": "man",
+        "start": 50.32,
+        "end": 50.98,
+        "root": "ر ج ل",
+        "pos": "noun"
+      },
+      {
+        "id": "w91",
+        "ar": "الأعمال",
+        "vocalized": "الأَعْمَالُ",
+        "transliteration": "al-‘amalu",
+        "en": "the works",
+        "start": 50.98,
+        "end": 51.72,
+        "root": "ع-م-ل",
+        "pos": "noun"
+      },
+      {
+        "id": "w92",
+        "ar": "ومن",
+        "vocalized": "وَمِنْ",
+        "transliteration": "wa-min",
+        "en": "and",
+        "start": 52.84,
+        "end": 53.16,
+        "root": "و-م-ن",
+        "pos": "preposition"
+      },
+      {
+        "id": "w93",
+        "ar": "هذه",
+        "vocalized": "هٰذِهِ",
+        "transliteration": "hadhihi",
+        "en": "this (f)",
+        "start": 53.16,
+        "end": 53.66,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w94",
+        "ar": "المرأة",
+        "vocalized": "المرأة",
+        "transliteration": "al-marâtun",
+        "en": "woman",
+        "start": 53.66,
+        "end": 54.42,
+        "root": "م-ر-ء",
+        "pos": "noun"
+      },
+      {
+        "id": "w95",
+        "ar": "هذه",
+        "vocalized": "هٰذِهِ",
+        "transliteration": "hadhihi",
+        "en": "this (f)",
+        "start": 54.86,
+        "end": 55.28,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w96",
+        "ar": "المرأة",
+        "vocalized": "المرأة",
+        "transliteration": "al-marâtun",
+        "en": "woman",
+        "start": 55.28,
+        "end": 55.96,
+        "root": "م-ر-ء",
+        "pos": "noun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s9",
+    "words": [
+      {
+        "id": "w97",
+        "ar": "أمي",
+        "vocalized": "أُمِّي",
+        "transliteration": "ami",
+        "en": "my mother",
+        "start": 55.96,
+        "end": 56.76,
+        "root": "أ-م-ي",
+        "pos": "noun"
+      },
+      {
+        "id": "w98",
+        "ar": "هل",
+        "vocalized": "هَلْ",
+        "transliteration": "hal",
+        "en": "do",
+        "start": 57.02,
+        "end": 57.62,
+        "root": "ه-ل",
+        "pos": "interrogative"
+      },
+      {
+        "id": "w99",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 57.62,
+        "end": 57.82,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w100",
+        "ar": "تعمل",
+        "vocalized": "تَعْمَلُ",
+        "transliteration": "ta‘lamu",
+        "en": "works",
+        "start": 57.8,
+        "end": 58.42,
+        "root": "ع-م-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w101",
+        "ar": "نعم",
+        "vocalized": "نَعَمْ",
+        "transliteration": "na‘am",
+        "en": "yes",
+        "start": 58.88,
+        "end": 59.12,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w102",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 59.12,
+        "end": 59.42,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w103",
+        "ar": "تعمل",
+        "vocalized": "تَعْمَلُ",
+        "transliteration": "ta‘lamu",
+        "en": "works",
+        "start": 59.42,
+        "end": 59.98,
+        "root": "ع-م-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w104",
+        "ar": "مع",
+        "vocalized": "مَعَ",
+        "transliteration": "ma‘a",
+        "en": "with",
+        "start": 59.98,
+        "end": 60.3,
+        "root": null,
+        "pos": "preposition"
+      },
+      {
+        "id": "w105",
+        "ar": "أبي",
+        "vocalized": "أَبِي",
+        "transliteration": "Abi",
+        "en": "my father",
+        "start": 60.3,
+        "end": 60.78,
+        "root": "أَب-ي",
+        "pos": "noun"
+      },
+      {
+        "id": "w106",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 60.8,
+        "end": 61.74,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w107",
+        "ar": "محاسبة",
+        "vocalized": "مُحاسَبَةٌ",
+        "transliteration": "muhadha‘abah",
+        "en": "accounting",
+        "start": 61.74,
+        "end": 62.74,
+        "root": "م-ح-س-ب",
+        "pos": "noun"
+      },
+      {
+        "id": "w108",
+        "ar": "ومن",
+        "vocalized": "وَمِنْ",
+        "transliteration": "wa-min",
+        "en": "and",
+        "start": 62.76,
+        "end": 63.46,
+        "root": "و-م-ن",
+        "pos": "preposition"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s10",
+    "words": [
+      {
+        "id": "w109",
+        "ar": "هذا",
+        "vocalized": "هٰذَا",
+        "transliteration": "hadha",
+        "en": "this",
+        "start": 63.46,
+        "end": 63.78,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w110",
+        "ar": "الرجل",
+        "vocalized": "الرجل",
+        "transliteration": "الرجل",
+        "en": "...",
+        "start": 63.78,
+        "end": 64.42,
+        "root": null,
+        "pos": "word"
+      },
+      {
+        "id": "w111",
+        "ar": "هذا",
+        "vocalized": "هٰذَا",
+        "transliteration": "hadha",
+        "en": "this",
+        "start": 64.52,
+        "end": 64.92,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w112",
+        "ar": "الرجل",
+        "vocalized": "الرجل",
+        "transliteration": "الرجل",
+        "en": "...",
+        "start": 64.92,
+        "end": 65.4,
+        "root": null,
+        "pos": "word"
+      },
+      {
+        "id": "w113",
+        "ar": "عمي",
+        "vocalized": "عَمِّي",
+        "transliteration": "ʿammī",
+        "en": "my paternal uncle",
+        "start": 65.4,
+        "end": 65.86,
+        "root": "ع-م-م",
+        "pos": "noun"
+      },
+      {
+        "id": "w114",
+        "ar": "وما",
+        "vocalized": "وَمَا",
+        "transliteration": "Wama",
+        "en": "what",
+        "start": 66.28,
+        "end": 66.58,
+        "root": "و-م-ا",
+        "pos": "interjection"
+      },
+      {
+        "id": "w115",
+        "ar": "مهنته",
+        "vocalized": "مِهْنَتُهُ",
+        "transliteration": "mihnahtu",
+        "en": "His occupation",
+        "start": 66.58,
+        "end": 67.42,
+        "root": "م-ه-ن",
+        "pos": "noun"
+      },
+      {
+        "id": "w116",
+        "ar": "هو",
+        "vocalized": "هُوَ",
+        "transliteration": "huwa",
+        "en": "he",
+        "start": 67.9,
+        "end": 68.1,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w117",
+        "ar": "مهندس",
+        "vocalized": "مُهَنْدِسٌ",
+        "transliteration": "muhandisun",
+        "en": "engineer",
+        "start": 68.08,
+        "end": 68.84,
+        "root": "ه-ن-د",
+        "pos": "noun"
+      },
+      {
+        "id": "w118",
+        "ar": "ومن",
+        "vocalized": "وَمِنْ",
+        "transliteration": "wa-min",
+        "en": "and",
+        "start": 68.92,
+        "end": 69.32,
+        "root": "و-م-ن",
+        "pos": "preposition"
+      },
+      {
+        "id": "w119",
+        "ar": "هؤلاء",
+        "vocalized": "هٰؤُلَاءِ",
+        "transliteration": "ha'ula'i",
+        "en": "these",
+        "start": 69.32,
+        "end": 69.94,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w120",
+        "ar": "الشباب",
+        "vocalized": "الشَّبَاب",
+        "transliteration": "al-Shabab",
+        "en": "youth",
+        "start": 69.94,
+        "end": 70.42,
+        "root": "ش-ب-ب",
+        "pos": "noun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s11",
+    "words": [
+      {
+        "id": "w121",
+        "ar": "هؤلاء",
+        "vocalized": "هٰؤُلَاءِ",
+        "transliteration": "ha'ula'i",
+        "en": "these",
+        "start": 71.02,
+        "end": 71.58,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w122",
+        "ar": "الشباب",
+        "vocalized": "الشَّبَاب",
+        "transliteration": "al-Shabab",
+        "en": "youth",
+        "start": 71.58,
+        "end": 72.24,
+        "root": "ش-ب-ب",
+        "pos": "noun"
+      },
+      {
+        "id": "w123",
+        "ar": "أبناء",
+        "vocalized": "أَبْنَاءُ",
+        "transliteration": "abnaa",
+        "en": "children",
+        "start": 72.24,
+        "end": 73.4,
+        "root": "ب-ن-ء",
+        "pos": "noun"
+      },
+      {
+        "id": "w124",
+        "ar": "عمي",
+        "vocalized": "عَمِّي",
+        "transliteration": "ʿammī",
+        "en": "my paternal uncle",
+        "start": 73.4,
+        "end": 73.98,
+        "root": "ع-م-م",
+        "pos": "noun"
+      },
+      {
+        "id": "w125",
+        "ar": "ما",
+        "vocalized": "مَا",
+        "transliteration": "ma",
+        "en": "what / not",
+        "start": 74.02,
+        "end": 74.4,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w126",
+        "ar": "أسماؤهم",
+        "vocalized": "أَسْمَاؤُهُمْ",
+        "transliteration": "asma‘umu",
+        "en": "their names",
+        "start": 74.4,
+        "end": 75.42,
+        "root": "س-م-ء",
+        "pos": "noun"
+      },
+      {
+        "id": "w127",
+        "ar": "هذا",
+        "vocalized": "هٰذَا",
+        "transliteration": "hadha",
+        "en": "this",
+        "start": 76.28,
+        "end": 76.6,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w128",
+        "ar": "زيد",
+        "vocalized": "زَيْدٌ",
+        "transliteration": "zaydun",
+        "en": "Zayd",
+        "start": 76.6,
+        "end": 77.14,
+        "root": "ز-ي-د",
+        "pos": "masculine noun"
+      },
+      {
+        "id": "w129",
+        "ar": "وهذا",
+        "vocalized": "وَهَذَا",
+        "transliteration": "wa-hādhā",
+        "en": "and this",
+        "start": 77.14,
+        "end": 78.02,
+        "root": "ه ذ ا",
+        "pos": "pronoun"
+      },
+      {
+        "id": "w130",
+        "ar": "محمد",
+        "vocalized": "مُحَمَّدُ",
+        "transliteration": "muhammadu",
+        "en": "Muhammad",
+        "start": 78.02,
+        "end": 78.72,
+        "root": "م-ح-م-د",
+        "pos": "noun"
+      },
+      {
+        "id": "w131",
+        "ar": "وذلك",
+        "vocalized": "وذَلِكَ",
+        "transliteration": "Wadhalak",
+        "en": "that",
+        "start": 78.72,
+        "end": 79.74,
+        "root": "ذ-ك-ل",
+        "pos": "interjection"
+      },
+      {
+        "id": "w132",
+        "ar": "أحمد",
+        "vocalized": "أَحْمَدُ",
+        "transliteration": "Ahmad",
+        "en": "Ahmad",
+        "start": 79.74,
+        "end": 80.42,
+        "root": "ح-م-د",
+        "pos": "proper noun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s12",
+    "words": [
+      {
+        "id": "w133",
+        "ar": "هل",
+        "vocalized": "هَلْ",
+        "transliteration": "hal",
+        "en": "do",
+        "start": 80.56,
+        "end": 80.82,
+        "root": "ه-ل",
+        "pos": "interrogative"
+      },
+      {
+        "id": "w134",
+        "ar": "هم",
+        "vocalized": "هُمْ",
+        "transliteration": "hum",
+        "en": "they",
+        "start": 80.82,
+        "end": 81.02,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w135",
+        "ar": "يعملون",
+        "vocalized": "يعملون",
+        "transliteration": "يعملون",
+        "en": "...",
+        "start": 80.98,
+        "end": 81.94,
+        "root": null,
+        "pos": "word"
+      },
+      {
+        "id": "w136",
+        "ar": "لا",
+        "vocalized": "لَا",
+        "transliteration": "la",
+        "en": "no / not",
+        "start": 82.44,
+        "end": 82.64,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w137",
+        "ar": "هم",
+        "vocalized": "هُمْ",
+        "transliteration": "hum",
+        "en": "they",
+        "start": 82.58,
+        "end": 82.9,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w138",
+        "ar": "لا",
+        "vocalized": "لَا",
+        "transliteration": "la",
+        "en": "no / not",
+        "start": 82.9,
+        "end": 83.1,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w139",
+        "ar": "يعملون",
+        "vocalized": "يعملون",
+        "transliteration": "يعملون",
+        "en": "...",
+        "start": 83.06,
+        "end": 83.7,
+        "root": null,
+        "pos": "word"
+      },
+      {
+        "id": "w140",
+        "ar": "هم",
+        "vocalized": "هُمْ",
+        "transliteration": "hum",
+        "en": "they",
+        "start": 83.7,
+        "end": 84.08,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w141",
+        "ar": "يدرسون",
+        "vocalized": "يَدْرُسُونَ",
+        "transliteration": "yadursunun",
+        "en": "they study",
+        "start": 84.08,
+        "end": 84.76,
+        "root": "د-ر-س",
+        "pos": "verb"
+      },
+      {
+        "id": "w142",
+        "ar": "هم",
+        "vocalized": "هُمْ",
+        "transliteration": "hum",
+        "en": "they",
+        "start": 84.84,
+        "end": 85.26,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w143",
+        "ar": "طلاب",
+        "vocalized": "الطَّلَبَةُ",
+        "transliteration": "altalubu",
+        "en": "students",
+        "start": 85.26,
+        "end": 85.86,
+        "root": "ط-ل-ب",
+        "pos": "noun"
+      },
+      {
+        "id": "w144",
+        "ar": "في",
+        "vocalized": "فِي",
+        "transliteration": "fi",
+        "en": "in",
+        "start": 85.86,
+        "end": 86.14,
+        "root": null,
+        "pos": "preposition"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s13",
+    "words": [
+      {
+        "id": "w145",
+        "ar": "الجامعة",
+        "vocalized": "الجَامِعَةُ",
+        "transliteration": "al-jami‘a",
+        "en": "the university",
+        "start": 86.14,
+        "end": 86.76,
+        "root": "ج-م-ع",
+        "pos": "noun"
+      },
+      {
+        "id": "w146",
+        "ar": "ومن",
+        "vocalized": "وَمِنْ",
+        "transliteration": "wa-min",
+        "en": "and",
+        "start": 86.96,
+        "end": 87.16,
+        "root": "و-م-ن",
+        "pos": "preposition"
+      },
+      {
+        "id": "w147",
+        "ar": "هذه",
+        "vocalized": "هٰذِهِ",
+        "transliteration": "hadhihi",
+        "en": "this (f)",
+        "start": 87.16,
+        "end": 87.6,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w148",
+        "ar": "الفتاة",
+        "vocalized": "الْفَتاةُ",
+        "transliteration": "alfatatu",
+        "en": "the girl",
+        "start": 87.6,
+        "end": 88.78,
+        "root": "ف-ت-ا",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w149",
+        "ar": "هذه",
+        "vocalized": "هٰذِهِ",
+        "transliteration": "hadhihi",
+        "en": "this (f)",
+        "start": 89.1,
+        "end": 89.56,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w150",
+        "ar": "الفتاة",
+        "vocalized": "الْفَتاةُ",
+        "transliteration": "alfatatu",
+        "en": "the girl",
+        "start": 89.56,
+        "end": 90.22,
+        "root": "ف-ت-ا",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w151",
+        "ar": "بنت",
+        "vocalized": "بِنْتٌ",
+        "transliteration": "bintun",
+        "en": "daughter",
+        "start": 90.22,
+        "end": 90.62,
+        "root": "ب-ن-ت",
+        "pos": "noun"
+      },
+      {
+        "id": "w152",
+        "ar": "عني",
+        "vocalized": "عَنِيَ",
+        "transliteration": "anaya",
+        "en": "concerned",
+        "start": 90.62,
+        "end": 91.1,
+        "root": "ع-ن-ي",
+        "pos": "verb"
+      },
+      {
+        "id": "w153",
+        "ar": "هل",
+        "vocalized": "هَلْ",
+        "transliteration": "hal",
+        "en": "do",
+        "start": 91.12,
+        "end": 91.78,
+        "root": "ه-ل",
+        "pos": "interrogative"
+      },
+      {
+        "id": "w154",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 91.78,
+        "end": 91.98,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w155",
+        "ar": "تعمل",
+        "vocalized": "تَعْمَلُ",
+        "transliteration": "ta‘lamu",
+        "en": "works",
+        "start": 91.94,
+        "end": 92.76,
+        "root": "ع-م-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w156",
+        "ar": "نعم",
+        "vocalized": "نَعَمْ",
+        "transliteration": "na‘am",
+        "en": "yes",
+        "start": 93.14,
+        "end": 93.46,
+        "root": null,
+        "pos": "particle"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s14",
+    "words": [
+      {
+        "id": "w157",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 93.46,
+        "end": 93.68,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w158",
+        "ar": "تعمل",
+        "vocalized": "تَعْمَلُ",
+        "transliteration": "ta‘lamu",
+        "en": "works",
+        "start": 93.68,
+        "end": 94.24,
+        "root": "ع-م-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w159",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 94.24,
+        "end": 94.6,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w160",
+        "ar": "صحفية",
+        "vocalized": "صَحَفِيَّة",
+        "transliteration": "sahafiyya",
+        "en": "journalist",
+        "start": 94.6,
+        "end": 95.62,
+        "root": "ص-ح-ف",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w161",
+        "ar": "ومن",
+        "vocalized": "وَمِنْ",
+        "transliteration": "wa-min",
+        "en": "and",
+        "start": 96.2,
+        "end": 96.52,
+        "root": "و-م-ن",
+        "pos": "preposition"
+      },
+      {
+        "id": "w162",
+        "ar": "هذه",
+        "vocalized": "هٰذِهِ",
+        "transliteration": "hadhihi",
+        "en": "this (f)",
+        "start": 96.52,
+        "end": 96.96,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w163",
+        "ar": "المرأة",
+        "vocalized": "المرأة",
+        "transliteration": "al-marâtun",
+        "en": "woman",
+        "start": 96.96,
+        "end": 97.74,
+        "root": "م-ر-ء",
+        "pos": "noun"
+      },
+      {
+        "id": "w164",
+        "ar": "هذه",
+        "vocalized": "هٰذِهِ",
+        "transliteration": "hadhihi",
+        "en": "this (f)",
+        "start": 98.1,
+        "end": 98.6,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w165",
+        "ar": "المرأة",
+        "vocalized": "المرأة",
+        "transliteration": "al-marâtun",
+        "en": "woman",
+        "start": 98.6,
+        "end": 99.22,
+        "root": "م-ر-ء",
+        "pos": "noun"
+      },
+      {
+        "id": "w166",
+        "ar": "خالتي",
+        "vocalized": "خَالَتِي",
+        "transliteration": "khalti",
+        "en": "my aunt",
+        "start": 99.22,
+        "end": 99.86,
+        "root": "خَالتِ",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w167",
+        "ar": "وما",
+        "vocalized": "وَمَا",
+        "transliteration": "Wama",
+        "en": "what",
+        "start": 99.44,
+        "end": 100.92,
+        "root": "و-م-ا",
+        "pos": "interjection"
+      },
+      {
+        "id": "w168",
+        "ar": "محنتها",
+        "vocalized": "مِحْنَتُهَا",
+        "transliteration": "mihnatuhu",
+        "en": "her suffering",
+        "start": 100.92,
+        "end": 101.9,
+        "root": "م-ح-ن",
+        "pos": "noun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s15",
+    "words": [
+      {
+        "id": "w169",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 102.2,
+        "end": 102.46,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w170",
+        "ar": "طباخة",
+        "vocalized": "الطَّبْخَةُ",
+        "transliteration": "al-tabaakhah",
+        "en": "cooking",
+        "start": 102.46,
+        "end": 103.36,
+        "root": "ط-ب-خ",
+        "pos": "noun"
+      },
+      {
+        "id": "w171",
+        "ar": "ماهرة",
+        "vocalized": "مَاهِرَةٌ",
+        "transliteration": "mahiratun",
+        "en": "skilled",
+        "start": 103.36,
+        "end": 103.94,
+        "root": "ه-و-ر",
+        "pos": "adjective"
+      },
+      {
+        "id": "w172",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 103.5,
+        "end": 104.42,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w173",
+        "ar": "تعمل",
+        "vocalized": "تَعْمَلُ",
+        "transliteration": "ta‘lamu",
+        "en": "works",
+        "start": 104.42,
+        "end": 105.04,
+        "root": "ع-م-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w174",
+        "ar": "في",
+        "vocalized": "فِي",
+        "transliteration": "fi",
+        "en": "in",
+        "start": 105.04,
+        "end": 105.34,
+        "root": null,
+        "pos": "preposition"
+      },
+      {
+        "id": "w175",
+        "ar": "مطعم",
+        "vocalized": "المَطْعَمُ",
+        "transliteration": "al-mataam",
+        "en": "the restaurant",
+        "start": 105.34,
+        "end": 105.76,
+        "root": "م-ط-ع",
+        "pos": "noun"
+      },
+      {
+        "id": "w176",
+        "ar": "كبير",
+        "vocalized": "كَبِيرًا",
+        "transliteration": "kabīran",
+        "en": "great",
+        "start": 105.76,
+        "end": 106.42,
+        "root": "ك ب ر",
+        "pos": "Adjective"
+      },
+      {
+        "id": "w177",
+        "ar": "ومن",
+        "vocalized": "وَمِنْ",
+        "transliteration": "wa-min",
+        "en": "and",
+        "start": 107.16,
+        "end": 107.46,
+        "root": "و-م-ن",
+        "pos": "preposition"
+      },
+      {
+        "id": "w178",
+        "ar": "هؤلاء",
+        "vocalized": "هٰؤُلَاءِ",
+        "transliteration": "ha'ula'i",
+        "en": "these",
+        "start": 107.46,
+        "end": 108.02,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w179",
+        "ar": "الفتيات",
+        "vocalized": "الْفَتَيَاتُ",
+        "transliteration": "al-fataatu",
+        "en": "the girls",
+        "start": 108.02,
+        "end": 108.98,
+        "root": "ف-ت-ي-أت",
+        "pos": "noun"
+      },
+      {
+        "id": "w180",
+        "ar": "هؤلاء",
+        "vocalized": "هٰؤُلَاءِ",
+        "transliteration": "ha'ula'i",
+        "en": "these",
+        "start": 109.42,
+        "end": 110.02,
+        "root": null,
+        "pos": "pronoun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s16",
+    "words": [
+      {
+        "id": "w181",
+        "ar": "الفتيات",
+        "vocalized": "الْفَتَيَاتُ",
+        "transliteration": "al-fataatu",
+        "en": "the girls",
+        "start": 110.02,
+        "end": 110.78,
+        "root": "ف-ت-ي-أت",
+        "pos": "noun"
+      },
+      {
+        "id": "w182",
+        "ar": "بنات",
+        "vocalized": "بَنَاتٌ",
+        "transliteration": "Banat",
+        "en": "girls",
+        "start": 110.78,
+        "end": 111.46,
+        "root": "ب-ن-ت",
+        "pos": "noun"
+      },
+      {
+        "id": "w183",
+        "ar": "خالتي",
+        "vocalized": "خَالَتِي",
+        "transliteration": "khalti",
+        "en": "my aunt",
+        "start": 111.46,
+        "end": 112.06,
+        "root": "خَالتِ",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w184",
+        "ar": "ما",
+        "vocalized": "مَا",
+        "transliteration": "ma",
+        "en": "what / not",
+        "start": 111.6,
+        "end": 112.84,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w185",
+        "ar": "أسماؤهن",
+        "vocalized": "أَسْمَاؤُهُنَّ",
+        "transliteration": "asmaaunuhun",
+        "en": "their names",
+        "start": 112.84,
+        "end": 113.98,
+        "root": "أَسْم-أ-و",
+        "pos": "noun"
+      },
+      {
+        "id": "w186",
+        "ar": "أسماؤهن",
+        "vocalized": "أَسْمَاؤُهُنَّ",
+        "transliteration": "asmaaunuhun",
+        "en": "their names",
+        "start": 113.31,
+        "end": 115.57,
+        "root": "أَسْم-أ-و",
+        "pos": "noun"
+      },
+      {
+        "id": "w187",
+        "ar": "هذه",
+        "vocalized": "هٰذِهِ",
+        "transliteration": "hadhihi",
+        "en": "this (f)",
+        "start": 115.15,
+        "end": 116.45,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w188",
+        "ar": "عائشة",
+        "vocalized": "عَائِشَةُ",
+        "transliteration": "Aisha",
+        "en": "Aisha",
+        "start": 116.45,
+        "end": 117.33,
+        "root": "ع-ي-ش",
+        "pos": "proper noun"
+      },
+      {
+        "id": "w189",
+        "ar": "وهذه",
+        "vocalized": "وَهَذِهِ",
+        "transliteration": "wa-hadhaa",
+        "en": "and this",
+        "start": 117.35,
+        "end": 118.59,
+        "root": "و-ه-ذ-ه",
+        "pos": "interjection"
+      },
+      {
+        "id": "w190",
+        "ar": "خديجة",
+        "vocalized": "خَدِيجَةُ",
+        "transliteration": "Khāḍijatu",
+        "en": "Khadija",
+        "start": 118.59,
+        "end": 119.39,
+        "root": "خ-د-ج",
+        "pos": "proper noun"
+      },
+      {
+        "id": "w191",
+        "ar": "وتلك",
+        "vocalized": "وَتِلْكَ",
+        "transliteration": "wa-taliku",
+        "en": "And those",
+        "start": 119.93,
+        "end": 120.85,
+        "root": "و-ت-ك",
+        "pos": "interjection"
+      },
+      {
+        "id": "w192",
+        "ar": "لطيفة",
+        "vocalized": "لَطِيفَة",
+        "transliteration": "Latifa",
+        "en": "gentle",
+        "start": 120.85,
+        "end": 121.97,
+        "root": "ل-ط-ف",
+        "pos": "feminine noun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s17",
+    "words": [
+      {
+        "id": "w193",
+        "ar": "هل",
+        "vocalized": "هَلْ",
+        "transliteration": "hal",
+        "en": "do",
+        "start": 121.97,
+        "end": 122.49,
+        "root": "ه-ل",
+        "pos": "interrogative"
+      },
+      {
+        "id": "w194",
+        "ar": "هن",
+        "vocalized": "هُنَّ",
+        "transliteration": "hunna",
+        "en": "they (f)",
+        "start": 122.49,
+        "end": 122.79,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w195",
+        "ar": "يعملن",
+        "vocalized": "يَعْمَلْنَ",
+        "transliteration": "yaʿmalna",
+        "en": "they (fem.) work",
+        "start": 122.79,
+        "end": 123.49,
+        "root": "ع-م-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w196",
+        "ar": "لا",
+        "vocalized": "لَا",
+        "transliteration": "la",
+        "en": "no / not",
+        "start": 124.67,
+        "end": 124.87,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w197",
+        "ar": "هن",
+        "vocalized": "هُنَّ",
+        "transliteration": "hunna",
+        "en": "they (f)",
+        "start": 124.87,
+        "end": 125.55,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w198",
+        "ar": "لا",
+        "vocalized": "لَا",
+        "transliteration": "la",
+        "en": "no / not",
+        "start": 125.55,
+        "end": 125.75,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w199",
+        "ar": "يعملن",
+        "vocalized": "يَعْمَلْنَ",
+        "transliteration": "yaʿmalna",
+        "en": "they (fem.) work",
+        "start": 125.75,
+        "end": 126.45,
+        "root": "ع-م-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w200",
+        "ar": "هن",
+        "vocalized": "هُنَّ",
+        "transliteration": "hunna",
+        "en": "they (f)",
+        "start": 126.87,
+        "end": 127.25,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w201",
+        "ar": "يدرسن",
+        "vocalized": "يَدْرُسْنَ",
+        "transliteration": "yadursun",
+        "en": "study",
+        "start": 127.25,
+        "end": 128.05,
+        "root": "د-ر-س",
+        "pos": "verb"
+      },
+      {
+        "id": "w202",
+        "ar": "في",
+        "vocalized": "فِي",
+        "transliteration": "fi",
+        "en": "in",
+        "start": 127.53,
+        "end": 128.19,
+        "root": null,
+        "pos": "preposition"
+      },
+      {
+        "id": "w203",
+        "ar": "المدرسة",
+        "vocalized": "الْمَدْرَسَةُ",
+        "transliteration": "al-madrasa",
+        "en": "the school",
+        "start": 128.19,
+        "end": 128.77,
+        "root": "د-ر-س",
+        "pos": "noun"
+      },
+      {
+        "id": "w204",
+        "ar": "هن",
+        "vocalized": "هُنَّ",
+        "transliteration": "hunna",
+        "en": "they (f)",
+        "start": 128.77,
+        "end": 129.45,
+        "root": null,
+        "pos": "pronoun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s18",
+    "words": [
+      {
+        "id": "w205",
+        "ar": "الطالبات",
+        "vocalized": "الطالباتُ",
+        "transliteration": "al-‘ailatu",
+        "en": "the students",
+        "start": 129.45,
+        "end": 130.21,
+        "root": "ق-ل-ت",
+        "pos": "noun"
+      },
+      {
+        "id": "w206",
+        "ar": "ومن",
+        "vocalized": "وَمِنْ",
+        "transliteration": "wa-min",
+        "en": "and",
+        "start": 130.95,
+        "end": 131.23,
+        "root": "و-م-ن",
+        "pos": "preposition"
+      },
+      {
+        "id": "w207",
+        "ar": "هذه",
+        "vocalized": "هٰذِهِ",
+        "transliteration": "hadhihi",
+        "en": "this (f)",
+        "start": 131.23,
+        "end": 131.69,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w208",
+        "ar": "الفتاة",
+        "vocalized": "الْفَتاةُ",
+        "transliteration": "alfatatu",
+        "en": "the girl",
+        "start": 131.69,
+        "end": 132.39,
+        "root": "ف-ت-ا",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w209",
+        "ar": "هذه",
+        "vocalized": "هٰذِهِ",
+        "transliteration": "hadhihi",
+        "en": "this (f)",
+        "start": 132.83,
+        "end": 133.27,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w210",
+        "ar": "الفتاة",
+        "vocalized": "الْفَتاةُ",
+        "transliteration": "alfatatu",
+        "en": "the girl",
+        "start": 133.27,
+        "end": 133.93,
+        "root": "ف-ت-ا",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w211",
+        "ar": "أختي",
+        "vocalized": "أُخْتِي",
+        "transliteration": "Ukti",
+        "en": "my sister",
+        "start": 133.45,
+        "end": 134.45,
+        "root": "أُخْت",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w212",
+        "ar": "هل",
+        "vocalized": "هَلْ",
+        "transliteration": "hal",
+        "en": "do",
+        "start": 134.45,
+        "end": 135.59,
+        "root": "ه-ل",
+        "pos": "interrogative"
+      },
+      {
+        "id": "w213",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 135.59,
+        "end": 135.79,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w214",
+        "ar": "متزوجة",
+        "vocalized": "مُتَزَوِّجَةٌ",
+        "transliteration": "mutazawijatun",
+        "en": "married",
+        "start": 135.29,
+        "end": 136.77,
+        "root": "ت-ز-و-ج",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w215",
+        "ar": "أو",
+        "vocalized": "أَوْ",
+        "transliteration": "aw",
+        "en": "or",
+        "start": 136.77,
+        "end": 137.13,
+        "root": null,
+        "pos": "conjunction"
+      },
+      {
+        "id": "w216",
+        "ar": "عازبة",
+        "vocalized": "عَزَبَةٌ",
+        "transliteration": "‘azbatu",
+        "en": "single",
+        "start": 137.13,
+        "end": 137.69,
+        "root": "ع-ز-ب",
+        "pos": "adjective"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s19",
+    "words": [
+      {
+        "id": "w217",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 137.25,
+        "end": 138.47,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w218",
+        "ar": "متزوجة",
+        "vocalized": "مُتَزَوِّجَةٌ",
+        "transliteration": "mutazawijatun",
+        "en": "married",
+        "start": 138.47,
+        "end": 139.41,
+        "root": "ت-ز-و-ج",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w219",
+        "ar": "هل",
+        "vocalized": "هَلْ",
+        "transliteration": "hal",
+        "en": "do",
+        "start": 140.11,
+        "end": 140.43,
+        "root": "ه-ل",
+        "pos": "interrogative"
+      },
+      {
+        "id": "w220",
+        "ar": "أختك",
+        "vocalized": "أُخْتُكِ",
+        "transliteration": "ukhtik",
+        "en": "your sister",
+        "start": 140.43,
+        "end": 141.11,
+        "root": "أُخْتُ",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w221",
+        "ar": "تعمل",
+        "vocalized": "تَعْمَلُ",
+        "transliteration": "ta‘lamu",
+        "en": "works",
+        "start": 141.11,
+        "end": 141.95,
+        "root": "ع-م-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w222",
+        "ar": "نعم",
+        "vocalized": "نَعَمْ",
+        "transliteration": "na‘am",
+        "en": "yes",
+        "start": 142.49,
+        "end": 142.81,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w223",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 142.81,
+        "end": 143.09,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w224",
+        "ar": "تعمل",
+        "vocalized": "تَعْمَلُ",
+        "transliteration": "ta‘lamu",
+        "en": "works",
+        "start": 143.09,
+        "end": 143.61,
+        "root": "ع-م-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w225",
+        "ar": "في",
+        "vocalized": "فِي",
+        "transliteration": "fi",
+        "en": "in",
+        "start": 143.61,
+        "end": 143.83,
+        "root": null,
+        "pos": "preposition"
+      },
+      {
+        "id": "w226",
+        "ar": "المستشفى",
+        "vocalized": "المَسْجِدُ الْحَرَامُ",
+        "transliteration": "al-masjid al-haram",
+        "en": "the holy mosque",
+        "start": 143.83,
+        "end": 144.63,
+        "root": "س-ج-س",
+        "pos": "noun"
+      },
+      {
+        "id": "w227",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 144.67,
+        "end": 145.07,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w228",
+        "ar": "طبيبة",
+        "vocalized": "طَبِيبَةٌ",
+        "transliteration": "ṭabībatun",
+        "en": "female doctor",
+        "start": 145.07,
+        "end": 145.71,
+        "root": "ط-ب-ب",
+        "pos": "noun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s20",
+    "words": [
+      {
+        "id": "w229",
+        "ar": "ومن",
+        "vocalized": "وَمِنْ",
+        "transliteration": "wa-min",
+        "en": "and",
+        "start": 146.29,
+        "end": 146.57,
+        "root": "و-م-ن",
+        "pos": "preposition"
+      },
+      {
+        "id": "w230",
+        "ar": "هاتان",
+        "vocalized": "هَاتَتَانِ",
+        "transliteration": "hattan",
+        "en": "these two",
+        "start": 146.57,
+        "end": 147.21,
+        "root": "ه-ت-ن",
+        "pos": "interrogative pronoun"
+      },
+      {
+        "id": "w231",
+        "ar": "البنتان",
+        "vocalized": "الْبَنْتَتَانِ",
+        "transliteration": "albantatan",
+        "en": "the two girls",
+        "start": 147.21,
+        "end": 147.95,
+        "root": "ب ن ت",
+        "pos": "noun"
+      },
+      {
+        "id": "w232",
+        "ar": "هاتان",
+        "vocalized": "هَاتَتَانِ",
+        "transliteration": "hattan",
+        "en": "these two",
+        "start": 148.63,
+        "end": 149.17,
+        "root": "ه-ت-ن",
+        "pos": "interrogative pronoun"
+      },
+      {
+        "id": "w233",
+        "ar": "البنتان",
+        "vocalized": "الْبَنْتَتَانِ",
+        "transliteration": "albantatan",
+        "en": "the two girls",
+        "start": 149.17,
+        "end": 149.89,
+        "root": "ب ن ت",
+        "pos": "noun"
+      },
+      {
+        "id": "w234",
+        "ar": "بنت",
+        "vocalized": "بِنْتٌ",
+        "transliteration": "bintun",
+        "en": "daughter",
+        "start": 149.89,
+        "end": 150.49,
+        "root": "ب-ن-ت",
+        "pos": "noun"
+      },
+      {
+        "id": "w235",
+        "ar": "أختي",
+        "vocalized": "أُخْتِي",
+        "transliteration": "Ukti",
+        "en": "my sister",
+        "start": 150.49,
+        "end": 151.05,
+        "root": "أُخْت",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w236",
+        "ar": "جميلة",
+        "vocalized": "جَمِيلَة",
+        "transliteration": "jamila",
+        "en": "beautiful",
+        "start": 151.05,
+        "end": 151.91,
+        "root": "ج-م-ل",
+        "pos": "feminine noun"
+      },
+      {
+        "id": "w237",
+        "ar": "وفاطمة",
+        "vocalized": "وَفاطِمَةُ",
+        "transliteration": "wa-Fatima",
+        "en": "and Fatima",
+        "start": 151.91,
+        "end": 152.61,
+        "root": "ف-ط-م",
+        "pos": "noun"
+      },
+      {
+        "id": "w238",
+        "ar": "هل",
+        "vocalized": "هَلْ",
+        "transliteration": "hal",
+        "en": "do",
+        "start": 152.67,
+        "end": 153.13,
+        "root": "ه-ل",
+        "pos": "interrogative"
+      },
+      {
+        "id": "w239",
+        "ar": "هما",
+        "vocalized": "هُمَا",
+        "transliteration": "humā",
+        "en": "they (dual)",
+        "start": 153.13,
+        "end": 153.37,
+        "root": "ه-م-ا",
+        "pos": "pronoun"
+      },
+      {
+        "id": "w240",
+        "ar": "تدرسان",
+        "vocalized": "يَتَدَرَّسَانِ",
+        "transliteration": "yatadarasa",
+        "en": "are studying",
+        "start": 153.37,
+        "end": 154.07,
+        "root": "د-ر-س",
+        "pos": "verb"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s21",
+    "words": [
+      {
+        "id": "w241",
+        "ar": "في",
+        "vocalized": "فِي",
+        "transliteration": "fi",
+        "en": "in",
+        "start": 154.07,
+        "end": 154.29,
+        "root": null,
+        "pos": "preposition"
+      },
+      {
+        "id": "w242",
+        "ar": "المدرسة",
+        "vocalized": "الْمَدْرَسَةُ",
+        "transliteration": "al-madrasa",
+        "en": "the school",
+        "start": 154.29,
+        "end": 154.95,
+        "root": "د-ر-س",
+        "pos": "noun"
+      },
+      {
+        "id": "w243",
+        "ar": "لا",
+        "vocalized": "لَا",
+        "transliteration": "la",
+        "en": "no / not",
+        "start": 155.31,
+        "end": 155.55,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w244",
+        "ar": "هما",
+        "vocalized": "هُمَا",
+        "transliteration": "humā",
+        "en": "they (dual)",
+        "start": 155.55,
+        "end": 156.05,
+        "root": "ه-م-ا",
+        "pos": "pronoun"
+      },
+      {
+        "id": "w245",
+        "ar": "صغيرتان",
+        "vocalized": "صَغِيرَتَانِ",
+        "transliteration": "saghiratani",
+        "en": "two small (feminine)",
+        "start": 156.05,
+        "end": 156.97,
+        "root": "ص-غ-ر",
+        "pos": "adjective"
+      },
+      {
+        "id": "w246",
+        "ar": "هما",
+        "vocalized": "هُمَا",
+        "transliteration": "humā",
+        "en": "they (dual)",
+        "start": 156.97,
+        "end": 157.57,
+        "root": "ه-م-ا",
+        "pos": "pronoun"
+      },
+      {
+        "id": "w247",
+        "ar": "تدرسان",
+        "vocalized": "يَتَدَرَّسَانِ",
+        "transliteration": "yatadarasa",
+        "en": "are studying",
+        "start": 157.57,
+        "end": 158.31,
+        "root": "د-ر-س",
+        "pos": "verb"
+      },
+      {
+        "id": "w248",
+        "ar": "في",
+        "vocalized": "فِي",
+        "transliteration": "fi",
+        "en": "in",
+        "start": 158.31,
+        "end": 158.55,
+        "root": null,
+        "pos": "preposition"
+      },
+      {
+        "id": "w249",
+        "ar": "روضة",
+        "vocalized": "رَوْضَةٌ",
+        "transliteration": "rawḍatun",
+        "en": "garden",
+        "start": 158.55,
+        "end": 159.07,
+        "root": "ر-و-ض",
+        "pos": "noun"
+      },
+      {
+        "id": "w250",
+        "ar": "الأطفال",
+        "vocalized": "الأَطْفَال",
+        "transliteration": "al-‘atfal",
+        "en": "The children",
+        "start": 159.07,
+        "end": 159.59,
+        "root": "أ-ط-ف",
+        "pos": "noun"
+      },
+      {
+        "id": "w251",
+        "ar": "ومن",
+        "vocalized": "وَمِنْ",
+        "transliteration": "wa-min",
+        "en": "and",
+        "start": 160.17,
+        "end": 160.47,
+        "root": "و-م-ن",
+        "pos": "preposition"
+      },
+      {
+        "id": "w252",
+        "ar": "هذا",
+        "vocalized": "هٰذَا",
+        "transliteration": "hadha",
+        "en": "this",
+        "start": 160.47,
+        "end": 160.85,
+        "root": null,
+        "pos": "pronoun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s22",
+    "words": [
+      {
+        "id": "w253",
+        "ar": "الشاب",
+        "vocalized": "الشَّابُّ",
+        "transliteration": "ash-shābbu",
+        "en": "the young man",
+        "start": 160.85,
+        "end": 161.45,
+        "root": "ش-ب-ب",
+        "pos": "noun"
+      },
+      {
+        "id": "w254",
+        "ar": "هذا",
+        "vocalized": "هٰذَا",
+        "transliteration": "hadha",
+        "en": "this",
+        "start": 161.81,
+        "end": 162.27,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w255",
+        "ar": "الشاب",
+        "vocalized": "الشَّابُّ",
+        "transliteration": "ash-shābbu",
+        "en": "the young man",
+        "start": 162.27,
+        "end": 162.73,
+        "root": "ش-ب-ب",
+        "pos": "noun"
+      },
+      {
+        "id": "w256",
+        "ar": "أخي",
+        "vocalized": "أَخِي",
+        "transliteration": "Achi",
+        "en": "my brother",
+        "start": 162.73,
+        "end": 163.11,
+        "root": "أَخ-ي",
+        "pos": "noun"
+      },
+      {
+        "id": "w257",
+        "ar": "الأصغر",
+        "vocalized": "الأَصْغَرُ",
+        "transliteration": "Al-Asghar",
+        "en": "the younger",
+        "start": 163.11,
+        "end": 163.53,
+        "root": "أَصْغَر",
+        "pos": "adjective"
+      },
+      {
+        "id": "w258",
+        "ar": "ما",
+        "vocalized": "مَا",
+        "transliteration": "ma",
+        "en": "what / not",
+        "start": 163.59,
+        "end": 163.93,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w259",
+        "ar": "اسمه",
+        "vocalized": "اسْمُهُ",
+        "transliteration": "asmahu",
+        "en": "His name",
+        "start": 163.93,
+        "end": 164.41,
+        "root": "أ-س-م",
+        "pos": "noun"
+      },
+      {
+        "id": "w260",
+        "ar": "اسمه",
+        "vocalized": "اسْمُهُ",
+        "transliteration": "asmahu",
+        "en": "His name",
+        "start": 164.51,
+        "end": 165.13,
+        "root": "أ-س-م",
+        "pos": "noun"
+      },
+      {
+        "id": "w261",
+        "ar": "خالد",
+        "vocalized": "خالد",
+        "transliteration": "خالد",
+        "en": "...",
+        "start": 165.13,
+        "end": 165.67,
+        "root": null,
+        "pos": "word"
+      },
+      {
+        "id": "w262",
+        "ar": "وما",
+        "vocalized": "وَمَا",
+        "transliteration": "Wama",
+        "en": "what",
+        "start": 165.71,
+        "end": 166.19,
+        "root": "و-م-ا",
+        "pos": "interjection"
+      },
+      {
+        "id": "w263",
+        "ar": "مهنته",
+        "vocalized": "مِهْنَتُهُ",
+        "transliteration": "mihnahtu",
+        "en": "His occupation",
+        "start": 166.19,
+        "end": 166.95,
+        "root": "م-ه-ن",
+        "pos": "noun"
+      },
+      {
+        "id": "w264",
+        "ar": "هو",
+        "vocalized": "هُوَ",
+        "transliteration": "huwa",
+        "en": "he",
+        "start": 167.55,
+        "end": 167.75,
+        "root": null,
+        "pos": "pronoun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s23",
+    "words": [
+      {
+        "id": "w265",
+        "ar": "يعمل",
+        "vocalized": "يعْمَل",
+        "transliteration": "yumil",
+        "en": "works",
+        "start": 167.73,
+        "end": 168.27,
+        "root": "ع-م-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w266",
+        "ar": "مبرمجا",
+        "vocalized": "مُبَرْمِجًا",
+        "transliteration": "mubarmijan",
+        "en": "a programmer",
+        "start": 168.27,
+        "end": 168.95,
+        "root": "ب-ر-م",
+        "pos": "noun"
+      },
+      {
+        "id": "w267",
+        "ar": "برمجا",
+        "vocalized": "بَرْمَجَا",
+        "transliteration": "barmaja",
+        "en": "programmed",
+        "start": 168.47,
+        "end": 169.05,
+        "root": "ب ر م ج",
+        "pos": "verb"
+      },
+      {
+        "id": "w268",
+        "ar": "هل",
+        "vocalized": "هَلْ",
+        "transliteration": "hal",
+        "en": "do",
+        "start": 170.05,
+        "end": 170.33,
+        "root": "ه-ل",
+        "pos": "interrogative"
+      },
+      {
+        "id": "w269",
+        "ar": "هو",
+        "vocalized": "هُوَ",
+        "transliteration": "huwa",
+        "en": "he",
+        "start": 170.33,
+        "end": 170.53,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w270",
+        "ar": "متزوج",
+        "vocalized": "متزوج",
+        "transliteration": "mutajawwiz",
+        "en": "married",
+        "start": 170.49,
+        "end": 171.21,
+        "root": "ت-ج-ز",
+        "pos": "noun"
+      },
+      {
+        "id": "w271",
+        "ar": "أو",
+        "vocalized": "أَوْ",
+        "transliteration": "aw",
+        "en": "or",
+        "start": 171.21,
+        "end": 171.47,
+        "root": null,
+        "pos": "conjunction"
+      },
+      {
+        "id": "w272",
+        "ar": "عازب",
+        "vocalized": "عَزَب",
+        "transliteration": "azab",
+        "en": "single",
+        "start": 171.47,
+        "end": 171.99,
+        "root": "ع ز ب",
+        "pos": "adjective"
+      },
+      {
+        "id": "w273",
+        "ar": "هو",
+        "vocalized": "هُوَ",
+        "transliteration": "huwa",
+        "en": "he",
+        "start": 172.01,
+        "end": 172.47,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w274",
+        "ar": "عازب",
+        "vocalized": "عَزَب",
+        "transliteration": "azab",
+        "en": "single",
+        "start": 172.47,
+        "end": 173.39,
+        "root": "ع ز ب",
+        "pos": "adjective"
+      },
+      {
+        "id": "w275",
+        "ar": "هذا",
+        "vocalized": "هٰذَا",
+        "transliteration": "hadha",
+        "en": "this",
+        "start": 172.95,
+        "end": 174.01,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w276",
+        "ar": "أنت",
+        "vocalized": "أَنْتَ",
+        "transliteration": "anta",
+        "en": "you",
+        "start": 174.01,
+        "end": 174.37,
+        "root": null,
+        "pos": "pronoun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s24",
+    "words": [
+      {
+        "id": "w277",
+        "ar": "صحيح",
+        "vocalized": "صَحِيحٌ",
+        "transliteration": "ṣaḥīḥun",
+        "en": "correct",
+        "start": 174.37,
+        "end": 174.97,
+        "root": "ص-ح-ح",
+        "pos": "adjective"
+      },
+      {
+        "id": "w278",
+        "ar": "نعم",
+        "vocalized": "نَعَمْ",
+        "transliteration": "na‘am",
+        "en": "yes",
+        "start": 174.97,
+        "end": 175.59,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w279",
+        "ar": "صحيح",
+        "vocalized": "صَحِيحٌ",
+        "transliteration": "ṣaḥīḥun",
+        "en": "correct",
+        "start": 175.59,
+        "end": 176.23,
+        "root": "ص-ح-ح",
+        "pos": "adjective"
+      },
+      {
+        "id": "w280",
+        "ar": "هذا",
+        "vocalized": "هٰذَا",
+        "transliteration": "hadha",
+        "en": "this",
+        "start": 176.23,
+        "end": 176.49,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w281",
+        "ar": "أنا",
+        "vocalized": "أَنَا",
+        "transliteration": "ana",
+        "en": "I",
+        "start": 176.49,
+        "end": 176.77,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w282",
+        "ar": "ومن",
+        "vocalized": "وَمِنْ",
+        "transliteration": "wa-min",
+        "en": "and",
+        "start": 176.89,
+        "end": 177.45,
+        "root": "و-م-ن",
+        "pos": "preposition"
+      },
+      {
+        "id": "w283",
+        "ar": "هذه",
+        "vocalized": "هٰذِهِ",
+        "transliteration": "hadhihi",
+        "en": "this (f)",
+        "start": 177.45,
+        "end": 177.85,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w284",
+        "ar": "المرأة",
+        "vocalized": "المرأة",
+        "transliteration": "al-marâtun",
+        "en": "woman",
+        "start": 177.85,
+        "end": 178.49,
+        "root": "م-ر-ء",
+        "pos": "noun"
+      },
+      {
+        "id": "w285",
+        "ar": "هذه",
+        "vocalized": "هٰذِهِ",
+        "transliteration": "hadhihi",
+        "en": "this (f)",
+        "start": 178.11,
+        "end": 179.23,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w286",
+        "ar": "المرأة",
+        "vocalized": "المرأة",
+        "transliteration": "al-marâtun",
+        "en": "woman",
+        "start": 179.23,
+        "end": 179.87,
+        "root": "م-ر-ء",
+        "pos": "noun"
+      },
+      {
+        "id": "w287",
+        "ar": "زوجتي",
+        "vocalized": "زَوْجَتِي",
+        "transliteration": "zawjatī",
+        "en": "my wife",
+        "start": 179.87,
+        "end": 180.51,
+        "root": "ز-و-ج",
+        "pos": "noun"
+      },
+      {
+        "id": "w288",
+        "ar": "هل",
+        "vocalized": "هَلْ",
+        "transliteration": "hal",
+        "en": "do",
+        "start": 181.39,
+        "end": 181.69,
+        "root": "ه-ل",
+        "pos": "interrogative"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s25",
+    "words": [
+      {
+        "id": "w289",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 181.69,
+        "end": 181.89,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w290",
+        "ar": "تعمل",
+        "vocalized": "تَعْمَلُ",
+        "transliteration": "ta‘lamu",
+        "en": "works",
+        "start": 181.85,
+        "end": 182.37,
+        "root": "ع-م-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w291",
+        "ar": "الآن",
+        "vocalized": "الآن",
+        "transliteration": "al-آن",
+        "en": "now",
+        "start": 183.11,
+        "end": 183.49,
+        "root": "",
+        "pos": "interjection"
+      },
+      {
+        "id": "w292",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 183.49,
+        "end": 183.81,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w293",
+        "ar": "لا",
+        "vocalized": "لَا",
+        "transliteration": "la",
+        "en": "no / not",
+        "start": 183.81,
+        "end": 184.01,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w294",
+        "ar": "تعمل",
+        "vocalized": "تَعْمَلُ",
+        "transliteration": "ta‘lamu",
+        "en": "works",
+        "start": 184.01,
+        "end": 184.55,
+        "root": "ع-م-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w295",
+        "ar": "هي",
+        "vocalized": "هِيَ",
+        "transliteration": "hiya",
+        "en": "she",
+        "start": 184.11,
+        "end": 184.79,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w296",
+        "ar": "ربة",
+        "vocalized": "رَبَّةٌ",
+        "transliteration": "rabbatun",
+        "en": "mistress",
+        "start": 184.79,
+        "end": 185.47,
+        "root": "ر-ب-ب",
+        "pos": "noun"
+      },
+      {
+        "id": "w297",
+        "ar": "بيت",
+        "vocalized": "بَيْتٌ",
+        "transliteration": "bayt",
+        "en": "house",
+        "start": 185.47,
+        "end": 186.11,
+        "root": "ب-ي-ت",
+        "pos": "noun"
+      },
+      {
+        "id": "w298",
+        "ar": "من",
+        "vocalized": "مِنْ",
+        "transliteration": "min",
+        "en": "from / of",
+        "start": 187.15,
+        "end": 187.35,
+        "root": null,
+        "pos": "preposition"
+      },
+      {
+        "id": "w299",
+        "ar": "هذان",
+        "vocalized": "هَذَانِ",
+        "transliteration": "hadhan",
+        "en": "These two",
+        "start": 187.35,
+        "end": 187.93,
+        "root": "ذَٰٔ",
+        "pos": "interjection"
+      },
+      {
+        "id": "w300",
+        "ar": "الولدان",
+        "vocalized": "الْوِلْدَانِ",
+        "transliteration": "al-wuldân",
+        "en": "the boys",
+        "start": 187.93,
+        "end": 188.63,
+        "root": "و-ل-د",
+        "pos": "noun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s26",
+    "words": [
+      {
+        "id": "w301",
+        "ar": "هذان",
+        "vocalized": "هَذَانِ",
+        "transliteration": "hadhan",
+        "en": "These two",
+        "start": 189.25,
+        "end": 189.81,
+        "root": "ذَٰٔ",
+        "pos": "interjection"
+      },
+      {
+        "id": "w302",
+        "ar": "الولدان",
+        "vocalized": "الْوِلْدَانِ",
+        "transliteration": "al-wuldân",
+        "en": "the boys",
+        "start": 189.81,
+        "end": 190.55,
+        "root": "و-ل-د",
+        "pos": "noun"
+      },
+      {
+        "id": "w303",
+        "ar": "ابنايا",
+        "vocalized": "ابْنِيَا",
+        "transliteration": "ibniya",
+        "en": "my sons",
+        "start": 190.57,
+        "end": 191.75,
+        "root": "و-ل-د",
+        "pos": "noun"
+      },
+      {
+        "id": "w304",
+        "ar": "عمر",
+        "vocalized": "عُمْر",
+        "transliteration": "Amr",
+        "en": "age, life",
+        "start": 191.75,
+        "end": 192.59,
+        "root": "ع-م-ر",
+        "pos": "noun"
+      },
+      {
+        "id": "w305",
+        "ar": "وعلي",
+        "vocalized": "وَأَعْلَى",
+        "transliteration": "wa-‘ali",
+        "en": "and above",
+        "start": 192.59,
+        "end": 193.35,
+        "root": "ع-ل-ي",
+        "pos": "noun"
+      },
+      {
+        "id": "w306",
+        "ar": "بارك",
+        "vocalized": "بَارَكَ",
+        "transliteration": "baraka",
+        "en": "blessed",
+        "start": 192.95,
+        "end": 194.53,
+        "root": "ب-ر-ك",
+        "pos": "verb"
+      },
+      {
+        "id": "w307",
+        "ar": "الله",
+        "vocalized": "اللَّهُ",
+        "transliteration": "Allah",
+        "en": "Allah / God",
+        "start": 194.53,
+        "end": 194.75,
+        "root": "إ-ل-ه",
+        "pos": "proper_noun"
+      },
+      {
+        "id": "w308",
+        "ar": "فيك",
+        "vocalized": "فِيك",
+        "transliteration": "fiik",
+        "en": "in you",
+        "start": 194.75,
+        "end": 195.33,
+        "root": "ف-ي-ك",
+        "pos": "preposition"
+      },
+      {
+        "id": "w309",
+        "ar": "وفي",
+        "vocalized": "وَفِي",
+        "transliteration": "wafî",
+        "en": "and",
+        "start": 195.33,
+        "end": 195.79,
+        "root": "فَى",
+        "pos": "preposition"
+      },
+      {
+        "id": "w310",
+        "ar": "أسرتك",
+        "vocalized": "أُسْرَتِي",
+        "transliteration": "usratî",
+        "en": "my family",
+        "start": 195.79,
+        "end": 196.41,
+        "root": "أُسْر-ت",
+        "pos": "noun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s27",
+    "words": [
+      {
+        "id": "w311",
+        "ar": "ماذا",
+        "vocalized": "ماذا",
+        "transliteration": "ma'dhā",
+        "en": "what",
+        "start": 198.47,
+        "end": 201.73,
+        "root": "ذ-ح-ث",
+        "pos": "interrogative"
+      },
+      {
+        "id": "w312",
+        "ar": "تفعل",
+        "vocalized": "تَفْعَلُ",
+        "transliteration": "taf'alu",
+        "en": "do",
+        "start": 201.73,
+        "end": 202.21,
+        "root": "ف-ع-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w313",
+        "ar": "يا",
+        "vocalized": "يَا",
+        "transliteration": "ya",
+        "en": "O",
+        "start": 202.21,
+        "end": 202.43,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w314",
+        "ar": "أخي",
+        "vocalized": "أَخِي",
+        "transliteration": "Achi",
+        "en": "my brother",
+        "start": 202.43,
+        "end": 202.95,
+        "root": "أَخ-ي",
+        "pos": "noun"
+      },
+      {
+        "id": "w315",
+        "ar": "أنا",
+        "vocalized": "أَنَا",
+        "transliteration": "ana",
+        "en": "I",
+        "start": 201.97,
+        "end": 203.51,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w316",
+        "ar": "لا",
+        "vocalized": "لَا",
+        "transliteration": "la",
+        "en": "no / not",
+        "start": 203.51,
+        "end": 203.71,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w317",
+        "ar": "أظهر",
+        "vocalized": "أَظْهَرَ",
+        "transliteration": "azhara",
+        "en": "showed",
+        "start": 203.67,
+        "end": 203.87,
+        "root": "ظ-ه-ر",
+        "pos": "verb"
+      },
+      {
+        "id": "w318",
+        "ar": "إلى",
+        "vocalized": "إِلَى",
+        "transliteration": "ila",
+        "en": "to / towards",
+        "start": 203.87,
+        "end": 204.13,
+        "root": null,
+        "pos": "preposition"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s28",
+    "words": [
+      {
+        "id": "w319",
+        "ar": "ترى",
+        "vocalized": "تَرَى",
+        "transliteration": "tara",
+        "en": "you see",
+        "start": 207.97,
+        "end": 209.75,
+        "root": "ر-أ-ي",
+        "pos": "verb"
+      },
+      {
+        "id": "w320",
+        "ar": "بلوة",
+        "vocalized": "بَلْوَةٌ",
+        "transliteration": "balwahun",
+        "en": "trouble",
+        "start": 209.75,
+        "end": 210.25,
+        "root": "ب-ل-و",
+        "pos": "noun"
+      },
+      {
+        "id": "w321",
+        "ar": "دونة",
+        "vocalized": "الدُّنْيَا",
+        "transliteration": "al-dunyâ",
+        "en": "the world",
+        "start": 210.25,
+        "end": 210.71,
+        "root": "د-ن-ي",
+        "pos": "noun"
+      },
+      {
+        "id": "w322",
+        "ar": "تجب",
+        "vocalized": "تَجِبُ",
+        "transliteration": "tajibu",
+        "en": "must",
+        "start": 211.07,
+        "end": 211.41,
+        "root": "ج-ب-",
+        "pos": "verb"
+      },
+      {
+        "id": "w323",
+        "ar": "أن",
+        "vocalized": "أَنْ",
+        "transliteration": "an",
+        "en": "that / to",
+        "start": 211.41,
+        "end": 211.61,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w324",
+        "ar": "تتعرض",
+        "vocalized": "تتعرض",
+        "transliteration": "تتعرض",
+        "en": "...",
+        "start": 211.53,
+        "end": 211.85,
+        "root": null,
+        "pos": "word"
+      },
+      {
+        "id": "w325",
+        "ar": "لكي",
+        "vocalized": "لِكَيْ",
+        "transliteration": "li-ka",
+        "en": "so that",
+        "start": 211.85,
+        "end": 212.29,
+        "root": "ل-ك-ي",
+        "pos": "conjunction"
+      },
+      {
+        "id": "w326",
+        "ar": "أخوة",
+        "vocalized": "أَخْوَةٌ",
+        "transliteration": "‘awhatu",
+        "en": "brothers",
+        "start": 212.29,
+        "end": 212.49,
+        "root": "أ-خ-و",
+        "pos": "noun"
+      },
+      {
+        "id": "w327",
+        "ar": "كيلومتر",
+        "vocalized": "كيلومتر",
+        "transliteration": "كيلومتر",
+        "en": "...",
+        "start": 212.43,
+        "end": 212.85,
+        "root": null,
+        "pos": "word"
+      },
+      {
+        "id": "w328",
+        "ar": "شعور",
+        "vocalized": "شُعُور",
+        "transliteration": "shu‘uR",
+        "en": "Feeling",
+        "start": 211.97,
+        "end": 213.17,
+        "root": "ش-ع-ر",
+        "pos": "noun"
+      },
+      {
+        "id": "w329",
+        "ar": "يجبني",
+        "vocalized": "يُجْبِنِي",
+        "transliteration": "yujbini",
+        "en": "annoy",
+        "start": 213.17,
+        "end": 213.53,
+        "root": "ج ب ن",
+        "pos": "verb"
+      },
+      {
+        "id": "w330",
+        "ar": "شفل",
+        "vocalized": "شَفْل",
+        "transliteration": "shafal",
+        "en": "low",
+        "start": 213.53,
+        "end": 213.85,
+        "root": "ش ف ل",
+        "pos": "adjective"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s29",
+    "words": [
+      {
+        "id": "w331",
+        "ar": "السر",
+        "vocalized": "الْخَبَرُ",
+        "transliteration": "Al-Khabar",
+        "en": "the news",
+        "start": 213.85,
+        "end": 214.13,
+        "root": "خ-ب-ر",
+        "pos": "noun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s30",
+    "words": [
+      {
+        "id": "w332",
+        "ar": "أنا",
+        "vocalized": "أَنَا",
+        "transliteration": "ana",
+        "en": "I",
+        "start": 218.07,
+        "end": 219.59,
+        "root": null,
+        "pos": "pronoun"
+      },
+      {
+        "id": "w333",
+        "ar": "أصمد",
+        "vocalized": "أَصْمِدْ",
+        "transliteration": "Asmad",
+        "en": "support",
+        "start": 219.59,
+        "end": 220.51,
+        "root": "ص-م-د",
+        "pos": "verb"
+      },
+      {
+        "id": "w334",
+        "ar": "أشوى",
+        "vocalized": "أَشْوَى",
+        "transliteration": "ashwa‘",
+        "en": "Better",
+        "start": 220.51,
+        "end": 220.85,
+        "root": "أ-ش-و",
+        "pos": "noun"
+      },
+      {
+        "id": "w335",
+        "ar": "تصمدي",
+        "vocalized": "تَصْمُدِي",
+        "transliteration": "tasamudi",
+        "en": "you stand firm",
+        "start": 220.85,
+        "end": 221.05,
+        "root": "ص-م-د",
+        "pos": "verb"
+      },
+      {
+        "id": "w336",
+        "ar": "أصمد",
+        "vocalized": "أَصْمِدْ",
+        "transliteration": "Asmad",
+        "en": "support",
+        "start": 219.97,
+        "end": 221.27,
+        "root": "ص-م-د",
+        "pos": "verb"
+      },
+      {
+        "id": "w337",
+        "ar": "أشوى",
+        "vocalized": "أَشْوَى",
+        "transliteration": "ashwa‘",
+        "en": "Better",
+        "start": 221.27,
+        "end": 221.67,
+        "root": "أ-ش-و",
+        "pos": "noun"
+      }
+    ]
+  },
+  {
+    "sentenceId": "s31",
+    "words": [
+      {
+        "id": "w338",
+        "ar": "ماذا",
+        "vocalized": "ماذا",
+        "transliteration": "ma'dhā",
+        "en": "what",
+        "start": 224.25,
+        "end": 224.69,
+        "root": "ذ-ح-ث",
+        "pos": "interrogative"
+      },
+      {
+        "id": "w339",
+        "ar": "تفعل",
+        "vocalized": "تَفْعَلُ",
+        "transliteration": "taf'alu",
+        "en": "do",
+        "start": 224.69,
+        "end": 225.13,
+        "root": "ف-ع-ل",
+        "pos": "verb"
+      },
+      {
+        "id": "w340",
+        "ar": "يا",
+        "vocalized": "يَا",
+        "transliteration": "ya",
+        "en": "O",
+        "start": 225.13,
+        "end": 225.35,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w341",
+        "ar": "أخي",
+        "vocalized": "أَخِي",
+        "transliteration": "Achi",
+        "en": "my brother",
+        "start": 225.35,
+        "end": 225.95,
+        "root": "أَخ-ي",
+        "pos": "noun"
+      },
+      {
+        "id": "w342",
+        "ar": "لا",
+        "vocalized": "لَا",
+        "transliteration": "la",
+        "en": "no / not",
+        "start": 226.41,
+        "end": 226.95,
+        "root": null,
+        "pos": "particle"
+      },
+      {
+        "id": "w343",
+        "ar": "تضحك",
+        "vocalized": "تَضْحَكُ",
+        "transliteration": "tadhabuku",
+        "en": "laughs",
+        "start": 226.95,
+        "end": 227.55,
+        "root": "ض-ح-ك",
+        "pos": "verb"
+      },
+      {
+        "id": "w344",
+        "ar": "لشتاك",
+        "vocalized": "لِشْتَاك",
+        "transliteration": "lishta‘",
+        "en": "LeshTak",
+        "start": 228.27,
+        "end": 228.91,
+        "root": "ش-ت-ك",
+        "pos": "noun"
+      }
+    ]
+  }
+]

@@ -2,6 +2,8 @@ import { Link } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
 import { Lock } from 'lucide-react'
 import * as m from '#/paraglide/messages.js'
+import { ArabicDoodleCanvas } from '../doodle/ArabicDoodleCanvas'
+import { RewardCelebrationModal } from '../gamification/RewardCelebrationModal'
 
 export const HomeScreen = () => {
   const volumes = [
@@ -81,6 +83,13 @@ export const HomeScreen = () => {
             )
           })}
         </div>
+        
+        {/* Interactive Arabic Calligraphy & Doodling Canvas Studio */}
+        <div className="mt-4">
+          <ArabicDoodleCanvas />
+        </div>
+
+        <RewardCelebrationModal />
       </div>
     </div>
   )

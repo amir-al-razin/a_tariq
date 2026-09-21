@@ -1,0 +1,6 @@
+yt-dlp>=2026.1.1
+requests>=2.31.0
+tqdm>=4.66.0
+# For local AI transcription & isolation (optional/recommended):
+# faster-whisper>=1.0.0
+# demucs>=4.0.1
