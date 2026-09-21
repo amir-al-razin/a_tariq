@@ -192,7 +192,7 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
                 style={{
                   fontFamily: 'NotoSansArabic_600SemiBold',
                   fontSize: 48,
-                  lineHeight: 60,
+                  lineHeight: 76,
                   color: '#FFFFFF',
                 }}>
                 {toArabicNumerals(darsNumber)}
@@ -217,6 +217,7 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({ route, navigation })
             style={{
               fontFamily: 'NotoSansArabic_600SemiBold',
               fontSize: 32,
+              lineHeight: 52,
               color: theme.textPrimary,
               textAlign: 'center',
               marginBottom: 6,

@@ -226,7 +226,7 @@ export const ChunkEngineScreen: React.FC<ChunkEngineProps> = ({ route }) => {
           flexDirection: 'row',
           alignItems: 'center',
           paddingHorizontal: 16,
-          paddingTop: 48,
+          paddingTop: 16,
           paddingBottom: 16,
           gap: 12,
         }}>
